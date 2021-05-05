@@ -12,6 +12,10 @@ class AreasTesisTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('areatesis')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         DB::table('areatesis')->insert([
             'id_escuela' => '1',
             'nombre' => 'Inteligencia Artificial'
