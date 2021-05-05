@@ -1,0 +1,41 @@
+.slide-fade-enter{
+    transform: translateX(10px);
+    opacity: 0;
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active{
+    transition: all 0.2s ease;
+}
+
+.slide-fade-leave-to{
+    transform: translateX(-10px);
+    opacity: 0;
+}
+
+.btnWidth{
+    width: 49% !important;
+}
+.btnFull{
+    width: 100% !important;
+}
+
+.el-select{
+    width: 100% !important;
+}
+.user-block{
+    list-style: none;
+}
+.scrollTable{
+    max-height: 350px !important;
+    overflow: auto !important;
+}
+
+.card-body .card-header{
+    background-color: #253e85 !important;
+}
+
+.btn-info{
+    background-color: #253e85 !important;
+    border-style: hidden !important;
+}
