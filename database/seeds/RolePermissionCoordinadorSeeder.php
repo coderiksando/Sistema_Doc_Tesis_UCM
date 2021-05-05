@@ -11,6 +11,10 @@ class RolePermissionCoordinadorSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('roles_permissions')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         DB::table('roles_permissions')->insert([
             'id_role' => 5,
             'id_permission' => 1
@@ -84,11 +88,7 @@ class RolePermissionCoordinadorSeeder extends Seeder
             'id_permission' => 42
         ]);
         DB::table('roles_permissions')->insert([
-            'id_role' => 4,
-            'id_permission' => 1
-        ]);
-        DB::table('roles_permissions')->insert([
-            'id_role' => 4,
+            'id_role' => 5,
             'id_permission' => 43
         ]);
         DB::table('roles_permissions')->insert([
