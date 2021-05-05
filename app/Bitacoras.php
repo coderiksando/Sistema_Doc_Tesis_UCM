@@ -9,6 +9,7 @@ class Bitacoras extends Model
     protected $table = 'bitacoras';
 
     protected $fillable = [
-        'id', 'comentario','acuerdo', 'fecha'
+        'id', 'id_tesis', 'comentario',
+        'acuerdo', 'fecha', 'created_at', 'updated_at'
     ];
 }

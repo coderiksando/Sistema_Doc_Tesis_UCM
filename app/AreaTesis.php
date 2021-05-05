@@ -9,6 +9,11 @@ class AreaTesis extends Model
     protected $table = 'areatesis';
 
     protected $fillable = [
-        'id', 'nombre', 'id_escuela',
+        'id', 'id_escuela', 'nombre',
+        'created_at', 'updated_at'
     ];
+
+    public function Escuelas(){
+        return $this->belongsTo(Escuelas::class, 'id_escuela', 'id');
+    }
 }

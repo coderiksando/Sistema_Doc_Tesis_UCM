@@ -9,6 +9,8 @@ class NotasPendientes extends Model
     protected $table = 'notaspendientes';
 
     protected $fillable = [
-        'id', 'id_tesis','fecha_presentacion', 'fecha_propuesta', 'fecha_autorizada', 'fecha_prorroga', 'estado'
+        'id', 'id_tesis','fecha_presentacion', 'fecha_propuesta',
+        'fecha_autorizada', 'fecha_prorroga', 'estado',
+        'created_at', 'updated_at'
     ];
 }

@@ -15,6 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('id_user');
+            $table->string('rut');
             $table->string('nombres');
             $table->string('apellidos');
             $table->bigInteger('id_escuela')->unsigned()->nullable();
@@ -24,6 +25,12 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->enum('state',['A','I'])->nullable()->default('A');
+
+            $table->date('birthday')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('direccion')->nullable();
+            $table->string('grado_academico')->nullable();
+
             $table->timestamps();
 
             $table->foreign('id_files')->references('id')->on('files');
@@ -49,7 +56,7 @@ Schema::create('notaspendientes', function (Blueprint $table){
             $table->date('fecha_autorizada')->unsigned()->nullable();
             $table->date('fecha_prorroga')->unsigned()->nullable();
             $table->enum('estado',['A','R','V','P'])->nullable()->default('P');
-            
+
             $table->timestamps();
         });
 
@@ -62,7 +69,7 @@ Schema::create('notaspendientes', function (Blueprint $table){
 
             $table->foreign('id_tesis')->references('id')->on('fit');
             $table->foreign('id_archivo')->references('id')->on('pdftesis');
-            
+
             $table->timestamps();
         });
 */

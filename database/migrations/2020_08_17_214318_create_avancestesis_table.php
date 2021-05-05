@@ -20,8 +20,8 @@ class CreateAvancestesisTable extends Migration
             $table->string('descripcion')->nullable();
 
             $table->foreign('id_tesis')->references('id')->on('fit');
-            $table->foreign('id_archivo')->references('id')->on('pdftesis');
-            
+            $table->foreign('id_archivo')->references('id')->on('archivopdf');
+
             $table->timestamps();
         });
     }

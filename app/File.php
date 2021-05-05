@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class File extends Model
 {
-    public function users()
-    {
-        return $this->hasOne(User::class, 'id');
-    }
+    protected $table = 'files';
+    protected $fillable = [
+        'id', 'path', 'filename', 'created_by',
+        'updated_by', 'created_at', 'updated_at'
+    ];
 }

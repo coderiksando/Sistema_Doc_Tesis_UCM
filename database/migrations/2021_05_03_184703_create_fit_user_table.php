@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserinfoTable extends Migration
+class CreateFitUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,13 @@ class CreateUserinfoTable extends Migration
      */
     public function up()
     {
-        Schema::create('userinfo', function (Blueprint $table) {
-            $table->id('id')->unsigned();
-            $table->bigInteger('id_user')->unsigned()->nullable();
-            $table->date('birthday');
-            $table->string('rut');
-            $table->string('telefono');
-            $table->string('direccion');
-            $table->string('grado academico');
+        Schema::create('fit_user', function (Blueprint $table) {
+            $table->bigInteger('id_user')->unsigned()->required();
+            $table->bigInteger('id_fit')->unsigned()->required();
             $table->timestamps();
-
+            $table->primary(['id_user', 'id_fit']);
             $table->foreign('id_user')->references('id_user')->on('users');
+            $table->foreign('id_fit')->references('id')->on('fit');
         });
     }
 
@@ -34,6 +30,6 @@ class CreateUserinfoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('userinfo');
+        Schema::dropIfExists('fit_user');
     }
 }

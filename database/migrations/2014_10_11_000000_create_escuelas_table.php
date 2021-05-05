@@ -14,9 +14,12 @@ class CreateEscuelasTable extends Migration
     public function up()
     {
         Schema::create('escuelas', function (Blueprint $table) {
-            $table->id('id')->unsigned();
+            $table->id('id');
+            $table->bigInteger('id_facultad')->unsigned();
             $table->string('nombre');
             $table->timestamps();
+
+            $table->foreign('id_facultad')->references('id')->on('facultad');
         });
     }
 

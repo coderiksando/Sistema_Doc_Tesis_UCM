@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePdftesisTable extends Migration
+class CreateArchivoPDFTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,16 @@ class CreatePdftesisTable extends Migration
      */
     public function up()
     {
-        Schema::create('pdftesis', function (Blueprint $table) {
+        Schema::create('archivopdf', function (Blueprint $table) {
             $table->id('id')->unsigned();
-            
+            $table->bigInteger('id_fit')->unsigned();
             $table->string('path');
             $table->string('filename');
+            $table->enum('tipo_pdf',['acta','avance_t','final_t'])->default('avance_t');
+
 
             $table->timestamps();
+            $table->foreign('id_fit')->references('id')->on('fit');
         });
     }
 
@@ -30,6 +33,6 @@ class CreatePdftesisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pdftesis');
+        Schema::dropIfExists('archivopdf');
     }
 }
