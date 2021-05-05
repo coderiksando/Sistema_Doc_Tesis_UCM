@@ -35,20 +35,23 @@ class User extends Authenticatable
     public function Escuelas(){
         return $this->belongsTo(Escuelas::class, 'id_escuela', 'id');
     }
+    public function File(){
+        return $this->belongsTo(File::class, 'id_files', 'id');
+    }
     public function Users_Roles(){
-        return $this->hasmany(Users_Roles::class, 'id_user', 'id_user');
+        return $this->hasMany(Users_Roles::class, 'id_user', 'id_user');
     }
     public function Users_Permissions(){
-        return $this->hasmany(Users_Permissions::class, 'id_user', 'id_user');
+        return $this->hasMany(Users_Permissions::class, 'id_user', 'id_user');
     }
     public function Fit_User(){
-        return $this->hasmany(Fit_User::class, 'id_user', 'id_user');
+        return $this->hasMany(Fit_User::class, 'id_user', 'id_user');
     }
     public function ComisionesP1(){
-        return $this->hasmany(Comisiones::class, 'id_profesor1', 'id_user');
+        return $this->hasMany(Comisiones::class, 'id_profesor1', 'id_user');
     }
     public function ComisionesP2(){
-        return $this->hasmany(Comisiones::class, 'id_profesor2', 'id_user');
+        return $this->hasMany(Comisiones::class, 'id_profesor2', 'id_user');
     }
 
 

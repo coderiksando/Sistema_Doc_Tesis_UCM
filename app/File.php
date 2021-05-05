@@ -12,4 +12,8 @@ class File extends Model
         'id', 'path', 'filename', 'created_by',
         'updated_by', 'created_at', 'updated_at'
     ];
+
+    public function User(){
+        return $this->hasMany(User::class, 'id_files', 'id');
+    }
 }

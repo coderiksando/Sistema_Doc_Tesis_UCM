@@ -12,4 +12,8 @@ class Bitacoras extends Model
         'id', 'id_tesis', 'comentario',
         'acuerdo', 'fecha', 'created_at', 'updated_at'
     ];
+
+    public function Fit(){
+        return $this->belongsTo(Fit::class, 'id_tesis', 'id');
+    }
 }

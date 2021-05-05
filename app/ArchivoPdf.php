@@ -12,4 +12,11 @@ class ArchivoPdf extends Model
         'filename', 'tipo_pdf', 'created_at',
         'update_at'
     ];
+
+    public function Fit(){
+        return $this->belongsTo(Fit::class, 'id_fit', 'id');
+    }
+    public function AvancesTesis(){
+        return $this->hasMany(AvancesTesis::class, 'id_archivo', 'id');
+    }
 }

@@ -11,4 +11,11 @@ class AvancesTesis extends Model
         'id', 'id_tesis', 'id_archivo',
         'descripcion', 'created_at', 'updated_at'
     ];
+
+    public function Fit(){
+        return $this->belongsTo(Fit::class, 'id_tesis', 'id');
+    }
+    public function ArchivoPdf(){
+        return $this->belongsTo(Fit::class, 'id_archivo', 'id');
+    }
 }

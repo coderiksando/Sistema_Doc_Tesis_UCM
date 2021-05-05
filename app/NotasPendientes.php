@@ -13,4 +13,8 @@ class NotasPendientes extends Model
         'fecha_autorizada', 'fecha_prorroga', 'estado',
         'created_at', 'updated_at'
     ];
+
+    public function Fit(){
+        return $this->belongsTo(Fit::class, 'id_tesis', 'id');
+    }
 }
