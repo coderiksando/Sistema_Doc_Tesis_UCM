@@ -13,6 +13,6 @@ class Vinculaciones extends Model
     ];
 
     public function Fit(){
-        return $this->hasMany(Fit::class, 'id_vinculacion', 'id');
+        return $this->hasMany(Fit::class, 'id_vinculacion', 'id')->get();
     }
 }

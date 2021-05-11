@@ -12,9 +12,9 @@ class Fit_User extends Model
     ];
 
     public function User(){
-        return $this->belongsTo(User::class, 'id_user', 'id_user');
+        return $this->belongsTo(User::class, 'id_user', 'id_user')->first();
     }
     public function Fit(){
-        return $this->belongsTo(Fit::class, 'id_fit', 'id');
+        return $this->belongsTo(Fit::class, 'id_fit', 'id')->first();
     }
 }

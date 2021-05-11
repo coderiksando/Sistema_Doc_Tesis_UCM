@@ -14,6 +14,6 @@ class File extends Model
     ];
 
     public function User(){
-        return $this->hasMany(User::class, 'id_files', 'id');
+        return $this->hasMany(User::class, 'id_files', 'id')->get();
     }
 }

@@ -15,12 +15,12 @@ class Comisiones extends Model
     ];
 
     public function UserP1(){
-        return $this->belongsTo(User::class, 'id_profesor1', 'id_user');
+        return $this->belongsTo(User::class, 'id_profesor1', 'id_user')->first();
     }
     public function UserP2(){
-        return $this->belongsTo(User::class, 'id_profesor2', 'id_user');
+        return $this->belongsTo(User::class, 'id_profesor2', 'id_user')->first();
     }
     public function Fit(){
-        return $this->belongsTo(Fit::class, 'id_tesis', 'id');
+        return $this->belongsTo(Fit::class, 'id_tesis', 'id')->first();
     }
 }

@@ -15,24 +15,24 @@ class Fit extends Model
     ];
 
     public function Fit_User(){
-        return $this->hasMany(Fit_User::class, 'id_fit', 'id');
+        return $this->hasMany(Fit_User::class, 'id_fit', 'id')->get();
     }
     public function Fit_Area(){
-        return $this->hasMany(Fit_Area::class, 'id_fit', 'id');
+        return $this->hasMany(Fit_Area::class, 'id_fit', 'id')->get();
     }
     public function Bitacoras(){
-        return $this->hasMany(Bitacoras::class, 'id_tesis', 'id');
+        return $this->hasMany(Bitacoras::class, 'id_tesis', 'id')->get();
     }
     public function NotasPendientes(){
-        return $this->hasOne(NotasPendientes::class, 'id_tesis', 'id');
+        return $this->hasOne(NotasPendientes::class, 'id_tesis', 'id')->first();
     }
     public function Vinculaciones(){
-        return $this->belongsTo(Vinculaciones::class, 'id_vinculacion', 'id');
+        return $this->belongsTo(Vinculaciones::class, 'id_vinculacion', 'id')->first();
     }
     public function ArchivoPdf(){
-        return $this->hasMany(ArchivoPdf::class, 'id_fit', 'id');
+        return $this->hasMany(ArchivoPdf::class, 'id_fit', 'id')->get();
     }
     public function AvancesTesis(){
-        return $this->hasMany(AvancesTesis::class, 'id_tesis', 'id');
+        return $this->hasMany(AvancesTesis::class, 'id_tesis', 'id')->get();
     }
 }
