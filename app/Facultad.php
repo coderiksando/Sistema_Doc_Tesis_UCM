@@ -12,6 +12,6 @@ class Facultad extends Model
     ];
 
     public function Escuelas(){
-      return $this->hasMany(Escuelas::class, 'id_facultad', 'id');
+      return $this->hasMany(Escuelas::class, 'id_facultad', 'id')->get();
     }
 }

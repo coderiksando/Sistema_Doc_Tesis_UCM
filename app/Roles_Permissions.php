@@ -12,9 +12,9 @@ class Roles_Permissions extends Model
     ];
 
     public function Permission(){
-        return $this->belongsTo(Permission::class, 'id_permission', 'id');
+        return $this->belongsTo(Permission::class, 'id_permission', 'id')->first();
     }
     public function Roles(){
-        return $this->belongsTo(Roles::class, 'id_role', 'id');
+        return $this->belongsTo(Roles::class, 'id_role', 'id')->first();
     }
 }

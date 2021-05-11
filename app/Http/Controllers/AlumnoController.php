@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Fit;
 use App\User;
+use App\Fit_User;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -69,8 +70,7 @@ class AlumnoController extends Controller
                                                                 ]);
     }
     public function getListarTesis(Request $request){
-
-        if(!$request->ajax()) return redirect('/');
+        // if(!$request->ajax()) return redirect('/');
 
         $nIdUsuario  = Auth::id();
         $nIdTesis    =$request->nIdTesis;
@@ -83,18 +83,32 @@ class AlumnoController extends Controller
                                                                     $nIdUsuario,
                                                                     $nIdTesis
                                                                 ]);*/
-        $rpta = DB::table('fit')
-                    ->join('users', 'users.id_user', '=', 'fit.id_profesorguia')
-                    ->leftjoin('vinculaciones', 'vinculaciones.id', '=', 'fit.id_vinculacion')
-                    ->select('fit.id','fit.id_profesorguia','fit.titulo', 'users.nombres AS pname', 'vinculaciones.nombre AS vname', 'fit.tipo', 'fit.objetivo',
-                                'fit.contribucion', 'nombre_int1', 'rut_int1', 'telefono_int1', 'ingreso_int1', 'email_int1', 'nombre_int2',
-                                'rut_int2', 'email_int2', 'ingreso_int2', 'telefono_int2', 'fit.estado','fit.descripcion','fit.fecha_ultimoramo',
-                                'fit.aprobado_pg', 'fit.id_alumno AS idAlumno', 'fit.id_vinculacion')
-                    ->where('fit.id', '=', $nIdTesis)
-                    ->orWhere('fit.id_alumno', '=', $nIdUsuario)
-                    ->orWhere('fit.id_profesorguia', '=', $nIdUsuario)
+        // $rpta = DB::table('fit')
+        //         ->join('users', 'users.id_user', '=', 'fit.id_profesorguia')
+        //         ->leftjoin('vinculaciones', 'vinculaciones.id', '=', 'fit.id_vinculacion')
+        //         ->select(   'fit.id', 'fit.id_profesorguia', 'fit.titulo',
+        //                     'users.nombres AS pname', 'vinculaciones.nombre AS vname',
+        //                     'fit.tipo', 'fit.objetivo', 'fit.contribucion',
+        //                     'nombre_int1', 'rut_int1', 'telefono_int1', 'ingreso_int1',
+        //                     'email_int1', 'nombre_int2', 'rut_int2', 'email_int2',
+        //                     'ingreso_int2', 'telefono_int2', 'fit.estado', 'fit.descripcion',
+        //                     'fit.fecha_ultimoramo', 'fit.aprobado_pg',
+        //                     'fit.id_alumno AS idAlumno', 'fit.id_vinculacion')
+        //         ->where('fit.id', '=', $nIdTesis)
+        //         ->orWhere('fit.id_alumno', '=', $nIdUsuario)
+        //         ->orWhere('fit.id_profesorguia', '=', $nIdUsuario)
+        //         ->get();
+        $rpta = Fit::where('id', '=', $nIdTesis)
+                    ->
                     ->get();
-        return $rpta;
+
+
+        // $rpta = User::where('nombres', 'Alumno1')
+        //             ->get();
+        // $rpta2 = $rpta[0]->Fit_User();
+        // return $rpta2;
+
+        return $rpta[0]->Fit_User();
     }
     public function getListarAllTesis(Request $request){
 

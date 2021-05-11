@@ -12,9 +12,9 @@ class Fit_Area extends Model
     ];
 
     public function Fit(){
-        return $this->belongsTo(Fit::class, 'id_fit', 'id');
+        return $this->belongsTo(Fit::class, 'id_fit', 'id')->first();
     }
     public function AreaTesis(){
-        return $this->belongsTo(AreaTesis::class, 'id_area', 'id');
+        return $this->belongsTo(AreaTesis::class, 'id_area', 'id')->first();
     }
 }

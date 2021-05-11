@@ -12,9 +12,9 @@ class Users_Roles extends Model
     ];
 
     public function User(){
-        return $this->belongsTo(User::class, 'id_user', 'id_user');
+        return $this->belongsTo(User::class, 'id_user', 'id_user')->first();
     }
     public function Roles(){
-        return $this->belongsTo(Roles::class, 'id_roles', 'id');
+        return $this->belongsTo(Roles::class, 'id_roles', 'id')->first();
     }
 }

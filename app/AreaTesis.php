@@ -14,9 +14,9 @@ class AreaTesis extends Model
     ];
 
     public function Escuelas(){
-        return $this->belongsTo(Escuelas::class, 'id_escuela', 'id');
+        return $this->belongsTo(Escuelas::class, 'id_escuela', 'id')->first();
     }
     public function Fit_Area(){
-        return $this->hasMany(Fit_Area::class, 'id_area', 'id');
+        return $this->hasMany(Fit_Area::class, 'id_area', 'id')->get();
     }
 }
