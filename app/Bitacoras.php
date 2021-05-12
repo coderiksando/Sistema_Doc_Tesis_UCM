@@ -14,6 +14,6 @@ class Bitacoras extends Model
     ];
 
     public function Fit(){
-        return $this->belongsTo(Fit::class, 'id_tesis', 'id')->first();
+        return $this->belongsTo(Fit::class, 'id_tesis', 'id');
     }
 }

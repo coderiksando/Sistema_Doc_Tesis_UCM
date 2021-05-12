@@ -16,8 +16,8 @@ class CreateFitTable extends Migration
         Schema::create('fit', function (Blueprint $table) {
             $table->id('id')->unsigned();
             // $table->bigInteger('id_alumno')->unsigned()->nullable();
-            // $table->bigInteger('id_profesorguia')->unsigned();
             $table->bigInteger('id_vinculacion')->unsigned()->nullable();
+            $table->bigInteger('id_p_guia')->unsigned();
             // $table->bigInteger('id_pdftesis')->unsigned()->nullable();
             // $table->bigInteger('id_actadefensa')->unsigned()->nullable();
             $table->decimal('nota', 2, 1)->nullable();
@@ -41,8 +41,8 @@ class CreateFitTable extends Migration
             $table->enum('aprobado_pg',['A','R','P'])->nullable()->default('P');
 
             // $table->foreign('id_alumno')->references('id_user')->on('alumno');
-            // $table->foreign('id_profesorguia')->references('id_user')->on('users');
             $table->foreign('id_vinculacion')->references('id')->on('vinculaciones')->onDelete('set null');
+            $table->foreign('id_p_guia')->references('id_user')->on('users');
             // $table->foreign('id_pdftesis')->references('id')->on('pdftesis')->onDelete('set null');
             // $table->foreign('id_actadefensa')->references('id')->on('pdftesis');
             $table->timestamps();

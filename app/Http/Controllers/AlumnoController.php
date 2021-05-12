@@ -73,11 +73,11 @@ class AlumnoController extends Controller
         // if(!$request->ajax()) return redirect('/');
 
         $nIdUsuario  = Auth::id();
-        $nIdTesis    =$request->nIdTesis;
+        $nIdTesis    = $request->nIdTesis;
 
         //$nIdUsuario  = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
         //$nIdTesis    = ($nIdTesis == NULL) ? ($nIdTesis = 0) : $nIdTesis;
-       /*
+        /*
         $rpta = DB::select('call sp_alumno_getListarTesis (?, ?)',
                                                                 [
                                                                     $nIdUsuario,
@@ -98,17 +98,24 @@ class AlumnoController extends Controller
         //         ->orWhere('fit.id_alumno', '=', $nIdUsuario)
         //         ->orWhere('fit.id_profesorguia', '=', $nIdUsuario)
         //         ->get();
-        $rpta = Fit::where('id', '=', $nIdTesis)
-                    ->
-                    ->get();
+
+        $isStudent = User   ::find($nIdUsuario)
+                            ->Users_Roles()->first()
+                            ->Roles()->get()->where('slug','rol.alumno')->first();
 
 
-        // $rpta = User::where('nombres', 'Alumno1')
-        //             ->get();
-        // $rpta2 = $rpta[0]->Fit_User();
-        // return $rpta2;
-
-        return $rpta[0]->Fit_User();
+        if ($isStudent){
+            $fit = Fit_User::where('id_user', $nIdUsuario)->first()->Fit()->get()->all();
+            $listUsers = $fit[0]->Fit_User()->get()->all();
+            $listUsersDetails = [];
+            foreach ($listUsers as $user) {
+                array_push($listUsersDetails, $user->User()->first());
+            }
+            $fit[0]->listUsers = $listUsersDetails;
+        }else{
+            $fit = Fit::where('id_p_guia', $nIdUsuario)->get()->all();
+        }
+        return $fit;
     }
     public function getListarAllTesis(Request $request){
 

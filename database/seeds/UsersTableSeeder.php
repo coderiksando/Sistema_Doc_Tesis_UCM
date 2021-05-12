@@ -95,5 +95,18 @@ class UsersTableSeeder extends Seeder
             'direccion' => 'Su casa',
             'grado_academico' => 'secre'
         ]);
+        DB::table('users')->insert([// cuenta de administrador
+            'rut' => '11.111.111-1',
+            'nombres'=>'Juan',
+            'apellidos'=>'alumno',
+            'id_escuela'=>'1',
+            'email'=>'juanalumno2@gmail.com',
+            'password' => Hash::make('12345'),
+            'state' => 'A',
+            'birthday' => DateTime::createFromFormat('m-d-Y', '12-16-1803'),
+            'telefono' => '65165',
+            'direccion' => 'Su casa',
+            'grado_academico' => 'Estudiante'
+        ]);
     }
 }
