@@ -12,9 +12,9 @@ class Users_Permissions extends Model
     ];
 
     public function User(){
-        return $this->belongsTo(User::class, 'id_user', 'id_user')->first();
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
     public function Permission(){
-        return $this->belongsTo(Permission::class, 'id_permission', 'id')->first();
+        return $this->belongsTo(Permission::class, 'id_permission', 'id');
     }
 }

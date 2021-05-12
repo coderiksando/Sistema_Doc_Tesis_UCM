@@ -1,4 +1,5 @@
 <template>
+
   <div>
     <div class="content-header">
       <div class="container-fluid">
@@ -50,7 +51,13 @@
                       <tr v-for="(item, index) in listTesis" :key="index">
 
 
-                        <td v-text="item.nombre_int1"></td>
+                        <td>
+                            <div v-for="(itemUser, index) in item.listUsers" :key="index">
+                                <p v-text="itemUser.nombres + ' ' + item.listUsers[0].apellidos"></p>
+                            </div>
+                        </td>
+
+                        <!-- <td v-text="item.nombre_int1"></td> -->
                         <td>
                           <template v-if="item.aprobado_pg == 'P'">
                             <span class="badge badge-warning" >Pendiente</span>
@@ -266,7 +273,7 @@ export default {
         {value: 'R', label: 'Reprobada'},
         {value: 'D', label: 'En Desarrollo'}
       ],
-      listTesis:null,
+      listTesis: 1,
       listAllTesis:null,
       listMiTesis:[],
       fullscreenLoading: false,
@@ -338,9 +345,10 @@ export default {
       var url = '/alumno/getListarTesis'
       axios.get(url, {
       }).then(response => {
-          this.inicializarPaginacion();
-          this.listTesis = response.data;
-          this.fullscreenLoading = false;
+            this.inicializarPaginacion();
+            this.listTesis = response.data;
+            console.log(this.listTesis);
+            this.fullscreenLoading = false;
       })
     },
     getListarAllTesis(){

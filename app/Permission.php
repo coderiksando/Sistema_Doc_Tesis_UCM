@@ -12,9 +12,9 @@ class Permission extends Model
     ];
 
     public function Users_Permissions(){
-        return $this->hasMany(Users_Permissions::class, 'id_permission', 'id')->get();
+        return $this->hasMany(Users_Permissions::class, 'id_permission', 'id');
     }
     public function Roles_Permissions(){
-        return $this->hasMany(Roles_Permissions::class, 'id_permission', 'id')->get();
+        return $this->hasMany(Roles_Permissions::class, 'id_permission', 'id');
     }
 }

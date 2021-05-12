@@ -12,12 +12,12 @@ class Escuelas extends Model
     ];
 
     public function Facultad(){
-      return $this->belongsTo(Facultad::class, 'id_facultad', 'id')->first();
+      return $this->belongsTo(Facultad::class, 'id_facultad', 'id');
     }
     public function User(){
-        return $this->hasMany(User::class, 'id_escuela', 'id')->get();
+        return $this->hasMany(User::class, 'id_escuela', 'id');
     }
     public function AreaTesis(){
-        return $this->hasMany(AreaTesis::class, 'id_escuela', 'id')->get();
+        return $this->hasMany(AreaTesis::class, 'id_escuela', 'id');
     }
 }

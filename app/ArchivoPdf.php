@@ -14,9 +14,9 @@ class ArchivoPdf extends Model
     ];
 
     public function Fit(){
-        return $this->belongsTo(Fit::class, 'id_fit', 'id')->first();
+        return $this->belongsTo(Fit::class, 'id_fit', 'id');
     }
     public function AvancesTesis(){
-        return $this->hasMany(AvancesTesis::class, 'id_archivo', 'id')->get();
+        return $this->hasMany(AvancesTesis::class, 'id_archivo', 'id');
     }
 }
