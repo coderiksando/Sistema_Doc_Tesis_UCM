@@ -36,6 +36,6 @@ class Fit extends Model
         return $this->hasMany(AvancesTesis::class, 'id_tesis', 'id');
     }
     public function User_P_Guia(){
-        return $this->belongsTo(Fit::class, 'id_p_guia', 'id_user');
+        return $this->belongsTo(User::class, 'id_p_guia', 'id_user');
     }
 }

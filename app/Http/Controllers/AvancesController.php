@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Avances;
+use App\AvancesTesis;
 use App\Fit;
+use App\Fit_User;
+use App\User;
+use \stdClass;
 use App\Mail\MailAvances;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,31 +24,31 @@ class AvancesController extends Controller
         
         $idUser    = ($idUser == NULL) ? ($idUser = 0) : $idUser;
         $nIdAvance = ($nIdAvance == NULL) ? ($nIdAvance = 0) : $nIdAvance;
-
-        $avances = DB::table('avancestesis')
-                        ->join('fit', 'fit.id', '=', 'avancestesis.id_tesis')
-                        ->join('pdftesis', 'pdftesis.id', '=', 'avancestesis.id_archivo')
-                        ->select('avancestesis.id','avancestesis.created_at', 'avancestesis.descripcion', 'pdftesis.path')
-                        ->Where('avancestesis.id', '=', $nIdAvance)
-                        ->OrWhere('avancestesis.id', '=', 0)
-                        ->Orwhere('fit.id_alumno', '=', $idUser)
-                        ->orderBy('avancestesis.id', 'desc')
-                        ->get();
-        return $avances;
+        $FitUser     = Fit_User::Firstwhere('id_user', $idUser);
+        $AvancesTesis = [];
+        if($FitUser){
+            $Fit = $FitUser->Fit;
+            $AvancesTesis = $Fit->AvancesTesis->sortByDesc('updated_at')->values()->all();      
+            foreach($AvancesTesis as $avance){
+                $avance->ArchivoPdf;
+            }
+        }
+        return $AvancesTesis;
     }
     public function getListarAvancesByAlumno(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
 
         $idAlumno = $request->id_user;
-
-        $avances  = DB::table('avancestesis')
-                        ->join('fit', 'fit.id', '=', 'avancestesis.id_tesis')
-                        ->join('pdftesis', 'pdftesis.id', '=', 'avancestesis.id_archivo')
-                        ->select('avancestesis.id','avancestesis.created_at', 'avancestesis.descripcion', 'pdftesis.path')
-                        ->where('fit.id_alumno', '=', $idAlumno)
-                        ->orderBy('avancestesis.id', 'desc')
-                        ->get();
-        return $avances;
+        $FitUser  = Fit_User::Firstwhere('id_user', $idAlumno);
+        $AvancesTesis = [];
+        if($FitUser){
+            $Fit = $FitUser->Fit;
+            $AvancesTesis = $Fit->AvancesTesis->sortByDesc('updated_at')->values()->all();      
+            foreach($AvancesTesis as $avance){
+                $avance->ArchivoPdf;
+            }
+        }
+        return $AvancesTesis;
     }
     public function getListarAlumnosByprofesor(Request $request){
         if(!$request->ajax()) return redirect('/');
@@ -55,14 +58,19 @@ class AvancesController extends Controller
         
         $idUser     = ($idUser == NULL) ? ($idUser = 0) : $idUser;
         $nIdAvance  = ($nIdAvance == NULL) ? ($nIdAvance = 0) : $nIdAvance;
+        $Users = [];
 
-        $alumnos    = DB::table('fit')
-                            ->join('users', 'users.id_user', '=', 'fit.id_alumno')
-                            ->select('users.id_user',DB::raw("CONCAT(users.nombres,' ',users.apellidos) as nombres"))
-                            ->Where('fit.id_profesorguia', '=', $idUser)
-                            ->orderBy('users.id_user', 'desc')
-                            ->get();
-        return $alumnos;
+        $Fit = Fit::Firstwhere('id_p_guia', $idUser);
+
+        if ($Fit) {
+            $FitUsers = $Fit->Fit_User;
+            foreach($FitUsers as $FitUser){
+                array_push($Users, $FitUser->User);
+            }
+
+        }
+
+        return $Users;
     }
     public function getSeleccionarAvance(Request $request){
         if(!$request->ajax()) return redirect('/');
@@ -83,24 +91,24 @@ class AvancesController extends Controller
     public function setRegistrarAvance(Request $request){
         if(!$request->ajax()) return redirect('/');
         
-        $idUser     = Auth::user()->id_user;
-        $idTesis    = Fit::select('id')->where('id_alumno',$idUser)->get();
+        $idUser = Auth::user()->id_user;
+        $user = User::find($idUser);
+        $fit  = Fit_User::Firstwhere('id_user', $idUser)->Fit;
+        $fit->User_P_Guia;
+        $DatosEmail = new stdClass();
+        $DatosEmail->email_pg = $fit->User_P_Guia->email;
+        $DatosEmail->titulo = $fit->titulo;
+        $DatosEmail->full_name = $user->nombres . ' ' . $user->apellidos;
+        $DatosEmail->fecha = Carbon::now();
 
-        $DatosEmail = DB::table('fit')
-                            ->join('users as profesor_guia', 'profesor_guia.id_user', '=', 'fit.id_profesorguia')
-                            ->join('users as alumno', 'alumno.id_user', '=', 'fit.id_alumno')
-                            ->where('fit.id', '=', $idTesis[0]->id)
-                            ->select('profesor_guia.email as email_pg','fit.titulo', DB::raw("CONCAT(alumno.nombres,' ',alumno.apellidos) as full_name"))
-                            ->get();
-
-        $DatosEmail[0]->fecha = Carbon::now();
-
-        Mail::to($DatosEmail[0]->email_pg)->queue(new MailAvances($DatosEmail[0]));
+        Mail::to($DatosEmail->email_pg)->queue(new MailAvances($DatosEmail));
    
-        $rpta               = new Avances();
+        $rpta               = new AvancesTesis();
         $rpta->descripcion  = $request->descripcion;
         $rpta->id_archivo   = $request->id_archivo;
-        $rpta->id_tesis     = $idTesis[0]->id;
+        $rpta->id_tesis     = $fit->id;
+        $rpta->created_at   = Carbon::now();
+        $rpta->updated_at   = Carbon::now();
         $rpta->save(); 
         
         return $rpta;
@@ -135,9 +143,11 @@ class AvancesController extends Controller
     public function getEstadoTesis(Request $request){
         if(!$request->ajax()) return redirect('/');
 
-        $idUser     = Auth::user()->id_user;
-        $estado    = Fit::select('estado')->where('id_alumno',$idUser)->get();
-
-        return $estado;
+        $idUser = Auth::user()->id_user;
+        $fit_user = Fit_User::Firstwhere('id_user', $idUser);
+        if($fit_user){
+            return $fit_user->Fit->estado;
+        }
+        return [];
     }
 }

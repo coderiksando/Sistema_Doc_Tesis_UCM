@@ -136,6 +136,7 @@ export default {
       }
     },
     setRegistrarArchivoPDF(){
+      this.fullscreenLoading = true;
       this.form.append('file', this.fillCrearAvances.oArchivo)
       const config = { headers: {'Content-Type': 'multipart/form-data'}}
       var url = '/archivo/setRegistrarArchivoPDF'
