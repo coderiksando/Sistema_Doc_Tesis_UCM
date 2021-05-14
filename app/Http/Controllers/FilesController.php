@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\PdfFile;
+use App\ArchivoPdf;
+use App\Fit_User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class FilesController extends Controller
 {
     public function setRegistrarArchivo(Request $request){
-
         $file = $request->file;
         $bandera = Str::random(10);
         $filename = $file->getClientOriginalName();
@@ -27,7 +28,9 @@ class FilesController extends Controller
         return $rpta;
     }
     public function setRegistrarArchivoPDF(Request $request){
-
+        
+        $idUser = Auth::user()->id_user;
+        $fit = Fit_User::Firstwhere('id_user', $idUser)->Fit;
         $file = $request->file;
         $bandera = Str::random(10);
         $filename = $file->getClientOriginalName();
@@ -40,9 +43,10 @@ class FilesController extends Controller
                                                                     asset('storage/users/'.$fileserver),
                                                                     $filename                                               
                                                                 ]);  */
-        $rpta = new PdfFile;
+        $rpta = new ArchivoPdf;
         $rpta->path = asset('storage/users/'.$fileserver);
         $rpta->filename = $filename;
+        $rpta->id_fit = $fit->id;
         $rpta->save(); 
         //$nIdFile = $rpta->id;                                                               
         return $rpta;

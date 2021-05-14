@@ -52,7 +52,7 @@
                               <el-option
                                   v-for="item in listAlumnos"
                                   :key="item.id_user"
-                                  :label="item.nombres"
+                                  :label="item.nombres + ' ' + item.apellidos"
                                   :value="item.id_user">
                               </el-option>
                               </el-select>
@@ -94,11 +94,11 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item, index) in listarAvancesPaginated" :key="index">
-                        <td v-text="item.created_at"></td>
+                      <tr class="date" v-for="(item, index) in listarAvancesPaginated" :key="index">
+                        <td class="filter">{{ item.created_at | moment }}</td>
                         <td v-text="item.descripcion"></td>
                         <td >
-                          <a class="btn btn-flat btn-warning btn-sm" :href="item.path"><i class="fas fa-file-download"> </i> Descargar</a>
+                          <a class="btn btn-flat btn-warning btn-sm" :href="item.archivo_pdf.path"><i class="fas fa-file-download"> </i> Descargar</a>
                         </td>
 
                         <td>
@@ -143,6 +143,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
   props: ['usuario'],
   data(){
@@ -206,6 +207,12 @@ export default {
     this.getListarAvances();
     this.getListarAlumnosByprofesor();
   },
+  filters:{
+    moment: function (date) {
+      moment.locale('es');
+      return moment(date).format('lll');
+    }
+  },
   methods:{
     limpiarCriteriosBsq(){
       this.fillBsqAvanceByAlumno.id_user = '';
@@ -218,7 +225,9 @@ export default {
         axios.get(url, {
       }).then(response => {
           console.log(response.data);
-          this.fillEstadoTesis.cEstado     = response.data[0].estado;
+          if(response.data[0]){
+            this.fillEstadoTesis.cEstado     = response.data[0].estado;
+          }
       })
     },
     getListarAvancesByAlumno(){
