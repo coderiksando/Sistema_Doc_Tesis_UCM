@@ -444,7 +444,6 @@ class AlumnoController extends Controller
                     ->get()->all();
         foreach($rpta as $user){
             foreach($user->Users_Roles->all() as $user_rol){
-                // $user_rol->Roles->first();
                 if ($user_rol->Roles->slug == 'rol.alumno') {
                     array_push($alumnoBuscado, $user);
                 }

@@ -274,7 +274,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-9"></div>
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <template v-if="listAlumnosBuscados.length">
+                                    <div class="row">
+                                        <h3><b>Usuarios encontrados:</b></h3>
+                                    </div>
+                                    <div class="row" v-for="(item, index) in listAlumnosBuscados" :key="index">
+                                        <button class="btn btn-primary w-100 mb-2"  @click="setingresarAlumno(item)">
+                                                <p>Nombre: {{item.nombres}} {{item.apellidos}}</p>
+                                                <p>Rut: {{item.rut}}</p>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-3">
                         <button class="btn btn-success w-100" @click="setBusquedaUsuario">Buscar</button>
                     </div>
@@ -319,13 +335,14 @@ export default {
         listProfesores:[],
         listEscuelas:[],
         listVinculacion:[],
+        listAlumnosBuscados: [],
         myOwnUser: {},
         fullscreenLoading: false,
         modalShow: false,
         modalSearchUser: false,
         mostrarModal: {
             display: 'block',
-            background: '#0000006b',
+            background: '#0000006b'
         },
         ocultarModal: {
             display: 'none',
@@ -446,7 +463,25 @@ export default {
         this.busquedaUsuario.rut = '';
     },
     setBusquedaUsuario() {
-        console.log(this.busquedaUsuario);
+        this.fullscreenLoading = true;
+        var url = '/alumno/getUsersAlumnosParametros'
+        axios.post(url, {
+            'rut'       :   this.busquedaUsuario.rut,
+            'email'     :   this.busquedaUsuario.email,
+            'nombre'    :   this.busquedaUsuario.nombre,
+            'apellido'  :   this.busquedaUsuario.apellido
+        }).then(response => {
+            this.listAlumnosBuscados = response.data;
+            console.log(this.listAlumnosBuscados);
+            this.fullscreenLoading = false;
+        })
+    },
+    setingresarAlumno(alumno){
+        this.fillCrearFIT.cUsers.push(alumno);
+        // seccion de revisión si usuario es incluido por segunda vez
+        // this.fillCrearFIT.cUsers.forEach(user => {
+        //   console.log(user)
+        // });
     },
     nextPage(){
       this.pageNumber++;
