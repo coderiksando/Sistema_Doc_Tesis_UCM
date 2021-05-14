@@ -33,7 +33,7 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Profesor Guia</label>
                                                 <div class="col-md-9">
-                                                    <el-select v-model="fillCrearFIT.nIdPg" 
+                                                    <el-select v-model="fillCrearFIT.nIdPg"
                                                     placeholder="Asignar Profesor Guia"
                                                     clearable>
                                                     <el-option
@@ -50,7 +50,7 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Tipo de trabajo</label>
                                                 <div class="col-md-9">
-                                                    <el-select v-model="fillCrearFIT.cTipo" 
+                                                    <el-select v-model="fillCrearFIT.cTipo"
                                                     placeholder="Seleccione un Tipo de trabajo"
                                                     clearable>
                                                     <el-option
@@ -78,7 +78,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-6">
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Contribucion</label>
@@ -94,7 +94,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-6">
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Objetivo
@@ -131,7 +131,7 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Vinculacion</label>
                                                 <div class="col-md-9">
-                                                    <el-select v-model="fillCrearFIT.nIdVinculacion" 
+                                                    <el-select v-model="fillCrearFIT.nIdVinculacion"
                                                     placeholder="Asignar Vinculacion (opcional)"
                                                     clearable>
                                                     <el-option
@@ -144,126 +144,78 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Nombre integrante 1</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" class="form-control" maxlength="40" v-model="fillCrearFIT.cNombreI1" @keyup.enter="setRegistrarTesis">
-                                                </div>
+                                        <div class="col-md-6"></div>
+
+                                        <!-- revision de estado de una promesa -->
+                                        <div class="col-md-6"></div>
+                                            <template v-if="fillCrearFIT.cUsers.length > 0">
+                                                <!-- iteración de usuarios dentro de fillcrearfit.cusers -->
+                                                <template v-for="(item, index) in fillCrearFIT.cUsers">
+                                                    <div class="col-md-12" :key="index">
+                                                        <h3><b v-text="'Integrante Nº' + (index+1)"></b></h3>
+                                                    </div>
+                                                    <div class="col-md-6" :key="'nombre' + index">
+                                                        <div class="form-group row">
+                                                            <label class="col-md-3 col-form-label">Nombre</label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" readonly class="form-control" v-model="fillCrearFIT.cUsers[index].nombres" @keyup.enter="setRegistrarTesis">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6" :key="'rut' + index">
+                                                        <div class="form-group row">
+                                                            <label class="col-md-3 col-form-label">Apellido</label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" readonly class="form-control" v-model="fillCrearFIT.cUsers[index].apellidos" @keyup.enter="setRegistrarTesis">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6" :key="'telefono' + index">
+                                                        <div class="form-group row">
+                                                            <label class="col-md-3 col-form-label">Rut</label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" readonly class="form-control" v-model="fillCrearFIT.cUsers[index].rut" @keyup.enter="setRegistrarTesis">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6" :key="'email' + index">
+                                                        <div class="form-group row">
+                                                            <label class="col-md-3 col-form-label">email</label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" readonly class="form-control" v-model="fillCrearFIT.cUsers[index].email" @keyup.enter="setRegistrarTesis">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </template>
+
+                                            <div class="col-md-6">
+                                                <button class="btn btn-info bnt-sm" @click.prevent="mostrarModalBusquedaEstudiante">
+                                                    Añadir más integrantes +
+                                                </button>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Rut Integrante 1</label>
-                                                <div class="col-md-9">   
-                                               <input type="text" class="form-control" maxlength="10" placeholder="sin puntos 19866976-1" v-model="fillCrearFIT.cRutI1" @keyup.enter="setRegistrarTesis"> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Telefono Integrante 1</label>
-                                                <div class="col-md-9">
-                                                    <input type="tel" maxlength="9" placeholder="944455566" class="form-control" v-model="fillCrearFIT.cTelefonoI1" @keyup.enter="setRegistrarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Año ingreso Integrante 1</label>
-                                                <div class="col-md-9">
-                                                      <el-date-picker
-                                                        v-model="fillCrearFIT.cIngresoI1"
-                                                        type="year"
-                                                        size="large"
-                                                        placeholder="Elige año">
-                                                      </el-date-picker>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">email Integrante 1</label>
-                                                <div class="col-md-9">
-                                                    <input type="email" maxlength="40"  class="form-control" v-model="fillCrearFIT.cEmailI1" @keyup.enter="setRegistrarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Nombre Integrante 2</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" class="form-control" maxlength="50" v-model="fillCrearFIT.cNombreI2" @keyup.enter="setRegistrarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Rut Integrante 2</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" class="form-control" maxlength="12" placeholder="sin puntos 19866976-1" v-model="fillCrearFIT.cRutI2" @keyup.enter="setRegistrarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                         <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Email Integrante 2</label>
-                                                <div class="col-md-9">
-                                                    <input type="email" class="form-control" maxlength="40"  v-model="fillCrearFIT.cEmailI2" @keyup.enter="setRegistrarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Año ingreso Integrante 2</label>
-                                                <div class="col-md-9">
-                                                      <el-date-picker
-                                                        v-model="fillCrearFIT.cIngresoI2"
-                                                        type="year"
-                                                        placeholder="Elige año">
-                                                      </el-date-picker>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Telefono Integrante 2</label>
-                                                <div class="col-md-9">
-                                                    <input type="tel" maxlength="9" placeholder="944455566" class="form-control" v-model="fillCrearFIT.cTelefonoI2" @keyup.enter="setRegistrarTesis">
-                                                </div>
-                                            </div>
-                                        </div>   
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Fecha que curso su ultimo ramo</label>
-                                                <div class="col-md-9">
-                                                      <el-date-picker
-                                                        v-model="fillCrearFIT.dFechaUR"
-                                                        type="month"
-                                                        placeholder="Elige mes y año">
-                                                      </el-date-picker>
-                                                </div>
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </form>
                             </div>
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-md-4 offset-4">
-                                        <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarTesis" v-loading.fullscreen.lock="fullscreenLoading"
-                                    >Registrar</button>
-                                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
+                                        <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarTesis" v-loading.fullscreen.lock="fullscreenLoading">
+                                            Registrar
+                                        </button>
+                                        <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">
+                                            Limpiar
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                   </div>
-              </div> 
+              </div>
           </div>
       </div>
-               
+
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content scrollTable">
@@ -281,6 +233,60 @@
       </div>
     </div>
 
+    <div class="modal fade" :class="{ show: modalSearchUser }" :style="modalSearchUser ? mostrarModal : ocultarModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content scrollTable">
+            <div class="modal-header">
+                <h5 class="modal-title"><b>Búsqueda de integrante de tesis</b></h5>
+                <button class="close" @click="mostrarModalBusquedaEstudiante"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Rut</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.rut">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Email</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.email">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Nombre</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.nombre">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Apellido</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.apellido">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3">
+                        <button class="btn btn-success w-100" @click="setBusquedaUsuario">Buscar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @click="mostrarModalBusquedaEstudiante">Cerrar</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -288,46 +294,45 @@
 export default {
   data(){
     return{
-      fillCrearFIT:{
-        cTitulo: '',
-        nIdPg: '',
-        nIdVinculacion: '',
-        cTipo: '',
-        dFechaUR: '',
-        cObjetivo: '',
-        cDescripcion: '',
-        cContribucion: '',
-        cNombreI1: '',
-        cRutI1: '',
-        cTelefonoI1: '',
-        cIngresoI1: '',
-        cEmailI1: '',
-        cNombreI2: '',
-        cRutI2: '',
-        cEmailI2: '',
-        cIngresoI2: '',
-        cTelefonoI2: ''
-      },
-      listTipo: [
-        {value: 'Tesis', label: 'Tesis'},
-        {value: 'Memoria', label: 'Memoria'},
-        {value: 'Proyecto de titulo', label: 'Proyecto de titulo'}
-      ],
-      listProfesores:[],
-      listEscuelas:[],
-      listVinculacion:[],
-      fullscreenLoading: false,
-      modalShow: false,
-      mostrarModal: {
-        display: 'block',
-        background: '#0000006b',
-      },
-      ocultarModal: {
-        display: 'none',
-      },
-      thisyear: new Date(),
-      error: 0,
-      mensajeError:[]
+        fillCrearFIT:{
+            cTitulo: '',
+            nIdPg: '',
+            nIdVinculacion: '',
+            cTipo: '',
+            dFechaUR: '',
+            cObjetivo: '',
+            cDescripcion: '',
+            cContribucion: '',
+            cUsers: []
+        },
+        listTipo: [
+            {value: 'Tesis', label: 'Tesis'},
+            {value: 'Memoria', label: 'Memoria'},
+            {value: 'Proyecto de titulo', label: 'Proyecto de titulo'}
+        ],
+        busquedaUsuario: {
+            nombre: '',
+            apellido: '',
+            rut: '',
+            email: ''
+        },
+        listProfesores:[],
+        listEscuelas:[],
+        listVinculacion:[],
+        myOwnUser: {},
+        fullscreenLoading: false,
+        modalShow: false,
+        modalSearchUser: false,
+        mostrarModal: {
+            display: 'block',
+            background: '#0000006b',
+        },
+        ocultarModal: {
+            display: 'none',
+        },
+        thisyear: new Date(),
+        error: 0,
+        mensajeError:[]
     }
   },
   computed: {
@@ -335,6 +340,7 @@ export default {
    mounted(){
     this.getListarProfesores();
     this.getListarVinculacion();
+    this.getMyOwnUser();
   },
   methods:{
     getListarVinculacion(){
@@ -355,9 +361,28 @@ export default {
           this.fullscreenLoading = false;
       })
     },
+    getMyOwnUser(){
+        this.fullscreenLoading = true;
+        var url = '/authenticate/getMyOwnUser';
+        this.myOwnUser = {};
+        axios.get(url, {
+        }).then(response => {
+            this.myOwnUser = response.data;
+            console.log(this.myOwnUser);
+            this.myOwnUser.users__roles.forEach(rol_user => {
+                if (rol_user.roles.name === "Alumno") {
+                    this.fillCrearFIT.cUsers.push(this.myOwnUser);
+                }
+            });
+            this.fullscreenLoading = false;
+            console.log(this.fillCrearFIT)
+        })
+    },
     limpiarCriterios(){
       this.fillCrearFIT.cNombre = '';
       this.fillCrearFIT.nIdEscuela = '';
+      this.fillCrearFIT.cUsers = [];
+      this.getMyOwnUser();
     },
     abrirModal(){
       this.modalShow = !this.modalShow;
@@ -371,16 +396,6 @@ export default {
         if(!this.fillCrearFIT.nIdPg){
           this.mensajeError.push("El profesor guia es un campo obligatorio")
         }
-        if(!this.fillCrearFIT.dFechaUR){
-          this.mensajeError.push("La fecha de su ultimo ramo es un campo obligatorio")
-        }
-        if(this.fillCrearFIT.cIngresoI1){
-          var Itsdate = this.fillCrearFIT.cIngresoI1
-
-          if(this.thisyear <= Itsdate){
-            this.mensajeError.push("Ingrese una fecha de ingreso correcta")
-          }
-        }
         if(!this.fillCrearFIT.cTipo){
           this.mensajeError.push("El tipo es un campo obligatorio")
         }
@@ -393,17 +408,8 @@ export default {
         if(!this.fillCrearFIT.cContribucion){
           this.mensajeError.push("La contribucion es un campo obligatorio")
         }
-        if(!this.fillCrearFIT.cNombreI1){
-          this.mensajeError.push("El nombre es un campo obligatorio")
-        }
-        if(!this.fillCrearFIT.cTelefonoI1){
-          this.mensajeError.push("El telefono es un campo obligatorio")
-        }
-        if(!this.fillCrearFIT.cRutI1){
-          this.mensajeError.push("El rut es un campo obligatorio")
-        }
-        if(!this.fillCrearFIT.cEmailI1){
-          this.mensajeError.push("El email es un campo obligatorio")
+        if(this.fillCrearFIT.cUsers.length === 0) {
+            this.mensajeError.push("No existen alumnos agregados al formulario de tesis")
         }
         if(this.mensajeError.length){
           this.error = 1;
@@ -426,20 +432,21 @@ export default {
         'cObjetivo'          : this.fillCrearFIT.cObjetivo,
         'cDescripcion'       : this.fillCrearFIT.cDescripcion,
         'cContribucion'      : this.fillCrearFIT.cContribucion,
-        'cNombreI1'          : this.fillCrearFIT.cNombreI1,
-        'cRutI1'             : this.fillCrearFIT.cRutI1,
-        'cTelefonoI1'        : this.fillCrearFIT.cTelefonoI1,
-        'cIngresoI1'         : this.fillCrearFIT.cIngresoI1,
-        'cEmailI1'           : this.fillCrearFIT.cEmailI1,
-        'cNombreI2'          : this.fillCrearFIT.cNombreI2,
-        'cRutI2'             : this.fillCrearFIT.cRutI2,
-        'cEmailI2'           : this.fillCrearFIT.cEmailI2,
-        'cIngresoI2'         : this.fillCrearFIT.cIngresoI2,
-        'cTelefonoI2'        : this.fillCrearFIT.cTelefonoI2
+        'cUsers'             : this.fillCrearFIT.cUsers
       }).then(response => {
         this.fullscreenLoading = false;
         this.$router.push('/tesis');
       })
+    },
+    mostrarModalBusquedaEstudiante(){
+        this.modalSearchUser = !this.modalSearchUser;
+        this.busquedaUsuario.email = '';
+        this.busquedaUsuario.nombre = '';
+        this.busquedaUsuario.apellido = '';
+        this.busquedaUsuario.rut = '';
+    },
+    setBusquedaUsuario() {
+        console.log(this.busquedaUsuario);
     },
     nextPage(){
       this.pageNumber++;
@@ -458,6 +465,6 @@ export default {
 </script>
 <style>
   .scrollTable{
-    overflow: auto !important; 
+    overflow: auto !important;
   }
 </style>

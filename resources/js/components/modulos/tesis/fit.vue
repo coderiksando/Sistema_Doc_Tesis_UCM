@@ -15,8 +15,8 @@
       <div class="card">
         <template v-if="listRolPermisosByUsuario.includes('tesis.crear')">
         <div class="card-header">
-          <div class="card-tools" v-if="listTesis">
-            <template v-if="listTesis.length == 0">
+          <div class="card-tools">
+            <template v-if="!listTesis">
               <router-link class="btn btn-info bnt-sm" :to="'/tesis/crear'">
                 <i class="fas fa-plus-square"></i>Ingresar formulario de inscripción
               </router-link>
@@ -41,7 +41,7 @@
                   <table class ="table table-hover table-head-fixed text-nowrap projects ">
                     <thead>
                       <tr>
-                        <th>Alumno</th>
+                        <th>Alumno(s)</th>
                         <th>Estado FIT</th>
                         <th>Estado Tesis</th>
                         <th>Acciones </th>
@@ -50,8 +50,7 @@
                     <tbody>
                       <tr v-for="(item, index) in listTesis" :key="index">
 
-
-                        <td>
+                        <td> <!-- itera mostrando la cantidad total de estudiantes -->
                             <div v-for="(itemUser, index) in item.listUsers" :key="index">
                                 <p v-text="itemUser.nombres + ' ' + item.listUsers[0].apellidos"></p>
                             </div>
@@ -274,7 +273,7 @@ export default {
         {value: 'D', label: 'En Desarrollo'}
       ],
       listTesis: 1,
-      listAllTesis:null,
+      listAllTesis:1,
       listMiTesis:[],
       fullscreenLoading: false,
       pageNumber: 0,
@@ -333,10 +332,8 @@ export default {
       axios.post(url, {
           'nIdTesis' :nIdTesis
       }, config).then(response => {
-          console.log(response.data);
           var oMyBlob = new Blob([response.data], {type : 'application/pdf'});
           var url = URL.createObjectURL(oMyBlob);
-          //console.log(url)
           window.open(url);
       })
     },
@@ -347,7 +344,6 @@ export default {
       }).then(response => {
             this.inicializarPaginacion();
             this.listTesis = response.data;
-            console.log(this.listTesis);
             this.fullscreenLoading = false;
       })
     },
