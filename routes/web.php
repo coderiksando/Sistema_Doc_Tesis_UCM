@@ -12,6 +12,7 @@ Route::post('/authenticate/registro/setEditarRolAlumno', 'AlumnoController@setEd
 Route::post('/passrecovery/sendToken','Auth\LoginController@sendToken');
 Route::post('/passrecovery/validateToken','Auth\LoginController@validateToken');
 Route::post('/passrecovery/resetPassword','Auth\LoginController@resetPassword');
+Route::get('/authenticate/getMyOwnUser', 'Auth\LoginController@getMyOwnUser');
 
 /*********      RUTAS QUE REQUIEREN AUTENTICACION        *********/
 // Route::group(['middleware' => ['auth']], function () {
@@ -71,6 +72,7 @@ Route::Post('/alumno/setEditarTesis', 'AlumnoController@setEditarTesis');
 Route::get('/alumno/getListarProfesores', 'AlumnoController@getListarProfesores');
 Route::get('/alumno/getListarMiTesis','AlumnoController@getListarMiTesis');
 Route::get('/alumno/getListarEstudiantes','AlumnoController@getListarEstudiantes');
+Route::get('/alumno/getUsersAlumnosParametros','AlumnoController@getUsersAlumnosParametros');
 
 
 /*********    RUTAS MODULO DE ADMINISTRACION DE AVANCES DE TESIS   **********/

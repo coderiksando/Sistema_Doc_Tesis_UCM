@@ -84,5 +84,12 @@ class LoginController extends Controller
         $user->save();
         //return response()->json($user);
     }
+    public function getMyOwnUser(){
+        $rpta = User::where('id_user', Auth::user()->id_user)->first();
+        foreach ($rpta->Users_Roles->all() as $user_role) {
+            $user_role->Roles->first();
+        }
+        return $rpta;
+    }
 }
 

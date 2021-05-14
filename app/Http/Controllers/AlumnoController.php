@@ -100,18 +100,19 @@ class AlumnoController extends Controller
         //         ->get();
 
         $isStudent = User   ::find($nIdUsuario)
-                            ->Users_Roles()->first()
-                            ->Roles()->get()->where('slug','rol.alumno')->first();
-
-
+                            ->Users_Roles->first()
+                            ->Roles->where('slug','rol.alumno')->first();
         if ($isStudent){
-            $fit = Fit_User::where('id_user', $nIdUsuario)->first()->Fit()->get()->all();
-            $listUsers = $fit[0]->Fit_User()->get()->all();
-            $listUsersDetails = [];
-            foreach ($listUsers as $user) {
-                array_push($listUsersDetails, $user->User()->first());
+            $fit = Fit_User::where('id_user', $nIdUsuario)->first();
+            if ($fit) {
+                $fit->Fit()->get()->all();
+                $listUsers = $fit[0]->Fit_User()->get()->all();
+                $listUsersDetails = [];
+                foreach ($listUsers as $user) {
+                    array_push($listUsersDetails, $user->User()->first());
+                }
+                $fit[0]->listUsers = $listUsersDetails;
             }
-            $fit[0]->listUsers = $listUsersDetails;
         }else{
             $fit = Fit::where('id_p_guia', $nIdUsuario)->get()->all();
         }
@@ -132,34 +133,48 @@ class AlumnoController extends Controller
                                                                     $nIdUsuario,
                                                                     $nIdTesis
                                                                 ]);*/
-        $rpta = DB::table('fit')
-                    ->join('users', 'users.id_user', '=', 'fit.id_profesorguia')
-                    ->leftjoin('vinculaciones', 'vinculaciones.id', '=', 'fit.id_vinculacion')
-                    ->select('fit.id','fit.id_profesorguia','fit.titulo', 'users.nombres AS pname', 'vinculaciones.nombre AS vname', 'fit.tipo', 'fit.objetivo',
-                                'fit.contribucion', 'nombre_int1', 'rut_int1', 'telefono_int1', 'ingreso_int1', 'email_int1', 'nombre_int2',
-                                'rut_int2', 'email_int2', 'ingreso_int2', 'telefono_int2', 'fit.estado','fit.descripcion','fit.fecha_ultimoramo',
-                                'fit.aprobado_pg', 'fit.id_alumno AS idAlumno', 'fit.id_vinculacion')
-                    ->where('fit.id_profesorguia', '<>', $nIdUsuario)
-                    ->get();
-        return $rpta;
+        // $rpta = DB::table('fit')
+        //             ->join('users', 'users.id_user', '=', 'fit.id_profesorguia')
+        //             ->leftjoin('vinculaciones', 'vinculaciones.id', '=', 'fit.id_vinculacion')
+        //             ->select('fit.id','fit.id_profesorguia','fit.titulo', 'users.nombres AS pname', 'vinculaciones.nombre AS vname', 'fit.tipo', 'fit.objetivo',
+        //                         'fit.contribucion', 'nombre_int1', 'rut_int1', 'telefono_int1', 'ingreso_int1', 'email_int1', 'nombre_int2',
+        //                         'rut_int2', 'email_int2', 'ingreso_int2', 'telefono_int2', 'fit.estado','fit.descripcion','fit.fecha_ultimoramo',
+        //                         'fit.aprobado_pg', 'fit.id_alumno AS idAlumno', 'fit.id_vinculacion')
+        //             ->where('fit.id_profesorguia', '<>', $nIdUsuario)
+        //             ->get();
+
+        $fits = Fit::all();
+        foreach($fits as $fit) {
+            foreach($fit->Fit_User->all() as $fit_user) {
+                $fit_user->User->first();
+            }
+        }
+
+        return $fits;
     }
     public function getListarTesisView(Request $request){
-
         if(!$request->ajax()) return redirect('/');
 
         $nIdTesis    =$request->nIdTesis;
 
 
-        $rpta = DB::table('fit')
-                    ->join('users', 'users.id_user', '=', 'fit.id_profesorguia')
-                    ->leftjoin('vinculaciones', 'vinculaciones.id', '=', 'fit.id_vinculacion')
-                    ->select('fit.id','fit.id_profesorguia','fit.titulo', 'users.nombres AS pname', 'vinculaciones.nombre AS vname', 'fit.tipo', 'fit.objetivo',
-                                'fit.contribucion', 'nombre_int1', 'rut_int1', 'telefono_int1', 'ingreso_int1', 'email_int1', 'nombre_int2',
-                                'rut_int2', 'email_int2', 'ingreso_int2', 'telefono_int2', 'fit.estado','fit.descripcion','fit.fecha_ultimoramo',
-                                'fit.aprobado_pg', 'fit.id_alumno AS idAlumno', 'fit.id_vinculacion')
-                    ->where('fit.id', '=', $nIdTesis)
-                    ->get();
-        return $rpta;
+        // $rpta = DB::table('fit')
+        //             ->join('users', 'users.id_user', '=', 'fit.id_profesorguia')
+        //             ->leftjoin('vinculaciones', 'vinculaciones.id', '=', 'fit.id_vinculacion')
+        //             ->select('fit.id','fit.id_profesorguia','fit.titulo', 'users.nombres AS pname', 'vinculaciones.nombre AS vname', 'fit.tipo', 'fit.objetivo',
+        //                         'fit.contribucion', 'nombre_int1', 'rut_int1', 'telefono_int1', 'ingreso_int1', 'email_int1', 'nombre_int2',
+        //                         'rut_int2', 'email_int2', 'ingreso_int2', 'telefono_int2', 'fit.estado','fit.descripcion','fit.fecha_ultimoramo',
+        //                         'fit.aprobado_pg', 'fit.id_alumno AS idAlumno', 'fit.id_vinculacion')
+        //             ->where('fit.id', '=', $nIdTesis)
+        //             ->get();
+
+        $fit = Fit::where('id', $nIdTesis)->first();
+        $fit->Vinculaciones;
+        $fit->User_P_Guia;
+        foreach($fit->Fit_User->all() as $fit_user) {
+            $fit_user->User->first();
+        }
+        return $fit;
     }
     public function getListarMiTesis(Request $request){
 
@@ -190,8 +205,7 @@ class AlumnoController extends Controller
     }
 
     public function setRegistrarTesis(Request $request){
-
-        if(!$request->ajax()) return redirect('/');
+        // if(!$request->ajax()) return redirect('/');
 
         $nIdAlumno          = Auth::id();
         $cTitulo            = $request->cTitulo;
@@ -218,7 +232,7 @@ class AlumnoController extends Controller
         $cTitulo        = ($cTitulo == NULL) ? ($cTitulo = '') : $cTitulo;
         $nIdPg          = ($nIdPg == NULL) ? ($nIdPg = '') : $nIdPg;
         $nIdVinculacion = ($nIdVinculacion == NULL) ? ($nIdVinculacion = NULL) : $nIdVinculacion;
-        $dFechaUR = ($dFechaUR == NULL) ? ($dFechaUR = NULL) : $dFechaUR;
+        $dFechaUR       = ($dFechaUR == NULL) ? ($dFechaUR = NULL) : $dFechaUR;
         $cTipo          = ($cTipo == NULL) ? ($cTipo = '') : $cTipo;
         $cObjetivo      = ($cObjetivo == NULL) ? ($cObjetivo = '') : $cObjetivo;
         $cDescripcion   = ($cDescripcion == NULL) ? ($cDescripcion = '') : $cDescripcion;
@@ -420,5 +434,22 @@ class AlumnoController extends Controller
         $rpta->save();
 
         return $rpta;
+    }
+    public function getUsersAlumnosParametros(Request $request){
+        $alumnoBuscado = [];
+        $rpta = User::where('rut', $request->rut)
+                    ->orWhere('nombres', $request->nombre)
+                    ->orWhere('apellidos', $request->apellido)
+                    ->orWhere('email', $request->email)
+                    ->get()->all();
+        foreach($rpta as $user){
+            foreach($user->Users_Roles->all() as $user_rol){
+                // $user_rol->Roles->first();
+                if ($user_rol->Roles->slug == 'rol.alumno') {
+                    array_push($alumnoBuscado, $user);
+                }
+            }
+        }
+        return $alumnoBuscado;
     }
 }

@@ -12,9 +12,6 @@ class RolePermissionAlumnoSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        DB::table('roles_permissions')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         DB::table('roles_permissions')->insert([
             'id_role' => 2,
