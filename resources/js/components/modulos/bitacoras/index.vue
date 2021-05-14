@@ -8,7 +8,7 @@
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
-    </div>
+    </div> 
 
     <div class="container container-fluid">
       <div class="card">
@@ -86,7 +86,7 @@
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in listBitacoras" :key="index">
-                        <td v-text="item.fecha"></td>
+                        <td>{{item.fecha | moment }}</td>
                         <td v-text="item.acuerdo"></td>
                         <td v-text="item.comentario"></td>
                         <td>
@@ -131,6 +131,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
     props: ['usuario'],
   data(){
@@ -188,6 +189,12 @@ export default {
   mounted(){
     this.getListarMisBitacoras();
     this.getListarAlumnosByprofesor();
+  },
+  filters:{
+    moment: function (date) {
+      moment.locale('es');
+      return moment(date).format('lll');
+    }
   },
   methods:{
     getListarAlumnosByprofesor(){

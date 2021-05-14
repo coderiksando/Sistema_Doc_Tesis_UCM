@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Fit;
+use App\Fit_User;
 use App\Bitacoras;
+use App\User;
+use \stdClass;
 use Carbon\Carbon;
 use App\Mail\MailBitacoras;
 use Illuminate\Http\Request;
@@ -16,12 +19,14 @@ class BitacorasController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         $IdAlumno = Auth::id();
-
-        $MisBitacoras = DB::table('bitacoras')
-                            ->join('fit', 'fit.id', '=', 'bitacoras.id_tesis')
-                            ->select('bitacoras.id','bitacoras.fecha', 'bitacoras.acuerdo', 'bitacoras.comentario')
-                            ->where('fit.id_alumno', '=', $IdAlumno)
-                            ->get();
+        $MisBitacoras = [];
+        $FitUser = Fit_User::Firstwhere('id_user', $IdAlumno);
+        if ($FitUser){
+            $Fit = $FitUser->Fit;
+            if ($Fit) {
+                $MisBitacoras = $Fit->Bitacoras->sortByDesc('updated_at')->values()->all();
+            }   
+        }
         return $MisBitacoras;
     }
     public function getListarBitacorasByAlumno(Request $request){
@@ -29,13 +34,16 @@ class BitacorasController extends Controller
 
         $IdAlumno   = $request->id_user;
         $IdBitacora = $request->nIdBitacora;
-        $Bitacoras  = DB::table('bitacoras')
-                        ->join('fit', 'fit.id', '=', 'bitacoras.id_tesis')
-                        ->select('bitacoras.id','bitacoras.fecha', 'bitacoras.acuerdo', 'bitacoras.comentario')
-                        ->where('fit.id_alumno', '=', $IdAlumno)
-                        ->OrWhere('bitacoras.id', '=', $IdBitacora)
-                        ->orderBy('bitacoras.id', 'desc')
-                        ->get();
+        $Bitacoras = [];
+
+        $FitUser = Fit_User::Firstwhere('id_user', $IdAlumno);
+        if ($FitUser){
+            $Fit = $FitUser->Fit;
+            if ($Fit) {
+                $Bitacoras = $Fit->Bitacoras->sortByDesc('updated_at')->values()->all();
+            }   
+        }
+
         return $Bitacoras;
     }
 
@@ -43,23 +51,35 @@ class BitacorasController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         $IdAlumno   = $request->id_user;
-        $idTesis    = Fit::select('id')->where('id_alumno',$IdAlumno)->get();
+        $DatosEmail = new stdClass();
+        $alumno     = User::find($IdAlumno);
+        $fit        = Fit_User::Firstwhere('id_user', $IdAlumno)->Fit;
+        $fit_users  = $fit->Fit_User;
+        $fit->User_P_Guia;
 
-        $DatosEmail = DB::table('fit')
-                            ->join('users as profesor_guia', 'profesor_guia.id_user', '=', 'fit.id_profesorguia')
-                            ->join('users as alumno', 'alumno.id_user', '=', 'fit.id_alumno')
-                            ->where('fit.id', '=', $idTesis[0]->id)
-                            ->select('alumno.email as email_a','fit.titulo', DB::raw("CONCAT(profesor_guia.nombres,' ',profesor_guia.apellidos) as full_name"))
-                            ->get();
-        $DatosEmail[0]->fecha = Carbon::now();
+        foreach($fit_users as $fit_user){
+            $DatosEmail->email_a = $fit_user->User->email;
+            $DatosEmail->titulo = $fit->titulo;
+            $DatosEmail->full_name = $fit->User_P_Guia->nombres . ' ' . $fit->User_P_Guia->apellidos;
+            $DatosEmail->fecha = Carbon::now();
+            Mail::to($DatosEmail->email_a)->queue(new MailBitacoras($DatosEmail));
+        }
 
-        Mail::to($DatosEmail[0]->email_a)->queue(new MailBitacoras($DatosEmail[0]));
+        // $DatosEmail = DB::table('fit')
+        //                     ->join('users as profesor_guia', 'profesor_guia.id_user', '=', 'fit.id_profesorguia')
+        //                     ->join('users as alumno', 'alumno.id_user', '=', 'fit.id_alumno')
+        //                     ->where('fit.id', '=', $idTesis[0]->id)
+        //                     ->select('alumno.email as email_a','fit.titulo', DB::raw("CONCAT(profesor_guia.nombres,' ',profesor_guia.apellidos) as full_name"))
+        //                     ->get();
+        // $DatosEmail[0]->fecha = Carbon::now();
+
+        // Mail::to($DatosEmail[0]->email_a)->queue(new MailBitacoras($DatosEmail[0]));
 
         $Bitacora               = new Bitacoras();
         $Bitacora->comentario   = $request->Comentario;
         $Bitacora->acuerdo      = $request->Acuerdo;
         $Bitacora->fecha        = Carbon::now();
-        $Bitacora->id_tesis     = $idTesis[0]->id;
+        $Bitacora->id_tesis     = $fit->id;
         $Bitacora->save();
 
         return $Bitacora;
