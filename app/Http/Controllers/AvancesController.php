@@ -36,7 +36,7 @@ class AvancesController extends Controller
         return $AvancesTesis;
     }
     public function getListarAvancesByAlumno(Request $request){
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $idAlumno = $request->id_user;
         $FitUser  = Fit_User::Firstwhere('id_user', $idAlumno);
@@ -79,14 +79,10 @@ class AvancesController extends Controller
         
         $nIdAvance = ($nIdAvance == NULL) ? ($nIdAvance = 0) : $nIdAvance;
 
-        $avances = DB::table('avancestesis')
-                        ->join('fit', 'fit.id', '=', 'avancestesis.id_tesis')
-                        ->join('pdftesis', 'pdftesis.id', '=', 'avancestesis.id_archivo')
-                        ->select('avancestesis.id','avancestesis.created_at', 'avancestesis.descripcion', 'pdftesis.path')
-                        ->Where('avancestesis.id', '=', $nIdAvance)
-                        ->orderBy('avancestesis.id', 'desc')
-                        ->get();
+        $avances = AvancesTesis::find($nIdAvance);
+        $avances->ArchivoPdf;
         return $avances;
+
     }
     public function setRegistrarAvance(Request $request){
         if(!$request->ajax()) return redirect('/');
@@ -134,10 +130,10 @@ class AvancesController extends Controller
         //$id_archivo     = ($id_archivo == 0) ? ($id_archivo = 0) : $id_archivo;
 
         if($id_archivo == 0){
-            Avances::find($id)->update(['descripcion'=>$descripcion, 'created_at' =>$fecha]);
+            AvancesTesis::find($id)->update(['descripcion'=>$descripcion, 'created_at' =>$fecha]);
             
         }else{
-            Avances::find($id)->update(['descripcion'=>$descripcion, 'created_at' =>$fecha, 'id_archivo' =>$id_archivo]);
+            AvancesTesis::find($id)->update(['descripcion'=>$descripcion, 'created_at' =>$fecha, 'id_archivo' =>$id_archivo]);
         }
     }
     public function getEstadoTesis(Request $request){

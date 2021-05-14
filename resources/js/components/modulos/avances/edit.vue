@@ -118,8 +118,7 @@ export default {
           'nIdAvance' : this.fillEditarAvance.nIdAvance
         }
       }).then(response => {
-          console.log(response.data);
-          this.fillEditarAvance.cDescripcion     = response.data[0].descripcion;
+          this.fillEditarAvance.cDescripcion = response.data.descripcion;
       })
     },
     abrirModal(){
@@ -145,7 +144,6 @@ export default {
       const config = { headers: {'Content-Type': 'multipart/form-data'}}
       var url = '/archivo/setRegistrarArchivoPDF'
       axios.post(url, this.form, config).then(response =>{
-        //console.log(response)
         var nIdFile = response.data.id;
         this.setGuardarAvance(nIdFile);
       }) 
