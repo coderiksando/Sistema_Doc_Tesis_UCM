@@ -246,7 +246,7 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Rut</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="busquedaUsuario.rut">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.rut" @keyup.enter="setBusquedaUsuario">
                             </div>
                         </div>
                     </div>
@@ -254,7 +254,7 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Email</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="busquedaUsuario.email">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.email" @keyup.enter="setBusquedaUsuario">
                             </div>
                         </div>
                     </div>
@@ -262,7 +262,7 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Nombre</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="busquedaUsuario.nombre">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.nombre" @keyup.enter="setBusquedaUsuario">
                             </div>
                         </div>
                     </div>
@@ -270,7 +270,7 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Apellido</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="busquedaUsuario.apellido">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.apellido" @keyup.enter="setBusquedaUsuario">
                             </div>
                         </div>
                     </div>
@@ -282,7 +282,7 @@
                                         <h3><b>Usuarios encontrados:</b></h3>
                                     </div>
                                     <div class="row" v-for="(item, index) in listAlumnosBuscados" :key="index">
-                                        <button class="btn btn-primary w-100 mb-2"  @click="setingresarAlumno(item)">
+                                        <button class="btn btn-primary w-100 mb-2"  @click="setIngresarAlumno(item)">
                                                 <p>Nombre: {{item.nombres}} {{item.apellidos}}</p>
                                                 <p>Rut: {{item.rut}}</p>
                                         </button>
@@ -461,6 +461,7 @@ export default {
         this.busquedaUsuario.nombre = '';
         this.busquedaUsuario.apellido = '';
         this.busquedaUsuario.rut = '';
+        this.listAlumnosBuscados = [];
     },
     setBusquedaUsuario() {
         this.fullscreenLoading = true;
@@ -476,12 +477,20 @@ export default {
             this.fullscreenLoading = false;
         })
     },
-    setingresarAlumno(alumno){
-        this.fillCrearFIT.cUsers.push(alumno);
+    setIngresarAlumno(alumno){
         // seccion de revisión si usuario es incluido por segunda vez
-        // this.fillCrearFIT.cUsers.forEach(user => {
-        //   console.log(user)
-        // });
+        let errorIngresoUser = false;
+        this.fillCrearFIT.cUsers.forEach(user => {
+            if (user.id_user === alumno.id_user) {
+              errorIngresoUser = true;
+            }
+        });
+        if (!errorIngresoUser) {
+            this.fillCrearFIT.cUsers.push(alumno);
+        } else {
+            console.log('objeto duplicado')
+        }
+        this.mostrarModalBusquedaEstudiante();
     },
     nextPage(){
       this.pageNumber++;
