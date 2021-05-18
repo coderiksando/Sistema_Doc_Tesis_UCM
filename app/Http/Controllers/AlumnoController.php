@@ -103,22 +103,18 @@ class AlumnoController extends Controller
                             ->Users_Roles->first()
                             ->Roles->slug == 'rol.alumno';
         if ($isStudent){
-            $rpta = Fit_User::where('id_user', $nIdUsuario)->first();
-            if ($rpta) {
-                $fit = $rpta->Fit->all();
-                $listUsers = $fit[0]->Fit_User->all();
-                $listUsersDetails = [];
-                foreach ($listUsers as $user) {
-                    array_push($listUsersDetails, $user->User()->first());
-                }
-                $fit[0]->listUsers = $listUsersDetails;
-            } else {
-                $fit = $rpta;
-            }
+            $fitUser = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
+            $fits = Fit::whereIn('id', $fitUser)->get()->all();
         }else{
-            $fit = Fit::where('id_p_guia', $nIdUsuario)->get()->all();
+            $fits = Fit::where('id_p_guia', $nIdUsuario)->get()->all();
         }
-        return $fit;
+        foreach ($fits as $fit) {
+            $listUsers = $fit->Fit_User->pluck('id_user');
+            $listUsersDetails = User::whereIn('id_user', $listUsers)->get()->all();
+            $fit->listUsers = $listUsersDetails;
+        }  
+
+        return $fits;
     }
     public function getListarAllTesis(Request $request){
 
