@@ -72,7 +72,7 @@ Route::Post('/alumno/setEditarTesis', 'AlumnoController@setEditarTesis');
 Route::get('/alumno/getListarProfesores', 'AlumnoController@getListarProfesores');
 Route::get('/alumno/getListarMiTesis','AlumnoController@getListarMiTesis');
 Route::get('/alumno/getListarEstudiantes','AlumnoController@getListarEstudiantes');
-Route::get('/alumno/getUsersAlumnosParametros','AlumnoController@getUsersAlumnosParametros');
+Route::post('/alumno/getUsersAlumnosParametros','AlumnoController@getUsersAlumnosParametros');
 
 
 /*********    RUTAS MODULO DE ADMINISTRACION DE AVANCES DE TESIS   **********/

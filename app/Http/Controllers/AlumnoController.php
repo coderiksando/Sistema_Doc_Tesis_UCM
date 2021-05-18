@@ -103,15 +103,17 @@ class AlumnoController extends Controller
                             ->Users_Roles->first()
                             ->Roles->where('slug','rol.alumno')->first();
         if ($isStudent){
-            $fit = Fit_User::where('id_user', $nIdUsuario)->first();
-            if ($fit) {
-                $fit->Fit()->get()->all();
-                $listUsers = $fit[0]->Fit_User()->get()->all();
+            $rpta = Fit_User::where('id_user', $nIdUsuario)->first();
+            if ($rpta) {
+                $fit = $rpta->Fit->all();
+                $listUsers = $fit[0]->Fit_User->all();
                 $listUsersDetails = [];
                 foreach ($listUsers as $user) {
                     array_push($listUsersDetails, $user->User()->first());
                 }
                 $fit[0]->listUsers = $listUsersDetails;
+            } else {
+                $fit = $rpta;
             }
         }else{
             $fit = Fit::where('id_p_guia', $nIdUsuario)->get()->all();
@@ -444,7 +446,6 @@ class AlumnoController extends Controller
                     ->get()->all();
         foreach($rpta as $user){
             foreach($user->Users_Roles->all() as $user_rol){
-                // $user_rol->Roles->first();
                 if ($user_rol->Roles->slug == 'rol.alumno') {
                     array_push($alumnoBuscado, $user);
                 }

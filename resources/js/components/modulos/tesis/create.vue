@@ -246,7 +246,7 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Rut</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="busquedaUsuario.rut">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.rut" @keyup.enter="setBusquedaUsuario">
                             </div>
                         </div>
                     </div>
@@ -254,7 +254,7 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Email</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="busquedaUsuario.email">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.email" @keyup.enter="setBusquedaUsuario">
                             </div>
                         </div>
                     </div>
@@ -262,7 +262,7 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Nombre</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="busquedaUsuario.nombre">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.nombre" @keyup.enter="setBusquedaUsuario">
                             </div>
                         </div>
                     </div>
@@ -270,11 +270,27 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Apellido</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="busquedaUsuario.apellido">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.apellido" @keyup.enter="setBusquedaUsuario">
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-9"></div>
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <template v-if="listAlumnosBuscados.length">
+                                    <div class="row">
+                                        <h3><b>Usuarios encontrados:</b></h3>
+                                    </div>
+                                    <div class="row" v-for="(item, index) in listAlumnosBuscados" :key="index">
+                                        <button class="btn btn-primary w-100 mb-2"  @click="setIngresarAlumno(item)">
+                                                <p>Nombre: {{item.nombres}} {{item.apellidos}}</p>
+                                                <p>Rut: {{item.rut}}</p>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-3">
                         <button class="btn btn-success w-100" @click="setBusquedaUsuario">Buscar</button>
                     </div>
@@ -319,13 +335,14 @@ export default {
         listProfesores:[],
         listEscuelas:[],
         listVinculacion:[],
+        listAlumnosBuscados: [],
         myOwnUser: {},
         fullscreenLoading: false,
         modalShow: false,
         modalSearchUser: false,
         mostrarModal: {
             display: 'block',
-            background: '#0000006b',
+            background: '#0000006b'
         },
         ocultarModal: {
             display: 'none',
@@ -444,9 +461,36 @@ export default {
         this.busquedaUsuario.nombre = '';
         this.busquedaUsuario.apellido = '';
         this.busquedaUsuario.rut = '';
+        this.listAlumnosBuscados = [];
     },
     setBusquedaUsuario() {
-        console.log(this.busquedaUsuario);
+        this.fullscreenLoading = true;
+        var url = '/alumno/getUsersAlumnosParametros'
+        axios.post(url, {
+            'rut'       :   this.busquedaUsuario.rut,
+            'email'     :   this.busquedaUsuario.email,
+            'nombre'    :   this.busquedaUsuario.nombre,
+            'apellido'  :   this.busquedaUsuario.apellido
+        }).then(response => {
+            this.listAlumnosBuscados = response.data;
+            console.log(this.listAlumnosBuscados);
+            this.fullscreenLoading = false;
+        })
+    },
+    setIngresarAlumno(alumno){
+        // seccion de revisión si usuario es incluido por segunda vez
+        let errorIngresoUser = false;
+        this.fillCrearFIT.cUsers.forEach(user => {
+            if (user.id_user === alumno.id_user) {
+              errorIngresoUser = true;
+            }
+        });
+        if (!errorIngresoUser) {
+            this.fillCrearFIT.cUsers.push(alumno);
+        } else {
+            console.log('objeto duplicado')
+        }
+        this.mostrarModalBusquedaEstudiante();
     },
     nextPage(){
       this.pageNumber++;
