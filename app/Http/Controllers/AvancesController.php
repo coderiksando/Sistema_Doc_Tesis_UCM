@@ -60,17 +60,11 @@ class AvancesController extends Controller
         $nIdAvance  = ($nIdAvance == NULL) ? ($nIdAvance = 0) : $nIdAvance;
         $Users = [];
 
-        $Fit = Fit::Firstwhere('id_p_guia', $idUser);
+        $fits = Fit::where('id_p_guia', $idUser)->get()->pluck('id');
+        $fitUsers = Fit_User::whereIn('id_fit', $fits)->get()->pluck('id_user');
+        $users = User::whereIn('id_user', $fitUsers)->get()->all();
 
-        if ($Fit) {
-            $FitUsers = $Fit->Fit_User;
-            foreach($FitUsers as $FitUser){
-                array_push($Users, $FitUser->User);
-            }
-
-        }
-
-        return $Users;
+        return $users;
     }
     public function getSeleccionarAvance(Request $request){
         if(!$request->ajax()) return redirect('/');
