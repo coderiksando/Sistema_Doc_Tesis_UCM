@@ -29,5 +29,7 @@ class FitSeeder extends Seeder
             'contribucion' => 'obvio yo pago todos mis impuestos',
             'aprobado_pg' => 'P'
         ]);
+
+        factory(Fit::class, 50)->create();
     }
 }

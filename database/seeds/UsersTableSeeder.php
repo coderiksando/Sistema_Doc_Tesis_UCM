@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -108,5 +109,7 @@ class UsersTableSeeder extends Seeder
             'direccion' => 'Su casa',
             'grado_academico' => 'Estudiante'
         ]);
+
+        factory(User::class, 40)->create();
     }
 }

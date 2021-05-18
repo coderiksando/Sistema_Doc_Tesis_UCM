@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Vinculaciones;
 use Illuminate\Support\Facades\DB;
 
 class VinculacionesTableSeeder extends Seeder
@@ -21,5 +22,7 @@ class VinculacionesTableSeeder extends Seeder
             'nombre' => 'Vinculacion de prueba1',
             'descripcion' => 'Vinculacion de prueba1 '
         ]);
+
+        factory(Vinculaciones::class, 20)->create();
     }
 }

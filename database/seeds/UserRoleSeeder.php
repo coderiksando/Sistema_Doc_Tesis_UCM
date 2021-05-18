@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\User;
+use App\Users_Roles;
 class UserRoleSeeder extends Seeder
 {
     /**
@@ -43,5 +45,11 @@ class UserRoleSeeder extends Seeder
             'id_user' => 6,
             'id_roles' => 4
         ]);
+
+        foreach(User::whereNotBetween('id_user', [1, 7])->get() as $user){
+            factory(Users_Roles::class)->create([
+                'id_user' => $user->id_user
+            ]);
+        }
     }
 }
