@@ -101,7 +101,7 @@ class AlumnoController extends Controller
 
         $isStudent = User   ::find($nIdUsuario)
                             ->Users_Roles->first()
-                            ->Roles->where('slug','rol.alumno')->first();
+                            ->Roles->slug == 'rol.alumno';
         if ($isStudent){
             $rpta = Fit_User::where('id_user', $nIdUsuario)->first();
             if ($rpta) {
