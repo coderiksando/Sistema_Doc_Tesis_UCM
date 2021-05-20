@@ -151,9 +151,18 @@
                                             <template v-if="fillCrearFIT.cUsers.length > 0">
                                                 <!-- iteración de usuarios dentro de fillcrearfit.cusers -->
                                                 <template v-for="(item, index) in fillCrearFIT.cUsers">
-                                                    <div class="col-md-12" :key="index">
+                                                    <div class="col-md-9" :key="index">
                                                         <h3><b v-text="'Integrante Nº' + (index+1)"></b></h3>
                                                     </div>
+                                                    <template v-if="item.estadoConfirmado !== 'A'">
+                                                        <div class="col-md-3" :key="'boton' + index">
+                                                            <div class="text-right mb-2">
+                                                                <button class="btn btn-danger" @click.prevent="eliminarEstudiante(item)">
+                                                                    <i class="fas fa-trash"></i> Eliminar
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </template>
                                                     <div class="col-md-6" :key="'nombre' + index">
                                                         <div class="form-group row">
                                                             <label class="col-md-3 col-form-label">Nombre</label>
@@ -315,7 +324,6 @@ export default {
             nIdPg: '',
             nIdVinculacion: '',
             cTipo: '',
-            dFechaUR: '',
             cObjetivo: '',
             cDescripcion: '',
             cContribucion: '',
@@ -385,14 +393,13 @@ export default {
         axios.get(url, {
         }).then(response => {
             this.myOwnUser = response.data;
-            console.log(this.myOwnUser);
+            this.myOwnUser.estadoConfirmado = 'A';
             this.myOwnUser.users__roles.forEach(rol_user => {
                 if (rol_user.roles.name === "Alumno") {
                     this.fillCrearFIT.cUsers.push(this.myOwnUser);
                 }
             });
             this.fullscreenLoading = false;
-            console.log(this.fillCrearFIT)
         })
     },
     limpiarCriterios(){
@@ -439,20 +446,12 @@ export default {
         return;
       }
       this.fullscreenLoading = true;
-      var url = '/alumno/setRegistrarTesis'
+      var url = '/alumno/setRegistrarTesis';
       axios.post(url, {
-        'cTitulo'            : this.fillCrearFIT.cTitulo,
-        'nIdPg'              : this.fillCrearFIT.nIdPg,
-        'nIdVinculacion'     : this.fillCrearFIT.nIdVinculacion,
-        'cTipo'              : this.fillCrearFIT.cTipo,
-        'dFechaUR'           : this.fillCrearFIT.dFechaUR,
-        'cObjetivo'          : this.fillCrearFIT.cObjetivo,
-        'cDescripcion'       : this.fillCrearFIT.cDescripcion,
-        'cContribucion'      : this.fillCrearFIT.cContribucion,
-        'cUsers'             : this.fillCrearFIT.cUsers
+            'data'  : this.fillCrearFIT
       }).then(response => {
-        this.fullscreenLoading = false;
-        this.$router.push('/tesis');
+            this.fullscreenLoading = false;
+            this.$router.push('/tesis');
       })
     },
     mostrarModalBusquedaEstudiante(){
@@ -473,7 +472,6 @@ export default {
             'apellido'  :   this.busquedaUsuario.apellido
         }).then(response => {
             this.listAlumnosBuscados = response.data;
-            console.log(this.listAlumnosBuscados);
             this.fullscreenLoading = false;
         })
     },
@@ -486,11 +484,29 @@ export default {
             }
         });
         if (!errorIngresoUser) {
+            alumno.estadoConfirmado = 'P';
             this.fillCrearFIT.cUsers.push(alumno);
         } else {
-            console.log('objeto duplicado')
+            this.mensajeError = [];
+            this.mensajeError.push("Usuario seleccionado ya está enlistado en tu FIT.");
+            this.abrirModal();
         }
         this.mostrarModalBusquedaEstudiante();
+    },
+    eliminarEstudiante(estudianteEliminado) {
+        let i = 0;
+        let eliminado = 0;
+        let condicionEliminacion = false;
+        this.fillCrearFIT.cUsers.forEach(user => {
+            if (user.id_user === estudianteEliminado.id_user) {
+                eliminado = i;
+                condicionEliminacion = true;
+            }
+            i++;
+        });
+        if (condicionEliminacion) {
+            this.fillCrearFIT.cUsers.splice(eliminado,1);
+        }
     },
     nextPage(){
       this.pageNumber++;

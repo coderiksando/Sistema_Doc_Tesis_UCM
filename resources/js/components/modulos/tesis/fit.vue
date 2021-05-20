@@ -49,7 +49,6 @@
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in listTesis" :key="index">
-
                         <td> <!-- itera mostrando la cantidad total de estudiantes -->
                             <div v-for="(itemUser, index) in item.listUsers" :key="index">
                                 <p v-text="itemUser.nombres + ' ' + item.listUsers[0].apellidos"></p>
@@ -344,7 +343,6 @@ export default {
       }).then(response => {
             this.inicializarPaginacion();
             this.listTesis = response.data;
-            console.log(this.listTesis);
             this.fullscreenLoading = false;
       })
     },

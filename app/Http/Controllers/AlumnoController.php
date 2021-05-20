@@ -207,81 +207,107 @@ class AlumnoController extends Controller
     }
 
     public function setRegistrarTesis(Request $request){
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
+        $fit = $request->data;
+        $fit = (object) $fit;
 
-        $nIdAlumno          = Auth::id();
-        $cTitulo            = $request->cTitulo;
-        $nIdPg              = $request->nIdPg;
-        $nIdVinculacion     = $request->nIdVinculacion;
-        $dFechaUR           = $request->dFechaUR;
-        $cTipo              = $request->cTipo;
-        $cObjetivo          = $request->cObjetivo;
-        $cDescripcion       = $request->cDescripcion;
-        $cContribucion      = $request->cContribucion;
-        $cNombreI1          = $request->cNombreI1;
-        $cRutI1             = $request->cRutI1;
-        $cTelefonoI1        = $request->cTelefonoI1;
-        $cIngresoI1         = $request->cIngresoI1;
-        $cEmailI1           = $request->cEmailI1;
-        $cNombreI2          = $request->cNombreI2;
-        $cRutI2             = $request->cRutI2;
-        $cEmailI2           = $request->cEmailI2;
-        $cIngresoI2         = $request->cIngresoI2;
-        $cTelefonoI2        = $request->cTelefonoI2;
+        DB::transaction(function () use ($fit) {
+            $registroFit = new Fit;
+            $registroFit->id_p_guia = $fit->nIdPg;
+            $registroFit->id_vinculacion = $fit->nIdVinculacion;
+            $registroFit->titulo = $fit->cTitulo;
+            $registroFit->tipo = $fit->cTipo;
+            $registroFit->objetivo = $fit->cObjetivo;
+            $registroFit->descripcion = $fit->cDescripcion;
+            $registroFit->contribucion = $fit->cContribucion;
+            $registroFit->estado = 'D';
+            $registroFit->aprobado_pg = 'P';
+            $registroFit->save();
+
+            foreach($fit->cUsers as $user) {
+                $userToRegister = new Fit_User;
+                $user = (object) $user;
+                $userToRegister->id_user = $user->id_user;
+                $userToRegister->id_fit = $registroFit->id;
+                $userToRegister->save();
+            }
+        });
+
+        return response()->json(['estado' => 'ok'], 200);
+
+        // $nIdAlumno          = Auth::id();
+        // $cTitulo            = $request->cTitulo;
+        // $nIdPg              = $request->nIdPg;
+        // $nIdVinculacion     = $request->nIdVinculacion;
+        // $dFechaUR           = $request->dFechaUR;
+        // $cTipo              = $request->cTipo;
+        // $cObjetivo          = $request->cObjetivo;
+        // $cDescripcion       = $request->cDescripcion;
+        // $cContribucion      = $request->cContribucion;
+        // $cNombreI1          = $request->cNombreI1;
+        // $cRutI1             = $request->cRutI1;
+        // $cTelefonoI1        = $request->cTelefonoI1;
+        // $cIngresoI1         = $request->cIngresoI1;
+        // $cEmailI1           = $request->cEmailI1;
+        // $cNombreI2          = $request->cNombreI2;
+        // $cRutI2             = $request->cRutI2;
+        // $cEmailI2           = $request->cEmailI2;
+        // $cIngresoI2         = $request->cIngresoI2;
+        // $cTelefonoI2        = $request->cTelefonoI2;
 
 
-        $nIdAlumno      = ($nIdAlumno == NULL) ? ($nIdAlumno = '') : $nIdAlumno;
-        $cTitulo        = ($cTitulo == NULL) ? ($cTitulo = '') : $cTitulo;
-        $nIdPg          = ($nIdPg == NULL) ? ($nIdPg = '') : $nIdPg;
-        $nIdVinculacion = ($nIdVinculacion == NULL) ? ($nIdVinculacion = NULL) : $nIdVinculacion;
-        $dFechaUR       = ($dFechaUR == NULL) ? ($dFechaUR = NULL) : $dFechaUR;
-        $cTipo          = ($cTipo == NULL) ? ($cTipo = '') : $cTipo;
-        $cObjetivo      = ($cObjetivo == NULL) ? ($cObjetivo = '') : $cObjetivo;
-        $cDescripcion   = ($cDescripcion == NULL) ? ($cDescripcion = '') : $cDescripcion;
-        $cContribucion  = ($cContribucion == NULL) ? ($cContribucion = '') : $cContribucion;
-        $cNombreI1      = ($cNombreI1 == NULL) ? ($cNombreI1 = '') : $cNombreI1;
-        $cRutI1         = ($cRutI1 == NULL) ? ($cRutI1 = '') : $cRutI1;
-        $cTelefonoI1    = ($cTelefonoI1 == NULL) ? ($cTelefonoI1 = '') : $cTelefonoI1;
-        $cIngresoI1     = ($cIngresoI1 == NULL) ? ($cIngresoI1 = '') : $cIngresoI1;
-        $cEmailI1       = ($cEmailI1 == NULL) ? ($cEmailI1 = '') : $cEmailI1;
-        $cNombreI2      = ($cNombreI2 == NULL) ? ($cNombreI2 = '') : $cNombreI2;
-        $cRutI2         = ($cRutI2 == NULL) ? ($cRutI2 = '') : $cRutI2;
-        $cEmailI2       = ($cEmailI2 == NULL) ? ($cEmailI2 = '') : $cEmailI2;
-        $cIngresoI2     = ($cIngresoI2 == NULL) ? ($cIngresoI2 = '') : $cIngresoI2;
-        $cTelefonoI2    = ($cTelefonoI2 == NULL) ? ($cTelefonoI2 = '') : $cTelefonoI2;
+        // $nIdAlumno      = ($nIdAlumno == NULL) ? ($nIdAlumno = '') : $nIdAlumno;
+        // $cTitulo        = ($cTitulo == NULL) ? ($cTitulo = '') : $cTitulo;
+        // $nIdPg          = ($nIdPg == NULL) ? ($nIdPg = '') : $nIdPg;
+        // $nIdVinculacion = ($nIdVinculacion == NULL) ? ($nIdVinculacion = NULL) : $nIdVinculacion;
+        // $dFechaUR       = ($dFechaUR == NULL) ? ($dFechaUR = NULL) : $dFechaUR;
+        // $cTipo          = ($cTipo == NULL) ? ($cTipo = '') : $cTipo;
+        // $cObjetivo      = ($cObjetivo == NULL) ? ($cObjetivo = '') : $cObjetivo;
+        // $cDescripcion   = ($cDescripcion == NULL) ? ($cDescripcion = '') : $cDescripcion;
+        // $cContribucion  = ($cContribucion == NULL) ? ($cContribucion = '') : $cContribucion;
+        // $cNombreI1      = ($cNombreI1 == NULL) ? ($cNombreI1 = '') : $cNombreI1;
+        // $cRutI1         = ($cRutI1 == NULL) ? ($cRutI1 = '') : $cRutI1;
+        // $cTelefonoI1    = ($cTelefonoI1 == NULL) ? ($cTelefonoI1 = '') : $cTelefonoI1;
+        // $cIngresoI1     = ($cIngresoI1 == NULL) ? ($cIngresoI1 = '') : $cIngresoI1;
+        // $cEmailI1       = ($cEmailI1 == NULL) ? ($cEmailI1 = '') : $cEmailI1;
+        // $cNombreI2      = ($cNombreI2 == NULL) ? ($cNombreI2 = '') : $cNombreI2;
+        // $cRutI2         = ($cRutI2 == NULL) ? ($cRutI2 = '') : $cRutI2;
+        // $cEmailI2       = ($cEmailI2 == NULL) ? ($cEmailI2 = '') : $cEmailI2;
+        // $cIngresoI2     = ($cIngresoI2 == NULL) ? ($cIngresoI2 = '') : $cIngresoI2;
+        // $cTelefonoI2    = ($cTelefonoI2 == NULL) ? ($cTelefonoI2 = '') : $cTelefonoI2;
 
-        $rpta = DB::select('call sp_alumno_setRegistrarTesis (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)',
-                                                                [
-                                                                    $nIdAlumno,
-                                                                    $cTitulo,
-                                                                    $nIdPg,
-                                                                    $nIdVinculacion,
-                                                                    $dFechaUR,
-                                                                    $cTipo,
-                                                                    $cObjetivo,
-                                                                    $cDescripcion,
-                                                                    $cContribucion,
-                                                                    $cNombreI1,
-                                                                    $cRutI1,
-                                                                    $cTelefonoI1,
-                                                                    $cIngresoI1,
-                                                                    $cEmailI1,
-                                                                    $cNombreI2,
-                                                                    $cRutI2,
-                                                                    $cEmailI2,
-                                                                    $cIngresoI2,
-                                                                    $cTelefonoI2
-                                                                ]);
+        // $rpta = DB::select('call sp_alumno_setRegistrarTesis (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)',
+        //                                                         [
+        //                                                             $nIdAlumno,
+        //                                                             $cTitulo,
+        //                                                             $nIdPg,
+        //                                                             $nIdVinculacion,
+        //                                                             $dFechaUR,
+        //                                                             $cTipo,
+        //                                                             $cObjetivo,
+        //                                                             $cDescripcion,
+        //                                                             $cContribucion,
+        //                                                             $cNombreI1,
+        //                                                             $cRutI1,
+        //                                                             $cTelefonoI1,
+        //                                                             $cIngresoI1,
+        //                                                             $cEmailI1,
+        //                                                             $cNombreI2,
+        //                                                             $cRutI2,
+        //                                                             $cEmailI2,
+        //                                                             $cIngresoI2,
+        //                                                             $cTelefonoI2
+        //                                                         ]);
 
-        $DatosEmail    = DB::table('users')
-                              ->select('email as emailpg')
-                              ->where('id_user','=', $nIdPg)
-                              ->get();
-        $DatosEmail[0]->alumno = $cNombreI1;
-        $DatosEmail[0]->titulo = $cTitulo;
-        $fecha = Carbon::now();
-        $DatosEmail[0]->fecha = $fecha;
-        Mail::to($DatosEmail[0]->emailpg)->queue(new MailRegistroFit($DatosEmail[0]));
+        // $DatosEmail     = DB::table('users')
+        //                     ->select('email as emailpg')
+        //                     ->where('id_user','=', $nIdPg)
+        //                     ->get();
+        // $DatosEmail[0]->alumno = $cNombreI1;
+        // $DatosEmail[0]->titulo = $cTitulo;
+        // $fecha = Carbon::now();
+        // $DatosEmail[0]->fecha = $fecha;
+        // Mail::to($DatosEmail[0]->emailpg)->queue(new MailRegistroFit($DatosEmail[0]));
     }
     public function setCambiarEstadoFIT(Request $request){
 
@@ -309,12 +335,33 @@ class AlumnoController extends Controller
     Mail::to($DatosEmail[0]->emailpg)->queue(new MailAceptacionFit($DatosEmail[0]));
     }
     public function setEditarTesis(Request $request){
-
         if(!$request->ajax()) return redirect('/');
+        $fit = $request;
 
-        $id =   $request->id;
-        //$aprobado_pg =   'P';
-        Fit::find($id)->update($request->all());
+        DB::transaction(function () use ($fit) {
+            $registroFit = Fit::find($fit->id);
+            $registroFit->id_p_guia = $fit->id_profesorguia;
+            $registroFit->id_vinculacion = $fit->id_vinculacion;
+            $registroFit->titulo = $fit->titulo;
+            $registroFit->tipo = $fit->tipo;
+            $registroFit->objetivo = $fit->objetivo;
+            $registroFit->descripcion = $fit->descripcion;
+            $registroFit->contribucion = $fit->contribucion;
+            $registroFit->estado = 'D';
+            $registroFit->aprobado_pg = 'P';
+            $registroFit->update();
+
+            // eliminando usuarios participantes al fit y reasignandolos
+            $rows_fit_user = Fit_User::where('id_fit', $fit->id)->delete();
+            foreach($fit->users as $user) {
+                $user = (object) $user;
+                $userToRegister = new Fit_User;
+                $userToRegister->id_user = $user->id_user;
+                $userToRegister->id_fit = $fit->id;
+                $userToRegister->save();
+            }
+        });
+        return response()->json(['estado' => 'ok'], 200);
     }
     public function setGenerarDocumento(Request $request){
 

@@ -29,11 +29,11 @@
                             <div class="card-body">
                                 <form role="form">
                                     <div class="row">
-                                      <div class="col-md-6">
+                                        <div class="col-md-6">
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Profesor Guia</label>
                                                 <div class="col-md-9">
-                                                    <el-select v-model="fillEditarFIT.nIdPg" 
+                                                    <el-select v-model="fillEditarFIT.nIdPg"
                                                     placeholder="Asignar Profesor Guia"
                                                     clearable>
                                                     <el-option
@@ -50,7 +50,7 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Tipo de trabajo</label>
                                                 <div class="col-md-9">
-                                                    <el-select v-model="fillEditarFIT.cTipo" 
+                                                    <el-select v-model="fillEditarFIT.cTipo"
                                                     placeholder="Seleccione un Tipo"
                                                     clearable>
                                                     <el-option
@@ -78,8 +78,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        
+
+
                                         <div class="col-md-6">
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Contribucion</label>
@@ -131,7 +131,7 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Vinculacion</label>
                                                 <div class="col-md-9">
-                                                    <el-select v-model="fillEditarFIT.nIdVinculacion" 
+                                                    <el-select v-model="fillEditarFIT.nIdVinculacion"
                                                     placeholder="Asignar Vinculacion"
                                                     clearable>
                                                     <el-option
@@ -144,115 +144,81 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- revision de estado de una promesa -->
+                                        <div class="col-md-6"></div>
+                                        <template v-if="fillEditarFIT.cUsers.length">
+                                            <template v-for="(item, index) in fillEditarFIT.cUsers">
+                                                <div class="col-md-9" :key="index">
+                                                    <h3><b v-text="'Integrante Nº' + (index+1)"></b></h3>
+                                                </div>
+                                                <template v-if="myOwnUser.id_user && item.id_user">
+                                                    <template v-if="item.id_user !== myOwnUser.id_user">
+                                                        <div class="col-md-3" :key="'boton' + index">
+                                                            <div class="text-right mb-2">
+                                                                <button class="btn btn-danger" @click.prevent="eliminarEstudiante(item)">
+                                                                    <i class="fas fa-trash"></i> Eliminar
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </template>
+                                                <div class="col-md-6" :key="'nombre' + index">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 col-form-label">Nombre</label>
+                                                        <div class="col-md-9">
+                                                            <input type="text" readonly class="form-control" v-model="item.nombres" @keyup.enter="setRegistrarTesis">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" :key="'rut' + index">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 col-form-label">Apellido</label>
+                                                        <div class="col-md-9">
+                                                            <input type="text" readonly class="form-control" v-model="item.apellidos" @keyup.enter="setRegistrarTesis">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" :key="'telefono' + index">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 col-form-label">Rut</label>
+                                                        <div class="col-md-9">
+                                                            <input type="text" readonly class="form-control" v-model="item.rut" @keyup.enter="setRegistrarTesis">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" :key="'email' + index">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 col-form-label">email</label>
+                                                        <div class="col-md-9">
+                                                            <input type="text" readonly class="form-control" v-model="item.email" @keyup.enter="setRegistrarTesis">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </template>
                                         <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Nombre integrante 1</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" maxlength="40" class="form-control" v-model="fillEditarFIT.cNombreI1" @keyup.enter="setEditarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Rut Integrante 1</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" maxlength="10" placeholder="sin puntos 19866976-1" class="form-control" v-model="fillEditarFIT.cRutI1" @keyup.enter="setEditarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Telefono Integrante 1</label>
-                                                <div class="col-md-9">
-                                                    <input type="tel" maxlength="9" class="form-control" v-model="fillEditarFIT.cTelefonoI1" @keyup.enter="setEditarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Año ingreso Integrante 1</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" maxlength="4" class="form-control" v-model="fillEditarFIT.cIngresoI1" @keyup.enter="setEditarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">email Integrante 1</label>
-                                                <div class="col-md-9">
-                                                    <input type="email" maxlength="40" class="form-control" v-model="fillEditarFIT.cEmailI1" @keyup.enter="setEditarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Nombre Integrante 2</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" maxlength="40" class="form-control" v-model="fillEditarFIT.cNombreI2" @keyup.enter="setEditarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Rut Integrante 2</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" maxlength="10" placeholder="sin puntos 19866976-1" class="form-control" v-model="fillEditarFIT.cRutI2" @keyup.enter="setEditarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                         <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Email Integrante 2</label>
-                                                <div class="col-md-9">
-                                                    <input type="email" maxlength="40" class="form-control" v-model="fillEditarFIT.cEmailI2" @keyup.enter="setEditarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                         <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Año ingreso Integrante 2</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" maxlength="4" class="form-control" v-model="fillEditarFIT.cIngresoI2" @keyup.enter="setEditarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Telefono Integrante 2</label>
-                                                <div class="col-md-9">
-                                                    <input type="tel" maxlength="9" class="form-control" v-model="fillEditarFIT.cTelefonoI2" @keyup.enter="setEditarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Fecha que curso su ultimo ramo</label>
-                                                <div class="col-md-9">
-                                                      <el-date-picker
-                                                        v-model="fillEditarFIT.dFechaUR"
-                                                        type="month"
-                                                        placeholder="Elige mes y año">
-                                                      </el-date-picker>
-                                                </div>
-                                            </div>
+                                            <button class="btn btn-info bnt-sm" @click.prevent="mostrarModalBusquedaEstudiante">
+                                                Añadir más integrantes +
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
                             <div class="card-footer">
-                              <div class="row">
-                                <div class="col-md-4 offset-4">
-                                  <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarTesis">Editar</button>
-                                  <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
+                                <div class="row">
+                                    <div class="col-md-4 offset-4">
+                                        <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarTesis">Editar</button>
+                                        <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
+                                    </div>
                                 </div>
-                              </div>
-                          </div>
+                            </div>
                         </div>
-                  </div>
-              </div> 
-          </div>
-      </div>
-               
+                    </div>
+                </div>
+            </div>
+        </div>
+
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -269,6 +235,77 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" :class="{ show: modalSearchUser }" :style="modalSearchUser ? mostrarModal : ocultarModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content scrollTable">
+            <div class="modal-header">
+                <h5 class="modal-title"><b>Búsqueda de integrante de tesis</b></h5>
+                <button class="close" @click="mostrarModalBusquedaEstudiante"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Rut</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.rut" @keyup.enter="setBusquedaUsuario">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Email</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.email" @keyup.enter="setBusquedaUsuario">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Nombre</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.nombre" @keyup.enter="setBusquedaUsuario">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Apellido</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" v-model="busquedaUsuario.apellido" @keyup.enter="setBusquedaUsuario">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <template v-if="listAlumnosBuscados.length">
+                                    <div class="row">
+                                        <h3><b>Usuarios encontrados:</b></h3>
+                                    </div>
+                                    <div class="row" v-for="(item, index) in listAlumnosBuscados" :key="index">
+                                        <button class="btn btn-primary w-100 mb-2"  @click="setIngresarAlumno(item)">
+                                                <p>Nombre: {{item.nombres}} {{item.apellidos}}</p>
+                                                <p>Rut: {{item.rut}}</p>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-success w-100" @click="setBusquedaUsuario">Buscar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @click="mostrarModalBusquedaEstudiante">Cerrar</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -276,45 +313,45 @@
 export default {
   data(){
     return{
-      fillEditarFIT:{
-        nIdTesis: this.$attrs.id,
-        cTitulo: '',
-        nIdPg: '',
-        nIdVinculacion: '',
-        dFechaUR:'',
-        cTipo: '',
-        cObjetivo: '',
-        cDescripcion: '',
-        cContribucion: '',
-        cNombreI1: '',
-        cRutI1: '',
-        cTelefonoI1: '',
-        cIngresoI1: '',
-        cEmailI1: '',
-        cNombreI2: '',
-        cRutI2: '',
-        cEmailI2: '',
-        cIngresoI2: '',
-        cTelefonoI2: ''
-      },
-      listTipo: [
-        {value: 'Tesis', label: 'Tesis'},
-        {value: 'Memoria', label: 'Memoria'}
-      ],
-      listProfesores:[],
-      listEscuelas:[],
-      listVinculacion:[],
-      fullscreenLoading: false,
-      modalShow: false,
-      mostrarModal: {
-        display: 'block',
-        background: '#0000006b',
-      },
-      ocultarModal: {
-        display: 'none',
-      },
-      error: 0,
-      mensajeError:[]
+        fillEditarFIT:{
+            nIdTesis: this.$attrs.id,
+            cTitulo: '',
+            nIdPg: '',
+            nIdVinculacion: '',
+            cTipo: '',
+            cObjetivo: '',
+            cDescripcion: '',
+            cContribucion: '',
+            cUsers: []
+        },
+        listTipo: [
+            {value: 'Tesis', label: 'Tesis'},
+            {value: 'Memoria', label: 'Memoria'},
+            {value: 'Proyecto de titulo', label: 'Proyecto de titulo'}
+        ],
+        busquedaUsuario: {
+            nombre: '',
+            apellido: '',
+            rut: '',
+            email: ''
+        },
+        listProfesores:[],
+        listEscuelas:[],
+        listVinculacion:[],
+        listAlumnosBuscados: [],
+        myOwnUser: {},
+        fullscreenLoading: false,
+        modalShow: false,
+        modalSearchUser: false,
+        mostrarModal: {
+            display: 'block',
+            background: '#0000006b',
+        },
+        ocultarModal: {
+            display: 'none',
+        },
+        error: 0,
+        mensajeError:[]
     }
   },
   computed: {
@@ -323,6 +360,7 @@ export default {
     this.getListarProfesores();
     this.getTesisById();
     this.getListarVinculacion();
+    this.getMyOwnUser();
   },
   methods:{
     getListarProfesores(){
@@ -366,23 +404,11 @@ export default {
         if(!this.fillEditarFIT.cObjetivo){
           this.mensajeError.push("El objetivo es un campo obligatorio")
         }
-        if(!this.fillEditarFIT.dFechaUR){
-          this.mensajeError.push("La fecha el ultimo ramo es un campo obligatorio")
-        }
         if(!this.fillEditarFIT.cContribucion){
           this.mensajeError.push("La contribucion es un campo obligatorio")
         }
-        if(!this.fillEditarFIT.cNombreI1){
-          this.mensajeError.push("El nombre es un campo obligatorio")
-        }
-        if(!this.fillEditarFIT.cTelefonoI1){
-          this.mensajeError.push("El telefono es un campo obligatorio")
-        }
-        if(!this.fillEditarFIT.cRutI1){
-          this.mensajeError.push("El rut es un campo obligatorio")
-        }
-        if(!this.fillEditarFIT.cEmailI1){
-          this.mensajeError.push("El email es un campo obligatorio")
+        if(this.fillEditarFIT.cUsers.length === 0) {
+            this.mensajeError.push("No existen alumnos agregados al formulario de tesis")
         }
         if(this.mensajeError.length){
           this.error = 1;
@@ -397,26 +423,16 @@ export default {
       this.fullscreenLoading = true;
       var url = '/alumno/setEditarTesis'
       axios.post(url, {
-        'id'                   : this.fillEditarFIT.nIdTesis,
-        'titulo'               : this.fillEditarFIT.cTitulo,
-        'id_profesorguia'      : this.fillEditarFIT.nIdPg,
-        'id_vinculacion'       : this.fillEditarFIT.nIdVinculacion,
-        'fecha_ultimoramo'     : this.fillEditarFIT.dFechaUR,
-        'tipo'                 : this.fillEditarFIT.cTipo,
-        'objetivo'             : this.fillEditarFIT.cObjetivo,
-        'descripcion'          : this.fillEditarFIT.cDescripcion,
-        'contribucion'         : this.fillEditarFIT.cContribucion,
-        'nombre_int1'          : this.fillEditarFIT.cNombreI1,
-        'rut_int1'             : this.fillEditarFIT.cRutI1,
-        'telefono_int1'        : this.fillEditarFIT.cTelefonoI1,
-        'ingreso_int1'         : this.fillEditarFIT.cIngresoI1,
-        'email_int1'           : this.fillEditarFIT.cEmailI1,
-        'nombre_int2'          : this.fillEditarFIT.cNombreI2,
-        'rut_int2'             : this.fillEditarFIT.cRutI2,
-        'email_int2'           : this.fillEditarFIT.cEmailI2,
-        'ingreso_int2'         : this.fillEditarFIT.cIngresoI2,
-        'telefono_int2'        : this.fillEditarFIT.cTelefonoI2,
-        'aprobado_pg'          : 'P'
+        'id'                    : this.fillEditarFIT.nIdTesis,
+        'titulo'                : this.fillEditarFIT.cTitulo,
+        'id_profesorguia'       : this.fillEditarFIT.nIdPg,
+        'id_vinculacion'        : this.fillEditarFIT.nIdVinculacion,
+        'tipo'                  : this.fillEditarFIT.cTipo,
+        'objetivo'              : this.fillEditarFIT.cObjetivo,
+        'descripcion'           : this.fillEditarFIT.cDescripcion,
+        'contribucion'          : this.fillEditarFIT.cContribucion,
+        'aprobado_pg'           : 'P',
+        'users'                 : this.fillEditarFIT.cUsers
       }).then(response => {
         this.fullscreenLoading = false;
         Swal.fire({
@@ -448,34 +464,88 @@ export default {
           'nIdTesis' : this.fillEditarFIT.nIdTesis
         }
       }).then(response => {
-          //this.getUsuarioEditar(response.data[0])
-          this.getUsuarioVer(response.data[0])
-
+          this.getUsuarioVer(response.data);
           this.fullscreenLoading = false;
       })
     },
     getUsuarioVer(data){
-          this.fillEditarFIT.nIdPg = data.id_profesorguia;
-          this.fillEditarFIT.cTitulo = data.titulo;
-          this.fillEditarFIT.nIdPg = data.id_profesorguia;
-          this.fillEditarFIT.nIdVinculacion = data.id_vinculacion;
-          this.fillEditarFIT.cTipo = data.tipo;
-          this.fillEditarFIT.dFechaUR = data.fecha_ultimoramo;
-          this.fillEditarFIT.cObjetivo = data.objetivo;
-          this.fillEditarFIT.cDescripcion = data.descripcion;
-          this.fillEditarFIT.cContribucion = data.contribucion;
-          this.fillEditarFIT.cNombreI1 = data.nombre_int1;
-          this.fillEditarFIT.cRutI1 = data.rut_int1;
-          this.fillEditarFIT.cTelefonoI1 = data.telefono_int1;
-          this.fillEditarFIT.cIngresoI1 = data.ingreso_int1;
-          this.fillEditarFIT.cEmailI1 = data.email_int1;
-          this.fillEditarFIT.cNombreI2 = data.nombre_int2;
-          this.fillEditarFIT.cRutI2 = data.rut_int2;
-          this.fillEditarFIT.cEmailI2 = data.email_int2;
-          this.fillEditarFIT.cIngresoI2 = data.ingreso_int2;
-          this.fillEditarFIT.cTelefonoI2 = data.telefono_int2;
+        this.fillEditarFIT.nIdPg = data.id_p_guia;
+        this.fillEditarFIT.cTitulo = data.titulo;
+        this.fillEditarFIT.nIdVinculacion = data.id_vinculacion;
+        this.fillEditarFIT.cTipo = data.tipo;
+        this.fillEditarFIT.cObjetivo = data.objetivo;
+        this.fillEditarFIT.cDescripcion = data.descripcion;
+        this.fillEditarFIT.cContribucion = data.contribucion;
+        data.fit__user.forEach(user => {
+            this.fillEditarFIT.cUsers.push(user.user);
+        });
     },
-  
+    getMyOwnUser(){
+        this.fullscreenLoading = true;
+        var url = '/authenticate/getMyOwnUser';
+        this.myOwnUser = {};
+        axios.get(url, {
+        }).then(response => {
+            this.myOwnUser = response.data;
+            this.myOwnUser.estadoConfirmado = 'A';
+            this.fullscreenLoading = false;
+        })
+    },
+    setBusquedaUsuario() {
+        this.fullscreenLoading = true;
+        var url = '/alumno/getUsersAlumnosParametros'
+        axios.post(url, {
+            'rut'       :   this.busquedaUsuario.rut,
+            'email'     :   this.busquedaUsuario.email,
+            'nombre'    :   this.busquedaUsuario.nombre,
+            'apellido'  :   this.busquedaUsuario.apellido
+        }).then(response => {
+            this.listAlumnosBuscados = response.data;
+            this.fullscreenLoading = false;
+        })
+    },
+    setIngresarAlumno(alumno){
+        // seccion de revisión si usuario es incluido por segunda vez
+        let errorIngresoUser = false;
+        this.fillEditarFIT.cUsers.forEach(user => {
+            if (user.id_user === alumno.id_user) {
+              errorIngresoUser = true;
+            }
+        });
+        if (!errorIngresoUser) {
+            alumno.estadoConfirmado = 'P';
+            this.fillEditarFIT.cUsers.push(alumno);
+        } else {
+            this.mensajeError = [];
+            this.mensajeError.push("Usuario seleccionado ya está enlistado en tu FIT.");
+            this.abrirModal();
+        }
+        this.mostrarModalBusquedaEstudiante();
+    },
+    eliminarEstudiante(estudianteEliminado) {
+        let i = 0;
+        let eliminado = 0;
+        let condicionEliminacion = false;
+        this.fillEditarFIT.cUsers.forEach(user => {
+            if (user.id_user === estudianteEliminado.id_user) {
+                eliminado = i;
+                condicionEliminacion = true;
+            }
+            i++;
+        });
+        if (condicionEliminacion) {
+            this.fillEditarFIT.cUsers.splice(eliminado,1);
+        }
+    },
+    mostrarModalBusquedaEstudiante(){
+        this.modalSearchUser = !this.modalSearchUser;
+        this.busquedaUsuario.email = '';
+        this.busquedaUsuario.nombre = '';
+        this.busquedaUsuario.apellido = '';
+        this.busquedaUsuario.rut = '';
+        this.listAlumnosBuscados = [];
+    },
+
   }// cierre methods
 }
 </script>
