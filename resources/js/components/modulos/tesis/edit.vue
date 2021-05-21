@@ -370,7 +370,7 @@ export default {
       }).then(response => {
           this.listProfesores = response.data;
           this.fullscreenLoading = false;
-      })
+      });
     },
     getListarVinculacion(){
       this.fullscreenLoading = true;
@@ -488,6 +488,17 @@ export default {
         }).then(response => {
             this.myOwnUser = response.data;
             this.myOwnUser.estadoConfirmado = 'A';
+            // revisión si es profesor u otro derivado y añadir en la lista,
+            // para parche de query antigua multiproposito
+            this.myOwnUser.users__roles.forEach(user_role => {
+                if(user_role.roles.name === 'Profesor' || user_role.roles.name === 'Director' || user_role.roles.name === 'Coordinador'){
+                    const profesorGuia = {
+                        'fullname' : this.myOwnUser.nombres + ' ' + this.myOwnUser.apellidos,
+                        'id_user' : this.myOwnUser.id_user
+                    };
+                    this.listProfesores.unshift(profesorGuia);
+                }
+            });
             this.fullscreenLoading = false;
         })
     },
