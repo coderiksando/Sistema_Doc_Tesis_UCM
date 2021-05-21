@@ -23,7 +23,7 @@ $factory->define(User::class, function (Faker $faker) {
         'nombres' => $faker->firstName,
         'apellidos' => $faker->lastName,
         'id_escuela' => '1',
-        'email' => $faker->unique()->randomNumber(3, false) . '@gmail.com',
+        'email' => $faker->unique()->randomNumber(5, false) . '@gmail.com',
         'password' => bcrypt('12345'),
         'remember_token' => Str::random(10),
         'state' => $faker->randomElement(array('A','I')),

@@ -27,5 +27,8 @@ class DatabaseSeeder extends Seeder
         $this->call([RolePermissionSecretariaSeeder::class]);
         $this->call(FitSeeder::class);
         $this->call(FitUserSeeder::class);
+        $this->call(BitacorasSeeder::class);
+        $this->call(ArchivoPdfSeeder::class);
+        $this->call(AvancesTesisSeeder::class);
     }
 }
