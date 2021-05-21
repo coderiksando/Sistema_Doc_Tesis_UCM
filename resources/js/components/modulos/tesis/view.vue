@@ -108,6 +108,14 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group row">
+                                                <label class="col-md-3 col-form-label">email</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" readonly class="form-control" v-model="item.user.email" @keyup.enter="setRegistrarTesis">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-md-6">
+                                            <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Año ingreso</label>
                                                 <div class="col-md-9">
                                                     <input type="text" readonly class="form-control" v-model="item.user.created_at" @keyup.enter="setRegistrarTesis">
@@ -116,12 +124,12 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">email</label>
+                                                <label class="col-md-3 col-form-label">Año salida</label>
                                                 <div class="col-md-9">
-                                                    <input type="text" readonly class="form-control" v-model="item.user.email" @keyup.enter="setRegistrarTesis">
+                                                    <input type="text" readonly class="form-control" v-model="item.user.created_at" @keyup.enter="setRegistrarTesis">
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
