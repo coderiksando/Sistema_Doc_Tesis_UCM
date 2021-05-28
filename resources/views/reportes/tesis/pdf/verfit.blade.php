@@ -5,8 +5,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   
-    <title>fit del alumno {{$datosfit[0]->nombre_int1}}</title>
+
+    <title>fit del alumno {{$datosfit->Fit_User[0]->User->nombres}} {{$datosfit->Fit_User[0]->User->apellidos}} </title>
     <style>
         @page{
             margin: 1.3rem;
@@ -44,7 +44,6 @@
 </head>
 <body>
     <div class="cabecera">
-    
         <table width="100%" cellspacing="0" cellspacing="1" align="center">
             <tr>
                 <td style="text-align: center;">UNIVERSIDAD CATOLICA DEL MAULE</td>
@@ -53,7 +52,7 @@
                 <td style="text-align: center;">FACULTAD DE CIENCIAS DE LA INGENIERIA</td>
             </tr>
             <tr>
-                <td style="text-align: center;">ESCUELA DE {{$datosfit[0]->escuela_name}}</td>
+                <td style="text-align: center;">ESCUELA DE {{$datosfit->user_p_guia->escuelas->nombre}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
@@ -64,30 +63,30 @@
         </table>
         <br>
         <br>
-       
+
         <table width="100%" cellspacing="0" cellspacing="1" align="center">
             <tr>
-                <td> <strong>NOMBRE COMPLETO:</strong>  {{$datosfit[0]->nombre_int1}}</td>
+                <td> <strong>NOMBRE COMPLETO:</strong>  {{$datosfit->Fit_User[0]->User->nombres}} {{$datosfit->Fit_User[0]->User->apellidos}} </td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td> <strong>RUT:</strong>  {{$datosfit[0]->rut_int1}}</td>
-                <td> <strong>AÑO DE INGRESO:</strong>  {{$datosfit[0]->ingreso_int1}}</td>
+                <td> <strong>RUT:</strong>  {{$datosfit->Fit_User[0]->User->rut}}</td>
+                <td> <strong>AÑO DE INGRESO:</strong>  {{$datosfit->Fit_User[0]->User->birthday}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td> <strong>CARRERA:</strong>  {{$datosfit[0]->escuela_name}}</td>
+                <td> <strong>CARRERA:</strong>  {{$datosfit->Fit_User[0]->User->escuelas->nombre}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td> <strong>EMAIL:</strong>  {{$datosfit[0]->email_int1}}</td>
-                <td> <strong>TELEFONO:</strong>  {{$datosfit[0]->telefono_int1}}</td>
+                <td> <strong>EMAIL:</strong>  {{$datosfit->Fit_User[0]->User->email}}</td>
+                <td> <strong>TELEFONO:</strong>  {{$datosfit->Fit_User[0]->User->telefono}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
@@ -95,25 +94,25 @@
         </table>
         <table width="100%" cellspacing="0" cellspacing="1" align="center">
             <tr>
-                <td style="text-align: justify;"> <strong>NOMBRE TESIS/MEMORIA:</strong>  {{$datosfit[0]->titulo}}</td>
+                <td style="text-align: justify;"> <strong>NOMBRE TESIS/MEMORIA:</strong>  {{$datosfit->titulo}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td style="text-align: justify;"> <strong>BREVE DESCRIPCION DEL TEMA:</strong>  {{$datosfit[0]->objetivo}}</td>
+                <td style="text-align: justify;"> <strong>BREVE DESCRIPCION DEL TEMA:</strong>  {{$datosfit->descripcion}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td style="text-align: justify;"> <strong>OBJETIVOS:</strong>  {{$datosfit[0]->objetivo}}</td>
+                <td style="text-align: justify;"> <strong>OBJETIVOS:</strong>  {{$datosfit->objetivo}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td style="text-align: justify;"> <strong>CONTRIBUCION ESPERADA:</strong>  {{$datosfit[0]->contribucion}}</td>
+                <td style="text-align: justify;"> <strong>CONTRIBUCION ESPERADA:</strong>  {{$datosfit->contribucion}}</td>
             </tr>
         </table>
         <table width="100%" cellspacing="0" cellspacing="1" align="center">
@@ -177,54 +176,98 @@
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td> <strong>PROFESOR GUIA:</strong>  {{$datosfit[0]->pg_fullname}}</td>
+                <td> <strong>PROFESOR GUIA:</strong>  {{$datosfit->user_p_guia->nombres}} {{$datosfit->user_p_guia->apellidos}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
-            <tr>
-                <td> <strong>COMISION SUGERIDA POR EL PROFESOR GUIA:</strong> </td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">&nbsp;</td>
-            </tr>
-            <tr>
-                <td> <strong>1.-</strong>  {{$datosfit[0]->p1_fullname}}</td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">&nbsp;</td>
-            </tr>
-            <tr>
-                <td> <strong>2.-</strong>  {{$datosfit[0]->p2_fullname}}</td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">&nbsp;</td>
-            </tr>
-            <tr>
-                <td> <strong>3.-(EXTERNOS U OTROS SI ES REQUERIDO. INDICAR CORREOS E INSTITUCION EN CASO DE SER EXTERNO):</strong></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">&nbsp;</td>
-            </tr>
-            <tr>
-                <td><strong>NOMBRE:</strong> {{$datosfit[0]->p_externo}}</td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">&nbsp;</td>
-            </tr>
-            <tr>
-                <td> <strong>CORREO:</strong>  {{$datosfit[0]->correo_p_externo}}</td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">&nbsp;</td>
-            </tr>
-            <tr>
-                <td> <strong>INSTITUCION:</strong>  {{$datosfit[0]->institucion_p_externo}}</td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">&nbsp;</td>
-            </tr>
-
+            @if ($datosfit->Comisiones)
+                <tr>
+                    <td> <strong>COMISION SUGERIDA POR EL PROFESOR GUIA:</strong> </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td> <strong>1.-</strong>  {{$datosfit->Comisiones}}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td> <strong>2.-</strong>  {{$datosfit->Comisiones}}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td> <strong>3.-(EXTERNOS U OTROS SI ES REQUERIDO. INDICAR CORREOS E INSTITUCION EN CASO DE SER EXTERNO):</strong></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td><strong>NOMBRE:</strong> {{$datosfit->Comisiones}} </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td> <strong>CORREO:</strong>  {{$datosfit->Comisiones}}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td> <strong>INSTITUCION:</strong>  {{$datosfit->Comisiones}}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+            @else
+                <tr>
+                    <td> <strong>COMISION SUGERIDA POR EL PROFESOR GUIA (Por establecer):</strong> </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td> <strong>1.-</strong>____________________________________________________________________________________________</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td> <strong>2.-</strong>____________________________________________________________________________________________</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td> <strong>3.-(EXTERNOS U OTROS SI ES REQUERIDO. INDICAR CORREOS E INSTITUCION EN CASO DE SER EXTERNO):</strong></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td><strong>NOMBRE:</strong>____________________________________________________________________________________</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td> <strong>CORREO:</strong>____________________________________________________________________________________</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td> <strong>INSTITUCION:</strong>________________________________________________________________________________</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">&nbsp;</td>
+                </tr>
+            @endif
         </table>
         <table width="100%" cellspacing="0" cellspacing="1" align="center">
             <tr>
@@ -268,7 +311,7 @@
         </table>
         <br>
         <table width="100%" cellspacing="0" cellspacing="1" align="center">
-            
+
             <tr>
                 <td style="text-align: center;">*************************************************************************</td>
             </tr>
@@ -332,6 +375,6 @@
             </tr>
         </table>
     </div>
-    
+
 </body>
 </html>

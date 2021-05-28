@@ -15,7 +15,7 @@ Route::post('/passrecovery/resetPassword','Auth\LoginController@resetPassword');
 Route::get('/authenticate/getMyOwnUser', 'Auth\LoginController@getMyOwnUser');
 
 /*********      RUTAS QUE REQUIEREN AUTENTICACION        *********/
-// Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth']], function () {
 
 Route::post('/authenticate/logout', 'Auth\LoginController@logout');
 Route::get('/authenticate/getRefrescarUsuarioAutenticado', function () {
@@ -119,7 +119,7 @@ Route::get('/secretaria/getListarAlumnos', 'SecretariaController@getListarAlumno
 Route::Post('/secretaria/setGenerarMemoRevision', 'SecretariaController@setGenerarMemoRevision');
 Route::post('/secretaria/setSubirActa', 'SecretariaController@setSubirActa');
 Route::post('/secretaria/setRegistrarNota', 'SecretariaController@setRegistrarNota');
-// });//cierre de rutas que requieren autenticacion
+});//cierre de rutas que requieren autenticacion
 
 /********** RUTA BASE **********/
 Route::get('/{optional?}', function () {

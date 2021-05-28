@@ -14,6 +14,7 @@ use App\Mail\MailRegistroFit;
 use App\Mail\MailAceptacionFit;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use \stdClass;
 
 class AlumnoController extends Controller
 {
@@ -70,7 +71,7 @@ class AlumnoController extends Controller
                                                                 ]);
     }
     public function getListarTesis(Request $request){
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $nIdUsuario  = Auth::id();
         $nIdTesis    = $request->nIdTesis;
@@ -112,7 +113,7 @@ class AlumnoController extends Controller
             $listUsers = $fit->Fit_User->pluck('id_user');
             $listUsersDetails = User::whereIn('id_user', $listUsers)->get()->all();
             $fit->listUsers = $listUsersDetails;
-        }  
+        }
 
         return $fits;
     }
@@ -229,7 +230,6 @@ class AlumnoController extends Controller
             }
         });
 
-        return response()->json(['estado' => 'ok'], 200);
 
         // $nIdAlumno          = Auth::id();
         // $cTitulo            = $request->cTitulo;
@@ -274,18 +274,18 @@ class AlumnoController extends Controller
 
         // $rpta = DB::select('call sp_alumno_setRegistrarTesis (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)',
         //                                                         [
-        //                                                             $nIdAlumno,
-        //                                                             $cTitulo,
-        //                                                             $nIdPg,
-        //                                                             $nIdVinculacion,
-        //                                                             $dFechaUR,
-        //                                                             $cTipo,
-        //                                                             $cObjetivo,
-        //                                                             $cDescripcion,
-        //                                                             $cContribucion,
-        //                                                             $cNombreI1,
-        //                                                             $cRutI1,
-        //                                                             $cTelefonoI1,
+            //                                                             $nIdAlumno,
+            //                                                             $cTitulo,
+            //                                                             $nIdPg,
+            //                                                             $nIdVinculacion,
+            //                                                             $dFechaUR,
+            //                                                             $cTipo,
+            //                                                             $cObjetivo,
+            //                                                             $cDescripcion,
+            //                                                             $cContribucion,
+            //                                                             $cNombreI1,
+            //                                                             $cRutI1,
+            //                                                             $cTelefonoI1,
         //                                                             $cIngresoI1,
         //                                                             $cEmailI1,
         //                                                             $cNombreI2,
@@ -295,40 +295,49 @@ class AlumnoController extends Controller
         //                                                             $cTelefonoI2
         //                                                         ]);
 
-        // $DatosEmail     = DB::table('users')
-        //                     ->select('email as emailpg')
-        //                     ->where('id_user','=', $nIdPg)
-        //                     ->get();
-        // $DatosEmail[0]->alumno = $cNombreI1;
-        // $DatosEmail[0]->titulo = $cTitulo;
-        // $fecha = Carbon::now();
-        // $DatosEmail[0]->fecha = $fecha;
-        // Mail::to($DatosEmail[0]->emailpg)->queue(new MailRegistroFit($DatosEmail[0]));
+        $DatosEmail = DB::table('users')
+                        ->select('email as emailpg')
+                        ->where('id_user','=', $fit->nIdPg)
+                        ->get();
+        $alumnoPrincipal = (object)$fit->cUsers[0];
+        $DatosEmail[0]->alumno = $alumnoPrincipal->nombres;
+        $DatosEmail[0]->titulo = $fit->cTitulo;
+        $fecha = Carbon::now();
+        $DatosEmail[0]->fecha = $fecha;
+        Mail::to($DatosEmail[0]->emailpg)->queue(new MailRegistroFit($DatosEmail[0]));
     }
     public function setCambiarEstadoFIT(Request $request){
+        if(!$request->ajax()) return redirect('/');
 
-    if(!$request->ajax()) return redirect('/');
+        $nIdTesis   = $request->nIdTesis;
+        $cEstadoPg  = $request->cEstadoPg;
 
-    $nIdTesis   = $request->nIdTesis;
-    $cEstadoPg  = $request->cEstadoPg;
+        $nIdTesis   = ($nIdTesis == NULL) ? ($nIdTesis = 0) : $nIdTesis;
+        $cEstadoPg  = ($cEstadoPg == NULL) ? ($cEstadoPg = 0) : $cEstadoPg;
 
-    $nIdTesis   = ($nIdTesis == NULL) ? ($nIdTesis = 0) : $nIdTesis;
-    $cEstadoPg  = ($cEstadoPg == NULL) ? ($cEstadoPg = 0) : $cEstadoPg;
-
-    $rpta = DB::select('call sp_alumno_setCambiarEstadoFIT (?, ?)',
-                                                            [
-                                                                $nIdTesis,
-                                                                $cEstadoPg
-                                                            ]);
-    $DatosEmail = DB::table('fit')
-                    ->join('users as profesor_guia', 'profesor_guia.id_user', '=', 'fit.id_profesorguia')
-                    ->join('users as alumno', 'alumno.id_user', '=', 'fit.id_alumno')
-                    ->where('fit.id', '=', $nIdTesis)
-                    ->select('alumno.email as emailpg','fit.titulo', DB::raw("CONCAT(profesor_guia.nombres,' ',profesor_guia.apellidos) as full_name"))
-                    ->get();
-    $fecha = Carbon::now();
-    $DatosEmail[0]->fecha = $fecha;
-    Mail::to($DatosEmail[0]->emailpg)->queue(new MailAceptacionFit($DatosEmail[0]));
+        $rpta = DB::select('call sp_alumno_setCambiarEstadoFIT (?, ?)',
+                                                                [
+                                                                    $nIdTesis,
+                                                                    $cEstadoPg
+                                                                ]);
+        // Envío de email a estudiantes con el informe de su estado FIT
+        $fit = Fit::find($nIdTesis);
+        $fecha = Carbon::now();
+        $datosEmail = [];
+        $i = 0;
+        $estadoFit = ($fit->aprobado_pg == 'A') ? ('aprobado') : ('rechazado');
+        foreach($fit->Fit_User as $item) {
+            $user = $item->User;
+            $datoInsertado = new stdClass();
+            $datoInsertado->emailpg = $item->User->email;
+            $datoInsertado->titulo = $fit->titulo;
+            $datoInsertado->full_name = ($fit->User_P_Guia->nombres) . ' ' . ($fit->User_P_Guia->apellidos);
+            $datoInsertado->fecha = $fecha;
+            $datoInsertado->estado = $estadoFit;
+            array_push($datosEmail, $datoInsertado);
+            Mail::to($datosEmail[$i]->emailpg)->queue(new MailAceptacionFit($datosEmail[$i]));
+            $i++;
+        }
     }
     public function setEditarTesis(Request $request){
         if(!$request->ajax()) return redirect('/');
@@ -360,24 +369,21 @@ class AlumnoController extends Controller
         return response()->json(['estado' => 'ok'], 200);
     }
     public function setGenerarDocumento(Request $request){
-
         $id = $request->nIdTesis;
-        $datosfit = DB::table('fit')
-                    ->leftjoin('vinculaciones', 'vinculaciones.id', '=','fit.id_vinculacion')
-                    ->leftjoin('comisiones', 'comisiones.id_tesis', '=', 'fit.id')
-                    ->leftjoin('users as profesor_guia', 'profesor_guia.id_user', '=', 'fit.id_profesorguia')
-                    ->join('escuelas', 'escuelas.id', '=', 'profesor_guia.id_escuela')
-                    ->leftjoin('users as profesor_1','profesor_1.id_user','=', 'comisiones.id_profesor1')
-                    ->leftjoin('users as profesor_2','profesor_2.id_user','=', 'comisiones.id_profesor2')
-                    ->join('users', 'users.id_user', '=','fit.id_profesorguia')
-                    ->select('nombre_int1', 'rut_int1', 'email_int1', 'ingreso_int1', 'telefono_int1', 'users.nombres', 'users.apellidos','escuelas.nombre as escuela_name',
-                                DB::raw("CONCAT(profesor_guia.nombres,' ',profesor_guia.apellidos) as pg_fullname"),
-                                DB::raw("CONCAT(profesor_1.nombres,' ',profesor_1.apellidos) as p1_fullname"),
-                                DB::raw("CONCAT(profesor_2.nombres,' ',profesor_2.apellidos) as p2_fullname"),
-                                'comisiones.p_externo','comisiones.correo_p_externo','comisiones.institucion_p_externo','objetivo', 'contribucion',  'fit.tipo','titulo' )
-                    ->where('fit.id', '=', $id)
-                    ->get();
-                    //return $datosfit;
+        $datosfit = Fit::find($id);
+        $datosfit->Vinculaciones;
+        $datosfit->Comisiones;
+        $datosfit->User_P_Guia;
+        $datosfit->User_P_Guia->Escuelas;
+        $datosfit->Fit_User;
+        foreach($datosfit->Fit_User as $fit_user) {
+            $fit_user->User;
+            $fit_user->User->Escuelas;
+        }
+        if ($datosfit->Comisiones) {
+            $datosfit->Comisiones->UserP1;
+            $datosfit->Comisiones->UserP2;
+        }
         $pdf = PDF::loadView('reportes.tesis.pdf.verfit',[
            'datosfit' => $datosfit
         ]);

@@ -407,6 +407,9 @@ export default {
         if(!this.fillEditarFIT.cContribucion){
           this.mensajeError.push("La contribucion es un campo obligatorio")
         }
+        if(!this.fillEditarFIT.nIdVinculacion){
+            this.fillEditarFIT.nIdVinculacion = 1;
+        }
         if(this.fillEditarFIT.cUsers.length === 0) {
             this.mensajeError.push("No existen alumnos agregados al formulario de tesis")
         }

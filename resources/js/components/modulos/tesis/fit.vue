@@ -16,7 +16,7 @@
         <template v-if="listRolPermisosByUsuario.includes('tesis.crear')">
         <div class="card-header">
           <div class="card-tools">
-            <template v-if="!listTesis">
+            <template v-if="listTesis.length === 0">
               <router-link class="btn btn-info bnt-sm" :to="'/tesis/crear'">
                 <i class="fas fa-plus-square"></i>Ingresar formulario de inscripción
               </router-link>

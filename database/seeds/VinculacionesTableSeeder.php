@@ -18,6 +18,11 @@ class VinculacionesTableSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         DB::table('vinculaciones')->insert([
+            'tipo' => 'Comunidad',
+            'nombre' => 'Sin vinculación',
+            'descripcion' => 'Vinculación nula, registro por defecto'
+        ]);
+        DB::table('vinculaciones')->insert([
             'tipo' => 'Fondo Concursable',
             'nombre' => 'Vinculacion de prueba1',
             'descripcion' => 'Vinculacion de prueba1 '

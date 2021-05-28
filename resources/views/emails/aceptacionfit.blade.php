@@ -8,13 +8,13 @@
 </head>
 <body>
 
-<p>Hola, con fecha y hora {{$DatosEmail->fecha}} el profesor {{$DatosEmail->full_name}} ha aceptado el formulario de
+<p>Hola, con fecha y hora {{$DatosEmail->fecha}} el profesor {{$DatosEmail->full_name}} ha {{$DatosEmail->estado}} el formulario de
     inscripcion de la tesis {{$DatosEmail->titulo}}</p>
 
     <ul>
         <p>Sistema de administracion de tesistas</p>
         <p>Universidad Catolica Del Maule</p>
     </ul>
-    
+
 </body>
 </html>

@@ -32,6 +32,9 @@ class Fit extends Model
     public function ArchivoPdf(){
         return $this->hasMany(ArchivoPdf::class, 'id_fit', 'id');
     }
+    public function Comisiones(){
+        return $this->hasOne(Comisiones::class, 'id_tesis', 'id');
+    }
     public function AvancesTesis(){
         return $this->hasMany(AvancesTesis::class, 'id_tesis', 'id');
     }

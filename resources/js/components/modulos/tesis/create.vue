@@ -432,6 +432,9 @@ export default {
         if(!this.fillCrearFIT.cContribucion){
           this.mensajeError.push("La contribucion es un campo obligatorio")
         }
+        if(!this.fillCrearFIT.nIdVinculacion){
+            this.fillCrearFIT.nIdVinculacion = 1;
+        }
         if(this.fillCrearFIT.cUsers.length === 0) {
             this.mensajeError.push("No existen alumnos agregados al formulario de tesis")
         }
@@ -448,10 +451,10 @@ export default {
       this.fullscreenLoading = true;
       var url = '/alumno/setRegistrarTesis';
       axios.post(url, {
-            'data'  : this.fillCrearFIT
+        'data'  : this.fillCrearFIT
       }).then(response => {
-            this.fullscreenLoading = false;
-            this.$router.push('/tesis');
+        this.fullscreenLoading = false;
+        this.$router.push('/tesis');
       })
     },
     mostrarModalBusquedaEstudiante(){
