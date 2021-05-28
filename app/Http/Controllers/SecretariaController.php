@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\MailNotafinal;
 use App\User;
 use App\Fit;
+use App\ArchivoPdf;
+use App\Fit_User;
+use \stdClass;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,7 +19,7 @@ use Illuminate\Http\Request;
 class SecretariaController extends Controller
 {
     public function getListarAlumnos(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
 
         $idUser     = Auth::id();
         //$IdEscuela  = User::select('id_escuela')->where('id_user', $idUser)->get();
@@ -31,19 +36,21 @@ class SecretariaController extends Controller
         $IdEscuela  = ($IdEscuela == NULL) ? ($IdEscuela = '') : $IdEscuela;
         $EstadoAlumno  = ($EstadoAlumno == NULL) ? ($EstadoAlumno = '') : $EstadoAlumno;
 
-        $alumnos = DB::table('users')
-                        ->join('fit', 'fit.id_alumno', '=', 'users.id_user')
-                        ->leftjoin('pdftesis', 'pdftesis.id', '=', 'fit.id_actadefensa')
-                        ->select('fit.estado as estado_tesis', 'fit.id as id_tesis',DB::raw("CONCAT(users.nombres,' ',users.apellidos) as full_name"),'fit.rut_int1','pdftesis.path')
-                        ->where('users.id_escuela', 'like', "%{$IdEscuela}%")
-                        ->where([[(function($query) use ($nombre,$IdEscuela,$rut,$EstadoAlumno){
-                            $query
-                            ->where('fit.rut_int1', 'like', "%{$rut}%")
-                            ->where('fit.estado', 'like', "%{$EstadoAlumno}%")
-                            ->where(DB::raw("CONCAT(users.nombres,' ',users.apellidos)"), 'like', "%{$nombre}%")  ;
-                            })]])
-                        ->get();
-        return $alumnos;
+        $users = User::where('nombres', 'like', "%$nombre%")
+                     ->where('id_escuela', 'like', "%$IdEscuela%")
+                     ->where('rut', 'like', "%$rut%")
+                     ->get()->pluck('id_user');
+        $fitsId = Fit_User::whereIn('id_user', $users)->pluck('id_fit')->unique()->values();
+        $fits = Fit::whereIn('id', $fitsId)->where('estado', 'like', "%$EstadoAlumno%")->select('id', 'estado')->get();
+
+        $actas = $fits->map(function ($item, $key) {
+            $acta = ArchivoPdf::select('path')->where('id_fit', $item->id)->firstWhere('tipo_pdf', 'acta');
+            $alumnos = User::select('nombres', 'apellidos', 'rut')->whereIn('id_user', Fit_User::where('id_fit', $item->id)->pluck('id_user'))->get()->all();
+            $item->alumnos = $alumnos;
+            return collect($item)->merge($acta);
+        });
+    
+        return $actas;
     }
     public function setGenerarMemoRevision(Request $request){
 
@@ -78,39 +85,57 @@ class SecretariaController extends Controller
         return $pdf->download('invoice.pdf');
     }
     public function setSubirActa(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
         
-        $id         = $request->id_tesis;
-        $id_archivo = $request->id_archivo;
-        
-        Fit::find($id)->update(['id_actadefensa'=>$id_archivo]);
+        $id = $request->id_tesis;
+        $file = $request->file;
+        $bandera = Str::random(10);
+        $filename = $file->getClientOriginalName();
+        $fileserver = $bandera .'_'. $filename;
+
+        Storage::putFileAs('public/users', $file, $fileserver);
+
+        $rpta = new ArchivoPdf;
+        $rpta->path = asset('storage/users/'.$fileserver);
+        $rpta->filename = $filename;
+        $rpta->id_fit = $id;
+        $rpta->tipo_pdf = 'acta';
+        $rpta->save(); 
+
+        return $rpta;
     }
+
+
+
     public function setRegistrarNota(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
 
         $id         = $request->id_tesis;
         $nota       = $request->nota;
 
-        $DatosEmail = DB::table('fit')
-                    ->join('users as profesor_guia', 'profesor_guia.id_user', '=', 'fit.id_profesorguia')
-                    ->join('users as alumno', 'alumno.id_user', '=', 'fit.id_alumno')
-                    ->where('fit.id', '=', $id)
-                    ->select('profesor_guia.email as emailpg','alumno.email as email','fit.titulo', DB::raw("CONCAT(alumno.nombres,' ',alumno.apellidos) as full_name"))
-                    ->get();
-        $fecha = Carbon::now();
-        $DatosEmail[0]->fecha = $fecha;
-        $DatosEmail[0]->nota = $nota;
+        $DatosEmail = new stdClass();
+        $fit        = Fit::find($id);
+        $fitUser    = Fit_User::where('id_fit', $fit->id)->get()->pluck('id_user');
+        $alumnos    = User::whereIn('id_user', $fitUser)->get();
+        $fit->User_P_Guia;
 
+        $DatosEmail->emailpg = $fit->User_P_Guia->email;
+        $DatosEmail->titulo = $fit->titulo;
+        $DatosEmail->fecha = Carbon::now();
+        $DatosEmail->nota = $nota;
         if($nota >= 4){
             $estado = 'A';
-            $DatosEmail[0]->estadonota = 'Aprobo';
+            $DatosEmail->estadonota = 'Aprobo';
         }else{
             $estado = 'R';
-            $DatosEmail[0]->estadonota = 'Reprobo';
+            $DatosEmail->estadonota = 'Reprobo';
+        }
+        foreach($alumnos as $alumno){
+            $DatosEmail->email = $alumno->email;
+            $DatosEmail->full_name = $alumno->nombres . ' ' . $alumno->apellidos; 
+            Mail::to([$DatosEmail->email, $DatosEmail->emailpg])->queue(new MailNotafinal($DatosEmail));
         }
 
         Fit::find($id)->update(['nota'=>$nota,'estado'=>$estado]);
-   
-        Mail::to([$DatosEmail[0]->emailpg,$DatosEmail[0]->email])->queue(new MailNotafinal($DatosEmail[0]));
     }
 }
