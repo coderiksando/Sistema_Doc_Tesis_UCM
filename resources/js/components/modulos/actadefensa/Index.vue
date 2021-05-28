@@ -112,13 +112,21 @@
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in listarAlumnosPaginated" :key="index">
-                        <td v-text="item.full_name"></td>
-                        <td v-text="item.rut_int1"></td>
+                        <td> <!-- itera mostrando la cantidad total de estudiantes -->
+                            <div v-for="(itemUser, index) in item.alumnos" :key="index">
+                                <a v-text="itemUser.nombres + ' ' + itemUser.apellidos"></a>
+                            </div>
+                        </td>
+                        <td> <!-- itera mostrando la cantidad total de estudiantes -->
+                            <div v-for="(itemUser, index) in item.alumnos" :key="index">
+                                <a v-text="itemUser.rut"></a>
+                            </div>
+                        </td>
                         <td>
-                          <template v-if="item.estado_tesis == 'D'">
+                          <template v-if="item.estado == 'D'">
                             <span class="badge badge-warning" >En desarrollo</span>
                           </template>
-                          <template v-else-if="item.estado_tesis == 'A'">
+                          <template v-else-if="item.estado == 'A'">
                             <span class="badge badge-success" >Aprobada</span>
                           </template>
                           <template v-else>
@@ -126,10 +134,11 @@
                           </template>
                         </td>
                         <td>
-                          <router-link class="btn btn-flat btn-success btn-sm" :to="{name:'actadefensa.subirnota', params:{id: item.id_tesis}}">
+                          <router-link  class="btn btn-flat btn-success btn-sm" :to="{name:'actadefensa.subirnota', params:{id: item.id}}">
                             <i class="fas fa-graduation-cap"></i> Subir nota
                           </router-link>
-                          <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'actadefensa.subiracta', params:{id: item.id_tesis}}">
+                          <a v-if="item.path" class="btn btn-flat btn-warning btn-sm" :href="item.path" @click.prevent="downloadItem(item.path)"><i class="fas fa-file-download"> </i> Descargar</a>
+                          <router-link v-else class="btn btn-flat btn-primary btn-sm" :to="{name:'actadefensa.subiracta', params:{id: item.id}}">
                             <i class="fas fa-file-upload"></i> Subir Acta defensa
                           </router-link>
                         </td>
@@ -223,6 +232,15 @@ export default {
       this.getListarEscuelas();
     },
   methods:{
+    downloadItem (url) {
+    axios.get(url, { responseType: 'blob' })
+      .then(response => {
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        var link = URL.createObjectURL(blob);
+        window.open(link);
+      }).catch(console.error);
+    },
+
     getListarEscuelas(){
         this.fullscreenLoading = true;
         var url = '/administracion/escuelas/getListarEscuelas'

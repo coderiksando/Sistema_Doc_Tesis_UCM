@@ -129,13 +129,25 @@ export default {
     },
     setRegistrarArchivoPDF(){
       this.form.append('file', this.fillSubirActa.oArchivo)
+      this.form.append('id_tesis', this.fillSubirActa.IdTesis)
       const config = { headers: {'Content-Type': 'multipart/form-data'}}
-      var url = '/archivo/setRegistrarArchivoPDF'
-      axios.post(url, this.form, config).then(response =>{
-        console.log(response)
-        var nIdFile = response.data.id;
-        this.setRegistrarActa(nIdFile);
-      }) 
+      var url = '/secretaria/setSubirActa'
+      axios.post(url, this.form, config).then(response => {
+        this.fullscreenLoading = false;
+        this.$router.push('/actadefensa');
+        Swal.fire({
+        icon: 'success',
+        title: 'Acta subida correctamente',
+        showConfirmButton: true
+      })
+      }).catch(response=>{
+        this.fullscreenLoading = false;
+        Swal.fire({
+        icon: 'error',
+        title: 'Error al subir acta',
+        showConfirmButton: true
+      })
+      })
     },
     validarRegistrarActaDefensa(){
       this.error = 0;
@@ -150,11 +162,10 @@ export default {
         }
         return this.error;
     },
-    setRegistrarActa(nIdFile){
+    setRegistrarActa(){
       var url = '/secretaria/setSubirActa'
       axios.post(url, {
         'id_tesis'     : this.fillSubirActa.IdTesis,
-        'id_archivo'      : nIdFile
       })
     },
   }// cierre methods
