@@ -42,6 +42,6 @@ class Fit extends Model
         return $this->belongsTo(User::class, 'id_p_guia', 'id_user');
     }
     public function User_P_Coguia(){
-        return $this->belongsTo(User::class, 'id_p_guia', 'id_user');
+        return $this->belongsTo(User::class, 'id_p_co_guia', 'id_user');
     }
 }

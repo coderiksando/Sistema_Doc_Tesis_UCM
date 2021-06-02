@@ -17,7 +17,7 @@ window.Vue.use(ElementUI);
 
 import Vue from 'vue';
 import VPopover from 'vue-js-popover';
-Vue.use(VPopover, { tooltip: true ,locale }) // plantillas con vuejs
+Vue.use(VPopover, { tooltip: true ,locale }) // tooltips con vue
 window.Vue.use(VPopover);
 
 

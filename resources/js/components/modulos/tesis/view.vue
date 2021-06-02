@@ -30,14 +30,6 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                        <label class="col-md-3 col-form-label">Titulo</label>
-                                        <div class="col-md-9">
-                                        <textarea class="form-control" readonly v-model="fillVerFIT.cTitulo" rows="3"></textarea>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
                                             <label class="col-md-3 col-form-label">Profesor Guia</label>
                                             <div class="col-md-9">
                                                 <input type="text" readonly class="form-control" v-model="fillVerFIT.cProfesorguia" @keyup.enter="setRegistrarTesis">
@@ -46,9 +38,9 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Vinculacion</label>
+                                            <label class="col-md-3 col-form-label">Profesor Co-guía</label>
                                             <div class="col-md-9">
-                                                <input type="text" readonly class="form-control" v-model="fillVerFIT.nIdVinculacion" @keyup.enter="setRegistrarTesis">
+                                                <input type="text" readonly class="form-control" v-model="fillVerFIT.cProfesorCoGuia" @keyup.enter="setRegistrarTesis">
                                             </div>
                                         </div>
                                     </div>
@@ -62,10 +54,18 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                        <label class="col-md-3 col-form-label">Objetivo</label>
-                                        <div class="col-md-9">
-                                        <textarea class="form-control" readonly v-model="fillVerFIT.cObjetivo" rows="3"></textarea>
+                                            <label class="col-md-3 col-form-label">Vinculacion</label>
+                                            <div class="col-md-9">
+                                                <input type="text" readonly class="form-control" v-model="fillVerFIT.nIdVinculacion" @keyup.enter="setRegistrarTesis">
+                                            </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-md-3 col-form-label">Titulo</label>
+                                            <div class="col-md-9">
+                                                <textarea class="form-control" readonly v-model="fillVerFIT.cTitulo" rows="3"></textarea>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -76,61 +76,44 @@
                                         </div>
                                         </div>
                                     </div>
-                                    <div v-for="(item, index) in fillVerFIT.users" :key="index" class="row">
-                                        <div class="col-md-6">
-                                            <h3><b v-text="'Integrante Nº' + (index+1)"></b></h3>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                        <label class="col-md-3 col-form-label">Objetivo</label>
+                                        <div class="col-md-9">
+                                        <textarea class="form-control" readonly v-model="fillVerFIT.cObjetivo" rows="3"></textarea>
                                         </div>
-                                        <div class="col-md-6">
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Nombre</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" readonly class="form-control" v-model="item.user.nombres" @keyup.enter="setRegistrarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Rut</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" readonly class="form-control" v-model="item.user.rut" @keyup.enter="setRegistrarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Telefono</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" readonly class="form-control" v-model="item.user.telefono" @keyup.enter="setRegistrarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">email</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" readonly class="form-control" v-model="item.user.email" @keyup.enter="setRegistrarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Año ingreso</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" readonly class="form-control" v-model="item.user.created_at" @keyup.enter="setRegistrarTesis">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Año salida</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" readonly class="form-control" v-model="item.user.created_at" @keyup.enter="setRegistrarTesis">
-                                                </div>
-                                            </div>
-                                        </div> -->
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                        <label class="col-md-3 col-form-label">Descripcion</label>
+                                        <div class="col-md-9">
+                                        <textarea class="form-control" readonly v-model="fillVerFIT.cDescripcion" rows="3"></textarea>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h3><b v-text="'Tabla de integrantes'"></b></h3>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                    </div>
+                                    <table class ="table table-hover table-head-fixed text-nowrap projects ">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre integrante</th>
+                                                <th>Rut</th>
+                                                <th>Correo electrónico</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="(item, index) in fillVerFIT.users" :key="index">
+                                            <td>{{item.user.nombres + ' ' + item.user.apellidos}}</td>
+                                            <td>{{item.user.rut}}</td>
+                                            <td>{{item.user.email}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -166,10 +149,12 @@ export default {
         nIdTesis: this.$attrs.id,
         cTitulo: '',
         nIdPg: '',
+        nIdCoPg: '',
         nIdVinculacion: '',
         cTipo: '',
         cObjetivo: '',
         cContribucion: '',
+        cDescripcion: '',
         users: []
       },
       listTipo: [
@@ -237,7 +222,6 @@ export default {
           'nIdTesis' : this.fillVerFIT.nIdTesis
         }
       }).then(response => {
-          //this.getUsuarioEditar(response.data[0])
           this.getUsuarioVer(response.data);
           this.fullscreenLoading = false;
       })
@@ -245,10 +229,12 @@ export default {
     getUsuarioVer(data){
           this.fillVerFIT.cTitulo = data.titulo;
           this.fillVerFIT.cProfesorguia = data.user__p__guia.nombres + ' ' + data.user__p__guia.apellidos;
+          this.fillVerFIT.cProfesorCoGuia = data.user__p__coguia.nombres + ' ' + data.user__p__coguia.apellidos;
           this.fillVerFIT.nIdVinculacion = data.vinculaciones.nombre;
           this.fillVerFIT.cTipo = data.tipo;
           this.fillVerFIT.cObjetivo = data.objetivo;
           this.fillVerFIT.cContribucion = data.contribucion;
+          this.fillVerFIT.cDescripcion = data.descripcion;
           this.fillVerFIT.users = data.fit__user;
     },
 

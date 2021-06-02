@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <tooltip/>
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -24,7 +24,16 @@
           <div class="container-fluid">
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario  inscripcion de tesis</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title">Formulario  inscripción de tesis</h3>
+                                </div>
+                                <div class="col-md-6" style="text-align: right;">
+                                    <button class="btn btn-secondary" @click.prevent="mostrarModalAyuda">Ayuda
+                                        <i class="fas fa-question-circle" ></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                             <div class="card-body">
                                 <form role="form">
@@ -36,6 +45,24 @@
                                                     <el-select v-model="fillCrearFIT.nIdPg"
                                                     placeholder="Asignar Profesor Guia"
                                                     clearable>
+                                                    <el-option
+                                                        v-for="item in listProfesores"
+                                                        :key="item.id_user"
+                                                        :label="item.fullname"
+                                                        :value="item.id_user">
+                                                    </el-option>
+                                                    </el-select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label">Profesor Co-guía</label>
+                                                <div class="col-md-9">
+                                                    <el-select v-model="fillCrearFIT.nIdCoPg"
+                                                    placeholder="Asignar Profesor Co-guía"
+                                                    clearable
+                                                    v-popover:tooltip.bottom="'Este campo es opcional'">
                                                     <el-option
                                                         v-for="item in listProfesores"
                                                         :key="item.id_user"
@@ -65,70 +92,6 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Titulo</label>
-                                                <div class="col-md-9">
-                                                    <el-input
-                                                      type="textarea"
-                                                      :autosize="{ minRows: 2, maxRows: 5}"
-                                                      maxlength="130"
-                                                      placeholder="Titulo de la tesis"
-                                                      show-word-limit
-                                                      v-model="fillCrearFIT.cTitulo">
-                                                    </el-input>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Contribucion</label>
-                                                <div class="col-md-9">
-                                                    <el-input
-                                                      type="textarea"
-                                                      :autosize="{ minRows: 2, maxRows: 5}"
-                                                      maxlength="500"
-                                                      placeholder="Contribucion esperada"
-                                                      show-word-limit
-                                                      v-model="fillCrearFIT.cContribucion">
-                                                    </el-input>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Objetivo
-                                                </label>
-                                                <div class="col-md-9">
-                                                    <el-input
-                                                      type="textarea"
-                                                      :autosize="{ minRows: 2, maxRows: 5}"
-                                                      maxlength="500"
-                                                      placeholder="Objetivo de la tesis"
-                                                      show-word-limit
-                                                      v-model="fillCrearFIT.cObjetivo">
-                                                    </el-input>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Descripcion
-                                                </label>
-                                                <div class="col-md-9">
-                                                    <el-input
-                                                      type="textarea"
-                                                      :autosize="{ minRows: 2, maxRows: 5}"
-                                                      maxlength="500"
-                                                      placeholder="Descripcion del tema"
-                                                      show-word-limit
-                                                      v-model="fillCrearFIT.cDescripcion">
-                                                    </el-input>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Vinculacion</label>
                                                 <div class="col-md-9">
                                                     <el-select v-model="fillCrearFIT.nIdVinculacion"
@@ -144,66 +107,117 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6"></div>
-
-                                        <!-- revision de estado de una promesa -->
-                                        <div class="col-md-6"></div>
-                                            <template v-if="fillCrearFIT.cUsers.length > 0">
-                                                <!-- iteración de usuarios dentro de fillcrearfit.cusers -->
-                                                <template v-for="(item, index) in fillCrearFIT.cUsers">
-                                                    <div class="col-md-9" :key="index">
-                                                        <h3><b v-text="'Integrante Nº' + (index+1)"></b></h3>
-                                                    </div>
-                                                    <template v-if="item.estadoConfirmado !== 'A'">
-                                                        <div class="col-md-3" :key="'boton' + index">
-                                                            <div class="text-right mb-2">
-                                                                <button class="btn btn-danger" @click.prevent="eliminarEstudiante(item)">
-                                                                    <i class="fas fa-trash"></i> Eliminar
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </template>
-                                                    <div class="col-md-6" :key="'nombre' + index">
-                                                        <div class="form-group row">
-                                                            <label class="col-md-3 col-form-label">Nombre</label>
-                                                            <div class="col-md-9">
-                                                                <input type="text" readonly class="form-control" v-model="fillCrearFIT.cUsers[index].nombres" @keyup.enter="setRegistrarTesis">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6" :key="'rut' + index">
-                                                        <div class="form-group row">
-                                                            <label class="col-md-3 col-form-label">Apellido</label>
-                                                            <div class="col-md-9">
-                                                                <input type="text" readonly class="form-control" v-model="fillCrearFIT.cUsers[index].apellidos" @keyup.enter="setRegistrarTesis">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6" :key="'telefono' + index">
-                                                        <div class="form-group row">
-                                                            <label class="col-md-3 col-form-label">Rut</label>
-                                                            <div class="col-md-9">
-                                                                <input type="text" readonly class="form-control" v-model="fillCrearFIT.cUsers[index].rut" @keyup.enter="setRegistrarTesis">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6" :key="'email' + index">
-                                                        <div class="form-group row">
-                                                            <label class="col-md-3 col-form-label">email</label>
-                                                            <div class="col-md-9">
-                                                                <input type="text" readonly class="form-control" v-model="fillCrearFIT.cUsers[index].email" @keyup.enter="setRegistrarTesis">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </template>
-                                            </template>
-
-                                            <div class="col-md-6">
-                                                <button class="btn btn-info bnt-sm" @click.prevent="mostrarModalBusquedaEstudiante">
-                                                    Añadir más integrantes +
-                                                </button>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label">Título</label>
+                                                <div class="col-md-9">
+                                                    <el-input
+                                                      type="textarea"
+                                                      :autosize="{ minRows: 2, maxRows: 5}"
+                                                      maxlength="130"
+                                                      placeholder="Título de la tesis"
+                                                      show-word-limit
+                                                      v-model="fillCrearFIT.cTitulo">
+                                                    </el-input>
+                                                </div>
                                             </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label">Contribución</label>
+                                                <div class="col-md-9">
+                                                    <el-input
+                                                      type="textarea"
+                                                      :autosize="{ minRows: 2, maxRows: 5}"
+                                                      maxlength="500"
+                                                      placeholder="Contribución esperada"
+                                                      show-word-limit
+                                                      v-model="fillCrearFIT.cContribucion">
+                                                    </el-input>
+                                                </div>
+                                            </div>
+                                        </div>
 
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label">Objetivo</label>
+                                                <div class="col-md-9">
+                                                    <el-input
+                                                      type="textarea"
+                                                      :autosize="{ minRows: 2, maxRows: 5}"
+                                                      maxlength="500"
+                                                      placeholder="Objetivo de la tesis"
+                                                      show-word-limit
+                                                      v-model="fillCrearFIT.cObjetivo">
+                                                    </el-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label">Descripción</label>
+                                                <div class="col-md-9">
+                                                    <el-input
+                                                      type="textarea"
+                                                      :autosize="{ minRows: 2, maxRows: 5}"
+                                                      maxlength="500"
+                                                      placeholder="Descripción del tema"
+                                                      show-word-limit
+                                                      v-model="fillCrearFIT.cDescripcion">
+                                                    </el-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h3><b v-text="'Tabla de integrantes'"></b></h3>
+                                        </div>
+                                        <div class="col-md-6">
+
+                                        </div>
+                                        <table class ="table table-hover table-head-fixed text-nowrap projects ">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre integrante</th>
+                                                    <th>Rut</th>
+                                                    <th>Correo electrónico</th>
+                                                    <th>Acciones </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="(item, index) in fillCrearFIT.cUsers" :key="index">
+                                                <td>{{item.nombres + ' ' + item.apellidos}}</td>
+                                                <td>{{item.rut}}</td>
+                                                <td>{{item.email}}</td>
+                                                <td>
+                                                    <template v-if="myOwnUser.id_user && item.id_user">
+                                                        <template v-if="item.id_user !== myOwnUser.id_user">
+                                                            <div class="col-md-3" :key="'boton' + index">
+                                                                <div class="text-right mb-2">
+                                                                    <button class="btn btn-danger" @click.prevent="eliminarEstudiante(item)">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </template>
+                                                        <template v-else>
+                                                            <div class="col-md-3" :key="'boton' + index">
+                                                                <div class="text-right mb-2">
+                                                                    <button class="btn btn-danger" @click.prevent="" disabled>
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </template>
+                                                    </template>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="col-md-6">
+                                            <button class="btn btn-info bnt-sm" @click.prevent="mostrarModalBusquedaEstudiante">
+                                                <i class="fas fa-user-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -312,6 +326,48 @@
       </div>
     </div>
 
+    <div class="modal fade" :class="{ show: modalAyuda }" :style="modalAyuda ? mostrarModal : ocultarModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Ventana de ayuda de íconos</h5>
+            <button class="close" @click="mostrarModalAyuda"></button>
+          </div>
+          <div class="modal-body">
+            <table class ="table table-hover table-head-fixed text-nowrap projects ">
+                <thead>
+                    <tr>
+                        <th>Ícono</th>
+                        <th>Nombre</th>
+                        <th>Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="fas fa-arrow-left"></i></td>
+                        <td>Regresar</td>
+                        <td>Vuelve a la sección anterior de la página</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-trash"></i></td>
+                        <td>Borrar</td>
+                        <td>Elimina los datos insertados en la sección</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-user-plus"></i></td>
+                        <td>Agregar</td>
+                        <td>Inserta nuevos usuarios para integrar un formulario de ingreso de tesis</td>
+                    </tr>
+                </tbody>
+                </table>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" @click="mostrarModalAyuda">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -322,6 +378,7 @@ export default {
         fillCrearFIT:{
             cTitulo: '',
             nIdPg: '',
+            nIdCoPg: '',
             nIdVinculacion: '',
             cTipo: '',
             cObjetivo: '',
@@ -348,6 +405,7 @@ export default {
         fullscreenLoading: false,
         modalShow: false,
         modalSearchUser: false,
+        modalAyuda:false,
         mostrarModal: {
             display: 'block',
             background: '#0000006b'
@@ -419,6 +477,9 @@ export default {
         }
         if(!this.fillCrearFIT.nIdPg){
           this.mensajeError.push("El profesor guia es un campo obligatorio")
+        }
+        if(this.fillCrearFIT.nIdPg === this.fillCrearFIT.nIdCoPg) {
+            this.mensajeError.push("No es posible asignar al mismo profesor guía como coguía")
         }
         if(!this.fillCrearFIT.cTipo){
           this.mensajeError.push("El tipo es un campo obligatorio")
@@ -523,6 +584,9 @@ export default {
     inicializarPaginacion(){
       this.pageNumber = 0;
     },
+    mostrarModalAyuda() {
+        this.modalAyuda = !this.modalAyuda;
+    }
   }// cierre methods
 }
 </script>

@@ -212,6 +212,7 @@ class AlumnoController extends Controller
         DB::transaction(function () use ($fit) {
             $registroFit = new Fit;
             $registroFit->id_p_guia = $fit->nIdPg;
+            $registroFit->id_p_co_guia = $fit->nIdCoPg;
             $registroFit->id_vinculacion = $fit->nIdVinculacion;
             $registroFit->titulo = $fit->cTitulo;
             $registroFit->tipo = $fit->cTipo;
