@@ -127,6 +127,19 @@
               </template>    
             </li>
           </template>
+          <template  v-if="listPermisos.includes('parametros.index')">
+            <li class="nav-header">CONTROL DE SISTEMA</li>
+            <li class="nav-item">
+              <template v-if="listPermisos.includes('parametros.index')">
+                <router-link class="nav-link" :to="'/parametros'">
+                  <i class="nav-icon fas fa-cog"></i>
+                  <p>
+                    Parametros
+                  </p>
+                </router-link>  
+              </template>
+            </li>
+          </template>
           <!-- VISTA PARA ADMINISTRACION DE REPORTES -->
           <template  v-if="listPermisos.includes('reportes.reportefit')">
             <li class="nav-header">REPORTES</li>

@@ -30,5 +30,6 @@ class DatabaseSeeder extends Seeder
         $this->call(BitacorasSeeder::class);
         $this->call(ArchivoPdfSeeder::class);
         $this->call(AvancesTesisSeeder::class);
+        $this->call(ParametrosSeeder::class);
     }
 }

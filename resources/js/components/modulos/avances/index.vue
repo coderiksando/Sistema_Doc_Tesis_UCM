@@ -210,7 +210,7 @@ export default {
   filters:{
     moment: function (date) {
       moment.locale('es');
-      return moment(date).format('lll');
+      return moment(date).format('DD/MM/YYYY, h:mm a');
     }
   },
   methods:{

@@ -1,7 +1,7 @@
-import vue from 'vue'
-import Router from 'vue-router'
+import vue from 'vue';
+import Router from 'vue-router';
 
-vue.use(Router)
+vue.use(Router);
 
 function verificarAcceso(to, from, next) {
     let authUser = JSON.parse(localStorage.getItem('authUser'));
@@ -15,15 +15,15 @@ function verificarAcceso(to, from, next) {
                 if (x.includes('index')) {
                     listRolPermisosByUsuarioFilter.push(x);
                 }
-            })
+            });
             if (to.name == 'dashboard.index') {
 //                 next({ name: listRolPermisosByUsuarioFilter[0] });
             } else {
-                next(from.path)
+                next(from.path);
             }
         }
     } else {
-        next('/')
+        next('/');
     }
 }
 //concentracion de rutas
@@ -473,8 +473,19 @@ export const rutas = [
         verificarAcceso(to, from, next);
     }
  },
-/******** RUTAS MODULO DE REGISTRO DE TESIS FINALIZADAS *********/
+/******** RUTAS MODULO DE PARAMETROS DEL SISTEMA *********/
+
 {
+    path: '/parametros',
+    name: 'parametros.index',
+    component: require('./components/modulos/parametros/index').default,
+    beforeEnter: (to, from, next) => {
+        verificarAcceso(to, from, next);
+    }
+ },
+
+/******** RUTAS MODULO DE REGISTRO DE TESIS FINALIZADAS *********/
+ {
     path: '/registrodetesis',
     name: 'registrar.tesis',
     component: require('./components/modulos/registrodetesis/registrotesisfinalizadas').default,
@@ -482,10 +493,10 @@ export const rutas = [
         verificarAcceso(to, from, next);
     }
  },
-]//cierre concentracion de rutas
+];//cierre concentracion de rutas
 
 export default new Router({
     routes: rutas,
     mode: 'history',
     linkActiveClass: 'active'
-})
+});

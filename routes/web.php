@@ -119,6 +119,10 @@ Route::get('/secretaria/getListarAlumnos', 'SecretariaController@getListarAlumno
 Route::Post('/secretaria/setGenerarMemoRevision', 'SecretariaController@setGenerarMemoRevision');
 Route::post('/secretaria/setSubirActa', 'SecretariaController@setSubirActa');
 Route::post('/secretaria/setRegistrarNota', 'SecretariaController@setRegistrarNota');
+
+/*********    RUTAS MODULO DE ADMINISTRACION DE PARAMETROS     **********/
+Route::post('/admin/parametros', 'ParametrosController@getParametros');
+
 });//cierre de rutas que requieren autenticacion
 
 /********** RUTA BASE **********/
