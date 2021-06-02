@@ -21,15 +21,16 @@ class FitSeeder extends Seeder
             'id'=>'1',
             'id_vinculacion'=>'1',
             'id_p_guia' => '2',
+            'id_p_co_guia' => '4',
             'estado' => 'D',
-            'titulo' => 'La tesis mas chingona del mundo',
+            'titulo' => 'Titulo de tesis',
             'tipo' => 'tesis',
-            'objetivo' => 'hacer del mundo un lugar mejor',
-            'descripcion' => 'no puedo, es ultrasecreto',
-            'contribucion' => 'obvio yo pago todos mis impuestos',
+            'objetivo' => 'Objetivo de tesis',
+            'descripcion' => 'Descripcion de tesis',
+            'contribucion' => 'Contribucion de tesis',
             'aprobado_pg' => 'P'
         ]);
 
-        factory(Fit::class, 50)->create();
+        factory(Fit::class, 10)->create();
     }
 }

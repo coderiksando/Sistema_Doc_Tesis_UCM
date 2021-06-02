@@ -10,11 +10,15 @@ window.Vue = require('vue');
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import locale from 'element-ui/lib/locale/lang/es'
+import locale from 'element-ui/lib/locale/lang/es';
 
 Vue.use(ElementUI, { locale }) // plantillas con vuejs
 window.Vue.use(ElementUI);
 
+import Vue from 'vue';
+import VPopover from 'vue-js-popover';
+Vue.use(VPopover, { tooltip: true ,locale }) // plantillas con vuejs
+window.Vue.use(VPopover);
 
 
 import Swal from 'sweetalert2';// alertas en botones

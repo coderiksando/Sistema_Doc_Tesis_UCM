@@ -1,10 +1,10 @@
 <template>
-  
-  <div>      
+
+  <div>
     <!-- navbar -->
-    <Navbar :ruta="ruta"> </Navbar>  
+    <Navbar :ruta="ruta"> </Navbar>
     <!-- Main Sidebar Container -->
-      <Sidebar :ruta="ruta" :usuario="authUser" :listPermisos="listRolPermisosByUsuario" > </Sidebar> 
+      <Sidebar :ruta="ruta" :usuario="authUser" :listPermisos="listRolPermisosByUsuario" > </Sidebar>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" >
       <transition name="slide-fade" mode="out-in" >
@@ -23,9 +23,10 @@
 </template>
 
 <script>
-import Navbar from'./plantilla/Navbar'
-import Sidebar from'./plantilla/Sidebar'
-import Footer from './plantilla/Footer'
+import Navbar from'./plantilla/Navbar';
+import Sidebar from'./plantilla/Sidebar';
+import Footer from './plantilla/Footer';
+
 export default {
     props: ['ruta', 'usuario'],
     components:{Navbar, Sidebar, Footer},
@@ -37,7 +38,7 @@ export default {
     },
     mounted(){
       //console.log(JSON.parse(localStorage.getItem('listRolPermisosByUsuario')))
-      
+
       this.listRolPermisosByUsuario = JSON.parse(localStorage.getItem('listRolPermisosByUsuario'))
       EventBus.$on('verifyAuthenticatedUser', data => {
         //console.log(data);
@@ -51,5 +52,4 @@ export default {
 </script>
 
 <style>
-
 </style>

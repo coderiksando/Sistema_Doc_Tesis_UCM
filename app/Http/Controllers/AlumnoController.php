@@ -170,6 +170,7 @@ class AlumnoController extends Controller
         $fit = Fit::where('id', $nIdTesis)->first();
         $fit->Vinculaciones;
         $fit->User_P_Guia;
+        $fit->User_P_Coguia;
         foreach($fit->Fit_User->all() as $fit_user) {
             $fit_user->User->first();
         }
@@ -346,6 +347,7 @@ class AlumnoController extends Controller
         DB::transaction(function () use ($fit) {
             $registroFit = Fit::find($fit->id);
             $registroFit->id_p_guia = $fit->id_profesorguia;
+            $registroFit->id_p_co_guia = $fit->id_profesor_coguia;
             $registroFit->id_vinculacion = $fit->id_vinculacion;
             $registroFit->titulo = $fit->titulo;
             $registroFit->tipo = $fit->tipo;
@@ -488,10 +490,10 @@ class AlumnoController extends Controller
     }
     public function getUsersAlumnosParametros(Request $request){
         $alumnoBuscado = [];
-        $rpta = User::where('rut', $request->rut)
-                    ->orWhere('nombres', $request->nombre)
-                    ->orWhere('apellidos', $request->apellido)
-                    ->orWhere('email', $request->email)
+        $rpta = User::where('rut', 'like',"%$request->rut%")
+                    ->orWhere('nombres','like', "%$request->nombre%")
+                    ->orWhere('apellidos','like', "%$request->apellido%")
+                    ->orWhere('email','like', "%$request->email%")
                     ->get()->all();
         foreach($rpta as $user){
             foreach($user->Users_Roles->all() as $user_rol){

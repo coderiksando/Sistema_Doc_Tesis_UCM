@@ -27,7 +27,7 @@ class FitUserSeeder extends Seeder
             'id_fit' => '1'
         ]);
 
-        foreach (Roles::find(2)->Users_Roles as $user) {
+        foreach (Roles::find(2)->Users_Roles->where('id_user', '<>', '5') as $user) {
             Fit_User::create([
                 'id_user' => $user->id_user,
                 'id_fit' => Fit::all()->skip(1)->random()->id

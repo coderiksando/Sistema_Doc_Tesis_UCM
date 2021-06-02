@@ -9,8 +9,8 @@ class Fit extends Model
     protected $table = 'fit';
 
     protected $fillable = [
-        'id', 'id_vinculacion', 'id_p_guia', 'nota','estado',
-        'titulo','tipo','objetivo','descripcion',
+        'id', 'id_vinculacion', 'id_p_guia', 'id_p_co_guia', 'nota',
+        'estado', 'titulo','tipo','objetivo','descripcion',
         'contribucion', 'aprobado_pg','created_at','updated_at'
     ];
 
@@ -39,6 +39,9 @@ class Fit extends Model
         return $this->hasMany(AvancesTesis::class, 'id_tesis', 'id');
     }
     public function User_P_Guia(){
+        return $this->belongsTo(User::class, 'id_p_guia', 'id_user');
+    }
+    public function User_P_Coguia(){
         return $this->belongsTo(User::class, 'id_p_guia', 'id_user');
     }
 }
