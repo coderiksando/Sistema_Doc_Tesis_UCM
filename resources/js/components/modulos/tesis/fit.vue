@@ -33,7 +33,16 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Bandeja de resultados</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="card-title">Bandeja de resultados</h3>
+                    </div>
+                    <div class="col-md-6" style="text-align: right;">
+                        <button class="btn btn-secondary" @click.prevent="mostrarModalAyuda">Ayuda
+                            <i class="fas fa-question-circle" ></i>
+                        </button>
+                    </div>
+                </div>
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listTesis.length">
@@ -79,25 +88,25 @@
                           </template>
                         </td>
                         <td>
-                          <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: item.id}}">
-                            <i class="fas fa-folder"></i> Ver
+                          <router-link class="btn btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: item.id}}">
+                            <i class="fas fa-folder"></i>
                           </router-link>
                           <template v-if="item.aprobado_pg == 'A'">
-                            <button class="btn btn-flat btn-light btn-sm" @click.prevent="setGenerarDocumento(item.id)">
-                              <i class="fas fa-pencil-alt"></i> Ver PDF
+                            <button class="btn btn-warning btn-sm" @click.prevent="setGenerarDocumento(item.id)">
+                              <i class="fas fa-file-download"></i>
                             </button>
                           </template>
-                          <template v-if="item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
-                            <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'tesis.editar', params:{id: item.id}}">
-                              <i class="fas fa-pencil-alt"></i> Editar
+                          <template v-if="item.aprobado_pg == 'R'">
+                            <router-link class="btn btn-info btn-sm" :to="{name:'tesis.editar', params:{id: item.id}}">
+                              <i class="fas fa-pencil-alt"></i>
                             </router-link>
 
                             <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
-                                <button class="btn btn-flat btn-success btn-sm" @click.prevent="setCambiarEstadoFIT(1, item.id)">
-                                  <i class="fas fa-check"></i>Aprobar
+                                <button class="btn btn-success btn-sm" @click.prevent="setCambiarEstadoFIT(1, item.id)">
+                                  <i class="fas fa-check"></i>
                                 </button>
-                                <button class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarEstadoFIT(2, item.id)">
-                                  <i class="fas fa-trash"></i>Rechazar
+                                <button class="btn btn-danger btn-sm" @click.prevent="setCambiarEstadoFIT(2, item.id)">
+                                  <i class="fas fa-trash"></i>
                                 </button>
                             </template>
                           </template>
@@ -237,8 +246,65 @@
         </template>
       </div>
     </div>
+    <div class="modal fade" :class="{ show: modalAyuda }" :style="modalAyuda ? mostrarModal : ocultarModal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Ventana de ayuda de íconos</h5>
+            <button class="close" @click="mostrarModalAyuda"></button>
+            </div>
+            <div class="modal-body">
+            <table class ="table table-hover table-head-fixed text-nowrap projects ">
+                <thead>
+                    <tr>
+                        <th>Ícono</th>
+                        <th>Nombre</th>
+                        <th>Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="fas fa-plus-square"></i></td>
+                        <td>Agregar</td>
+                        <td>Módulo de registro de datos de FIT</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-folder"></i></td>
+                        <td>Ver</td>
+                        <td>Visión protegida de los datos ingresados en FIT</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-file-download"></i></td>
+                        <td>Descarga</td>
+                        <td>Descarga de los datos inscritos en la plataforma</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-pencil-alt"></i></td>
+                        <td>Edición</td>
+                        <td>Visión y cambios de datos de FIT</td>
+                    </tr>
+                    <template v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
+                        <tr>
+                            <td><i class="fas fa-check"></i></td>
+                            <td>Aprobar</td>
+                            <td>Aprobación de los datos inscritos por el alumno (envío de correo)</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-trash"></i></td>
+                            <td>Rechazar</td>
+                            <td>Rechazo de los datos inscritos por el alumno (envío de correo)</td>
+                        </tr>
+                    </template>
+                </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" @click="mostrarModalAyuda">Cerrar</button>
+            </div>
+        </div>
+        </div>
+    </div>
 </div>
-
 </template>
 
 <script>
@@ -278,6 +344,7 @@ export default {
       pageNumber: 0,
       perPage: 5,
       modalShow: false,
+      modalAyuda: false,
       modalOption: 0,
       mostrarModal: {
         display: 'block',
@@ -410,6 +477,9 @@ export default {
         })
       }
     })
+    },
+    mostrarModalAyuda() {
+        this.modalAyuda = !this.modalAyuda;
     }
 
 
