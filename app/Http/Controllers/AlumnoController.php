@@ -170,6 +170,7 @@ class AlumnoController extends Controller
         $fit = Fit::where('id', $nIdTesis)->first();
         $fit->Vinculaciones;
         $fit->User_P_Guia;
+        $fit->User_P_Coguia;
         foreach($fit->Fit_User->all() as $fit_user) {
             $fit_user->User->first();
         }
@@ -211,6 +212,7 @@ class AlumnoController extends Controller
         DB::transaction(function () use ($fit) {
             $registroFit = new Fit;
             $registroFit->id_p_guia = $fit->nIdPg;
+            $registroFit->id_p_co_guia = $fit->nIdCoPg;
             $registroFit->id_vinculacion = $fit->nIdVinculacion;
             $registroFit->titulo = $fit->cTitulo;
             $registroFit->tipo = $fit->cTipo;
@@ -315,11 +317,11 @@ class AlumnoController extends Controller
         $nIdTesis   = ($nIdTesis == NULL) ? ($nIdTesis = 0) : $nIdTesis;
         $cEstadoPg  = ($cEstadoPg == NULL) ? ($cEstadoPg = 0) : $cEstadoPg;
 
-        $rpta = DB::select('call sp_alumno_setCambiarEstadoFIT (?, ?)',
-                                                                [
-                                                                    $nIdTesis,
-                                                                    $cEstadoPg
-                                                                ]);
+        // ingresando la información nueva de fit
+        $registroFit = Fit::find($nIdTesis);
+        $registroFit->aprobado_pg = $cEstadoPg;
+        $registroFit->motivo_pg = $request->motivo;
+        $registroFit->update();
         // Envío de email a estudiantes con el informe de su estado FIT
         $fit = Fit::find($nIdTesis);
         $fecha = Carbon::now();
@@ -334,6 +336,7 @@ class AlumnoController extends Controller
             $datoInsertado->full_name = ($fit->User_P_Guia->nombres) . ' ' . ($fit->User_P_Guia->apellidos);
             $datoInsertado->fecha = $fecha;
             $datoInsertado->estado = $estadoFit;
+            $datoInsertado->motivo = $request->motivo;
             array_push($datosEmail, $datoInsertado);
             Mail::to($datosEmail[$i]->emailpg)->queue(new MailAceptacionFit($datosEmail[$i]));
             $i++;
@@ -346,6 +349,7 @@ class AlumnoController extends Controller
         DB::transaction(function () use ($fit) {
             $registroFit = Fit::find($fit->id);
             $registroFit->id_p_guia = $fit->id_profesorguia;
+            $registroFit->id_p_co_guia = $fit->id_profesor_coguia;
             $registroFit->id_vinculacion = $fit->id_vinculacion;
             $registroFit->titulo = $fit->titulo;
             $registroFit->tipo = $fit->tipo;
@@ -488,10 +492,10 @@ class AlumnoController extends Controller
     }
     public function getUsersAlumnosParametros(Request $request){
         $alumnoBuscado = [];
-        $rpta = User::where('rut', $request->rut)
-                    ->orWhere('nombres', $request->nombre)
-                    ->orWhere('apellidos', $request->apellido)
-                    ->orWhere('email', $request->email)
+        $rpta = User::where('rut', 'like',"%$request->rut%")
+                    ->orWhere('nombres','like', "%$request->nombre%")
+                    ->orWhere('apellidos','like', "%$request->apellido%")
+                    ->orWhere('email','like', "%$request->email%")
                     ->get()->all();
         foreach($rpta as $user){
             foreach($user->Users_Roles->all() as $user_rol){

@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <tooltip/>
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -24,18 +24,45 @@
           <div class="container-fluid">
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario de edicion  FIT</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="card-title">Formulario de edicion FIT</h3>
+                                </div>
+                                <div class="col-md-6" style="text-align: right;">
+                                    <button class="btn btn-secondary" @click.prevent="mostrarModalAyuda">Ayuda
+                                        <i class="fas fa-question-circle" ></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                             <div class="card-body">
                                 <form role="form">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Profesor Guia</label>
+                                                <label class="col-md-3 col-form-label">Profesor Guía</label>
                                                 <div class="col-md-9">
                                                     <el-select v-model="fillEditarFIT.nIdPg"
-                                                    placeholder="Asignar Profesor Guia"
+                                                    placeholder="Asignar Profesor Guía"
                                                     clearable>
+                                                    <el-option
+                                                        v-for="item in listProfesores"
+                                                        :key="item.id_user"
+                                                        :label="item.fullname"
+                                                        :value="item.id_user">
+                                                    </el-option>
+                                                    </el-select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label">Profesor Co-guía</label>
+                                                <div class="col-md-9">
+                                                    <el-select v-model="fillEditarFIT.nIdCoPg"
+                                                    placeholder="Asignar Profesor Co-guía"
+                                                    clearable
+                                                    v-popover:tooltip.bottom="'Este campo es opcional'">
                                                     <el-option
                                                         v-for="item in listProfesores"
                                                         :key="item.id_user"
@@ -65,30 +92,46 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Titulo</label>
+                                                <label class="col-md-3 col-form-label">Vinculación</label>
+                                                <div class="col-md-9">
+                                                    <el-select v-model="fillEditarFIT.nIdVinculacion"
+                                                    placeholder="Asignar Vinculación"
+                                                    clearable>
+                                                    <el-option
+                                                        v-for="item in listVinculacion"
+                                                        :key="item.id"
+                                                        :label="item.nombre"
+                                                        :value="item.id"
+                                                        v-popover:tooltip.right="item.descripcion">
+                                                    </el-option>
+                                                    </el-select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label">Título</label>
                                                 <div class="col-md-9">
                                                     <el-input
                                                       type="textarea"
                                                       :autosize="{ minRows: 2, maxRows: 5}"
                                                       maxlength="130"
-                                                      placeholder="Objetivo"
+                                                      placeholder="Título"
                                                       show-word-limit
                                                       v-model="fillEditarFIT.cTitulo">
                                                     </el-input>
                                                 </div>
                                             </div>
                                         </div>
-
-
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Contribucion</label>
+                                                <label class="col-md-3 col-form-label">Contribución</label>
                                                 <div class="col-md-9">
                                                     <el-input
                                                       type="textarea"
                                                       :autosize="{ minRows: 2, maxRows: 5}"
                                                       maxlength="500"
-                                                      placeholder="Contribucion"
+                                                      placeholder="Contribución"
                                                       show-word-limit
                                                       v-model="fillEditarFIT.cContribucion">
                                                     </el-input>
@@ -113,40 +156,68 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Descripcion
+                                                <label class="col-md-3 col-form-label">Descripción
                                                 </label>
                                                 <div class="col-md-9">
                                                     <el-input
                                                       type="textarea"
                                                       :autosize="{ minRows: 2, maxRows: 5}"
                                                       maxlength="500"
-                                                      placeholder="Objetivo"
+                                                      placeholder="Descripción"
                                                       show-word-limit
                                                       v-model="fillEditarFIT.cDescripcion">
                                                     </el-input>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Vinculacion</label>
-                                                <div class="col-md-9">
-                                                    <el-select v-model="fillEditarFIT.nIdVinculacion"
-                                                    placeholder="Asignar Vinculacion"
-                                                    clearable>
-                                                    <el-option
-                                                        v-for="item in listVinculacion"
-                                                        :key="item.id"
-                                                        :label="item.nombre"
-                                                        :value="item.id">
-                                                    </el-option>
-                                                    </el-select>
-                                                </div>
-                                            </div>
+                <div class="col-md-6">
+                    <h3><b v-text="'Tabla de integrantes'"></b></h3>
+                </div>
+                <div class="col-md-6">
+
+                </div>
+                <table class ="table table-hover table-head-fixed text-nowrap projects ">
+                    <thead>
+                        <tr>
+                            <th>Nombre integrante</th>
+                            <th>Rut</th>
+                            <th>Correo electrónico</th>
+                            <th>Acciones </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(item, index) in fillEditarFIT.cUsers" :key="index">
+                        <td>{{item.nombres + ' ' + item.apellidos}}</td>
+                        <td>{{item.rut}}</td>
+                        <td>{{item.email}}</td>
+                        <td>
+                            <template v-if="myOwnUser.id_user && item.id_user">
+                                <template v-if="item.id_user !== myOwnUser.id_user">
+                                    <div class="col-md-3" :key="'boton' + index">
+                                        <div class="text-right mb-2">
+                                            <button class="btn btn-danger" @click.prevent="eliminarEstudiante(item)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <div class="col-md-3" :key="'boton' + index">
+                                        <div class="text-right mb-2">
+                                            <button class="btn btn-danger" @click.prevent="" disabled>
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
 
                                         <!-- revision de estado de una promesa -->
-                                        <div class="col-md-6"></div>
+                                        <!-- <div class="col-md-6"></div>
                                         <template v-if="fillEditarFIT.cUsers.length">
                                             <template v-for="(item, index) in fillEditarFIT.cUsers">
                                                 <div class="col-md-9" :key="index">
@@ -196,10 +267,10 @@
                                                     </div>
                                                 </div>
                                             </template>
-                                        </template>
+                                        </template> -->
                                         <div class="col-md-6">
                                             <button class="btn btn-info bnt-sm" @click.prevent="mostrarModalBusquedaEstudiante">
-                                                Añadir más integrantes +
+                                                <i class="fas fa-user-plus"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -306,6 +377,48 @@
       </div>
     </div>
 
+    <div class="modal fade" :class="{ show: modalAyuda }" :style="modalAyuda ? mostrarModal : ocultarModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Ventana de ayuda de íconos</h5>
+            <button class="close" @click="mostrarModalAyuda"></button>
+          </div>
+          <div class="modal-body">
+            <table class ="table table-hover table-head-fixed text-nowrap projects ">
+                <thead>
+                    <tr>
+                        <th>Ícono</th>
+                        <th>Nombre</th>
+                        <th>Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="fas fa-arrow-left"></i></td>
+                        <td>Regresar</td>
+                        <td>Vuelve a la sección anterior de la página</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-trash"></i></td>
+                        <td>Borrar</td>
+                        <td>Elimina los datos insertados en la sección</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-user-plus"></i></td>
+                        <td>Agregar</td>
+                        <td>Inserta nuevos usuarios para integrar un formulario de ingreso de tesis</td>
+                    </tr>
+                </tbody>
+                </table>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" @click="mostrarModalAyuda">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -317,6 +430,7 @@ export default {
             nIdTesis: this.$attrs.id,
             cTitulo: '',
             nIdPg: '',
+            nIdCoPg: '',
             nIdVinculacion: '',
             cTipo: '',
             cObjetivo: '',
@@ -343,6 +457,7 @@ export default {
         fullscreenLoading: false,
         modalShow: false,
         modalSearchUser: false,
+        modalAyuda:false,
         mostrarModal: {
             display: 'block',
             background: '#0000006b',
@@ -398,6 +513,9 @@ export default {
         if(!this.fillEditarFIT.nIdPg){
           this.mensajeError.push("El profesor guia es un campo obligatorio")
         }
+        if(this.fillEditarFIT.nIdPg === this.fillEditarFIT.nIdCoPg) {
+            this.mensajeError.push("No es posible asignar al mismo profesor guía como coguía")
+        }
         if(!this.fillEditarFIT.cTipo){
           this.mensajeError.push("El tipo es un campo obligatorio")
         }
@@ -429,6 +547,7 @@ export default {
         'id'                    : this.fillEditarFIT.nIdTesis,
         'titulo'                : this.fillEditarFIT.cTitulo,
         'id_profesorguia'       : this.fillEditarFIT.nIdPg,
+        'id_profesor_coguia'    : this.fillEditarFIT.nIdCoPg,
         'id_vinculacion'        : this.fillEditarFIT.nIdVinculacion,
         'tipo'                  : this.fillEditarFIT.cTipo,
         'objetivo'              : this.fillEditarFIT.cObjetivo,
@@ -464,15 +583,16 @@ export default {
         var url = '/alumno/getListarTesisView'
         axios.get(url, {
         params: {
-          'nIdTesis' : this.fillEditarFIT.nIdTesis
+            'nIdTesis' : this.fillEditarFIT.nIdTesis
         }
-      }).then(response => {
-          this.getUsuarioVer(response.data);
-          this.fullscreenLoading = false;
-      })
+        }).then(response => {
+            this.getUsuarioVer(response.data);
+            this.fullscreenLoading = false;
+        })
     },
     getUsuarioVer(data){
         this.fillEditarFIT.nIdPg = data.id_p_guia;
+        this.fillEditarFIT.nIdCoPg = data.id_p_co_guia;
         this.fillEditarFIT.cTitulo = data.titulo;
         this.fillEditarFIT.nIdVinculacion = data.id_vinculacion;
         this.fillEditarFIT.cTipo = data.tipo;
@@ -559,11 +679,14 @@ export default {
         this.busquedaUsuario.rut = '';
         this.listAlumnosBuscados = [];
     },
+    mostrarModalAyuda() {
+        this.modalAyuda = !this.modalAyuda;
+    }
 
   }// cierre methods
 }
 </script>
 
 <style>
-
+    @import '../../../../../public/css/modal.css';
 </style>

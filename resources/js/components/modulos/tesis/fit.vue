@@ -33,7 +33,16 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Bandeja de resultados</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="card-title">Bandeja de resultados</h3>
+                    </div>
+                    <div class="col-md-6" style="text-align: right;">
+                        <button class="btn btn-secondary" @click.prevent="mostrarModalAyuda">Ayuda
+                            <i class="fas fa-question-circle" ></i>
+                        </button>
+                    </div>
+                </div>
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listTesis.length">
@@ -79,25 +88,30 @@
                           </template>
                         </td>
                         <td>
-                          <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: item.id}}">
-                            <i class="fas fa-folder"></i> Ver
+                          <router-link class="btn btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: item.id}}">
+                            <i class="fas fa-folder"></i>
                           </router-link>
                           <template v-if="item.aprobado_pg == 'A'">
-                            <button class="btn btn-flat btn-light btn-sm" @click.prevent="setGenerarDocumento(item.id)">
-                              <i class="fas fa-pencil-alt"></i> Ver PDF
+                            <button class="btn btn-warning btn-sm" @click.prevent="setGenerarDocumento(item.id)">
+                              <i class="fas fa-file-download"></i>
                             </button>
                           </template>
                           <template v-if="item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
-                            <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'tesis.editar', params:{id: item.id}}">
-                              <i class="fas fa-pencil-alt"></i> Editar
-                            </router-link>
+                            <template v-if="item.aprobado_pg == 'R'">
+                                <button class="btn btn-danger btn-sm" @click.prevent="verRazonRechazo(item.motivo_pg)">
+                                <i class="fas fa-eye"></i>
+                                </button>
+                                <router-link class="btn btn-info btn-sm" :to="{name:'tesis.editar', params:{id: item.id}}">
+                                <i class="fas fa-pencil-alt"></i>
+                                </router-link>
+                            </template>
 
                             <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
-                                <button class="btn btn-flat btn-success btn-sm" @click.prevent="setCambiarEstadoFIT(1, item.id)">
-                                  <i class="fas fa-check"></i>Aprobar
+                                <button class="btn btn-success btn-sm" @click.prevent="setCambiarEstadoFIT(1, item.id)">
+                                  <i class="fas fa-check"></i>
                                 </button>
-                                <button class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarEstadoFIT(2, item.id)">
-                                  <i class="fas fa-trash"></i>Rechazar
+                                <button class="btn btn-danger btn-sm" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
+                                  <i class="fas fa-trash"></i>
                                 </button>
                             </template>
                           </template>
@@ -196,12 +210,11 @@
                             <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'tesis.editar', params:{id: item.id}}">
                               <i class="fas fa-pencil-alt"></i> Editar
                             </router-link>
-
                             <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
                                 <button class="btn btn-flat btn-success btn-sm" @click.prevent="setCambiarEstadoFIT(1, item.id)">
                                   <i class="fas fa-check"></i>Aprobar
                                 </button>
-                                <button class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarEstadoFIT(2, item.id)">
+                                <button class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
                                   <i class="fas fa-trash"></i>Rechazar
                                 </button>
                             </template>
@@ -237,8 +250,70 @@
         </template>
       </div>
     </div>
+    <div class="modal fade" :class="{ show: modalAyuda }" :style="modalAyuda ? mostrarModal : ocultarModal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Ventana de ayuda de íconos</h5>
+            <button class="close" @click="mostrarModalAyuda"></button>
+            </div>
+            <div class="modal-body">
+            <table class ="table table-hover table-head-fixed text-nowrap projects ">
+                <thead>
+                    <tr>
+                        <th>Ícono</th>
+                        <th>Nombre</th>
+                        <th>Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="fas fa-plus-square"></i></td>
+                        <td>Agregar</td>
+                        <td>Módulo de registro de datos de FIT</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-folder"></i></td>
+                        <td>Ver</td>
+                        <td>Visión protegida de los datos ingresados en FIT</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-file-download"></i></td>
+                        <td>Descarga</td>
+                        <td>Descarga de los datos inscritos en la plataforma</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-pencil-alt"></i></td>
+                        <td>Edición</td>
+                        <td>Visión y cambios de datos de FIT</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-eye"></i></td>
+                        <td>Ver motivo</td>
+                        <td>Se muestra en pantalla el motivo de un posible rechazo de su FIT</td>
+                    </tr>
+                    <template v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
+                        <tr>
+                            <td><i class="fas fa-check"></i></td>
+                            <td>Aprobar</td>
+                            <td>Aprobación de los datos inscritos por el alumno (envío de correo)</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-trash"></i></td>
+                            <td>Rechazar</td>
+                            <td>Rechazo de los datos inscritos por el alumno (envío de correo)</td>
+                        </tr>
+                    </template>
+                </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+            <button class="btn btn-secondary" @click="mostrarModalAyuda">Cerrar</button>
+            </div>
+        </div>
+        </div>
+    </div>
 </div>
-
 </template>
 
 <script>
@@ -278,6 +353,7 @@ export default {
       pageNumber: 0,
       perPage: 5,
       modalShow: false,
+      modalAyuda: false,
       modalOption: 0,
       mostrarModal: {
         display: 'block',
@@ -385,33 +461,75 @@ export default {
     },
 
   setCambiarEstadoFIT(op, id){
-      Swal.fire({
-      title: 'Estas seguro? ' + ((op == 1) ? 'Aprobar ' : 'Rechazar ') + '  El formulario de inscripcion',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: ((op == 1) ? 'Si, Aprobar' : 'Si, Rechazar')
-    }).then((result) => {
-      if (result.value) {
-        this.fullscreenLoading = true;
-        var url = '/alumno/setCambiarEstadoFIT'
-        axios.post(url, {
-          'nIdTesis' : id,
-          'cEstadoPg'    : (op == 1) ? 'A' : 'R'
-        }).then(response => {
-            Swal.fire({
-            icon: 'success',
-            title: 'Se ' + ((op == 1) ? 'Aprobo ' : 'Rechazo ') +' El formulario de inscripcion',
-            showConfirmButton: false,
-            timer: 1500
+        Swal.fire({
+        title: 'Estas seguro? ' + ((op == 1) ? 'Aprobar ' : 'Rechazar ') + '  El formulario de inscripcion',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: ((op == 1) ? 'Si, Aprobar' : 'Si, Rechazar'),
+        cancelButtonText: 'Cancelar',
+        }).then((result) => {
+        if (result.value) {
+            this.fullscreenLoading = true;
+            var url = '/alumno/setCambiarEstadoFIT'
+            axios.post(url, {
+            'nIdTesis' : id,
+            'cEstadoPg'    : (op == 1) ? 'A' : 'R'
+            }).then(response => {
+                Swal.fire({
+                icon: 'success',
+                title: 'Se ' + ((op == 1) ? 'Aprobó ' : 'Rechazó ') +' El formulario de inscripción',
+                showConfirmButton: false,
+                timer: 1500
+                })
+                this.getListarTesis();
             })
-            this.getListarTesis();
+        }
         })
-      }
-    })
+    },
+    setCambiarEstadoFITRechazo (op, id) {
+        Swal.fire({
+        title: 'Escriba el motivo de su rechazo (opcional)',
+        icon: 'warning',
+        input: 'textarea',
+        inputAttributes: {autocapitalize: 'off'},
+        showCancelButton: true,
+        confirmButtonText: 'Enviar rechazo',
+        cancelButtonText: 'Cancelar rechazo',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        }).then((response) => {
+        if (response.value) {
+            this.fullscreenLoading = true;
+            var url = '/alumno/setCambiarEstadoFIT'
+            axios.post(url, {
+                'nIdTesis'  : id,
+                'cEstadoPg' : (op == 1) ? 'A' : 'R',
+                'motivo'    : response.value
+            })
+            .then(response => {
+                Swal.fire({
+                icon: 'success',
+                title: 'Se ' + ((op == 1) ? 'Aprobó ' : 'Rechazó ') +' El formulario de inscripción',
+                showConfirmButton: false,
+                timer: 1500
+                })
+                this.getListarTesis();
+            })
+        }
+        })
+    },
+    mostrarModalAyuda() {
+        this.modalAyuda = !this.modalAyuda;
+    },
+    verRazonRechazo(data) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Motivo de rechazo',
+            text: data,
+        })
     }
-
 
   }//cierre de methods
 }

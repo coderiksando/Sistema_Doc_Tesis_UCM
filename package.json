@@ -28,8 +28,8 @@
         "moment": "^2.29.1",
         "startbootstrap-business-frontpage": "^4.2.2",
         "sweetalert2": "^9.17.0",
-        "vue-input-spinner": "^0.1.4",
-        "vue-multiselect": "^2.1.6",
+        "vue-directive-tooltip": "^1.6.3",
+        "vue-js-popover": "^1.2.1",
         "vue-router": "^3.3.4"
     }
 }

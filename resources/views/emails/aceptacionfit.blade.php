@@ -9,7 +9,11 @@
 <body>
 
 <p>Hola, con fecha y hora {{$DatosEmail->fecha}} el profesor {{$DatosEmail->full_name}} ha {{$DatosEmail->estado}} el formulario de
-    inscripcion de la tesis {{$DatosEmail->titulo}}</p>
+    inscripcion de la tesis {{$DatosEmail->titulo}}@if ($DatosEmail->motivo), el motivo por el cual fue rechazado es "{{$DatosEmail->motivo}}".
+    @else
+    .
+    @endif
+    </p>
 
     <ul>
         <p>Sistema de administracion de tesistas</p>

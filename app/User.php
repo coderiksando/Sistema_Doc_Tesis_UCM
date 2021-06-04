@@ -18,8 +18,8 @@ class User extends Authenticatable
 
     protected $fillable = [
         'id_user','rut', 'nombres', 'apellidos',
-        'id_escuela', 'id_files', 'email', 'email_verified_at',
-        'password', 'remember_token', 'state', 'birthday',
+        'id_escuela', 'id_files', 'email', 'email_verified_at', 'password',
+        'remember_token', 'state', 'birthday', 'f_ingreso', 'f_salida',
         'telefono', 'direccion', 'grado_academico', 'created_at', 'updated_at',
     ];
 
@@ -55,6 +55,9 @@ class User extends Authenticatable
     }
     public function P_G_Fit(){
         return $this->hasOne(Fit::class, 'id_p_guia', 'id_user');
+    }
+    public function P_C_G_Fit(){
+        return $this->hasOne(Fit::class, 'id_p_co_guia', 'id_user');
     }
 
 

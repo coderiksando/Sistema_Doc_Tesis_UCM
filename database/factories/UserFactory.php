@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'rut' => $faker->randomNumber(8, true),
+        'rut' => $faker->unique()->randomNumber(8, true),
         'nombres' => $faker->firstName,
         'apellidos' => $faker->lastName,
         'id_escuela' => '1',
@@ -30,6 +30,8 @@ $factory->define(User::class, function (Faker $faker) {
         'birthday' => $faker->date('Y-m-d'),
         'telefono' => $faker->randomNumber(8, true),
         'direccion' => $faker->address,
-        'grado_academico' => $faker->colorName
+        'grado_academico' => $faker->colorName,
+        'f_ingreso' => $faker->date('Y-m-d'),
+        'f_salida' => $faker->date('Y-m-d')
     ];
 });

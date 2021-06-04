@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('id_user');
-            $table->string('rut');
+            $table->string('rut')->unique();
             $table->string('nombres');
             $table->string('apellidos');
             $table->bigInteger('id_escuela')->unsigned()->nullable();
@@ -30,6 +30,9 @@ class CreateUsersTable extends Migration
             $table->string('telefono')->nullable();
             $table->string('direccion')->nullable();
             $table->string('grado_academico')->nullable();
+
+            $table->date('f_ingreso')->nullable();
+            $table->date('f_salida')->nullable();
 
             $table->timestamps();
 

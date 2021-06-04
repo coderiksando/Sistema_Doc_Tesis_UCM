@@ -9,8 +9,9 @@ use Faker\Generator as Faker;
 
 $factory->define(Fit::class, function (Faker $faker) {
     return [
-        'id_vinculacion' => $faker->numberBetween(1, 21), 
-        'id_p_guia' => Roles::find(3)->Users_Roles->random()->id_user, 
+        'id_vinculacion' => $faker->numberBetween(1, 21),
+        'id_p_guia' => Roles::find(3)->Users_Roles->random()->id_user,
+        'id_p_co_guia' => Roles::find(3)->Users_Roles->random()->id_user,
         'estado' => $faker->randomElement(array('A','R','D')),
         'titulo' => $faker->sentence(3),
         'tipo' => 'Tesis',

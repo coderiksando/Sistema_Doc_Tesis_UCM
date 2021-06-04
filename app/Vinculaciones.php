@@ -8,7 +8,7 @@ class Vinculaciones extends Model
 {
     protected $table = 'vinculaciones';
     protected $fillable = [
-        'id', 'tipo', 'nombre', 'descripcion',
+        'id', 'tipo', 'nombre', 'descripcion', 'subtipo',
         'estado', 'created_at', 'updated_at'
     ];
 

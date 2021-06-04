@@ -44,6 +44,7 @@
 </head>
 <body>
     <div class="cabecera">
+        @foreach ($datosfit->Fit_User as $fit_user)
         <table width="100%" cellspacing="0" cellspacing="1" align="center">
             <tr>
                 <td style="text-align: center;">UNIVERSIDAD CATOLICA DEL MAULE</td>
@@ -66,27 +67,27 @@
 
         <table width="100%" cellspacing="0" cellspacing="1" align="center">
             <tr>
-                <td> <strong>NOMBRE COMPLETO:</strong>  {{$datosfit->Fit_User[0]->User->nombres}} {{$datosfit->Fit_User[0]->User->apellidos}} </td>
+                <td> <strong>NOMBRE COMPLETO:</strong>  {{$fit_user->User->nombres}} {{$fit_user->User->apellidos}} </td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td> <strong>RUT:</strong>  {{$datosfit->Fit_User[0]->User->rut}}</td>
-                <td> <strong>AÑO DE INGRESO:</strong>  {{$datosfit->Fit_User[0]->User->birthday}}</td>
+                <td> <strong>RUT:</strong>  {{$fit_user->User->rut}}</td>
+                <td> <strong>AÑO DE INGRESO:</strong>  {{$fit_user->User->birthday}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td> <strong>CARRERA:</strong>  {{$datosfit->Fit_User[0]->User->escuelas->nombre}}</td>
+                <td> <strong>CARRERA:</strong>  {{$fit_user->User->escuelas->nombre}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td> <strong>EMAIL:</strong>  {{$datosfit->Fit_User[0]->User->email}}</td>
-                <td> <strong>TELEFONO:</strong>  {{$datosfit->Fit_User[0]->User->telefono}}</td>
+                <td> <strong>EMAIL:</strong>  {{$fit_user->User->email}}</td>
+                <td> <strong>TELEFONO:</strong>  {{$fit_user->User->telefono}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
@@ -161,6 +162,7 @@
         </table>
 
         <div style="page-break-after:always;"></div>
+        @endforeach
 
         <table width="100%" cellspacing="0" cellspacing="1" align="center">
             <tr>

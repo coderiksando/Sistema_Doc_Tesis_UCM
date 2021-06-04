@@ -16,6 +16,7 @@ class CreateVinculacionesTable extends Migration
         Schema::create('vinculaciones', function (Blueprint $table) {
             $table->id('id')->unsigned();
             $table->string('tipo')->nullable();
+            $table->string('subtipo')->nullable();
             $table->string('nombre')->nullable();
             $table->string('descripcion')->nullable();
             $table->enum('estado',['A','I'])->nullable()->default('A');
