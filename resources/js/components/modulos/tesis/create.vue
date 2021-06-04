@@ -44,6 +44,7 @@
                                                 <div class="col-md-9">
                                                     <el-select v-model="fillCrearFIT.nIdPg"
                                                     placeholder="Asignar Profesor Guia"
+                                                    filterable
                                                     clearable>
                                                     <el-option
                                                         v-for="item in listProfesores"
@@ -61,6 +62,7 @@
                                                 <div class="col-md-9">
                                                     <el-select v-model="fillCrearFIT.nIdCoPg"
                                                     placeholder="Asignar Profesor Co-guía"
+                                                    filterable
                                                     clearable
                                                     v-popover:tooltip.bottom="'Este campo es opcional'">
                                                     <el-option
@@ -79,6 +81,7 @@
                                                 <div class="col-md-9">
                                                     <el-select v-model="fillCrearFIT.cTipo"
                                                     placeholder="Seleccione un Tipo de trabajo"
+                                                    filterable
                                                     clearable>
                                                     <el-option
                                                         v-for="item in listTipo"
@@ -96,12 +99,14 @@
                                                 <div class="col-md-9">
                                                     <el-select v-model="fillCrearFIT.nIdVinculacion"
                                                     placeholder="Asignar Vinculacion (opcional)"
+                                                    filterable
                                                     clearable>
                                                     <el-option
                                                         v-for="item in listVinculacion"
                                                         :key="item.id"
                                                         :label="item.nombre"
-                                                        :value="item.id">
+                                                        :value="item.id"
+                                                        v-popover:tooltip.left="item.descripcion">
                                                     </el-option>
                                                     </el-select>
                                                 </div>

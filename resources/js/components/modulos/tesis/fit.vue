@@ -47,7 +47,7 @@
               <div class="card-body table table-responsive">
                 <template v-if="listTesis.length">
 
-                  <table class ="table table-hover table-head-fixed t-fixed ">
+                  <table class ="table table-hover table-head-fixed t-fixed projects">
                     <thead>
                       <tr>
                         <th>Alumno(s)</th>

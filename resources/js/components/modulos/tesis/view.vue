@@ -98,7 +98,7 @@
                                     <div class="col-md-6">
 
                                     </div>
-                                    <table class ="table table-hover table-head-fixed t-fixed  ">
+                                    <table class ="table table-hover table-head-fixed t-fixed projects">
                                         <thead>
                                             <tr>
                                                 <th>Nombre integrante</th>
