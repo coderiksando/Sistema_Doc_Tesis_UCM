@@ -69,25 +69,26 @@
               <div class="card-header">
                 <h3 class="card-title">Bandeja de resultados</h3>
               </div>
-              <div class="card-body table table-responsive">
+              <div class="card-body table">
                 <template v-if="listBitacoras.length">
                   
-                  <table class ="table table-hover table-head-fixed text-nowrap projects ">
+                  <table class ="table table-hover table-head-fixed projects t-fix">
                     <thead>
-                      <tr>
-                        <th>Fecha</th>
-                        <th>Acuerdo</th>
-                        <template  v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
-                          <th>Acciones </th>
-                        </template>
-                        
+                      <tr class="row">
+                        <th class="col-md-3">Fecha</th>
+                        <th class="col-md-7">Acuerdo</th>
+                        <th class="col-md-2">
+                          <template  v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
+                            <span>Acciones</span>
+                          </template>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item, index) in listBitacoras" :key="index">
-                        <td>{{item.fecha | moment }}</td>
-                        <td v-text="item.acuerdo"></td>
-                        <td>
+                      <tr v-for="(item, index) in listBitacoras" :key="index" class="row">
+                        <td class="col-md-3">{{item.fecha | moment }}</td>
+                        <td class="col-md-7" v-text="item.acuerdo"></td>
+                        <td class="col-md-2">
                         <template  v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
                           <router-link class="btn btn-info boton" :to="{name:'bitacoras.editar', params:{id: item.id}}">
                               <i class="fas fa-pencil-alt"></i>
@@ -256,15 +257,14 @@ export default {
 </script>
 
 <style>
-  .scrollTable{
-    max-height: 350px !important;
-    overflow: auto !important; 
-  }
 
   .boton{
     border:0px !important;
     width: 38px !important;
     height:38px !important;
    }
-
+   .t-fix{
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
 </style>
