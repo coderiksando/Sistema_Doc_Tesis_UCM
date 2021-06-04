@@ -9,6 +9,6 @@ use Faker\Generator as Faker;
 $factory->define(Users_Roles::class, function (Faker $faker) {
     return [
         'id_user' => '1',
-        'id_roles' => $faker->numberBetween(1, 6)
+        'id_roles' => $faker->numberBetween(2, 3)
     ];
 });
