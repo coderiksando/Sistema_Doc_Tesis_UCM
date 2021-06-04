@@ -36,6 +36,10 @@ class BitacorasController extends Controller
         $IdBitacora = $request->nIdBitacora;
         $Bitacoras = [];
 
+        if ($IdBitacora) {
+            return Bitacoras::find($IdBitacora);
+        }
+
         $FitUser = Fit_User::Firstwhere('id_user', $IdAlumno);
         if ($FitUser){
             $Fit = $FitUser->Fit;
@@ -76,7 +80,6 @@ class BitacorasController extends Controller
         // Mail::to($DatosEmail[0]->email_a)->queue(new MailBitacoras($DatosEmail[0]));
 
         $Bitacora               = new Bitacoras();
-        $Bitacora->comentario   = $request->Comentario;
         $Bitacora->acuerdo      = $request->Acuerdo;
         $Bitacora->fecha        = Carbon::now();
         $Bitacora->id_tesis     = $fit->id;
@@ -88,11 +91,10 @@ class BitacorasController extends Controller
         if(!$request->ajax()) return redirect('/');
         
         $id         = $request->nIdBitacora;
-        $comentario = $request->comentario;
         $acuerdo    = $request->acuerdo;
         $fecha      = Carbon::now();
 
-        Bitacoras::find($id)->update(['comentario'=>$comentario,'acuerdo'=>$acuerdo,'fecha'=>$fecha]);
+        Bitacoras::find($id)->update(['acuerdo'=>$acuerdo,'fecha'=>$fecha]);
 
         return;
     }

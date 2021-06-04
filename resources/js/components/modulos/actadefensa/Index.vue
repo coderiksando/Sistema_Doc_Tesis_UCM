@@ -106,7 +106,7 @@
                       <tr>
                         <th>Nombre</th>
                         <th>Rut</th>
-                        <th>Estado Tesis</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
@@ -134,12 +134,12 @@
                           </template>
                         </td>
                         <td>
-                          <router-link  class="btn btn-flat btn-success btn-sm" :to="{name:'actadefensa.subirnota', params:{id: item.id}}">
-                            <i class="fas fa-graduation-cap"></i> Subir nota
+                          <router-link  class="btn btn-success boton" :to="{name:'actadefensa.subirnota', params:{id: item.id}}">
+                            <i class="fas fa-graduation-cap"></i>
                           </router-link>
-                          <a v-if="item.path" class="btn btn-flat btn-warning btn-sm" :href="item.path" @click.prevent="downloadItem(item.path)"><i class="fas fa-file-download"> </i> Descargar</a>
-                          <router-link v-else class="btn btn-flat btn-primary btn-sm" :to="{name:'actadefensa.subiracta', params:{id: item.id}}">
-                            <i class="fas fa-file-upload"></i> Subir Acta defensa
+                          <a v-if="item.path" class="btn btn-warning boton" :href="item.path" @click.prevent="downloadItem(item.path)"><i class="fas fa-file-download"> </i></a>
+                          <router-link v-else class="btn btn-primary boton" :to="{name:'actadefensa.subiracta', params:{id: item.id}}">
+                            <i class="fas fa-file-upload"></i>
                           </router-link>
                         </td>
                       </tr>
@@ -361,5 +361,9 @@ export default {
 </script>
 
 <style>
-
+.boton{
+    border:0px !important;
+    width: 38px !important;
+    height:38px !important;
+   }
 </style>

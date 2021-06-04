@@ -122,6 +122,7 @@ Route::post('/secretaria/setRegistrarNota', 'SecretariaController@setRegistrarNo
 
 /*********    RUTAS MODULO DE ADMINISTRACION DE PARAMETROS     **********/
 Route::post('/admin/parametros', 'ParametrosController@getParametros');
+Route::post('/admin/setParametros', 'ParametrosController@setParametros');
 
 });//cierre de rutas que requieren autenticacion
 

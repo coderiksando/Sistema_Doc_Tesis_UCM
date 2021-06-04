@@ -86,9 +86,9 @@
                       <tr>
                         <th>Fecha</th>
                         <th>Descripcion</th>
-                        <th>Archivo Asociado</th>
+                        <th>Acciones</th>
                         <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">            
-                          <th>Editar</th>
+                          <th></th>
                         </template> 
                         
                       </tr>
@@ -98,16 +98,14 @@
                         <td class="filter">{{ item.created_at | moment }}</td>
                         <td v-text="item.descripcion"></td>
                         <td >
-                          <a class="btn btn-flat btn-warning btn-sm" :href="item.archivo_pdf.path"><i class="fas fa-file-download"> </i> Descargar</a>
-                        </td>
-
-                        <td>
+                          <a class="btn btn-warning boton" :href="item.archivo_pdf.path">
+                            <i class="fas fa-file-download"> </i>
+                          </a>
                           <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">            
-                          <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'avances.editar', params:{id: item.id}}">
-                              <i class="fas fa-pencil-alt"></i> Editar
+                            <router-link class="btn btn-info boton" :to="{name:'avances.editar', params:{id: item.id}}">
+                                <i class="fas fa-pencil-alt"></i>
                             </router-link>
-                        </template> 
-                            
+                          </template>                         
                         </td>
                       </tr>
                     </tbody>
@@ -288,4 +286,10 @@ export default {
     max-height: 350px !important;
     overflow: auto !important; 
   }
+
+  .boton{
+    border:0px !important;
+    width: 38px !important;
+    height:38px !important;
+   }
 </style>

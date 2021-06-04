@@ -32,14 +32,6 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Comentario</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" maxlength="80" class="form-control" v-model="fillEditarBitacora.Comentario" @keyup.enter="setEditarBitacora">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Acuerdo</label>
                                                 <div class="col-md-9">
                                                     <input type="text" maxlength="80" class="form-control" v-model="fillEditarBitacora.Acuerdo" @keyup.enter="setEditarBitacora">
@@ -91,7 +83,6 @@ export default {
     return{
       fillEditarBitacora:{
         nIdBitacora: this.$attrs.id,
-        Comentario: '',
         Acuerdo: ''
       },
       fullscreenLoading: false,
@@ -114,7 +105,6 @@ export default {
   },
   methods:{
     limpiarCriterios(){
-      this.fillEditarBitacora.Comentario = '';
       this.fillEditarBitacora.Acuerdo = '';
     },
     abrirModal(){
@@ -123,9 +113,6 @@ export default {
     validarEditarBitacora(){
       this.error = 0;
       this.mensajeError = [];
-        if(!this.fillEditarBitacora.Comentario){
-          this.mensajeError.push("El comentario es un campo obligatorio")
-        }
         if(!this.fillEditarBitacora.Acuerdo){
           this.mensajeError.push("El acuerdo es un campo obligatorio")
         }
@@ -143,8 +130,8 @@ export default {
         }
       }).then(response => {
           //this.inicializarPaginacion();
-          this.fillEditarBitacora.Comentario = response.data[0].comentario;
-          this.fillEditarBitacora.Acuerdo = response.data[0].acuerdo;
+          console.log(response.data);
+          this.fillEditarBitacora.Acuerdo = response.data.acuerdo;
           this.fullscreenLoading = false;
       })
     },
@@ -157,7 +144,6 @@ export default {
       var url = '/bitacoras/setEditarBitacora'
       axios.post(url, {
         'nIdBitacora'        :this.fillEditarBitacora.nIdBitacora,
-        'comentario'         :this.fillEditarBitacora.Comentario,
         'acuerdo'            :this.fillEditarBitacora.Acuerdo
       }).then(response => {
         this.fullscreenLoading = false;

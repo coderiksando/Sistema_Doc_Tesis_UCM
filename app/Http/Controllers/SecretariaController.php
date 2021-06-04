@@ -36,10 +36,10 @@ class SecretariaController extends Controller
         $IdEscuela  = ($IdEscuela == NULL) ? ($IdEscuela = '') : $IdEscuela;
         $EstadoAlumno  = ($EstadoAlumno == NULL) ? ($EstadoAlumno = '') : $EstadoAlumno;
 
-        $users = User::where('nombres', 'like', "%$nombre%")
-                     ->where('id_escuela', 'like', "%$IdEscuela%")
-                     ->where('rut', 'like', "%$rut%")
-                     ->get()->pluck('id_user');
+        $filter1 = User::where('nombres', 'like', "%$nombre%")->orWhere('apellidos', 'like', "%$nombre%")->get();
+        $filter2 = User::where('id_escuela', 'like', "%$IdEscuela%")->where('rut', 'like', "%$rut%")->get();
+        $users = $filter1->intersect($filter2)->pluck('id_user');
+
         $fitsId = Fit_User::whereIn('id_user', $users)->pluck('id_fit')->unique()->values();
         $fits = Fit::whereIn('id', $fitsId)->where('estado', 'like', "%$EstadoAlumno%")->select('id', 'estado')->get();
 

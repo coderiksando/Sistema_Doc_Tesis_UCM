@@ -77,7 +77,6 @@
                       <tr>
                         <th>Fecha</th>
                         <th>Acuerdo</th>
-                        <th>Comentario</th>
                         <template  v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
                           <th>Acciones </th>
                         </template>
@@ -88,11 +87,10 @@
                       <tr v-for="(item, index) in listBitacoras" :key="index">
                         <td>{{item.fecha | moment }}</td>
                         <td v-text="item.acuerdo"></td>
-                        <td v-text="item.comentario"></td>
                         <td>
                         <template  v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
-                          <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'bitacoras.editar', params:{id: item.id}}">
-                              <i class="fas fa-pencil-alt"></i> Editar
+                          <router-link class="btn btn-info boton" :to="{name:'bitacoras.editar', params:{id: item.id}}">
+                              <i class="fas fa-pencil-alt"></i>
                             </router-link>
                         </template>    
                         </td>
@@ -193,7 +191,7 @@ export default {
   filters:{
     moment: function (date) {
       moment.locale('es');
-      return moment(date).format('lll');
+      return moment(date).format('DD/MM/YYYY, h:mm a');
     }
   },
   methods:{
@@ -262,5 +260,11 @@ export default {
     max-height: 350px !important;
     overflow: auto !important; 
   }
+
+  .boton{
+    border:0px !important;
+    width: 38px !important;
+    height:38px !important;
+   }
 
 </style>

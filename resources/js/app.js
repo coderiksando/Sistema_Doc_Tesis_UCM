@@ -28,7 +28,8 @@ Vue.component('Auth', require('./components/Auth.vue').default);
 Vue.component('Home', require('./components/Home.vue').default);
 
 
-import router from './routes'
+
+import router from './routes';
 
 const app = new Vue({
     el: '#app',

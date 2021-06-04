@@ -16,7 +16,6 @@ class CreateBitacorasTable extends Migration
         Schema::create('bitacoras', function (Blueprint $table) {
             $table->id('id')->unsigned();
             $table->bigInteger('id_tesis')->unsigned()->nullable();
-            $table->string('comentario');
             $table->string('acuerdo');
             $table->dateTime('fecha');
 

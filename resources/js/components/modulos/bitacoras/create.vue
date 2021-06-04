@@ -48,12 +48,6 @@
                                                     </div>
                                                 </div>
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Comentario</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" maxlength="80" class="form-control" v-model="fillCrearBitacora.Comentario" @keyup.enter="setRegistrarBitacora">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Acuerdo</label>
                                                 <div class="col-md-9">
                                                     <input type="text" maxlength="80" class="form-control" v-model="fillCrearBitacora.Acuerdo" @keyup.enter="setRegistrarBitacora">
@@ -106,7 +100,6 @@ export default {
     return{
       fillCrearBitacora:{
         id_user: '',
-        Comentario: '',
         Acuerdo: ''
       },
       listAlumnos:[],
@@ -142,7 +135,6 @@ export default {
     },
     limpiarCriterios(){
       this.fillCrearBitacora.id_user = '';
-      this.fillCrearBitacora.Comentario = '';
       this.fillCrearBitacora.Acuerdo = '';
     },
     abrirModal(){
@@ -156,9 +148,6 @@ export default {
         }
         if(!this.fillCrearBitacora.Acuerdo){
           this.mensajeError.push("El acuerdo es un campo obligatorio")
-        }
-        if(!this.fillCrearBitacora.Comentario){
-          this.mensajeError.push("El comentario es un campo obligatorio")
         }
         if(this.mensajeError.length){
           this.error = 1;
@@ -174,7 +163,6 @@ export default {
       var url = '/bitacoras/setRegistrarBitacora'
       axios.post(url, {
         'id_user'           : this.fillCrearBitacora.id_user,
-        'Comentario'        : this.fillCrearBitacora.Comentario,
         'Acuerdo'           : this.fillCrearBitacora.Acuerdo
       }).then(response => {
         this.fullscreenLoading = false;
