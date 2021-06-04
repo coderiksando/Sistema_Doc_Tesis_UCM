@@ -17,7 +17,7 @@ class ParametrosSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         Parametro::create([
-            'parametro'=>'MaxStudentSize',
+            'parametro'=>'MaxStudentNumber',
             'valor'=>'2',
         ]);
         Parametro::create([

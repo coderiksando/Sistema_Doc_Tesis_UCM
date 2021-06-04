@@ -236,6 +236,10 @@ class PermissionsTableSeeder extends Seeder
             'name' => 'Registrar tesis finalizada',
             'slug' => 'registrar.tesis'
         ]);
+        DB::table('permissions')->insert([
+            'name' => 'Parametros',
+            'slug' => 'parametros.index'
+        ]);
     }
 }
 
