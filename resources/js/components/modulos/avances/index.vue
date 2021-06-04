@@ -46,16 +46,17 @@
                       <div class="form-group row">
                           <label class="col-md-3 col-form-label">Seleccionar Alumno</label>
                           <div class="col-md-9">
-                              <el-select v-model="fillBsqAvanceByAlumno.id_user" 
-                              placeholder="Asignar alumno"
-                              clearable>
-                              <el-option
-                                  v-for="item in listAlumnos"
-                                  :key="item.id_user"
-                                  :label="item.nombres + ' ' + item.apellidos"
-                                  :value="item.id_user">
-                              </el-option>
-                              </el-select>
+                              <Multiselect
+                                v-model="selectedAlumno"
+                                placeholder="Seleccionar estudiante"
+                                :options="listAlumnos"
+                                label = "nombres"
+                                selectLabel="Presiona enter para seleccionar"
+                                selectedLabel="Seleccionado"
+                                deselectLabel="Presiona enter para remover"
+                                >
+                              <template slot="noResult" slot-scope="props">No hay resultados</template>
+                              </Multiselect>
                           </div>
                       </div>
                     </div>
@@ -142,19 +143,20 @@
 
 <script>
 import moment from 'moment';
+import Multiselect from 'vue-multiselect';
+
 export default {
+  components: {Multiselect},
   props: ['usuario'],
   data(){
     return{
-      fillBsqAvanceByAlumno:{
-        id_user: '',
-      },
       fillEstadoTesis:{
         cEstado: '',
       },
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       listAvances:[],
       listAlumnos:[],
+      selectedAlumno:{},
       listPermisos:[],
       fullscreenLoading: false,
       pageNumber: 0,
@@ -213,7 +215,7 @@ export default {
   },
   methods:{
     limpiarCriteriosBsq(){
-      this.fillBsqAvanceByAlumno.id_user = '';
+      this.selectedAlumno = {};
     },
     limpiarBandejaUsuarios(){
       this.listAvances = [];
@@ -233,7 +235,7 @@ export default {
       var url = '/avances/getListarAvancesByAlumno'
       axios.get(url, {
         params: {
-          'id_user' : this.fillBsqAvanceByAlumno.id_user,
+          'id_user' : this.selectedAlumno.id_user,
         }
       }).then(response => {
           this.inicializarPaginacion();

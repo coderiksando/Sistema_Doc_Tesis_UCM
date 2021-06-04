@@ -35,16 +35,17 @@
                                                 <div class="form-group row">
                                                     <label class="col-md-3 col-form-label">Seleccionar alumno</label>
                                                     <div class="col-md-9">
-                                                        <el-select v-model="fillCrearBitacora.id_user" 
-                                                        placeholder="Asignar alumno"
-                                                        clearable>
-                                                        <el-option
-                                                            v-for="item in listAlumnos"
-                                                            :key="item.id_user"
-                                                            :label="item.nombres"
-                                                            :value="item.id_user">
-                                                        </el-option>
-                                                        </el-select>
+                                                        <Multiselect
+                                                          v-model="selectedAlumno"
+                                                          placeholder="Seleccionar estudiante"
+                                                          :options="listAlumnos"
+                                                          label = "nombres"
+                                                          selectLabel="Presiona enter para seleccionar"
+                                                          selectedLabel="Seleccionado"
+                                                          deselectLabel="Presiona enter para remover"
+                                                          >
+                                                        <template slot="noResult" slot-scope="props">No hay resultados</template>
+                                                        </Multiselect>
                                                     </div>
                                                 </div>
                                             <div class="form-group row">
@@ -68,7 +69,6 @@
                                 </div>
                             </div>
                         </div>
-
                 </div>
             </div> 
         </div>
@@ -96,7 +96,9 @@
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect';
 export default {
+  components: { Multiselect },
   data(){
     return{
       fillCrearBitacora:{
@@ -104,6 +106,7 @@ export default {
         Acuerdo: ''
       },
       listAlumnos:[],
+      selectedAlumno: {},
       fullscreenLoading: false,
       modalShow: false,
       mostrarModal: {
@@ -135,7 +138,7 @@ export default {
       })
     },
     limpiarCriterios(){
-      this.fillCrearBitacora.id_user = '';
+      this.selectedAlumno = {};
       this.fillCrearBitacora.Acuerdo = '';
     },
     abrirModal(){
@@ -144,7 +147,7 @@ export default {
     validarRegistrarBitacora(){
       this.error = 0;
       this.mensajeError = [];
-        if(!this.fillCrearBitacora.id_user){
+        if(!this.selectedAlumno){
           this.mensajeError.push("El alumno es un campo obligatorio")
         }
         if(!this.fillCrearBitacora.Acuerdo){
@@ -163,7 +166,7 @@ export default {
       this.fullscreenLoading = true;
       var url = '/bitacoras/setRegistrarBitacora'
       axios.post(url, {
-        'id_user'           : this.fillCrearBitacora.id_user,
+        'id_user'           : this.selectedAlumno.id_user,
         'Acuerdo'           : this.fillCrearBitacora.Acuerdo
       }).then(response => {
         this.fullscreenLoading = false;
