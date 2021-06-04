@@ -96,16 +96,21 @@
                               <i class="fas fa-file-download"></i>
                             </button>
                           </template>
-                          <template v-if="item.aprobado_pg == 'R'">
-                            <router-link class="btn btn-info btn-sm" :to="{name:'tesis.editar', params:{id: item.id}}">
-                              <i class="fas fa-pencil-alt"></i>
-                            </router-link>
+                          <template v-if="item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
+                            <template v-if="item.aprobado_pg == 'R'">
+                                <button class="btn btn-danger btn-sm" @click.prevent="verRazonRechazo(item.motivo_pg)">
+                                <i class="fas fa-eye"></i>
+                                </button>
+                                <router-link class="btn btn-info btn-sm" :to="{name:'tesis.editar', params:{id: item.id}}">
+                                <i class="fas fa-pencil-alt"></i>
+                                </router-link>
+                            </template>
 
                             <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
                                 <button class="btn btn-success btn-sm" @click.prevent="setCambiarEstadoFIT(1, item.id)">
                                   <i class="fas fa-check"></i>
                                 </button>
-                                <button class="btn btn-danger btn-sm" @click.prevent="setCambiarEstadoFIT(2, item.id)">
+                                <button class="btn btn-danger btn-sm" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
                                   <i class="fas fa-trash"></i>
                                 </button>
                             </template>
@@ -205,12 +210,11 @@
                             <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'tesis.editar', params:{id: item.id}}">
                               <i class="fas fa-pencil-alt"></i> Editar
                             </router-link>
-
                             <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
                                 <button class="btn btn-flat btn-success btn-sm" @click.prevent="setCambiarEstadoFIT(1, item.id)">
                                   <i class="fas fa-check"></i>Aprobar
                                 </button>
-                                <button class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarEstadoFIT(2, item.id)">
+                                <button class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
                                   <i class="fas fa-trash"></i>Rechazar
                                 </button>
                             </template>
@@ -282,6 +286,11 @@
                         <td><i class="fas fa-pencil-alt"></i></td>
                         <td>Edición</td>
                         <td>Visión y cambios de datos de FIT</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-eye"></i></td>
+                        <td>Ver motivo</td>
+                        <td>Se muestra en pantalla el motivo de un posible rechazo de su FIT</td>
                     </tr>
                     <template v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
                         <tr>
@@ -452,36 +461,75 @@ export default {
     },
 
   setCambiarEstadoFIT(op, id){
-      Swal.fire({
-      title: 'Estas seguro? ' + ((op == 1) ? 'Aprobar ' : 'Rechazar ') + '  El formulario de inscripcion',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: ((op == 1) ? 'Si, Aprobar' : 'Si, Rechazar')
-    }).then((result) => {
-      if (result.value) {
-        this.fullscreenLoading = true;
-        var url = '/alumno/setCambiarEstadoFIT'
-        axios.post(url, {
-          'nIdTesis' : id,
-          'cEstadoPg'    : (op == 1) ? 'A' : 'R'
-        }).then(response => {
-            Swal.fire({
-            icon: 'success',
-            title: 'Se ' + ((op == 1) ? 'Aprobo ' : 'Rechazo ') +' El formulario de inscripcion',
-            showConfirmButton: false,
-            timer: 1500
+        Swal.fire({
+        title: 'Estas seguro? ' + ((op == 1) ? 'Aprobar ' : 'Rechazar ') + '  El formulario de inscripcion',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: ((op == 1) ? 'Si, Aprobar' : 'Si, Rechazar'),
+        cancelButtonText: 'Cancelar',
+        }).then((result) => {
+        if (result.value) {
+            this.fullscreenLoading = true;
+            var url = '/alumno/setCambiarEstadoFIT'
+            axios.post(url, {
+            'nIdTesis' : id,
+            'cEstadoPg'    : (op == 1) ? 'A' : 'R'
+            }).then(response => {
+                Swal.fire({
+                icon: 'success',
+                title: 'Se ' + ((op == 1) ? 'Aprobó ' : 'Rechazó ') +' El formulario de inscripción',
+                showConfirmButton: false,
+                timer: 1500
+                })
+                this.getListarTesis();
             })
-            this.getListarTesis();
+        }
         })
-      }
-    })
+    },
+    setCambiarEstadoFITRechazo (op, id) {
+        Swal.fire({
+        title: 'Escriba el motivo de su rechazo (opcional)',
+        icon: 'warning',
+        input: 'textarea',
+        inputAttributes: {autocapitalize: 'off'},
+        showCancelButton: true,
+        confirmButtonText: 'Enviar rechazo',
+        cancelButtonText: 'Cancelar rechazo',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        }).then((response) => {
+        if (response.value) {
+            this.fullscreenLoading = true;
+            var url = '/alumno/setCambiarEstadoFIT'
+            axios.post(url, {
+                'nIdTesis'  : id,
+                'cEstadoPg' : (op == 1) ? 'A' : 'R',
+                'motivo'    : response.value
+            })
+            .then(response => {
+                Swal.fire({
+                icon: 'success',
+                title: 'Se ' + ((op == 1) ? 'Aprobó ' : 'Rechazó ') +' El formulario de inscripción',
+                showConfirmButton: false,
+                timer: 1500
+                })
+                this.getListarTesis();
+            })
+        }
+        })
     },
     mostrarModalAyuda() {
         this.modalAyuda = !this.modalAyuda;
+    },
+    verRazonRechazo(data) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Motivo de rechazo',
+            text: data,
+        })
     }
-
 
   }//cierre de methods
 }

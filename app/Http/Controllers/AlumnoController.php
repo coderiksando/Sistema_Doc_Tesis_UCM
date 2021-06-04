@@ -317,11 +317,11 @@ class AlumnoController extends Controller
         $nIdTesis   = ($nIdTesis == NULL) ? ($nIdTesis = 0) : $nIdTesis;
         $cEstadoPg  = ($cEstadoPg == NULL) ? ($cEstadoPg = 0) : $cEstadoPg;
 
-        $rpta = DB::select('call sp_alumno_setCambiarEstadoFIT (?, ?)',
-                                                                [
-                                                                    $nIdTesis,
-                                                                    $cEstadoPg
-                                                                ]);
+        // ingresando la información nueva de fit
+        $registroFit = Fit::find($nIdTesis);
+        $registroFit->aprobado_pg = $cEstadoPg;
+        $registroFit->motivo_pg = $request->motivo;
+        $registroFit->update();
         // Envío de email a estudiantes con el informe de su estado FIT
         $fit = Fit::find($nIdTesis);
         $fecha = Carbon::now();
@@ -336,6 +336,7 @@ class AlumnoController extends Controller
             $datoInsertado->full_name = ($fit->User_P_Guia->nombres) . ' ' . ($fit->User_P_Guia->apellidos);
             $datoInsertado->fecha = $fecha;
             $datoInsertado->estado = $estadoFit;
+            $datoInsertado->motivo = $request->motivo;
             array_push($datosEmail, $datoInsertado);
             Mail::to($datosEmail[$i]->emailpg)->queue(new MailAceptacionFit($datosEmail[$i]));
             $i++;

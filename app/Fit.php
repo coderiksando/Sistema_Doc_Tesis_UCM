@@ -11,7 +11,7 @@ class Fit extends Model
     protected $fillable = [
         'id', 'id_vinculacion', 'id_p_guia', 'id_p_co_guia', 'nota',
         'estado', 'titulo','tipo','objetivo','descripcion',
-        'contribucion', 'aprobado_pg','created_at','updated_at'
+        'contribucion', 'aprobado_pg', 'motivo_pg', 'created_at','updated_at'
     ];
 
     public function Fit_User(){
