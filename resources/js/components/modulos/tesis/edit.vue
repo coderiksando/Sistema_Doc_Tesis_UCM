@@ -170,13 +170,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                <div class="col-md-6">
-                    <h3><b v-text="'Tabla de integrantes'"></b></h3>
+                <div class="col-md-12">
+                    <h3><b>{{'Tabla de integrantes (máximo ' + maxStudentNumber + ' alumnos)'}}</b></h3>
                 </div>
-                <div class="col-md-6">
-
-                </div>
-                <table class ="table table-hover table-head-fixed text-nowrap projects ">
+                <table class ="table table-hover table-head-fixed t-fixed projects ">
                     <thead>
                         <tr>
                             <th>Nombre integrante</th>
@@ -466,7 +463,8 @@ export default {
             display: 'none',
         },
         error: 0,
-        mensajeError:[]
+        mensajeError:[],
+        maxStudentNumber: 2
     }
   },
   computed: {
@@ -530,6 +528,9 @@ export default {
         }
         if(this.fillEditarFIT.cUsers.length === 0) {
             this.mensajeError.push("No existen alumnos agregados al formulario de tesis")
+        }
+        if (this.fillEditarFIT.cUsers.length > this.maxStudentNumber) {
+            this.mensajeError.push("Límite de estudiantes ingresado excedido")
         }
         if(this.mensajeError.length){
           this.error = 1;
@@ -681,6 +682,12 @@ export default {
     },
     mostrarModalAyuda() {
         this.modalAyuda = !this.modalAyuda;
+    },
+    getParametros(){
+        var url = '/admin/parametros';
+        axios.post(url,{'params': ['MaxStudentNumber']}).then(response => {
+            this.maxStudentNumber = parseInt(response.data[0][0]);
+        })
     }
 
   }// cierre methods
@@ -688,5 +695,5 @@ export default {
 </script>
 
 <style>
-    @import '../../../../../public/css/modal.css';
+    /* @import '../../../../../public/css/modal.css'; */
 </style>

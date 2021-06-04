@@ -47,7 +47,7 @@
               <div class="card-body table table-responsive">
                 <template v-if="listTesis.length">
 
-                  <table class ="table table-hover table-head-fixed text-nowrap projects ">
+                  <table class ="table table-hover table-head-fixed t-fixed ">
                     <thead>
                       <tr>
                         <th>Alumno(s)</th>
@@ -88,29 +88,29 @@
                           </template>
                         </td>
                         <td>
-                          <router-link class="btn btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: item.id}}">
+                          <router-link class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                             <i class="fas fa-folder"></i>
                           </router-link>
                           <template v-if="item.aprobado_pg == 'A'">
-                            <button class="btn btn-warning btn-sm" @click.prevent="setGenerarDocumento(item.id)">
+                            <button class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
                               <i class="fas fa-file-download"></i>
                             </button>
                           </template>
                           <template v-if="item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
                             <template v-if="item.aprobado_pg == 'R'">
-                                <button class="btn btn-danger btn-sm" @click.prevent="verRazonRechazo(item.motivo_pg)">
+                                <button class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
                                 <i class="fas fa-eye"></i>
                                 </button>
-                                <router-link class="btn btn-info btn-sm" :to="{name:'tesis.editar', params:{id: item.id}}">
+                                <router-link class="btn boton btn-info" :to="{name:'tesis.editar', params:{id: item.id}}">
                                 <i class="fas fa-pencil-alt"></i>
                                 </router-link>
                             </template>
 
                             <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
-                                <button class="btn btn-success btn-sm" @click.prevent="setCambiarEstadoFIT(1, item.id)">
+                                <button class="btn boton btn-success" @click.prevent="setCambiarEstadoFIT(1, item.id)">
                                   <i class="fas fa-check"></i>
                                 </button>
-                                <button class="btn btn-danger btn-sm" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
+                                <button class="btn boton btn-danger" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
                                   <i class="fas fa-trash"></i>
                                 </button>
                             </template>

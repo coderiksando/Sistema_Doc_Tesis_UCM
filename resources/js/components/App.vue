@@ -52,4 +52,7 @@ export default {
 </script>
 
 <style>
+    @import '../../../public/css/modal.css';
+    @import '../../../public/css/tableFixed.css';
+    @import '../../../public/css/botonNormal.css';
 </style>
