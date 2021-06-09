@@ -56,18 +56,19 @@ class AvancesController extends Controller
         $idUser     = Auth::id();
         $rol = $request->session()->get('rol');
         $nIdAvance  = $request->nIdAvance;
+        $estado = $request->estado;
         
         $idUser     = ($idUser == NULL) ? ($idUser = 0) : $idUser;
         $nIdAvance  = ($nIdAvance == NULL) ? ($nIdAvance = 0) : $nIdAvance;
+        $estado     = ($estado == NULL) ? ($estado = 'D') : $estado;
         $Users = [];
 
         if ($rol == 'Profesor') {
-            $fits = Fit::where('id_p_guia', $idUser)->get()->pluck('id');
-            $fitUsers = Fit_User::whereIn('id_fit', $fits)->get()->pluck('id_user');
+            $fits = Fit::where('id_p_guia', $idUser)->where('estado', $estado)->get()->pluck('id');
         }else {
-            $fitUsers = Fit_User::all()->pluck('id_user')->unique()->values();
+            $fits = Fit::where('estado', $estado)->get()->pluck('id');
         }
-        
+        $fitUsers = Fit_User::whereIn('id_fit', $fits)->get()->pluck('id_user');;
         $users = User::whereIn('id_user', $fitUsers)->get()->sortBy('nombres')->values()->all();
 
         return $users;

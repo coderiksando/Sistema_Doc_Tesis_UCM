@@ -44,6 +44,25 @@
                   <div class="row">
                     <div class="col-md-9">
                       <div class="form-group row">
+                          <label class="col-md-3 col-form-label">Seleccionar estado</label>
+                          <div class="col-md-9">
+                              <Multiselect
+                                v-model="selectedEstado"
+                                placeholder="Seleccionar estado"
+                                :options="listEstados"
+                                label ="nombre"
+                                selectLabel="Presiona enter para seleccionar"
+                                selectedLabel="Seleccionado"
+                                deselectLabel="No puedes remover este valor"
+                                :allow-empty="false"
+                                @input="getListarAlumnosByprofesor"
+                                >
+                              <template slot="noResult">No hay resultados</template>
+                              <template slot="noOptions">Lista vacía</template>
+                              </Multiselect>
+                          </div>
+                      </div>
+                      <div class="form-group row">
                           <label class="col-md-3 col-form-label">Seleccionar Alumno</label>
                           <div class="col-md-9">
                               <Multiselect
@@ -157,7 +176,12 @@ export default {
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       listAvances:[],
       listAlumnos:[],
+      listEstados: [
+        {nombre: 'En desarrollo', valor: 'D'}, 
+        {nombre: 'Aprobado', valor: 'A'}, 
+        {nombre: 'Rechazada', valor: 'R'}],
       selectedAlumno:{},
+      selectedEstado: {nombre: 'En desarrollo', valor: 'D'},
       listPermisos:[],
       fullscreenLoading: false,
       pageNumber: 0,
@@ -217,6 +241,7 @@ export default {
   methods:{
     limpiarCriteriosBsq(){
       this.selectedAlumno = {};
+      this.selectedEstado = {};
     },
     limpiarBandejaUsuarios(){
       this.listAvances = [];
@@ -226,8 +251,8 @@ export default {
         axios.get(url, {
       }).then(response => {
           console.log(response.data);
-          if(response.data[0]){
-            this.fillEstadoTesis.cEstado     = response.data[0].estado;
+          if(response.data){
+            this.fillEstadoTesis.cEstado     = response.data;
           }
       })
     },
@@ -246,9 +271,14 @@ export default {
     },
     getListarAlumnosByprofesor(){
       this.fullscreenLoading = true;
-      var url = '/avances/getListarAlumnosByprofesor'
+      this.selectedAlumno = {};
+      var url = '/avances/getListarAlumnosByprofesor';
+      console.log(this.selectedEstado.valor)
       axios.get(url, {
-      }).then(response => {
+        params: {
+          'estado'    : this.selectedEstado.valor
+        }
+        }).then(response => {
           this.inicializarPaginacion();
           this.listAlumnos = response.data;
           this.fullscreenLoading = false;

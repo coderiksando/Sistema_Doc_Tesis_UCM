@@ -53,7 +53,7 @@
                                                 <label class="col-md-3 col-form-label">Acuerdo</label>
                                                 <div class="col-md-9">
                                                     <!-- <input type="text" maxlength="150" class="form-control" v-model="fillCrearBitacora.Acuerdo" @keyup.enter="setRegistrarBitacora"> -->
-                                                    <textarea class="form-control" rows="3" v-model="fillCrearBitacora.Acuerdo" @keyup.enter="setRegistrarBitacora"></textarea>
+                                                    <textarea class="form-control" rows="3" v-model="fillCrearBitacora.Acuerdo" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
                                                 </div>
                                             </div>
                                         </div>
