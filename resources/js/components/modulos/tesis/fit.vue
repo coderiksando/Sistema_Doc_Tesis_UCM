@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Formulario de Inscripcion de documentos</h1>
+            <h1 class="m-0 text-dark">Formulario de Inscripción de Tesis</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -51,7 +51,7 @@
                     <thead>
                       <tr>
                         <th>Alumno(s)</th>
-                        <th>Estado FIT</th>
+                        <th>Estado</th>
                         <th>Estado Tesis</th>
                         <th>Acciones </th>
                       </tr>

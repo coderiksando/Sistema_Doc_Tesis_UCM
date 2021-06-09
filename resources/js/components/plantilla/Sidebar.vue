@@ -30,12 +30,25 @@
           </router-link>
         </div>
       </div>
+      
 
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="info">
-          <a href="#" class="d-block" @click.prevent="logout" v-loading.fullscreen.lock="fullscreenLoading">
-            <i class="fas fa-sing-out-alt"></i>Cerrar Sesión
+        <div class="container">
+          <a href="#" class="btn btn-danger btn-block" @click.prevent="logout" v-loading.fullscreen.lock="fullscreenLoading">
+            Cerrar Sesión
           </a>
+          <template v-if="listRolByUser.length > 1">
+          <a>
+            <el-select placeholder="Elegir rol" v-model="rolActivo" @change="cambiarRol">
+              <el-option
+                  v-for="item in listRolByUser"
+                  :key="item.nIdRol"
+                  :label="item.name"
+                  :value="item.name">
+              </el-option>
+            </el-select>
+          </a>
+          </template>
         </div>
       </div>
 
@@ -155,7 +168,7 @@
             </li>
           </template>
           <!-- VISTA PARA ADMINISTRACION DE DOCUMENTOS -->
-          <template  v-if="listPermisos.includes('actadefensa.index')">
+          <template  v-if="listPermisos.includes('actadefensa.index') && (rolActivo == 'Director' || rolActivo == 'Secretaria' )">
             <li class="nav-header">CONTROL DE DOCUMENTOS</li>
             <li class="nav-item">
               <template v-if="listPermisos.includes('actadefensa.index')">
@@ -171,7 +184,7 @@
           <template  v-if="listPermisos.includes('documentos.index')">
             
             <li class="nav-item">
-              <template v-if="listPermisos.includes('documentos.index')">
+              <template v-if="listPermisos.includes('documentos.index') && (rolActivo == 'Director' || rolActivo == 'Secretaria' )">
                 <router-link class="nav-link" :to="'/documentos'">
                   <i class="nav-icon far fa-id-card"></i>
                   <p>
@@ -209,7 +222,7 @@
                   <router-link class="nav-link" :to="'/bitacoras'">
                     <i class="nav-icon fas fa-clipboard-check"></i>
                     <p>
-                      Bitacoras
+                      Bitácoras
                     </p>
                   </router-link>  
                 </template>
@@ -288,7 +301,9 @@ export default {
   props: ['ruta', 'usuario', 'listPermisos'],
   data(){
     return{
-      fullscreenLoading: false
+      listRolByUser: JSON.parse(localStorage.getItem('rolUser')),
+      fullscreenLoading: false,
+      rolActivo : JSON.parse(localStorage.getItem('rolActivo'))
     }
   },
   methods:{
@@ -303,6 +318,23 @@ export default {
           this.fullscreenLoading = false;
         }
         
+      })
+    },
+    cambiarRol(){
+      localStorage.setItem('rolActivo', JSON.stringify(this.rolActivo));
+      var url = '/perfil/setRol'
+      axios.post(url, {
+              'rol' : this.rolActivo
+      }).then(response => {
+          console.log(response.data.rol)
+          if(response.data.code == 401){
+              console.log('Error')
+          }
+          if(response.data.code == 200){
+            if (this.$route.name != 'dashboard.index') {
+              this.$router.push({name: 'dashboard.index'})
+            }
+          }
       })
     }
   },

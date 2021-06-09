@@ -31,7 +31,7 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Descripcion</label>
+                        <label class="col-md-3 col-form-label">Descripción</label>
                         <div class="col-md-9">
                             <input type="text" maxlength="60" class="form-control" v-model="fillCrearAvances.cDescripcion" @keyup.enter="setRegistrarAvance">
                         </div>
@@ -51,7 +51,7 @@
                               </span>
                             </div>
                             <div class="custom-file">
-                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError}" @change="getFile" lang="zn">
+                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError}" @change="getFile">
                               <label class="custom-file-label" for="input1">{{fillCrearAvances.oArchivo ? fillCrearAvances.oArchivo.name : 'Seleccionar archivo'}}</label>
                             </div>
                           </div>
@@ -66,6 +66,13 @@
                     </div>
                   </div>
                 </form>
+                <div class="container">
+                  El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
+                </div>
+                <div class="container">
+                  Los formatos de archivo soportados son: 
+                  <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
+                </div> 
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -241,7 +248,7 @@ export default {
       var url = '/admin/parametros';
       axios.post(url,{'params': ['AvancesTesisFormato', 'AvancesTesisSize']}).then(response => {
           this.fileTypes = response.data[0];
-          this.fileMaxSize = response.data[1];
+          this.fileMaxSize = response.data[1][0];
       })
     }
   }// cierre methods
@@ -249,5 +256,7 @@ export default {
 </script>
 
 <style>
-
+.custom-file-input ~ .custom-file-label::after {
+    content: "Buscar";
+}
 </style>

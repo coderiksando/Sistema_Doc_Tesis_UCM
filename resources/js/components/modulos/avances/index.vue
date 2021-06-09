@@ -55,7 +55,8 @@
                                 selectedLabel="Seleccionado"
                                 deselectLabel="Presiona enter para remover"
                                 >
-                              <template slot="noResult" slot-scope="props">No hay resultados</template>
+                              <template slot="noResult">No hay resultados</template>
+                              <template slot="noOptions">Lista vacía</template>
                               </Multiselect>
                           </div>
                       </div>

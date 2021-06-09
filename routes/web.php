@@ -124,6 +124,8 @@ Route::post('/secretaria/setRegistrarNota', 'SecretariaController@setRegistrarNo
 Route::post('/admin/parametros', 'ParametrosController@getParametros');
 Route::post('/admin/setParametros', 'ParametrosController@setParametros');
 
+/*********    RUTAS MODULO DE SELECCION DE ROL   **********/
+Route::post('/perfil/setRol', 'Auth\LoginController@changeRol');
 });//cierre de rutas que requieren autenticacion
 
 /********** RUTA BASE **********/

@@ -154,9 +154,11 @@ export default {
             me.listRolPermisosByUsuario.map(function(x,y){
                 me.listRolPermisosByUsuarioFilter.push(x.slug)
             })
+            console.log(me);
             localStorage.setItem('listRolPermisosByUsuario', JSON.stringify(me.listRolPermisosByUsuarioFilter));
             localStorage.setItem('authUser', JSON.stringify(authUser));
             localStorage.setItem('rolUser', JSON.stringify(me.RolByUser));
+            localStorage.setItem('rolActivo', JSON.stringify(me.RolByUser[0].name));
             this.loginSuccess();
         },
     },
