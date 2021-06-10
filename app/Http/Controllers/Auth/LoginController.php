@@ -10,6 +10,7 @@ use App\Mail\MailPasswordReset;
 use Illuminate\Support\Str;
 use App\User;
 use App\PassRecovery;
+use App\Users_Roles;
 
 
 class LoginController extends Controller
@@ -23,6 +24,7 @@ class LoginController extends Controller
         $rpta = Auth::attempt(['email' => $cEmail, 'password' => $cContrasena, 'state' => 'A']);
 
         if ($rpta) {
+            session(['rol' => Users_Roles::firstWhere('id_user', Auth::id())->Roles->name]);
             return response()->json([
                 'authUser'  =>  Auth::user(),
                 'code'      =>  200
@@ -90,6 +92,13 @@ class LoginController extends Controller
             $user_role->Roles->first();
         }
         return $rpta;
+    }
+
+    public function changeRol(Request $request){
+        session(['rol' => $request->rol]);
+        return ['rol' => $request->rol,
+                'code' => 200
+                ];
     }
 }
 

@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Bitacoras</h1>
+            <h1 class="m-0 text-dark">Bitácoras</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -16,7 +16,7 @@
           <div class="card-header">
             <div class="card-tools">
                 <router-link class="btn btn-info bnt-sm" :to="'/bitacoras/crear'">
-              <i class="fas fa-plus-square"></i> Ingresar Bitacora
+              <i class="fas fa-plus-square"></i> Ingresar Bitácora
             </router-link> 
             </div>
           </div>
@@ -45,7 +45,8 @@
                                 selectedLabel="Seleccionado"
                                 deselectLabel="Presiona enter para remover"
                                 >
-                              <template slot="noResult" slot-scope="props">No hay resultados</template>
+                              <template slot="noResult">No hay resultados</template>
+                              <template slot="noOptions">Lista vacía</template>
                               </Multiselect>
                           </div>
                       </div>
@@ -88,7 +89,9 @@
                     <tbody>
                       <tr v-for="(item, index) in listBitacoras" :key="index" class="row">
                         <td class="col-md-3">{{item.fecha | moment }}</td>
-                        <td class="col-md-7" v-text="item.acuerdo"></td>
+                        <td class="col-md-7">
+                          <textarea readonly v-model="item.acuerdo" oninput='this.style.height = this.scrollHeight + "px"'></textarea>
+                        </td>
                         <td class="col-md-2">
                         <template  v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
                           <router-link class="btn btn-info boton" :to="{name:'bitacoras.editar', params:{id: item.id}}">
@@ -272,4 +275,11 @@ export default {
     table-layout: fixed;
     word-wrap: break-word;
   }
+  textarea{
+    width:100%;
+    overflow-y:hidden;
+    border: none;
+    resize: none;
+  }
+  
 </style>

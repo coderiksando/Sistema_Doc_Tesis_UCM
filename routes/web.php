@@ -113,6 +113,7 @@ Route::get('/administracion/reportes/getListarTesisReporte', 'Administracion\Rep
 Route::get('/administracion/reportes/export', 'Administracion\ReportesController@export');
 Route::post('/archivo/setRegistrarArchivo', 'FilesController@setRegistrarArchivo');
 Route::post('/archivo/setRegistrarArchivoPDF', 'FilesController@setRegistrarArchivoPDF');
+Route::get('/archivo/getPdfFinal', 'FilesController@getPdfFinal');
 
 /*********    RUTAS MODULO DE ADMINISTRACION DE DOCUMENTOS ALUMNOS     **********/
 Route::get('/secretaria/getListarAlumnos', 'SecretariaController@getListarAlumnos');
@@ -124,6 +125,8 @@ Route::post('/secretaria/setRegistrarNota', 'SecretariaController@setRegistrarNo
 Route::post('/admin/parametros', 'ParametrosController@getParametros');
 Route::post('/admin/setParametros', 'ParametrosController@setParametros');
 
+/*********    RUTAS MODULO DE SELECCION DE ROL   **********/
+Route::post('/perfil/setRol', 'Auth\LoginController@changeRol');
 });//cierre de rutas que requieren autenticacion
 
 /********** RUTA BASE **********/

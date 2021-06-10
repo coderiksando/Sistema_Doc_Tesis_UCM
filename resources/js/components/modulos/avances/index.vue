@@ -16,18 +16,21 @@
           <div class="card-header">
             <div class="card-tools">
             <template v-if="fillEstadoTesis.cEstado  == 'A'">
-              <router-link class="btn btn-success"  :to="'/avances/subirfinalpdf'">
-                <i class="fas fa-file-upload"></i> Subir PDF final
+              <router-link class="btn btn-success btn-sm bt-fh"  :to="'/avances/subirfinalpdf'">
+                <i class="fas fa-file-upload float fa-fw"></i> Subir PDF final
               </router-link>
             </template>
             <template v-if="fillEstadoTesis.cEstado  == 'D' || fillEstadoTesis.cEstado  == 'R'">
-              <router-link class="btn btn-danger link-disabled" :to="''">
-                <i class="fas fa-lock"></i> Aun no puedes subir el PDF final
+              <router-link class="btn btn-danger btn-sm link-disabled bt-fh" :to="''">
+                <i class="fas fa-lock fa-fw"></i> Aun no puedes subir el PDF final
               </router-link>
             </template>
-              <router-link class="btn btn-info bnt-sm" :to="'/avances/crear'">
-                <i class="fas fa-plus-square"></i> Subir Avance
+            <template v-if="fillEstadoTesis.cEstado  == 'D'">
+              <router-link class="btn btn-info btn-sm bt-fh" :to="'/avances/crear'">
+                <i class="fas fa-plus-square fa-fw"></i> Subir Avance
               </router-link>
+            </template>
+              
             </div>
           </div>
         </template> 
@@ -44,6 +47,25 @@
                   <div class="row">
                     <div class="col-md-9">
                       <div class="form-group row">
+                          <label class="col-md-3 col-form-label">Seleccionar estado</label>
+                          <div class="col-md-9">
+                              <Multiselect
+                                v-model="selectedEstado"
+                                placeholder="Seleccionar estado"
+                                :options="listEstados"
+                                label ="nombre"
+                                selectLabel="Presiona enter para seleccionar"
+                                selectedLabel="Seleccionado"
+                                deselectLabel="No puedes remover este valor"
+                                :allow-empty="false"
+                                @input="getListarAlumnosByprofesor"
+                                >
+                              <template slot="noResult">No hay resultados</template>
+                              <template slot="noOptions">Lista vacía</template>
+                              </Multiselect>
+                          </div>
+                      </div>
+                      <div class="form-group row">
                           <label class="col-md-3 col-form-label">Seleccionar Alumno</label>
                           <div class="col-md-9">
                               <Multiselect
@@ -53,9 +75,11 @@
                                 label = "nombres"
                                 selectLabel="Presiona enter para seleccionar"
                                 selectedLabel="Seleccionado"
-                                deselectLabel="Presiona enter para remover"
+                                deselectLabel="No puedes remover este valor"
+                                :allow-empty="false"
                                 >
-                              <template slot="noResult" slot-scope="props">No hay resultados</template>
+                              <template slot="noResult">No hay resultados</template>
+                              <template slot="noOptions">Lista vacía</template>
                               </Multiselect>
                           </div>
                       </div>
@@ -85,20 +109,18 @@
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
-                        <th>Fecha</th>
-                        <th>Descripcion</th>
-                        <th>Acciones</th>
-                        <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">            
-                          <th></th>
-                        </template> 
-                        
+                        <th class="col-md-3">Fecha</th>
+                        <th class="col-md-7">Descripcion</th>
+                        <th class="col-md-2">Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr class="date" v-for="(item, index) in listarAvancesPaginated" :key="index">
-                        <td class="filter">{{ item.created_at | moment }}</td>
-                        <td v-text="item.descripcion"></td>
-                        <td >
+                        <td class="col-md-3">{{ item.created_at | moment }}</td>
+                        <td class="col-md-7">
+                          <textarea readonly v-model="item.descripcion" oninput='this.style.height = this.scrollHeight + "px"'></textarea>
+                        </td>
+                        <td class="col-md-2">
                           <a class="btn btn-warning boton" :href="item.archivo_pdf.path">
                             <i class="fas fa-file-download"> </i>
                           </a>
@@ -156,7 +178,12 @@ export default {
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       listAvances:[],
       listAlumnos:[],
+      listEstados: [
+        {nombre: 'En desarrollo', valor: 'D'}, 
+        {nombre: 'Aprobada', valor: 'A'}, 
+        {nombre: 'Rechazada', valor: 'R'}],
       selectedAlumno:{},
+      selectedEstado: {nombre: 'En desarrollo', valor: 'D'},
       listPermisos:[],
       fullscreenLoading: false,
       pageNumber: 0,
@@ -216,6 +243,7 @@ export default {
   methods:{
     limpiarCriteriosBsq(){
       this.selectedAlumno = {};
+      this.selectedEstado = {};
     },
     limpiarBandejaUsuarios(){
       this.listAvances = [];
@@ -225,8 +253,8 @@ export default {
         axios.get(url, {
       }).then(response => {
           console.log(response.data);
-          if(response.data[0]){
-            this.fillEstadoTesis.cEstado     = response.data[0].estado;
+          if(response.data){
+            this.fillEstadoTesis.cEstado     = response.data;
           }
       })
     },
@@ -245,9 +273,15 @@ export default {
     },
     getListarAlumnosByprofesor(){
       this.fullscreenLoading = true;
-      var url = '/avances/getListarAlumnosByprofesor'
+      console.log(this.selectedEstado);
+      this.selectedAlumno = {};
+      var url = '/avances/getListarAlumnosByprofesor';
+      console.log(this.selectedEstado.valor)
       axios.get(url, {
-      }).then(response => {
+        params: {
+          'estado'    : this.selectedEstado.valor
+        }
+        }).then(response => {
           this.inicializarPaginacion();
           this.listAlumnos = response.data;
           this.fullscreenLoading = false;
@@ -293,5 +327,8 @@ export default {
     border:0px !important;
     width: 38px !important;
     height:38px !important;
+   }
+   .bt-fh{
+    height: 28px !important;
    }
 </style>

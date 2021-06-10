@@ -31,7 +31,7 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Descripcion</label>
+                        <label class="col-md-3 col-form-label">Descripción</label>
                         <div class="col-md-9">
                             <input type="text" maxlength="60" class="form-control" v-model="fillCrearAvances.cDescripcion" @keyup.enter="setRegistrarAvance">
                         </div>
@@ -44,21 +44,18 @@
                           <div class="input-group">
                             <div class="input-group-prepend">
                               <span class="input-group-text" id="inputGroupFileAddon01">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-arrow-up" viewBox="0 0 16 16" data-darkreader-inline-fill="" style="--darkreader-inline-fill:currentColor;">
-                              <path d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z"></path>
-                              <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"></path>
-                              </svg>
+                              <i class="fas fa-file-upload"></i>
                               </span>
                             </div>
                             <div class="custom-file">
-                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError}" @change="getFile" lang="zn">
+                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError}" @change="getFile">
                               <label class="custom-file-label" for="input1">{{fillCrearAvances.oArchivo ? fillCrearAvances.oArchivo.name : 'Seleccionar archivo'}}</label>
                             </div>
                           </div>
-                          <div class="custom-file invalid-feedback" v-show="formatError">
+                          <div class="custom-file invalid-feedback no-margin" v-show="formatError">
                                 El formato del archivo no es soportado.
                           </div>
-                          <div class="custom-file invalid-feedback" v-show="sizeError">
+                          <div class="custom-file invalid-feedback no-margin" v-show="sizeError">
                             El tamaño del archivo no puede superar los {{fileMaxSize}} MB.
                           </div>  
                         </div>
@@ -66,6 +63,13 @@
                     </div>
                   </div>
                 </form>
+                <div class="container">
+                  El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
+                </div>
+                <div class="container">
+                  Los formatos de archivo soportados son: 
+                  <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
+                </div> 
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -141,7 +145,6 @@ export default {
       this.sizeError = false
       this.fillCrearAvances.oArchivo = element.target.files[0];
       if (!this.fillCrearAvances.oArchivo) return;
-      //console.log(this.fillCrearAvances.oArchivo);
       const fileName = this.fillCrearAvances.oArchivo.name;
       const fileSize = this.fillCrearAvances.oArchivo.size;
       var dots = fileName.split(".")
@@ -179,7 +182,8 @@ export default {
     },
     setRegistrarArchivoPDF(){
       this.fullscreenLoading = true;
-      this.form.append('file', this.fillCrearAvances.oArchivo)
+      this.form.append('file', this.fillCrearAvances.oArchivo);
+      this.form.append('tipo', 'avance_t');
       const config = { headers: {'Content-Type': 'multipart/form-data'}}
       var url = '/archivo/setRegistrarArchivoPDF'
       axios.post(url, this.form, config).then(response =>{
@@ -241,7 +245,7 @@ export default {
       var url = '/admin/parametros';
       axios.post(url,{'params': ['AvancesTesisFormato', 'AvancesTesisSize']}).then(response => {
           this.fileTypes = response.data[0];
-          this.fileMaxSize = response.data[1];
+          this.fileMaxSize = response.data[1][0];
       })
     }
   }// cierre methods
@@ -249,5 +253,7 @@ export default {
 </script>
 
 <style>
-
+.custom-file-input ~ .custom-file-label::after {
+    content: "Buscar";
+}
 </style>
