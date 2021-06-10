@@ -4,8 +4,13 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
+<<<<<<< Updated upstream
           <div class="col-sm-6">
             <h1 class="m-0 text-dark">Formulario de Inscripción de Tesis</h1>
+=======
+          <div class="col-sm-12">
+            <h1 class="m-0 text-dark"><b>Formulario de Inscripción de Tesis (FIT)</b></h1>
+>>>>>>> Stashed changes
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -23,7 +28,7 @@
             </template>
             <template v-else>
               <router-link class="btn btn-info bnt-sm link-disabled" :to="''">
-              <i class="fas fa-plus-square"></i> Usted ya ingresó un formulario
+              <i class="fas fa-plus-square"></i>Usted ya ingresó un formulario
               </router-link>
             </template>
           </div>
@@ -53,7 +58,7 @@
                         <th>Alumno(s)</th>
                         <th>Estado</th>
                         <th>Estado Tesis</th>
-                        <th>Acciones </th>
+                        <th>Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -161,7 +166,7 @@
               <div class="card-body table table-responsive">
                 <template v-if="listAllTesis.length">
 
-                  <table class ="table table-hover table-head-fixed text-nowrap projects ">
+                  <table class ="table table-hover table-head-fixed t-fixed projects ">
                     <thead>
                       <tr>
                         <th>Alumno</th>
@@ -258,12 +263,12 @@
             <button class="close" @click="mostrarModalAyuda"></button>
             </div>
             <div class="modal-body">
-            <table class ="table table-hover table-head-fixed text-nowrap projects ">
+            <table class ="table table-hover table-head-fixed t-fixed projects ">
                 <thead>
                     <tr>
-                        <th>Ícono</th>
-                        <th>Nombre</th>
-                        <th>Detalle</th>
+                        <th class="col-md-1">Ícono</th>
+                        <th class="col-md-2">Nombre</th>
+                        <th class="col-md-9">Detalle</th>
                     </tr>
                 </thead>
                 <tbody>

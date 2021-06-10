@@ -26,7 +26,8 @@ class CreateFitTable extends Migration
             $table->string('titulo')->nullable();
             $table->string('tipo')->nullable();
             // $table->date('fecha_ultimoramo')->nullable();
-            $table->text('objetivo')->nullable();
+            $table->text('objetivo_general')->nullable();
+            $table->text('objetivo_especifico')->nullable();
             $table->text('descripcion')->nullable();
             $table->text('contribucion')->nullable();
             // $table->string('nombre_int1')->nullable();

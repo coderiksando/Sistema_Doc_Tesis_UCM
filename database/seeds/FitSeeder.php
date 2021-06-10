@@ -25,7 +25,8 @@ class FitSeeder extends Seeder
             'estado' => 'D',
             'titulo' => 'Titulo de tesis',
             'tipo' => 'tesis',
-            'objetivo' => 'Objetivo de tesis',
+            'objetivo_general' => 'Objetivo general de tesis 123412341234',
+            'objetivo_especifico' => 'Objetivo específico de tesis 123412341234',
             'descripcion' => 'Descripcion de tesis',
             'contribucion' => 'Contribucion de tesis',
             'aprobado_pg' => 'P'

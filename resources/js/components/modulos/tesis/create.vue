@@ -4,8 +4,8 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Ingresar formulario de inscripcion de tesis</h1>
+          <div class="col-sm-12">
+            <h1 class="m-0 text-dark"><b>Ingresar formulario de inscripción de tesis</b></h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -26,7 +26,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h3 class="card-title">Formulario  inscripción de tesis</h3>
+                                    <h3 class="card-title">Formulario inscripción de tesis</h3>
                                 </div>
                                 <div class="col-md-6" style="text-align: right;">
                                     <button class="btn btn-secondary" @click.prevent="mostrarModalAyuda">Ayuda
@@ -40,7 +40,7 @@
                                     <div class="row">
                                       <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Profesor Guia</label>
+                                                <label class="col-md-3 col-form-label">Profesor Guía</label>
                                                 <div class="col-md-9">
                                                     <el-select v-model="fillCrearFIT.nIdPg"
                                                     placeholder="Asignar Profesor Guia"
@@ -95,7 +95,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Vinculacion</label>
+                                                <label class="col-md-3 col-form-label">Vinculación</label>
                                                 <div class="col-md-9">
                                                     <el-select v-model="fillCrearFIT.nIdVinculacion"
                                                     placeholder="Asignar Vinculacion (opcional)"
@@ -119,7 +119,7 @@
                                                     <el-input
                                                       type="textarea"
                                                       :autosize="{ minRows: 2, maxRows: 5}"
-                                                      maxlength="130"
+                                                      maxlength="140"
                                                       placeholder="Título de la tesis"
                                                       show-word-limit
                                                       v-model="fillCrearFIT.cTitulo">
@@ -133,8 +133,8 @@
                                                 <div class="col-md-9">
                                                     <el-input
                                                       type="textarea"
-                                                      :autosize="{ minRows: 2, maxRows: 5}"
-                                                      maxlength="500"
+                                                      :autosize="{ minRows: 2, maxRows: 10}"
+                                                      maxlength="2000"
                                                       placeholder="Contribución esperada"
                                                       show-word-limit
                                                       v-model="fillCrearFIT.cContribucion">
@@ -145,15 +145,30 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Objetivo</label>
+                                                <label class="col-md-3 col-form-label">Objetivo general</label>
                                                 <div class="col-md-9">
                                                     <el-input
                                                       type="textarea"
-                                                      :autosize="{ minRows: 2, maxRows: 5}"
-                                                      maxlength="500"
-                                                      placeholder="Objetivo de la tesis"
+                                                      :autosize="{ minRows: 2, maxRows: 10}"
+                                                      maxlength="2000"
+                                                      placeholder="Objetivo general de la tesis"
                                                       show-word-limit
-                                                      v-model="fillCrearFIT.cObjetivo">
+                                                      v-model="fillCrearFIT.cObjetivoGeneral">
+                                                    </el-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label">Objetivos específico</label>
+                                                <div class="col-md-9">
+                                                    <el-input
+                                                      type="textarea"
+                                                      :autosize="{ minRows: 2, maxRows: 10}"
+                                                      maxlength="2000"
+                                                      placeholder="Objetivos específicos de la tesis"
+                                                      show-word-limit
+                                                      v-model="fillCrearFIT.cObjetivoEspecifico">
                                                     </el-input>
                                                 </div>
                                             </div>
@@ -164,8 +179,8 @@
                                                 <div class="col-md-9">
                                                     <el-input
                                                       type="textarea"
-                                                      :autosize="{ minRows: 2, maxRows: 5}"
-                                                      maxlength="500"
+                                                      :autosize="{ minRows: 2, maxRows: 10}"
+                                                      maxlength="2000"
                                                       placeholder="Descripción del tema"
                                                       show-word-limit
                                                       v-model="fillCrearFIT.cDescripcion">
@@ -258,72 +273,147 @@
       </div>
     </div>
 
-    <div class="modal fade" :class="{ show: modalSearchUser }" :style="modalSearchUser ? mostrarModal : ocultarModal">
+    <div
+      class="modal fade"
+      :class="{ show: modalSearchUser }"
+      :style="modalSearchUser ? mostrarModal : ocultarModal"
+    >
       <div class="modal-dialog" role="document">
         <div class="modal-content scrollTable">
-            <div class="modal-header">
-                <h5 class="modal-title"><b>Búsqueda de integrante de tesis</b></h5>
-                <button class="close" @click="mostrarModalBusquedaEstudiante"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Rut</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="busquedaUsuario.rut" @keyup.enter="setBusquedaUsuario">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Email</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="busquedaUsuario.email" @keyup.enter="setBusquedaUsuario">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Nombre</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="busquedaUsuario.nombre" @keyup.enter="setBusquedaUsuario">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Apellido</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="busquedaUsuario.apellido" @keyup.enter="setBusquedaUsuario">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="card">
-                            <div class="card-body">
-                                <template v-if="listAlumnosBuscados.length">
-                                    <div class="row">
-                                        <h3><b>Usuarios encontrados:</b></h3>
-                                    </div>
-                                    <div class="row" v-for="(item, index) in listAlumnosBuscados" :key="index">
-                                        <button class="btn btn-primary w-100 mb-2"  @click="setIngresarAlumno(item)">
-                                                <p>Nombre: {{item.nombres}} {{item.apellidos}}</p>
-                                                <p>Rut: {{item.rut}}</p>
-                                        </button>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <button class="btn btn-success w-100" @click="setBusquedaUsuario">Buscar</button>
-                    </div>
+          <div class="modal-header">
+            <h5 class="modal-title"><b>Búsqueda de integrante de tesis</b></h5>
+            <button
+              class="close"
+              @click="mostrarModalBusquedaEstudiante"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label">Rut</label>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="busquedaUsuario.rut"
+                      @keyup.enter="setBusquedaUsuario"
+                    />
+                  </div>
                 </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label">Email</label>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="busquedaUsuario.email"
+                      @keyup.enter="setBusquedaUsuario"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label">Nombre</label>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="busquedaUsuario.nombre"
+                      @keyup.enter="setBusquedaUsuario"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label">Apellido</label>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="busquedaUsuario.apellido"
+                      @keyup.enter="setBusquedaUsuario"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <button
+                  class="btn btn-success w-100"
+                  @click="setBusquedaUsuario"
+                >
+                  Buscar
+                </button>
+              </div>
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <template>
+                      <div class="row">
+                        <h3><b>Lista de usuarios encontrados:</b></h3>
+                      </div>
+                      <table
+                        class="
+                          table table-hover table-head-fixed
+                          t-fixed
+                          projects
+                        "
+                      >
+                        <thead>
+                          <tr>
+                            <th class="col-md-4">Nombre integrante</th>
+                            <th class="col-md-2">Rut</th>
+                            <th class="col-md-4">Correo electrónico</th>
+                            <th class="col-md-2">Acción</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            v-for="(item, index) in listAlumnosBuscados"
+                            :key="index"
+                          >
+                            <td>{{ item.nombres + " " + item.apellidos }}</td>
+                            <td>{{ item.rut }}</td>
+                            <td>{{ item.email }}</td>
+                            <td>
+                              <div :key="'boton' + index">
+                                <div style="padding: 0px; margin: 0px">
+                                  <button
+                                    class="btn btn-info bnt-sm"
+                                    @click.prevent="setIngresarAlumno(item)"
+                                  >
+                                    <i class="fas fa-plus-square"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <!-- <div class="row" v-for="(item, index) in listAlumnosBuscados" :key="index">
+                                            <button class="btn btn-primary w-100 mb-2"  @click="setIngresarAlumno(item)">
+                                                    <p>Nombre: {{item.nombres}} {{item.apellidos}}</p>
+                                                    <p>Rut: {{item.rut}}</p>
+                                            </button>
+                                        </div> -->
+                    </template>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" @click="mostrarModalBusquedaEstudiante">Cerrar</button>
-            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary"
+              @click="mostrarModalBusquedaEstudiante"
+            >
+              Cerrar
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -339,9 +429,9 @@
             <table class ="table table-hover table-head-fixed text-nowrap projects ">
                 <thead>
                     <tr>
-                        <th>Ícono</th>
-                        <th>Nombre</th>
-                        <th>Detalle</th>
+                        <th class="col-md-1">Ícono</th>
+                        <th class="col-md-2">Nombre</th>
+                        <th class="col-md-9">Detalles</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -383,7 +473,8 @@ export default {
             nIdCoPg: '',
             nIdVinculacion: '',
             cTipo: '',
-            cObjetivo: '',
+            cObjetivoGeneral: '',
+            cObjetivoEspecifico: '',
             cDescripcion: '',
             cContribucion: '',
             cUsers: []
@@ -427,6 +518,7 @@ export default {
     this.getListarProfesores();
     this.getListarVinculacion();
     this.getMyOwnUser();
+    this.getParametros();
   },
   methods:{
     getListarVinculacion(){
@@ -435,6 +527,7 @@ export default {
       axios.get(url, {
       }).then(response => {
           this.listVinculacion = response.data;
+          this.listVinculacion = _.orderBy(this.listVinculacion, 'nombre', 'asc');
           this.fullscreenLoading = false;
       })
     },
@@ -444,6 +537,7 @@ export default {
       axios.get(url, {
       }).then(response => {
           this.listProfesores = response.data;
+          this.listProfesores = _.orderBy(this.listProfesores, 'fullname', 'asc');
           this.fullscreenLoading = false;
       })
     },
@@ -487,8 +581,11 @@ export default {
         if(!this.fillCrearFIT.cTipo){
           this.mensajeError.push("El tipo es un campo obligatorio")
         }
-        if(!this.fillCrearFIT.cObjetivo){
-          this.mensajeError.push("El objetivo es un campo obligatorio")
+        if(!this.fillCrearFIT.cObjetivoGeneral){
+          this.mensajeError.push("El objetivo general es un campo obligatorio")
+        }
+        if(!this.fillCrearFIT.cObjetivoEspecifico){
+          this.mensajeError.push("Los objetivos especificos es un campo obligatorio")
         }
         if(!this.fillCrearFIT.cDescripcion){
           this.mensajeError.push("La descripcion es un campo obligatorio")
@@ -520,6 +617,7 @@ export default {
       axios.post(url, {
         'data'  : this.fillCrearFIT
       }).then(response => {
+        console.log(response);
         this.fullscreenLoading = false;
         this.$router.push('/tesis');
       })

@@ -25,7 +25,7 @@ class BitacorasController extends Controller
             $Fit = $FitUser->Fit;
             if ($Fit) {
                 $MisBitacoras = $Fit->Bitacoras->sortByDesc('updated_at')->values()->all();
-            }   
+            }
         }
         return $MisBitacoras;
     }
@@ -44,8 +44,8 @@ class BitacorasController extends Controller
         if ($FitUser){
             $Fit = $FitUser->Fit;
             if ($Fit) {
-                $Bitacoras = $Fit->Bitacoras->sortByDesc('updated_at')->values()->all();
-            }   
+                $Bitacoras = $Fit->Bitacoras->sortByDesc('fecha')->values()->all();
+            }
         }
 
         return $Bitacoras;
@@ -89,7 +89,7 @@ class BitacorasController extends Controller
     }
     public function setEditarBitacora(Request $request){
         if(!$request->ajax()) return redirect('/');
-        
+
         $id         = $request->nIdBitacora;
         $acuerdo    = $request->acuerdo;
         $fecha      = Carbon::now();

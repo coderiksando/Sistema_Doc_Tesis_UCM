@@ -4,7 +4,7 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
+          <div class="col-sm-12">
             <h1 class="m-0 text-dark"><b>Formulario de inscripción de tesis</b></h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -24,15 +24,20 @@
           <div class="container-fluid">
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario  inscripcion de tesis</h3>
+                            <h3 class="card-title">Formulario  inscripción de tesis</h3>
                         </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Profesor Guia</label>
+                                            <label class="col-md-3 col-form-label">Profesor Guía</label>
                                             <div class="col-md-9">
-                                                <input type="text" readonly class="form-control" v-model="fillVerFIT.cProfesorguia" @keyup.enter="setRegistrarTesis">
+                                                <el-input
+                                                    type="text"
+                                                    :autosize="{ minRows: 2, maxRows: 10}"
+                                                    :disabled="true"
+                                                    v-model="fillVerFIT.cProfesorguia">
+                                                </el-input>
                                             </div>
                                         </div>
                                     </div>
@@ -40,7 +45,12 @@
                                         <div class="form-group row">
                                             <label class="col-md-3 col-form-label">Profesor Co-guía</label>
                                             <div class="col-md-9">
-                                                <input type="text" readonly class="form-control" v-model="fillVerFIT.cProfesorCoGuia" @keyup.enter="setRegistrarTesis">
+                                                <el-input
+                                                    type="text"
+                                                    :autosize="{ minRows: 2, maxRows: 10}"
+                                                    :disabled="true"
+                                                    v-model="fillVerFIT.cProfesorCoGuia">
+                                                </el-input>
                                             </div>
                                         </div>
                                     </div>
@@ -48,55 +58,95 @@
                                         <div class="form-group row">
                                             <label class="col-md-3 col-form-label">Tipo de trabajo</label>
                                             <div class="col-md-9">
-                                                <input type="text" readonly class="form-control" v-model="fillVerFIT.cTipo" @keyup.enter="setRegistrarTesis">
+                                                <el-input
+                                                    type="text"
+                                                    :autosize="{ minRows: 2, maxRows: 10}"
+                                                    :disabled="true"
+                                                    v-model="fillVerFIT.cTipo">
+                                                </el-input>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Vinculacion</label>
+                                            <label class="col-md-3 col-form-label">Vinculación</label>
                                             <div class="col-md-9">
-                                                <input type="text" readonly class="form-control" v-model="fillVerFIT.nIdVinculacion" @keyup.enter="setRegistrarTesis">
+                                            <el-input
+                                                type="text"
+                                                :autosize="{ minRows: 2, maxRows: 10}"
+                                                :disabled="true"
+                                                v-model="fillVerFIT.nIdVinculacion">
+                                            </el-input>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Titulo</label>
+                                            <label class="col-md-3 col-form-label">Título</label>
                                             <div class="col-md-9">
-                                                <textarea class="form-control" readonly v-model="fillVerFIT.cTitulo" rows="3"></textarea>
+                                                <el-input
+                                                    type="textarea"
+                                                    :autosize="{ minRows: 2, maxRows: 10}"
+                                                    :disabled="true"
+                                                    v-model="fillVerFIT.cTitulo">
+                                                </el-input>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                        <label class="col-md-3 col-form-label">Contribucion</label>
+                                        <label class="col-md-3 col-form-label">Contribución</label>
                                         <div class="col-md-9">
-                                        <textarea class="form-control" readonly v-model="fillVerFIT.cContribucion" rows="3"></textarea>
+                                            <el-input
+                                                type="textarea"
+                                                :autosize="{ minRows: 2, maxRows: 10}"
+                                                :disabled="true"
+                                                v-model="fillVerFIT.cContribucion">
+                                            </el-input>
                                         </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                        <label class="col-md-3 col-form-label">Objetivo</label>
+                                        <label class="col-md-3 col-form-label">Objetivo general</label>
                                         <div class="col-md-9">
-                                        <textarea class="form-control" readonly v-model="fillVerFIT.cObjetivo" rows="3"></textarea>
+                                            <el-input
+                                                type="textarea"
+                                                :autosize="{ minRows: 2, maxRows: 10}"
+                                                :disabled="true"
+                                                v-model="fillVerFIT.cObjetivoGeneral">
+                                            </el-input>
                                         </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                        <label class="col-md-3 col-form-label">Descripcion</label>
+                                        <label class="col-md-3 col-form-label">Objetivos especificos</label>
                                         <div class="col-md-9">
-                                        <textarea class="form-control" readonly v-model="fillVerFIT.cDescripcion" rows="3"></textarea>
+                                            <el-input
+                                                type="textarea"
+                                                :autosize="{ minRows: 2, maxRows: 10}"
+                                                :disabled="true"
+                                                v-model="fillVerFIT.cObjetivoEspecifico">
+                                            </el-input>
                                         </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
+                                        <div class="form-group row">
+                                        <label class="col-md-3 col-form-label">Descripción</label>
+                                        <div class="col-md-9">
+                                            <el-input
+                                                type="textarea"
+                                                :autosize="{ minRows: 2, maxRows: 10}"
+                                                :disabled="true"
+                                                v-model="fillVerFIT.cDescripcion">
+                                            </el-input>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
                                         <h3><b v-text="'Tabla de integrantes'"></b></h3>
-                                    </div>
-                                    <div class="col-md-6">
-
                                     </div>
                                     <table class ="table table-hover table-head-fixed t-fixed projects">
                                         <thead>
@@ -152,7 +202,8 @@ export default {
         nIdCoPg: '',
         nIdVinculacion: '',
         cTipo: '',
-        cObjetivo: '',
+        cObjetivoGeneral: '',
+        cObjetivoEspecifico: '',
         cContribucion: '',
         cDescripcion: '',
         users: []
@@ -232,7 +283,8 @@ export default {
           this.fillVerFIT.cProfesorCoGuia = data.user__p__coguia.nombres + ' ' + data.user__p__coguia.apellidos;
           this.fillVerFIT.nIdVinculacion = data.vinculaciones.nombre;
           this.fillVerFIT.cTipo = data.tipo;
-          this.fillVerFIT.cObjetivo = data.objetivo;
+          this.fillVerFIT.cObjetivoGeneral = data.objetivo_general;
+          this.fillVerFIT.cObjetivoEspecifico = data.objetivo_especifico;
           this.fillVerFIT.cContribucion = data.contribucion;
           this.fillVerFIT.cDescripcion = data.descripcion;
           this.fillVerFIT.users = data.fit__user;
@@ -243,5 +295,10 @@ export default {
 </script>
 
 <style>
-
+.el-input.is-disabled .el-input__inner {
+    color: black;
+}
+.el-textarea.is-disabled .el-textarea__inner {
+    color: black;
+}
 </style>

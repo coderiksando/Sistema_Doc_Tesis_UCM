@@ -216,7 +216,8 @@ class AlumnoController extends Controller
             $registroFit->id_vinculacion = $fit->nIdVinculacion;
             $registroFit->titulo = $fit->cTitulo;
             $registroFit->tipo = $fit->cTipo;
-            $registroFit->objetivo = $fit->cObjetivo;
+            $registroFit->objetivo_general = $fit->cObjetivoGeneral;
+            $registroFit->objetivo_especifico = $fit->cObjetivoEspecifico;
             $registroFit->descripcion = $fit->cDescripcion;
             $registroFit->contribucion = $fit->cContribucion;
             $registroFit->estado = 'D';
@@ -231,71 +232,6 @@ class AlumnoController extends Controller
                 $userToRegister->save();
             }
         });
-
-
-        // $nIdAlumno          = Auth::id();
-        // $cTitulo            = $request->cTitulo;
-        // $nIdPg              = $request->nIdPg;
-        // $nIdVinculacion     = $request->nIdVinculacion;
-        // $dFechaUR           = $request->dFechaUR;
-        // $cTipo              = $request->cTipo;
-        // $cObjetivo          = $request->cObjetivo;
-        // $cDescripcion       = $request->cDescripcion;
-        // $cContribucion      = $request->cContribucion;
-        // $cNombreI1          = $request->cNombreI1;
-        // $cRutI1             = $request->cRutI1;
-        // $cTelefonoI1        = $request->cTelefonoI1;
-        // $cIngresoI1         = $request->cIngresoI1;
-        // $cEmailI1           = $request->cEmailI1;
-        // $cNombreI2          = $request->cNombreI2;
-        // $cRutI2             = $request->cRutI2;
-        // $cEmailI2           = $request->cEmailI2;
-        // $cIngresoI2         = $request->cIngresoI2;
-        // $cTelefonoI2        = $request->cTelefonoI2;
-
-
-        // $nIdAlumno      = ($nIdAlumno == NULL) ? ($nIdAlumno = '') : $nIdAlumno;
-        // $cTitulo        = ($cTitulo == NULL) ? ($cTitulo = '') : $cTitulo;
-        // $nIdPg          = ($nIdPg == NULL) ? ($nIdPg = '') : $nIdPg;
-        // $nIdVinculacion = ($nIdVinculacion == NULL) ? ($nIdVinculacion = NULL) : $nIdVinculacion;
-        // $dFechaUR       = ($dFechaUR == NULL) ? ($dFechaUR = NULL) : $dFechaUR;
-        // $cTipo          = ($cTipo == NULL) ? ($cTipo = '') : $cTipo;
-        // $cObjetivo      = ($cObjetivo == NULL) ? ($cObjetivo = '') : $cObjetivo;
-        // $cDescripcion   = ($cDescripcion == NULL) ? ($cDescripcion = '') : $cDescripcion;
-        // $cContribucion  = ($cContribucion == NULL) ? ($cContribucion = '') : $cContribucion;
-        // $cNombreI1      = ($cNombreI1 == NULL) ? ($cNombreI1 = '') : $cNombreI1;
-        // $cRutI1         = ($cRutI1 == NULL) ? ($cRutI1 = '') : $cRutI1;
-        // $cTelefonoI1    = ($cTelefonoI1 == NULL) ? ($cTelefonoI1 = '') : $cTelefonoI1;
-        // $cIngresoI1     = ($cIngresoI1 == NULL) ? ($cIngresoI1 = '') : $cIngresoI1;
-        // $cEmailI1       = ($cEmailI1 == NULL) ? ($cEmailI1 = '') : $cEmailI1;
-        // $cNombreI2      = ($cNombreI2 == NULL) ? ($cNombreI2 = '') : $cNombreI2;
-        // $cRutI2         = ($cRutI2 == NULL) ? ($cRutI2 = '') : $cRutI2;
-        // $cEmailI2       = ($cEmailI2 == NULL) ? ($cEmailI2 = '') : $cEmailI2;
-        // $cIngresoI2     = ($cIngresoI2 == NULL) ? ($cIngresoI2 = '') : $cIngresoI2;
-        // $cTelefonoI2    = ($cTelefonoI2 == NULL) ? ($cTelefonoI2 = '') : $cTelefonoI2;
-
-        // $rpta = DB::select('call sp_alumno_setRegistrarTesis (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)',
-        //                                                         [
-            //                                                             $nIdAlumno,
-            //                                                             $cTitulo,
-            //                                                             $nIdPg,
-            //                                                             $nIdVinculacion,
-            //                                                             $dFechaUR,
-            //                                                             $cTipo,
-            //                                                             $cObjetivo,
-            //                                                             $cDescripcion,
-            //                                                             $cContribucion,
-            //                                                             $cNombreI1,
-            //                                                             $cRutI1,
-            //                                                             $cTelefonoI1,
-        //                                                             $cIngresoI1,
-        //                                                             $cEmailI1,
-        //                                                             $cNombreI2,
-        //                                                             $cRutI2,
-        //                                                             $cEmailI2,
-        //                                                             $cIngresoI2,
-        //                                                             $cTelefonoI2
-        //                                                         ]);
 
         $DatosEmail = DB::table('users')
                         ->select('email as emailpg')
@@ -353,7 +289,8 @@ class AlumnoController extends Controller
             $registroFit->id_vinculacion = $fit->id_vinculacion;
             $registroFit->titulo = $fit->titulo;
             $registroFit->tipo = $fit->tipo;
-            $registroFit->objetivo = $fit->objetivo;
+            $registroFit->objetivo_general = $fit->objetivoGeneral;
+            $registroFit->objetivo_especifico = $fit->objetivoEspecifico;
             $registroFit->descripcion = $fit->descripcion;
             $registroFit->contribucion = $fit->contribucion;
             $registroFit->estado = 'D';

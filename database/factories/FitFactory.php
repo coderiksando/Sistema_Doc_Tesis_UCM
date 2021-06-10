@@ -15,7 +15,8 @@ $factory->define(Fit::class, function (Faker $faker) {
         'estado' => $faker->randomElement(array('A','R','D')),
         'titulo' => $faker->sentence(3),
         'tipo' => 'Tesis',
-        'objetivo' => $faker->sentence(10),
+        'objetivo_general' => $faker->sentence(10),
+        'objetivo_especifico' => $faker->sentence(10),
         'descripcion' => $faker->sentence(10),
         'contribucion' => $faker->sentence(10),
         'aprobado_pg' => $faker->randomElement(array('A','R','P'))
