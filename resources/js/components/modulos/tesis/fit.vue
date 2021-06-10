@@ -4,13 +4,8 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-<<<<<<< Updated upstream
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Formulario de Inscripción de Tesis</h1>
-=======
           <div class="col-sm-12">
             <h1 class="m-0 text-dark"><b>Formulario de Inscripción de Tesis (FIT)</b></h1>
->>>>>>> Stashed changes
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->

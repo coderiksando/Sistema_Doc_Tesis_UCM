@@ -143,6 +143,7 @@ export default {
     getFile(element){
       this.formatError = false
       this.sizeError = false
+      if (!element) return;
       this.fillCrearAvances.oArchivo = element.target.files[0];
       if (!this.fillCrearAvances.oArchivo) return;
       const fileName = this.fillCrearAvances.oArchivo.name;

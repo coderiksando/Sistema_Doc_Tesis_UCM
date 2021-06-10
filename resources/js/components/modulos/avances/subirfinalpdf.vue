@@ -32,7 +32,7 @@
                     <div class="col-md-10">
                       <div class="form-group row">
                         <label class="col-md-2 offset-md-1 col-form-label">Archivo</label>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                           <div class="input-group">
                             <div class="input-group-prepend">
                               <span class="input-group-text" id="inputGroupFileAddon01">
@@ -51,6 +51,11 @@
                             El tamaño del archivo no puede superar los {{fileMaxSize}} MB.
                           </div>
                         </div>
+                        <div class="col-md-1">
+                          <a class="btn btn-warning boton" title="Descargar versión anterior" target="_blank" :href="lastFile.path">
+                            <i class="fas fa-file-download"> </i>
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -66,7 +71,7 @@
               <div class="card-footer">
                 <div class="row">
                   <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarFinalPdf" v-loading.fullscreen.lock="fullscreenLoading"
+                    <button :disabled="btnDis" class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarFinalPdf" v-loading.fullscreen.lock="fullscreenLoading"
                       >Registrar</button>
                     <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
                   </div>
@@ -103,7 +108,7 @@ export default {
     return{
       fillCrearFinalPdf:{
         cDescripcion: '',
-        oArchivo: '',
+        oArchivo: {},
         
       },
       form : new FormData,
@@ -121,7 +126,9 @@ export default {
       fileTypes: [],
       formatError : false,
       sizeError : false,
-      fileMaxSize: 0
+      fileMaxSize: 0,
+      lastFile: {},
+      btnDis: true
     }
   },
   computed: {
@@ -134,8 +141,10 @@ export default {
   
   methods:{
     getFile(element){
-      this.formatError = false
-      this.sizeError = false
+      this.btnDis = false;
+      this.formatError = false;
+      this.sizeError = false;
+      if (!element) return;
       this.fillCrearFinalPdf.oArchivo = element.target.files[0];
       if (!this.fillCrearFinalPdf.oArchivo) return;
       const fileName = this.fillCrearFinalPdf.oArchivo.name;
@@ -144,11 +153,9 @@ export default {
       var fileType = "." + dots[dots.length-1];
       if (this.fileTypes.join(".").indexOf(fileType) == -1){
         this.formatError = true;
-        console.log(this.fileTypes.join(".").indexOf(fileType));
       }
       if (fileSize >= this.fileMaxSize*1000000){
         this.sizeError = true;
-        console.log(this.sizetError);
       }
     },
     limpiarCriterios(){
@@ -202,9 +209,8 @@ export default {
       this.error = 0;
       this.mensajeError = [];
 
-        
         if(!this.fillCrearFinalPdf.oArchivo){
-          this.mensajeError.push("el archivo es un campo obligatorio")
+          this.mensajeError.push("El archivo es un campo obligatorio")
         }
 
         if(this.sizeError){
@@ -229,11 +235,12 @@ export default {
       })
     },
     getDocumento(){
+      this.fullscreenLoading = true;
       var url = '/archivo/getPdfFinal';
       axios.get(url,{}).then(response => {
-          console.log(response.data);
-          this.fillCrearFinalPdf.oArchivo = response.data;
-          this.fillCrearFinalPdf.oArchivo.name = response.data.filename;
+          this.lastFile = response.data;
+          this.fillCrearFinalPdf.oArchivo.name = this.lastFile.filename;
+          this.fullscreenLoading = false;
       });
     }
   }// cierre methods
