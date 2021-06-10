@@ -87,7 +87,6 @@ export default {
                     'cEmail' : this.fillLogin.cEmail,
                     'cContrasena' : this.fillLogin.cContrasena
             }).then(response => {
-                console.log(response.data)
                 if(response.data.code == 401){
                     this.loginFailed();
                 }
@@ -154,7 +153,6 @@ export default {
             me.listRolPermisosByUsuario.map(function(x,y){
                 me.listRolPermisosByUsuarioFilter.push(x.slug)
             })
-            console.log(me);
             localStorage.setItem('listRolPermisosByUsuario', JSON.stringify(me.listRolPermisosByUsuarioFilter));
             localStorage.setItem('authUser', JSON.stringify(authUser));
             localStorage.setItem('rolUser', JSON.stringify(me.RolByUser));

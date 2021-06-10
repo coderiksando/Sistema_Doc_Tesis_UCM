@@ -113,6 +113,7 @@ Route::get('/administracion/reportes/getListarTesisReporte', 'Administracion\Rep
 Route::get('/administracion/reportes/export', 'Administracion\ReportesController@export');
 Route::post('/archivo/setRegistrarArchivo', 'FilesController@setRegistrarArchivo');
 Route::post('/archivo/setRegistrarArchivoPDF', 'FilesController@setRegistrarArchivoPDF');
+Route::get('/archivo/getPdfFinal', 'FilesController@getPdfFinal');
 
 /*********    RUTAS MODULO DE ADMINISTRACION DE DOCUMENTOS ALUMNOS     **********/
 Route::get('/secretaria/getListarAlumnos', 'SecretariaController@getListarAlumnos');
