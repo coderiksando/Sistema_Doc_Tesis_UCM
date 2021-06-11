@@ -15,6 +15,7 @@ use App\Mail\MailAceptacionFit;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use \stdClass;
+use Debugbar;
 
 class AlumnoController extends Controller
 {
@@ -71,10 +72,11 @@ class AlumnoController extends Controller
                                                                 ]);
     }
     public function getListarTesis(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
 
         $nIdUsuario  = Auth::id();
         $nIdTesis    = $request->nIdTesis;
+        $rol = $request->session()->get('rol');
 
         //$nIdUsuario  = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
         //$nIdTesis    = ($nIdTesis == NULL) ? ($nIdTesis = 0) : $nIdTesis;
@@ -100,15 +102,17 @@ class AlumnoController extends Controller
         //         ->orWhere('fit.id_profesorguia', '=', $nIdUsuario)
         //         ->get();
 
-        $isStudent = User   ::find($nIdUsuario)
-                            ->Users_Roles->first()
-                            ->Roles->slug == 'rol.alumno';
-        if ($isStudent){
+        if ($rol == 'Alumno'){
             $fitUser = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
             $fits = Fit::whereIn('id', $fitUser)->get()->all();
-        }else{
-            $fits = Fit::where('id_p_guia', $nIdUsuario)->get()->all();
         }
+        if ($rol == 'Profesor'){
+            $fits = Fit::where('id_p_guia', $nIdUsuario)->whereIn('aprobado_pg', ['P', 'A', 'V'])->get()->all();
+        }
+        if ($rol == 'Director' || $rol == 'Coordinador'){
+            $fits = Fit::whereIn('aprobado_pg', ['A', 'V'])->get()->all();
+        }
+
         foreach ($fits as $fit) {
             $listUsers = $fit->Fit_User->pluck('id_user');
             $listUsersDetails = User::whereIn('id_user', $listUsers)->get()->all();
@@ -249,9 +253,15 @@ class AlumnoController extends Controller
 
         $nIdTesis   = $request->nIdTesis;
         $cEstadoPg  = $request->cEstadoPg;
+        $rol = $request->session()->get('rol');
 
         $nIdTesis   = ($nIdTesis == NULL) ? ($nIdTesis = 0) : $nIdTesis;
         $cEstadoPg  = ($cEstadoPg == NULL) ? ($cEstadoPg = 0) : $cEstadoPg;
+
+        if ($cEstadoPg == 'A' && ($rol == 'Director' || $rol == 'Coordinador')) {
+            $cEstadoPg = 'V';
+            Debugbar::info('hola we');
+        }
 
         // ingresando la información nueva de fit
         $registroFit = Fit::find($nIdTesis);

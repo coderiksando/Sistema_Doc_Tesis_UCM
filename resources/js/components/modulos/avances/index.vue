@@ -181,7 +181,7 @@ export default {
       listEstados: [
         {nombre: 'En desarrollo', valor: 'D'}, 
         {nombre: 'Aprobada', valor: 'A'}, 
-        {nombre: 'Rechazada', valor: 'R'}],
+        {nombre: 'Reprobada', valor: 'R'}],
       selectedAlumno:{},
       selectedEstado: {nombre: 'En desarrollo', valor: 'D'},
       listPermisos:[],
