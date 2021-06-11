@@ -344,16 +344,7 @@ class AlumnoController extends Controller
                         ->where([
                             ['roles.name', '=', 'Profesor'],
                             ['users.id_user', '<>', $nIdUsuario]
-                        ])
-                        ->orwhere([
-                            ['roles.name', '=', 'Director'],
-                            ['users.id_user', '<>', $nIdUsuario]
-                        ])
-                        ->orwhere([
-                            ['roles.name', '=', 'Coordinador'],
-                            ['users.id_user', '<>', $nIdUsuario]
-                        ])
-                        ->get();
+                        ])->orderBy('fullname')->get();
         return $profesores;
     }
 

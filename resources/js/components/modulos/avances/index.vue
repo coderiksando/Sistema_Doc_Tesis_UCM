@@ -121,7 +121,7 @@
                           <textarea readonly v-model="item.descripcion" oninput='this.style.height = this.scrollHeight + "px"'></textarea>
                         </td>
                         <td class="col-md-2">
-                          <a class="btn btn-warning boton" :href="item.archivo_pdf.path">
+                          <a class="btn btn-warning boton" :href="item.archivo_pdf.path" target="_blank">
                             <i class="fas fa-file-download"> </i>
                           </a>
                           <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">            

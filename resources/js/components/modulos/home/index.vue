@@ -65,7 +65,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Escuelas</label>
                         <div class="col-md-9">
-                            <el-select v-model="fillBsqTesis.nIdEscuela" @change="getListarProfesorByEscuela"
+                            <el-select filterable v-model="fillBsqTesis.nIdEscuela" @change="getListarProfesorByEscuela"
                             placeholder="Asignar Escuela"
                             clearable>
                             <el-option
@@ -82,8 +82,8 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Profesor</label>
                         <div class="col-md-9">
-                                <el-select v-model="fillBsqTesis.nIdProfesor" 
-                                placeholder="Asignar Escuela"
+                                <el-select filterable v-model="fillBsqTesis.nIdProfesor" 
+                                placeholder="Asignar Profesor"
                                 clearable>
                                 <el-option
                                     v-for="item in listProfesores"
@@ -134,8 +134,8 @@
                           <a class="btn btn-flat btn-warning btn-sm" :href="item.path" target="_blank"><i class="fas fa-file-download"> </i> PDF</a>
                         </td>
                         <td v-text="item.titulo"></td>
-                        <td v-text="item.nombre_pt"></td>
-                        <td v-text="item.escuela_nom"></td>
+                        <td v-text="item.nombres + ' ' + item.apellidos"></td>
+                        <td v-text="item.nombre"></td>
                         
                       </tr>
                     </tbody>
@@ -173,7 +173,7 @@
     <footer class="py-5 bg-dark">
         <div class="container" style="text-align: center">
           <!-- Por favor por respeto a los colaboradores de este proyecto no eliminar las referencias de las personas que han participado-->
-        <strong >Sistema de gestión y administración de documentos <a href="https://www.ucm.cl">UCM</a>.</strong>&nbsp All rights
+        <strong >Sistema de gestión y administración de documentos <a href="https://www.ucm.cl">UCM</a>.</strong>&nbsp; All rights
     reserved.
         </div>
         <!-- Por favor por respeto a los colaboradores de este proyecto no eliminar las referencias de las personas que han participado-->
@@ -193,7 +193,6 @@ export default {
           cAutor: '',
           nIdEscuela:'',
           nIdProfesor:'',
-          
           cEstadoTesis: ''
         },
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
@@ -304,6 +303,7 @@ export default {
         }).then(response => {
             this.inicializarPaginacion();
             this.listTesis = response.data;
+            console.log(this.listTesis);
             this.fullscreenLoading = false;
         })
       },
