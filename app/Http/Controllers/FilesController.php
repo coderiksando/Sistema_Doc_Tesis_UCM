@@ -67,7 +67,7 @@ class FilesController extends Controller
         $idUser = Auth::user()->id_user;
         $fit = Fit_User::Firstwhere('id_user', $idUser)->Fit;
         $archivoPDF = ArchivoPdf::where('id_fit', $fit->id)->orderByDesc('created_at')->firstWhere('tipo_pdf', 'final_t');
-        Debugbar::info(last(explode('/', $archivoPDF->path)));
+        // Debugbar::info(last(explode('/', $archivoPDF->path)));
         return $archivoPDF;
     }
 
