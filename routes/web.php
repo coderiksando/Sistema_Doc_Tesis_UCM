@@ -66,7 +66,6 @@ Route::get('/alumno/getListarTesis', 'AlumnoController@getListarTesis');
 Route::get('/alumno/getListarAllTesis', 'AlumnoController@getListarAllTesis'); //agrego
 Route::get('/alumno/getListarTesisView', 'AlumnoController@getListarTesisView');
 Route::post('/alumno/setRegistrarTesis', 'AlumnoController@setRegistrarTesis');
-Route::post('/alumno/setRegistrarTesisfinalizada', 'AlumnoController@setRegistrarTesisfinalizada');
 Route::post('/alumno/setCambiarEstadoFIT', 'AlumnoController@setCambiarEstadoFIT');
 Route::Post('/alumno/setEditarTesis', 'AlumnoController@setEditarTesis');
 Route::get('/alumno/getListarProfesores', 'AlumnoController@getListarProfesores');
@@ -114,6 +113,7 @@ Route::get('/administracion/reportes/export', 'Administracion\ReportesController
 Route::post('/archivo/setRegistrarArchivo', 'FilesController@setRegistrarArchivo');
 Route::post('/archivo/setRegistrarArchivoPDF', 'FilesController@setRegistrarArchivoPDF');
 Route::get('/archivo/getPdfFinal', 'FilesController@getPdfFinal');
+Route::post('/archivo/setRegistrarTesisfinalizada', 'FilesController@setRegistrarTesisfinalizada');
 
 /*********    RUTAS MODULO DE ADMINISTRACION DE DOCUMENTOS ALUMNOS     **********/
 Route::get('/secretaria/getListarAlumnos', 'SecretariaController@getListarAlumnos');

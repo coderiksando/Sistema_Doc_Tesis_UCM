@@ -27,9 +27,20 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">
-                  Formulario registro rapido de documentos finalizados
-                </h3>
+                <div class="row">
+                  <div class="col-md-10">
+                    <h3 class="card-title">Formulario de registro rápido de documentos finalizados</h3>
+                  </div>
+                  <div class="col-md-2" style="text-align: right">
+                    <button
+                      class="btn btn-secondary"
+                      @click.prevent="mostrarModalAyuda"
+                    >
+                      Ayuda
+                      <i class="fas fa-question-circle"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
               <div class="card-body">
                 <form role="form">
@@ -237,16 +248,47 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label"
-                          >Archivo asociado</label
-                        >
+                        <label class="col-md-3 col-form-label">Archivo</label>
                         <div class="col-md-9">
-                          <input
-                            type="file"
-                            accept="application/pdf"
-                            class="form-control"
-                            @change="getFile"
-                          />
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span
+                                class="input-group-text"
+                                id="inputGroupFileAddon01"
+                              >
+                                <i class="fas fa-file-upload"></i>
+                              </span>
+                            </div>
+                            <div class="custom-file">
+                              <input
+                                type="file"
+                                class="custom-file-input"
+                                id="input1"
+                                :class="{
+                                  'is-invalid': formatError || sizeError,
+                                }"
+                                @change="getFile"
+                              />
+                              <label class="custom-file-label" for="input1">{{
+                                fillCrearFIT.oArchivo
+                                  ? fillCrearFIT.oArchivo.name
+                                  : "Seleccionar archivo"
+                              }}</label>
+                            </div>
+                          </div>
+                          <div
+                            class="custom-file invalid-feedback no-margin"
+                            v-show="formatError"
+                          >
+                            El formato del archivo no es soportado.
+                          </div>
+                          <div
+                            class="custom-file invalid-feedback no-margin"
+                            v-show="sizeError"
+                          >
+                            El tamaño del archivo no puede superar los
+                            {{ fileMaxSize }} MB.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -554,6 +596,63 @@
         </div>
       </div>
     </div>
+    <div
+      class="modal fade"
+      :class="{ show: modalAyuda }"
+      :style="modalAyuda ? mostrarModal : ocultarModal"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Ventana de ayuda de íconos</h5>
+            <button class="close" @click="mostrarModalAyuda"></button>
+          </div>
+          <div class="modal-body">
+            <table
+              class="table table-hover table-head-fixed text-nowrap projects"
+            >
+              <thead>
+                <tr>
+                  <th class="col-md-1">Ícono</th>
+                  <th class="col-md-2">Nombre</th>
+                  <th class="col-md-9">Detalles</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><i class="fas fa-arrow-left"></i></td>
+                  <td>Regresar</td>
+                  <td>Vuelve a la sección anterior de la página</td>
+                </tr>
+                <tr>
+                  <td><i class="fas fa-trash"></i></td>
+                  <td>Borrar</td>
+                  <td>Elimina los datos insertados en la sección</td>
+                </tr>
+                <tr>
+                  <td><i class="fas fa-user-plus"></i></td>
+                  <td>Agregar</td>
+                  <td>
+                    Inserta nuevos usuarios para integrar un formulario de
+                    ingreso de tesis
+                  </td>
+                </tr>
+                <tr>
+                    <td><i class="fas fa-plus-square"></i></td>
+                    <td>Insertar</td>
+                    <td>Ingresa un estudiante partícipe ya existente o nuevo al FIT</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" @click="mostrarModalAyuda">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -601,6 +700,7 @@ export default {
       fullscreenLoading: false,
       modalShow: false,
       modalSearchUser: false,
+      modalAyuda: false,
       mostrarModal: {
         display: "block",
         background: "#0000006b",
@@ -610,6 +710,10 @@ export default {
       },
       error: 0,
       mensajeError: [],
+      fileTypes: [],
+      formatError: false,
+      sizeError: false,
+      fileMaxSize: 0,
     };
   },
   computed: {},
@@ -617,38 +721,32 @@ export default {
     this.getListarProfesores();
     this.getListarVinculacion();
     this.getListarAlumnos();
+    this.getParametros();
   },
   methods: {
-    getFile(e) {
-      this.fillCrearFIT.oArchivo = e.target.files[0];
+    getParametros() {
+      var url = "/admin/parametros";
+      axios
+        .post(url, { params: ["AvancesTesisFormato", "AvancesTesisSize"] })
+        .then((response) => {
+          this.fileTypes = response.data[0];
+          this.fileMaxSize = response.data[1][0];
+        });
     },
-    onChange() {
-      // console.log("wena");
-      //console.log("lista alumnos", this.listAlumnos);
-      //console.log("id estudiante", this.fillCrearFIT.nIdEst);
-      // console.log("incluye fullname", Object.keys(this.listAlumnos[0]).includes('fullname'));
-      // console.log("incluye alumno8", Object.values(this.listAlumnos[0]).includes('alumno8 alumno8'));
-      // console.log("incluye emilio", Object.values(this.listAlumnos[0]).includes('emilio'));
-      // console.log("Object.values(this.listAlumnos[0])", Object.values(this.listAlumnos[0]));
-      // console.log("Object.values(this.listAlumnos)", Object.values(this.listAlumnos));
-      // //console.log("incluye2", this.listAlumnos[0].includes('fullname'));
-      // //console.log("incluye333", this.listAlumnos[0].includes('emilio'));
-      // console.log("incluye fullname", this.listAlumnos[0].fullname.includes('fullname'));
-      // console.log("imprime[0] fullname", this.listAlumnos[0].fullname);
-      // console.log("incluye emilio", this.listAlumnos[0].fullname.includes('emilio'));
-      // console.log("------------------------------------");
-
-      const found = this.listAlumnos.some(
-        (el) => el.id_user === this.fillCrearFIT.nIdEst
-      );
-      //console.log("hallado",found)
-      if (found) {
-        let position = this.listAlumnos.findIndex(
-          (x) => x.id_user == this.fillCrearFIT.nIdEst
-        );
-        //console.log("full name position", this.listAlumnos[position].fullname);
-        this.fillCrearFIT.cNombreI1 = this.listAlumnos[position].fullname;
-        //console.log("cnombreI1", this.fillCrearFIT.cNombreI1);
+    getFile(element) {
+      this.formatError = false;
+      this.sizeError = false;
+      this.fillCrearFIT.oArchivo = element.target.files[0];
+      if (!this.fillCrearFIT.oArchivo) return;
+      const fileName = this.fillCrearFIT.oArchivo.name;
+      const fileSize = this.fillCrearFIT.oArchivo.size;
+      var dots = fileName.split(".");
+      var fileType = "." + dots[dots.length - 1];
+      if (this.fileTypes.join(".").indexOf(fileType) == -1) {
+        this.formatError = true;
+      }
+      if (fileSize >= this.fileMaxSize * 1000000) {
+        this.sizeError = true;
       }
     },
     getListarAlumnos() {
@@ -665,7 +763,7 @@ export default {
       var url = "/administracion/vinculacion/getListarVinculacion";
       axios.get(url, {}).then((response) => {
         this.listVinculacion = response.data;
-        this.listVinculacion = _.orderBy(this.listVinculacion, 'nombre', 'asc');
+        this.listVinculacion = _.orderBy(this.listVinculacion, "nombre", "asc");
         this.fullscreenLoading = false;
       });
     },
@@ -674,7 +772,7 @@ export default {
       var url = "/alumno/getListarProfesores";
       axios.get(url, {}).then((response) => {
         this.listProfesores = response.data;
-        this.listProfesores = _.orderBy(this.listProfesores, 'fullname', 'asc');
+        this.listProfesores = _.orderBy(this.listProfesores, "fullname", "asc");
         this.fullscreenLoading = false;
       });
     },
@@ -686,36 +784,44 @@ export default {
       this.modalShow = !this.modalShow;
     },
     validarRegistrarTesis() {
-        this.error = 0;
-        this.mensajeError = [];
-        if (!this.fillCrearFIT.cTitulo) {
-            this.mensajeError.push("El Titulo es un campo obligatorio");
-        }
-        if (!this.fillCrearFIT.nIdPg) {
-            this.mensajeError.push("El profesor guia es un campo obligatorio");
-        }
-        if (!this.fillCrearFIT.cTipo) {
-            this.mensajeError.push("El tipo es un campo obligatorio");
-        }
-        if (!this.fillCrearFIT.Nota) {
-            this.mensajeError.push("La Nota es un campo obligatorio");
-        }
-        if (!this.fillCrearFIT.oArchivo) {
-            this.mensajeError.push("El archivo de tesis un campo obligatorio");
-        }
-        if(!this.fillCrearFIT.cObjetivoGeneral){
-            this.mensajeError.push("El objetivo general es un campo obligatorio")
-        }
-        if(!this.fillCrearFIT.cObjetivoEspecifico){
-            this.mensajeError.push("Los objetivos especificos es un campo obligatorio")
-        }
-        if (this.mensajeError.length) {
-            this.error = 1;
-        }
-        return this.error;
+      this.error = 0;
+      this.mensajeError = [];
+      if (!this.fillCrearFIT.cTitulo) {
+        this.mensajeError.push("El Titulo es un campo obligatorio");
+      }
+      if (!this.fillCrearFIT.nIdPg) {
+        this.mensajeError.push("El profesor guia es un campo obligatorio");
+      }
+      if (!this.fillCrearFIT.cTipo) {
+        this.mensajeError.push("El tipo es un campo obligatorio");
+      }
+      if (!this.fillCrearFIT.Nota) {
+        this.mensajeError.push("La Nota es un campo obligatorio");
+      }
+      if (!this.fillCrearFIT.oArchivo) {
+        this.mensajeError.push("El archivo de tesis un campo obligatorio");
+      }
+      if (!this.fillCrearFIT.cObjetivoGeneral) {
+        this.mensajeError.push("El objetivo general es un campo obligatorio");
+      }
+      if (!this.fillCrearFIT.cObjetivoEspecifico) {
+        this.mensajeError.push(
+          "Los objetivos especificos es un campo obligatorio"
+        );
+      }
+      if (this.sizeError) {
+        this.mensajeError.push("El archivo es demasiado pesado");
+      }
+      if (this.formatError) {
+        this.mensajeError.push("Los formatos permitidos son:" + this.fileTypes);
+      }
+      if (this.mensajeError.length) {
+        this.error = 1;
+      }
+      return this.error;
     },
     setRegistrarTesisfinalizada() {
-        console.log(this.fillCrearFIT);
+      console.log(this.fillCrearFIT);
       if (this.validarRegistrarTesis()) {
         this.modalShow = true;
         return;
@@ -724,70 +830,51 @@ export default {
         !this.fillCrearFIT.oArchivo ||
         this.fillCrearFIT.oArchivo == undefined
       ) {
-        this.fullscreenLoading = true;
-        this.setGuardarTesisfinalizada();
-      } else {
-        this.setRegistrarArchivoPDF();
-      }
-    },
-    setRegistrarArchivoPDF() {
-      this.form.append("file", this.fillCrearFIT.oArchivo);
-      const config = { headers: { "Content-Type": "multipart/form-data" } };
-      var url = "/archivo/setRegistrarArchivoPDF";
-      axios.post(url, this.form, config).then((response) => {
-        var nIdFile = response.data.id;
-        this.setGuardarTesisfinalizada(nIdFile);
-      });
-    },
-    setGuardarTesisfinalizada(nIdFile) {
-      if (this.validarRegistrarTesis()) {
+        this.validarRegistrarTesis();
         this.modalShow = true;
         return;
+      } else {
+        this.setGuardarTesisfinalizada();
       }
-      this.fullscreenLoading = true;
-      var url = "/alumno/setRegistrarTesisfinalizada";
-      axios
-        .post(url, {
-          cTitulo: this.fillCrearFIT.cTitulo,
-          Nota: this.fillCrearFIT.Nota,
-          nIdPg: this.fillCrearFIT.nIdPg,
-          nIdEst: this.fillCrearFIT.nIdEst,
-          nIdFile: nIdFile,
-          nIdVinculacion: this.fillCrearFIT.nIdVinculacion,
-          cTipo: this.fillCrearFIT.cTipo,
-          dFechaUR: this.fillCrearFIT.dFechaUR,
-          cObjetivo: this.fillCrearFIT.cObjetivo,
-          cDescripcion: this.fillCrearFIT.cDescripcion,
-          cContribucion: this.fillCrearFIT.cContribucion,
-          cNombreI1: this.fillCrearFIT.cNombreI1,
-          cRutI1: this.fillCrearFIT.cRutI1,
-          cTelefonoI1: this.fillCrearFIT.cTelefonoI1,
-          cIngresoI1: this.fillCrearFIT.cIngresoI1,
-          cEmailI1: this.fillCrearFIT.cEmailI1,
-          cNombreI2: this.fillCrearFIT.cNombreI2,
-          cRutI2: this.fillCrearFIT.cRutI2,
-          cEmailI2: this.fillCrearFIT.cEmailI2,
-          cIngresoI2: this.fillCrearFIT.cIngresoI2,
-          cTelefonoI2: this.fillCrearFIT.cTelefonoI2,
-        })
-        .then((response) => {
-          this.fullscreenLoading = false;
-          this.$router.push("/");
-          Swal.fire({
-            icon: "success",
-            title: "Documento ingresado correctamente",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        })
-        .catch((response) => {
-          this.fullscreenLoading = false;
-          Swal.fire({
+    },
+    setGuardarTesisfinalizada() {
+        this.fullscreenLoading = true;
+        var url = "/archivo/setRegistrarTesisfinalizada";
+        this.form.append("file", this.fillCrearFIT.oArchivo);
+        const config = { headers: { "Content-Type": "multipart/form-data" } };
+        axios.post(url, this.fillCrearFIT).then((response) => {
+            console.log(response);
+            this.form.append('id_fit', response.data);
+            axios.post(url, this.form, config).then((response) => {
+                console.log(response);
+                this.fullscreenLoading = false;
+                this.$router.push({ name: "dashboard.index" });
+                Swal.fire({
+                    icon: "success",
+                    title: "Documento ingresado correctamente",
+                    showConfirmButton: false,
+                    timer: 3000,
+                });
+
+            }).catch((response) => {
+                this.fullscreenLoading = false;
+                Swal.fire({
+                    icon: "error",
+                    title: "Error al ingresar documento",
+                    showConfirmButton: false,
+                    timer: 3000,
+                });
+            });
+
+        }).catch((response) => {
+            this.fullscreenLoading = false;
+            Swal.fire({
             icon: "error",
             title: "Error al ingresar documento",
             showConfirmButton: false,
-            timer: 1500,
-          });
+            timer: 3000,
+            });
+
         });
     },
     nextPage() {
@@ -827,19 +914,26 @@ export default {
     },
     setIngresarNuevoAlumno() {
       let errorIngresoUser = false;
-      this.newUser.nombres = this.newUser.nombres.charAt(0).toUpperCase() + this.newUser.nombres.slice(1);
-      this.newUser.apellidos = this.newUser.apellidos.charAt(0).toUpperCase() + this.newUser.apellidos.slice(1);
+      this.newUser.nombres =
+        this.newUser.nombres.charAt(0).toUpperCase() +
+        this.newUser.nombres.slice(1);
+      this.newUser.apellidos =
+        this.newUser.apellidos.charAt(0).toUpperCase() +
+        this.newUser.apellidos.slice(1);
       this.fillCrearFIT.cUsers.forEach((user) => {
-        if (user.rut === this.newUser.rut || user.email === this.newUser.email) {
+        if (
+          user.rut === this.newUser.rut ||
+          user.email === this.newUser.email
+        ) {
           errorIngresoUser = true;
         }
       });
       if (!errorIngresoUser) {
         this.fillCrearFIT.cUsers.push(Vue.util.extend({}, this.newUser));
-        this.newUser.nombres = '';
-        this.newUser.apellidos = '';
-        this.newUser.rut = '';
-        this.newUser.email = '';
+        this.newUser.nombres = "";
+        this.newUser.apellidos = "";
+        this.newUser.rut = "";
+        this.newUser.email = "";
       } else {
         this.mensajeError = [];
         this.mensajeError.push(
@@ -854,7 +948,7 @@ export default {
       let errorIngresoUser = false;
       this.fillCrearFIT.cUsers.forEach((user) => {
         if (user.rut === alumno.rut || user.email === alumno.email) {
-            errorIngresoUser = true;
+          errorIngresoUser = true;
         }
       });
       if (!errorIngresoUser) {
@@ -883,6 +977,9 @@ export default {
       if (condicionEliminacion) {
         this.fillCrearFIT.cUsers.splice(eliminado, 1);
       }
+    },
+    mostrarModalAyuda() {
+      this.modalAyuda = !this.modalAyuda;
     },
   }, // cierre methods
 };
