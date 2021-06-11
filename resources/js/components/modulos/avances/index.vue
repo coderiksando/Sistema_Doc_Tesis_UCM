@@ -103,25 +103,25 @@
               <div class="card-header">
                 <h3 class="card-title">Bandeja de resultados</h3>
               </div>
-              <div class="card-body table table-responsive">
+              <div class="card-body table">
                 <template v-if="listarAvancesPaginated.length">
                   
-                  <table class ="table table-hover table-head-fixed text-nowrap projects">
+                  <table class ="table table-hover table-head-fixed projects t-fix">
                     <thead>
-                      <tr>
+                      <tr class="row">
                         <th class="col-md-3">Fecha</th>
                         <th class="col-md-7">Descripcion</th>
                         <th class="col-md-2">Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr class="date" v-for="(item, index) in listarAvancesPaginated" :key="index">
+                      <tr class="row" v-for="(item, index) in listarAvancesPaginated" :key="index">
                         <td class="col-md-3">{{ item.created_at | moment }}</td>
                         <td class="col-md-7">
                           <textarea readonly v-model="item.descripcion" oninput='this.style.height = this.scrollHeight + "px"'></textarea>
                         </td>
                         <td class="col-md-2">
-                          <a class="btn btn-warning boton" :href="item.archivo_pdf.path">
+                          <a class="btn btn-warning boton" :href="item.archivo_pdf.path" target="_blank">
                             <i class="fas fa-file-download"> </i>
                           </a>
                           <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">            
@@ -181,7 +181,7 @@ export default {
       listEstados: [
         {nombre: 'En desarrollo', valor: 'D'}, 
         {nombre: 'Aprobada', valor: 'A'}, 
-        {nombre: 'Rechazada', valor: 'R'}],
+        {nombre: 'Reprobada', valor: 'R'}],
       selectedAlumno:{},
       selectedEstado: {nombre: 'En desarrollo', valor: 'D'},
       listPermisos:[],
@@ -331,4 +331,8 @@ export default {
    .bt-fh{
     height: 28px !important;
    }
+   .t-fix{
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
 </style>

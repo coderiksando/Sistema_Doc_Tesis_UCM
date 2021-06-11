@@ -25,27 +25,49 @@
                 <h3 class="card-title">Formulario Editar Avance</h3>
               </div>
               <div class="card-body">
-                <form role="form">
+                <form role="form" id="form-avance2">
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Descripcion</label>
+                        <label class="col-md-3 col-form-label">Descripción</label>
                         <div class="col-md-9">
                             <input type="text" maxlength="60" class="form-control" v-model="fillEditarAvance.cDescripcion" @keyup.enter="setEditarAvance">
                         </div>
                       </div>
                     </div>
-                    
                     <div class="col-md-6">
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Archivo</label>
                         <div class="col-md-9">
-                            <input type="file" class="form-control" accept="application/pdf" @change="getFile">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroupFileAddon01">
+                              <i class="fas fa-file-upload"></i>
+                              </span>
+                            </div>
+                            <div class="custom-file">
+                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError}" @change="getFile">
+                              <label class="custom-file-label" for="input1">{{fillEditarAvance.oArchivo ? fillEditarAvance.oArchivo.name : 'Seleccionar archivo'}}</label>
+                            </div>
+                          </div>
+                          <div class="custom-file invalid-feedback no-margin" v-show="formatError">
+                                El formato del archivo no es soportado.
+                          </div>
+                          <div class="custom-file invalid-feedback no-margin" v-show="sizeError">
+                            El tamaño del archivo no puede superar los {{fileMaxSize}} MB.
+                          </div>  
                         </div>
                       </div>
                     </div>
                   </div>
-                </form>     
+                </form>
+                <div class="container">
+                  El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
+                </div>
+                <div class="container">
+                  Los formatos de archivo soportados son: 
+                  <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
+                </div> 
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -100,16 +122,23 @@ export default {
         display: 'none',
       },
       error: 0,
-      mensajeError:[]
+      mensajeError:[],
+      fileTypes: [],
+      formatError : false,
+      sizeError : false,
+      fileMaxSize: 0
     }
   },
   mounted(){
       this.getAvance();
+      this.getParametros();
   },
   methods:{
     limpiarCriterios(){
       this.fillEditarAvance.cDescripcion = '';
       this.fillEditarAvance.oArchivo = '';
+      document.getElementById("form-avance2").reset();
+      this.getFile();
     },
     getAvance(){
         var url = '/avances/getSeleccionarAvance'
@@ -124,26 +153,46 @@ export default {
     abrirModal(){
       this.modalShow = !this.modalShow;
     },
-    getFile(e){
-      this.fillEditarAvance.oArchivo = e.target.files[0];
+    getFile(element){
+      this.formatError = false
+      this.sizeError = false
+      if (!element) return;
+      this.fillEditarAvance.oArchivo = element.target.files[0];
+      if (!this.fillEditarAvance.oArchivo) return;
+      const fileName = this.fillEditarAvance.oArchivo.name;
+      const fileSize = this.fillEditarAvance.oArchivo.size;
+      var dots = fileName.split(".")
+      var fileType = "." + dots[dots.length-1];
+      if (this.fileTypes.join(".").indexOf(fileType) == -1){
+        this.formatError = true;
+        console.log(this.fileTypes.join(".").indexOf(fileType));
+      }
+      if (fileSize >= this.fileMaxSize*1000000){
+        this.sizeError = true;
+        console.log(this.sizetError);
+      }
+
     },
     setEditarAvance(){
       if (this.validarRegistrarAvance()){
           this.modalShow = true;
           return;
       }
-      this.fullscreenLoading = true;
       if(!this.fillEditarAvance.oArchivo || this.fillEditarAvance.oArchivo == undefined){
+        this.fullscreenLoading = true;
         this.setGuardarAvance(0);
       } else {
         this.setRegistrarArchivoPDF();
       }
     },
     setRegistrarArchivoPDF(){
-      this.form.append('file', this.fillEditarAvance.oArchivo)
+      this.fullscreenLoading = true;
+      this.form.append('file', this.fillEditarAvance.oArchivo);
+      this.form.append('tipo', 'avance_t');
       const config = { headers: {'Content-Type': 'multipart/form-data'}}
       var url = '/archivo/setRegistrarArchivoPDF'
       axios.post(url, this.form, config).then(response =>{
+        console.log(response)
         var nIdFile = response.data.id;
         this.setGuardarAvance(nIdFile);
       }) 
@@ -170,12 +219,25 @@ export default {
         if(!this.fillEditarAvance.cDescripcion){
           this.mensajeError.push("La descripcion es un campo obligatorio")
         }
+        if(this.sizeError){
+          this.mensajeError.push("El archivo es demasiado pesado")
+        }
+
+        if(this.formatError){
+          this.mensajeError.push("Los formatos permitidos son:" +this.fileTypes);
+        }
         if(this.mensajeError.length){
           this.error = 1;
         }
         return this.error;
     },
-    
+    getParametros(){
+      var url = '/admin/parametros';
+      axios.post(url,{'params': ['AvancesTesisFormato', 'AvancesTesisSize']}).then(response => {
+          this.fileTypes = response.data[0];
+          this.fileMaxSize = response.data[1][0];
+      })
+    }
     
   
   }// cierre methods

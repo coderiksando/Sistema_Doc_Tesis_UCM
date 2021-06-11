@@ -40,7 +40,7 @@ class CreateFitTable extends Migration
             // $table->string('email_int2')->nullable();
             // $table->string('ingreso_int2')->nullable();
             // $table->string('telefono_int2')->nullable();
-            $table->enum('aprobado_pg',['A','R','P'])->nullable()->default('P');
+            $table->enum('aprobado_pg',['A','R','P','V'])->nullable()->default('P');
             $table->text('motivo_pg')->nullable();
 
             // $table->foreign('id_alumno')->references('id_user')->on('alumno');

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class AvancesController extends Controller
 {
@@ -128,13 +129,15 @@ class AvancesController extends Controller
         $id_archivo     = $request->id_archivo;
         $fecha          = Carbon::now();
 
-        //$id_archivo     = ($id_archivo == 0) ? ($id_archivo = 0) : $id_archivo;
-
         if($id_archivo == 0){
             AvancesTesis::find($id)->update(['descripcion'=>$descripcion, 'created_at' =>$fecha]);
             
         }else{
+            $archivo = AvancesTesis::find($id)->ArchivoPdf;
+            $name = last(explode('/', $archivo->path));
+            Storage::delete('public/users/'.$name);
             AvancesTesis::find($id)->update(['descripcion'=>$descripcion, 'created_at' =>$fecha, 'id_archivo' =>$id_archivo]);
+            $archivo->delete();
         }
     }
     public function getEstadoTesis(Request $request){

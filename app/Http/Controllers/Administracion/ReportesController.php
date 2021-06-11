@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Administracion;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Fit;
+use App\ArchivoPdf;
 use Illuminate\Support\Facades\DB;
 use App\Exports\TesisExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Debugbar;
 
 class ReportesController extends Controller
 {
@@ -77,18 +79,30 @@ class ReportesController extends Controller
         $idescuela          = ($idescuela == NULL) ?    ($idescuela = '')   : $idescuela;
         $idprofesor         = ($idprofesor == NULL) ?   ($idprofesor = '')  : $idprofesor;
         
-        $reportdata = Fit::select('fit.id', DB::raw("CONCAT(profesor_guia.nombres,' ',profesor_guia.apellidos) as nombre_pt"),
-                                      'fit.tipo as tipo_trabajo','titulo','pdftesis.path'
-                                    ,'escuelas.nombre as escuela_nom')
-                            ->join('pdftesis', 'pdftesis.id', '=', 'fit.id_pdftesis')
-                            ->leftjoin('users as profesor_guia', 'profesor_guia.id_user', '=', 'fit.id_profesorguia')
-                            ->leftjoin('escuelas', 'escuelas.id','=','profesor_guia.id_escuela')
-                            ->Where('fit.titulo', 'like', "%$titulo%")
-                            ->Where('profesor_guia.id_escuela', 'like', "%$idescuela%")
-                            ->Where('profesor_guia.id_user', 'like', "%$idprofesor%")
 
-                            ->get();
+        //$archivosPdf = ArchivoPdf::where('tipo_pdf', 'final_t')->get();
+
+        // $reportdata = $archivosPdf->map(function ($item){
+        //     //$item->Fit->User_P_Guia;
+        //     return collect($item)
+        //             ->merge(['titulo'=>$item->Fit->titulo])
+        //             ->merge($item->Fit->User_P_Guia)
+        //             ->merge(['escuela'=>$item->Fit->User_P_Guia->Escuelas->nombre]);
+        // });
+
+       $archivosPdf =  ArchivoPdf::select('fit.titulo', 'path', 'users.nombres', 'users.apellidos', 'escuelas.nombre', 'escuelas.id', 'users.id_user')
+                                ->join('fit', 'id_fit', '=', 'fit.id')
+                                ->join('users', 'fit.id_p_guia', '=', 'users.id_user')
+                                ->join('escuelas', 'users.id_escuela', '=', 'escuelas.id')
+                                ->where('tipo_pdf', 'final_t');
+
+        $reportdata = $archivosPdf->where('titulo', 'like', "%$titulo%")
+                                   ->where('id_user','like', "%$idprofesor%")
+                                   ->where('escuelas.id','like', "%$idescuela%")
+                                   ->get();
+
         return $reportdata;
+
     }
     public function export(Request $request){
         if(!$request->ajax()) return redirect('/');
@@ -104,41 +118,13 @@ class ReportesController extends Controller
 
         $escuela     = ($escuela == NULL) ? ($escuela = '') : $escuela;
 
-        if($escuela == ''){
-            $profesores = DB::table('users')
-                            ->join('users_roles', 'users_roles.id_user', '=', 'users.id_user')
-                            ->join('roles', 'roles.id', '=', 'users_roles.id_roles')
-                            ->select('users.id_user', DB::raw("CONCAT(users.nombres,' ',users.apellidos) as fullname"))
-                            ->where([
-                                ['roles.name', '=', 'Profesor'],
-                            ])
-                            ->orwhere([
-                                ['roles.name', '=', 'Director'],
-                            ])
-                            ->orwhere([
-                                ['roles.name', '=', 'Coordinador'],
-                            ])
-                            ->get();
-            return $profesores;
-        }else{
-            $profesores = DB::table('users')
-                            ->join('users_roles', 'users_roles.id_user', '=', 'users.id_user')
-                            ->join('roles', 'roles.id', '=', 'users_roles.id_roles')
-                            ->select('users.id_user', DB::raw("CONCAT(users.nombres,' ',users.apellidos) as fullname"))
-                            ->where([
-                                ['roles.name', '=', 'Profesor'],
-                                ['users.id_escuela', '=', $escuela],
-                            ])
-                            ->orwhere([
-                                ['roles.name', '=', 'Director'],
-                                ['users.id_escuela', '=', $escuela],
-                            ])
-                            ->orwhere([
-                                ['roles.name', '=', 'Coordinador'],
-                                ['users.id_escuela', '=', $escuela],
-                            ])
-                            ->get();
-            return $profesores;
-        }
+        $profesores = DB::table('users')
+                        ->join('users_roles', 'users_roles.id_user', '=', 'users.id_user')
+                        ->join('roles', 'roles.id', '=', 'users_roles.id_roles')
+                        ->select('users.id_user', DB::raw("CONCAT(users.nombres,' ',users.apellidos) as fullname"))
+                        ->where('roles.name', 'Profesor')
+                        ->where('users.id_escuela', 'like', "%$escuela%")
+                        ->orderBy('fullname')->get();
+        return $profesores;
     }
 }

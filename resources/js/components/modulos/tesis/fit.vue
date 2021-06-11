@@ -47,7 +47,7 @@
               <div class="card-body table table-responsive">
                 <template v-if="listTesis.length">
 
-                  <table class ="table table-hover table-head-fixed t-fixed projects">
+                  <table class ="table table-hover table-head-fixed t-fixed projects" v-loading.fullscreen.lock="fullscreenLoading">
                     <thead>
                       <tr>
                         <th>Alumno(s)</th>
@@ -72,6 +72,9 @@
                           <template v-else-if="item.aprobado_pg == 'A'">
                             <span class="badge badge-success">Aprobado</span>
                           </template>
+                          <template v-else-if="item.aprobado_pg == 'V'">
+                            <span class="badge badge-success">Verificado</span>
+                          </template>
                           <template v-else>
                             <span class="badge badge-danger">Rechazado</span>
                           </template>
@@ -91,12 +94,12 @@
                           <router-link class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                             <i class="fas fa-folder"></i>
                           </router-link>
-                          <template v-if="item.aprobado_pg == 'A'">
+                          <template v-if="item.aprobado_pg == 'A' || item.aprobado_pg == 'V'">
                             <button class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
                               <i class="fas fa-file-download"></i>
                             </button>
                           </template>
-                          <template v-if="item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
+                          <template v-if="(item.aprobado_pg == 'A' && (rolActivo == 'Director' || rolActivo == 'Coordinador')) || item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
                             <template v-if="item.aprobado_pg == 'R'">
                                 <button class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
                                 <i class="fas fa-eye"></i>
@@ -363,7 +366,8 @@ export default {
         display: 'none',
       },
       error: 0,
-      mensajeError:[]
+      mensajeError:[],
+      rolActivo : JSON.parse(localStorage.getItem('rolActivo'))
     }
   },
   computed: {
@@ -413,13 +417,11 @@ export default {
       })
     },
     getListarTesis(){
-      this.fullscreenLoading = true;
       var url = '/alumno/getListarTesis'
       axios.get(url, {
       }).then(response => {
             this.inicializarPaginacion();
             this.listTesis = response.data;
-            this.fullscreenLoading = false;
       })
     },
     getListarAllTesis(){
@@ -477,6 +479,7 @@ export default {
             'nIdTesis' : id,
             'cEstadoPg'    : (op == 1) ? 'A' : 'R'
             }).then(response => {
+                this.fullscreenLoading = false;
                 Swal.fire({
                 icon: 'success',
                 title: 'Se ' + ((op == 1) ? 'Aprobó ' : 'Rechazó ') +' El formulario de inscripción',
@@ -501,7 +504,7 @@ export default {
         cancelButtonColor: '#d33',
         }).then((response) => {
         if (response.value) {
-            this.fullscreenLoading = true;
+            this.fullscreenLoading = false;
             var url = '/alumno/setCambiarEstadoFIT'
             axios.post(url, {
                 'nIdTesis'  : id,
