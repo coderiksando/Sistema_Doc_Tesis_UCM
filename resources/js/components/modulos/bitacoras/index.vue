@@ -71,15 +71,15 @@
               <div class="card-header">
                 <h3 class="card-title">Bandeja de resultados</h3>
               </div>
-              <div class="card-body table">
+              <div class="card-body table table-responsive">
                 <template v-if="listBitacoras.length">
                   
-                  <table class ="table table-hover table-head-fixed projects t-fix">
+                  <table class ="table table-hover text-nowrap projects">
                     <thead>
-                      <tr class="row">
-                        <th class="col-md-3">Fecha</th>
-                        <th class="col-md-7">Acuerdo</th>
-                        <th class="col-md-2">
+                      <tr>
+                        <th>Fecha</th>
+                        <th>Acuerdo</th>
+                        <th>
                           <template  v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
                             <span>Acciones</span>
                           </template>
@@ -87,12 +87,13 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item, index) in listBitacoras" :key="index" class="row">
-                        <td class="col-md-3">{{item.fecha | moment }}</td>
-                        <td class="col-md-7">
-                          <textarea readonly v-model="item.acuerdo" oninput='this.style.height = this.scrollHeight + "px"'></textarea>
+                      <tr v-for="(item, index) in listBitacoras" :key="index" ref="cont">
+                        <td>{{item.fecha | moment }}</td>
+                        <td style="min-width: 400px">
+                          <textarea v-bind:id='"text-" + index' readonly v-model="item.acuerdo" rows="1" @click="resizeTextarea" @keyup="resizeTextarea">
+                          </textarea>
                         </td>
-                        <td class="col-md-2">
+                        <td>
                         <template  v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
                           <router-link class="btn btn-info boton" :to="{name:'bitacoras.editar', params:{id: item.id}}">
                               <i class="fas fa-pencil-alt"></i>
@@ -191,7 +192,7 @@ export default {
       }
       return pagesArray;
 
-    }
+    },
   },
   mounted(){
     this.getListarMisBitacoras();
@@ -260,22 +261,31 @@ export default {
       this.modalShow = !this.modalShow;
       this.limpiarModal();
     },
+    resizeTextarea(e) {
+      let area = e.target;
+      if(area.style.height != area.scrollHeight + 'px'){
+        area.style.height = area.scrollHeight + 'px'
+      }else{
+        area.style.height = null;
+      }
+    }
   }//cierre de methods
 }
+
 </script>
 
 <style>
-
+  .scrollTable{
+    max-height: 350px !important;
+    overflow: auto !important; 
+  }
   .boton{
     border:0px !important;
     width: 38px !important;
     height:38px !important;
    }
-   .t-fix{
-    table-layout: fixed;
-    word-wrap: break-word;
-  }
   textarea{
+    text-overflow: ellipsis;
     width:100%;
     overflow-y:hidden;
     border: none;

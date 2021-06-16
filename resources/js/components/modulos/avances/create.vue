@@ -53,7 +53,7 @@
                             </div>
                           </div>
                           <div class="custom-file invalid-feedback no-margin" v-show="formatError">
-                                El formato del archivo no es soportado.
+                            El formato del archivo no es soportado.
                           </div>
                           <div class="custom-file invalid-feedback no-margin" v-show="sizeError">
                             El tamaño del archivo no puede superar los {{fileMaxSize}} MB.

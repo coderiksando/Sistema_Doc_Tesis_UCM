@@ -22,7 +22,7 @@ class LoginController extends Controller
         $cContrasena    =   $request->cContrasena;
 
         $rpta = Auth::attempt(['email' => $cEmail, 'password' => $cContrasena, 'state' => 'A']);
-
+        $this->reg('login');
         if ($rpta) {
             session(['rol' => Users_Roles::firstWhere('id_user', Auth::id())->Roles->name]);
             return response()->json([

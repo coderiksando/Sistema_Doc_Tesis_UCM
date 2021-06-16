@@ -109,6 +109,7 @@ class AvancesController extends Controller
         $rpta->updated_at   = Carbon::now();
         $rpta->save(); 
         
+        $this->reg('Registrar avance', 'Alumno');
         return $rpta;
     }
     public function setRegistrarFinalPdf(Request $request){
@@ -119,6 +120,7 @@ class AvancesController extends Controller
 
         $IdArchivo = $request->id_archivo;
         Fit::find($idTesis[0]->id)->update(['id_pdftesis'=>$IdArchivo]);
+        $this->reg('Registrar avance final', 'Alumno');
         //NotasPendientes::find($id)->update(['fecha_propuesta'=>$fecha_propuesta]);
     }
     public function setEditarAvance(Request $request){
@@ -139,6 +141,7 @@ class AvancesController extends Controller
             AvancesTesis::find($id)->update(['descripcion'=>$descripcion, 'created_at' =>$fecha, 'id_archivo' =>$id_archivo]);
             $archivo->delete();
         }
+        $this->reg('Editar avance', 'Alumno');
     }
     public function getEstadoTesis(Request $request){
         if(!$request->ajax()) return redirect('/');

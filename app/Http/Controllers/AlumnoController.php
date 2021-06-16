@@ -54,6 +54,7 @@ class AlumnoController extends Controller
                                                                     $cContrasena,
                                                                     $oFotografia
                                                                 ]);
+        $this->reg('registro', 'Alumno', $rpta[0]->nIdUsuario);
         return $rpta[0]->nIdUsuario;
     }
     public function setEditarRolAlumno(Request $request){

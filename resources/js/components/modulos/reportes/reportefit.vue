@@ -151,7 +151,7 @@
                         <th>Alumno</th>
                         <th>Rut</th>
                         <th>Escuela</th>
-                        <th>Profesor Tutor</th>
+                        <th>Profesor Guia</th>
                         <th>Estado Tesis</th>
                         <th>Detalles Tesis</th>
                       </tr>
