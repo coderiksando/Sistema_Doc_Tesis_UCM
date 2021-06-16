@@ -47,7 +47,7 @@
               <div class="card-body table table-responsive">
                 <template v-if="listTesis.length">
 
-                  <table class ="table table-hover table-head-fixed t-fixed projects" v-loading.fullscreen.lock="fullscreenLoading">
+                  <table class ="table table-hover table-head-fixed text-nowrap projects" v-loading.fullscreen.lock="fullscreenLoading">
                     <thead>
                       <tr>
                         <th>Alumno(s)</th>
@@ -122,26 +122,26 @@
                       </tr>
                     </tbody>
                   </table>
-                  <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                      <li class="page-item" v-if="pageNumber > 0">
-                        <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                      </li>
-                      <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                        :class="[page == pageNumber ? 'active' : '']">
-                        <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                      </li>
-                      <li class="page-item" v-if="pageNumber < pageCount -1">
-                        <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                      </li>
-                    </ul>
-                  </div>
                 </template>
                 <template v-else>
                   <div class="callout callout-info">
                     <h5> No se han encontrado resultados...</h5>
                   </div>
                 </template>
+              </div>
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item" v-if="pageNumber > 0">
+                    <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+                  </li>
+                  <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                    :class="[page == pageNumber ? 'active' : '']">
+                    <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+                  </li>
+                  <li class="page-item" v-if="pageNumber < pageCount -1">
+                    <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>

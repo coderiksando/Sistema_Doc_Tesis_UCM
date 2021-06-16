@@ -4,7 +4,7 @@
     <!-- navbar -->
     <Navbar :ruta="ruta"> </Navbar>
     <!-- Main Sidebar Container -->
-      <Sidebar :ruta="ruta" :usuario="authUser" :listPermisos="listRolPermisosByUsuario" > </Sidebar>
+      <Sidebar id="sidebar" class="sidebar" :ruta="ruta" :usuario="authUser" :listPermisos="listRolPermisosByUsuario"> </Sidebar>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" >
       <transition name="slide-fade" mode="out-in" >

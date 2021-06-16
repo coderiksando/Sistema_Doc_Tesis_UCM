@@ -34,7 +34,7 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Acuerdo</label>
                                                 <div class="col-md-9">
-                                                    <textarea class="form-control" rows="3" v-model="fillEditarBitacora.Acuerdo" @keyup.enter="setEditarBitacora"></textarea>
+                                                    <textarea class="form-control" rows="3" v-model="fillEditarBitacora.Acuerdo" oninput='this.style.height = this.scrollHeight + "px"'></textarea>
                                                     <!-- <input type="text" maxlength="150" class="form-control" v-model="fillEditarBitacora.Acuerdo" @keyup.enter="setEditarBitacora"> -->
                                                 </div>
                                             </div>

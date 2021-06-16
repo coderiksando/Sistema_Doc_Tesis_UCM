@@ -103,24 +103,24 @@
               <div class="card-header">
                 <h3 class="card-title">Bandeja de resultados</h3>
               </div>
-              <div class="card-body table">
+              <div class="card-body table table-responsive">
                 <template v-if="listarAvancesPaginated.length">
                   
-                  <table class ="table table-hover table-head-fixed projects t-fix">
+                  <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
-                      <tr class="row">
-                        <th class="col-md-3">Fecha</th>
-                        <th class="col-md-7">Descripcion</th>
-                        <th class="col-md-2">Acciones</th>
+                      <tr>
+                        <th>Fecha</th>
+                        <th>Descripcion</th>
+                        <th>Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr class="row" v-for="(item, index) in listarAvancesPaginated" :key="index">
-                        <td class="col-md-3">{{ item.created_at | moment }}</td>
-                        <td class="col-md-7">
+                      <tr v-for="(item, index) in listarAvancesPaginated" :key="index">
+                        <td>{{ item.created_at | moment }}</td>
+                        <td>
                           <textarea readonly v-model="item.descripcion" oninput='this.style.height = this.scrollHeight + "px"'></textarea>
                         </td>
-                        <td class="col-md-2">
+                        <td>
                           <a class="btn btn-warning boton" :href="item.archivo_pdf.path" target="_blank">
                             <i class="fas fa-file-download"> </i>
                           </a>
@@ -133,26 +133,26 @@
                       </tr>
                     </tbody>
                   </table>
-                  <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                      <li class="page-item" v-if="pageNumber > 0">
-                        <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                      </li>
-                      <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                        :class="[page == pageNumber ? 'active' : '']">
-                        <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                      </li>
-                      <li class="page-item" v-if="pageNumber < pageCount -1">
-                        <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                      </li>
-                    </ul>
-                  </div>
                 </template>
                 <template v-else>
                   <div class="callout callout-info">
                     <h5> No se han encontrado resultados...</h5>
                   </div>
                 </template>
+              </div>
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item" v-if="pageNumber > 0">
+                    <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+                  </li>
+                  <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                    :class="[page == pageNumber ? 'active' : '']">
+                    <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+                  </li>
+                  <li class="page-item" v-if="pageNumber < pageCount -1">
+                    <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>

@@ -85,6 +85,8 @@ class BitacorasController extends Controller
         $Bitacora->id_tesis     = $fit->id;
         $Bitacora->save();
 
+        $this->reg('Registrar Bitácora',  $request->session()->get('rol'));
+
         return $Bitacora;
     }
     public function setEditarBitacora(Request $request){
@@ -95,7 +97,7 @@ class BitacorasController extends Controller
         $fecha      = Carbon::now();
 
         Bitacoras::find($id)->update(['acuerdo'=>$acuerdo,'fecha'=>$fecha]);
-
+        $this->reg('Editar Bitácora',  $request->session()->get('rol'));
         return;
     }
 }
