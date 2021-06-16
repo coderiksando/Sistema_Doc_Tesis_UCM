@@ -15,7 +15,7 @@
         <div class="card-header">
           <div class="card-tools">
             <router-link class="btn btn-info bnt-sm" :to="'/comisiones/crear'">
-              <i class="fas fa-plus-square"></i> Registrar Nueva Comision
+              <i class="fas fa-plus-square"></i> Registrar nueva comisión
             </router-link>
           </div>
         </div>
@@ -27,8 +27,8 @@
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listarComisionesPaginated.length">
-                  
-                  <table class ="table table-hover table-head-fixed text-nowrap projects ">
+
+                  <table class ="table table-hover table-head-fixed text-nowrap ">
                     <thead>
                       <tr>
                         <th>Alumno</th>
@@ -40,35 +40,41 @@
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in listarComisionesPaginated" :key="index">
-                        <td v-text="item.Anombres"></td>
-                        <td v-text="item.P1nombres"></td>
-                        <td v-text="item.P2nombres"></td>
-                        <td v-text="item.p_externo"></td>
                         <td>
-                            <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'comisiones.editar', params:{id: item.id}}">
-                              <i class="fas fa-pencil-alt"></i>Editar
+                            <div v-for="(fitUser, index2) in item.fit__user" :key="index2">
+                                <p>{{fitUser.user.nombres+' '+fitUser.user.apellidos}}</p>
+                            </div>
+                        </td>
+                        <td>
+                            <template v-if="item.comisiones">
+                                <p>{{item.comisiones.user_p1.nombres+' '+item.comisiones.user_p1.apellidos}}</p>
+                            </template>
+                        </td>
+                        <td>
+                            <template v-if="item.comisiones">
+                                <template v-if="item.comisiones.user_p2">
+                                    <p>{{item.comisiones.user_p2.nombres+' '+item.comisiones.user_p2.apellidos}}</p>
+                                </template>
+                            </template>
+                        </td>
+                        <td>
+                            <template v-if="item.comisiones">
+                                <p>{{item.comisiones.p_externo}}</p>
+                            </template>
+                        </td>
+                        <td>
+                            <template v-if="item.comisiones">
+                            <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
+                              <i class="fas fa-pencil-alt"></i>
                             </router-link>
-                            <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: item.id_fit}}">
-                              <i class="fas fa-eye"></i> Ver Fit
+                            </template>
+                            <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: item.id}}">
+                              <i class="fas fa-eye"></i>
                             </router-link>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                      <li class="page-item" v-if="pageNumber > 0">
-                        <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                      </li>
-                      <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                        :class="[page == pageNumber ? 'active' : '']">
-                        <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                      </li>
-                      <li class="page-item" v-if="pageNumber < pageCount -1">
-                        <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                      </li>
-                    </ul>
-                  </div>
                 </template>
                 <template v-else>
                   <div class="callout callout-info">
@@ -76,19 +82,33 @@
                   </div>
                 </template>
               </div>
+                <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                    <li class="page-item" v-if="pageNumber > 0">
+                    <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+                    </li>
+                    <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                    :class="[page == pageNumber ? 'active' : '']">
+                    <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+                    </li>
+                    <li class="page-item" v-if="pageNumber < pageCount -1">
+                    <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+                    </li>
+                </ul>
+                </div>
             </div>
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Comisiones donde soy participe</h3>
+                <h3 class="card-title">Comisiones donde soy partícipe</h3>
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listarComisionesPaginated2.length">
-                  
-                  <table class ="table table-hover table-head-fixed text-nowrap projects ">
+
+                  <table class ="table table-hover table-head-fixed text-nowrap ">
                     <thead>
                       <tr>
                         <th>Alumno</th>
-                        <th>Profesor guia</th>
+                        <th>Profesor guía</th>
                         <th>Profesor 1</th>
                         <th>Profesor 2</th>
                         <th>Profesor Ext.</th>
@@ -97,33 +117,35 @@
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in listarComisionesPaginated2" :key="index">
-                        <td v-text="item.Anombres"></td>
-                        <td v-text="item.Pnombres"></td>
-                        <td v-text="item.P1nombres"></td>
-                        <td v-text="item.P2nombres"></td>
-                        <td v-text="item.p_externo"></td>
                         <td>
-                            <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: item.id_fit}}">
-                              <i class="fas fa-eye"></i> Ver Fit
+                            <div v-for="(fitUser, index2) in item.fit.fit__user" :key="index2">
+                                <p>{{fitUser.user.nombres+' '+fitUser.user.apellidos}}</p>
+                            </div>
+                        </td>
+                        <td>
+                            <template v-if="item.fit.id_p_guia">
+                                <p>{{item.fit.user__p__guia.nombres+' '+item.fit.user__p__guia.apellidos}}</p>
+                            </template>
+                        </td>
+                        <td>
+                            <template v-if="item.user_p1">
+                                <p>{{item.user_p1.nombres+' '+item.user_p1.apellidos}}</p>
+                            </template>
+                        </td>
+                        <td>
+                            <template v-if="item.user_p2">
+                                <p>{{item.user_p2.nombres+' '+item.user_p2.apellidos}}</p>
+                            </template>
+                        </td>
+                        <td><p>{{item.p_externo}}</p></td>
+                        <td>
+                            <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: item.id}}">
+                              <i class="fas fa-eye"></i>
                             </router-link>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                      <li class="page-item" v-if="pageNumber2 > 0">
-                        <a href="#" class="page-link" @click.prevent="prevPage2">Ant</a>
-                      </li>
-                      <li class="page-item" v-for="(page, index) in pagesList2" :key="index"
-                        :class="[page == pageNumber2 ? 'active' : '']">
-                        <a href="#" class=page-link @click.prevent="selectPage2(page)"> {{page+1}}</a>
-                      </li>
-                      <li class="page-item" v-if="pageNumber2 < pageCount2 -1">
-                        <a href="#" class="page-link" @click.prevent="nextPage2">Post</a>
-                      </li>
-                    </ul>
-                  </div>
                 </template>
                 <template v-else>
                   <div class="callout callout-info">
@@ -131,6 +153,20 @@
                   </div>
                 </template>
               </div>
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                    <li class="page-item" v-if="pageNumber2 > 0">
+                    <a href="#" class="page-link" @click.prevent="prevPage2">Ant</a>
+                    </li>
+                    <li class="page-item" v-for="(page, index) in pagesList2" :key="index"
+                    :class="[page == pageNumber2 ? 'active' : '']">
+                    <a href="#" class=page-link @click.prevent="selectPage2(page)"> {{page+1}}</a>
+                    </li>
+                    <li class="page-item" v-if="pageNumber2 < pageCount2 -1">
+                    <a href="#" class="page-link" @click.prevent="nextPage2">Post</a>
+                    </li>
+                </ul>
+                </div>
             </div>
           </div>
         </div>
@@ -160,7 +196,7 @@ export default {
       pageNumber2: 0,
       perPage: 5,
       modalShow: false,
-      modalOption: 0, 
+      modalOption: 0,
       mostrarModal: {
         display: 'block',
         background: '#0000006b',
@@ -174,7 +210,7 @@ export default {
   },
   computed: {
     pageCount(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listMisComisiones.length,
           b = this.perPage;
       return Math.ceil(a / b);
@@ -197,7 +233,7 @@ export default {
       return pagesArray;
     },
      pageCount2(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listComisiones.length,
           b = this.perPage;
       return Math.ceil(a / b);
@@ -223,7 +259,7 @@ export default {
   mounted(){
     this.getListarMisComisiones();
     this.getListarComisiones();
-    this.getListarAlumnosByprofesor();
+    // this.getListarAlumnosByprofesor();
   },
   methods:{
     getListarAlumnosByprofesor(){
@@ -240,7 +276,7 @@ export default {
       this.fullscreenLoading = true;
       var url = '/comisiones/getListarMisComisiones'
       axios.get(url, {
-        
+
       }).then(response => {
           this.inicializarPaginacion();
           this.listMisComisiones = response.data;
@@ -251,7 +287,7 @@ export default {
       this.fullscreenLoading = true;
       var url = '/comisiones/getListarComisiones'
       axios.get(url, {
-        
+
       }).then(response => {
           this.inicializarPaginacion2();
           this.listComisiones = response.data;
@@ -300,6 +336,6 @@ export default {
 <style>
   .scrollTable{
     max-height: 350px !important;
-    overflow: auto !important; 
+    overflow: auto !important;
   }
 </style>

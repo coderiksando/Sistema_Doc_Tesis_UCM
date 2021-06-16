@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Crear Comision</h1>
+            <h1 class="m-0 text-dark"><b>Crear comisión</b></h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -25,62 +25,65 @@
           <div class="container-fluid">
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario Registro de Comision</h3>
+                            <h3 class="card-title">Formulario de registro de comisión</h3>
                         </div>
                             <div class="card-body">
                                 <form role="form">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Seleccionar alumno</label>
+                                                <label class="col-md-3 col-form-label">Título de tesis</label>
                                                 <div class="col-md-9">
-                                                    <el-select v-model="fillCrearComision.id_user" 
-                                                    placeholder="Asignar alumno tesista"
+                                                    <el-select v-model="fillCrearComision.idTesis"
+                                                    placeholder="Asignar título de tesis"
+                                                    filterable
                                                     clearable>
                                                     <el-option
-                                                        v-for="item in listAlumnos"
+                                                        v-for="item in listTesis"
+                                                        :key="item.id"
+                                                        :label="item.titulo"
+                                                        :value="item.id">
+                                                    </el-option>
+                                                    </el-select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label">Profesor comisión 1 (requerido)</label>
+                                                <div class="col-md-9">
+                                                    <el-select v-model="fillCrearComision.Profesor1"
+                                                    placeholder="Asignar profesor para comisión"
+                                                    filterable
+                                                    clearable>
+                                                    <el-option
+                                                        v-for="item in listProfesores"
                                                         :key="item.id_user"
-                                                        :label="item.nombres"
+                                                        :label="item.fullname"
                                                         :value="item.id_user">
                                                     </el-option>
                                                     </el-select>
                                                 </div>
                                             </div>
-                                        
-                                                <div class="form-group row">
-                                                    <label class="col-md-3 col-form-label">Profesor Comision 1</label>
-                                                    <div class="col-md-9">
-                                                        <el-select v-model="fillCrearComision.Profesor1" 
-                                                        placeholder="Asignar Profesor para comision"
-                                                        clearable>
-                                                        <el-option
-                                                            v-for="item in listProfesores"
-                                                            :key="item.id_user"
-                                                            :label="item.fullname"
-                                                            :value="item.id_user">
-                                                        </el-option>
-                                                        </el-select>
-                                                    </div>
-                                                </div>
 
-                                                <div class="form-group row">
-                                                    <label class="col-md-3 col-form-label">Profesor Comision 2</label>
-                                                    <div class="col-md-9">
-                                                        <el-select v-model="fillCrearComision.Profesor2" 
-                                                        placeholder="Asignar Profesor para comision"
-                                                        clearable>
-                                                        <el-option
-                                                            v-for="item in listProfesores"
-                                                            :key="item.id_user"
-                                                            :label="item.fullname"
-                                                            :value="item.id_user">
-                                                        </el-option>
-                                                        </el-select>
-                                                    </div>
-                                                </div>
-                                            
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Profesor Externo (opcional)</label>
+                                                <label class="col-md-3 col-form-label">Profesor comisión 2</label>
+                                                <div class="col-md-9">
+                                                    <el-select v-model="fillCrearComision.Profesor2"
+                                                    placeholder="Asignar profesor para comisión"
+                                                    filterable
+                                                    clearable>
+                                                    <el-option
+                                                        v-for="item in listProfesores"
+                                                        :key="item.id_user"
+                                                        :label="item.fullname"
+                                                        :value="item.id_user">
+                                                    </el-option>
+                                                    </el-select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label">Profesor externo</label>
                                                 <div class="col-md-9">
                                                     <input type="text" placeholder="Nombre profesor externo" class="form-control" v-model="fillCrearComision.NombrePEx" @keyup.enter="setRegistrarComision">
                                                 </div>
@@ -92,9 +95,9 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Institucion profesor externo</label>
+                                                <label class="col-md-3 col-form-label">Institución profesor externo</label>
                                                 <div class="col-md-9">
-                                                    <input type="text" placeholder="Institucion profesor externo" class="form-control" v-model="fillCrearComision.InstitucionPEx" @keyup.enter="setRegistrarComision">
+                                                    <input type="text" placeholder="Institución profesor externo" class="form-control" v-model="fillCrearComision.InstitucionPEx" @keyup.enter="setRegistrarComision">
                                                 </div>
                                             </div>
                                         </div>
@@ -111,12 +114,11 @@
                                 </div>
                             </div>
                         </div>
-
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
-               
+
 
 
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
@@ -143,11 +145,15 @@ export default {
   data(){
     return{
       fillCrearComision:{
-        id_user: '',
-        Comentario: '',
-        Acuerdo: ''
+        idTesis: '',
+        Profesor1: '',
+        Profesor2: '',
+        NombrePEx: '',
+        EmailPEx: '',
+        InstitucionPEx: ''
       },
       listAlumnos:[],
+      listTesis: [],
       listProfesores:[],
       fullscreenLoading: false,
       modalShow: false,
@@ -167,8 +173,18 @@ export default {
   mounted(){
     this.getListarProfesores();
     this.getListarAlumnosByprofesor();
+    this.getListarTesis();
   },
   methods:{
+    getListarTesis () {
+        this.fullscreenLoading = true;
+        const url = '/alumno/getListarTesis';
+        axios.get(url, {
+        }).then (response => {
+          this.listTesis = response.data;
+          this.fullscreenLoading = false;
+        })
+    },
     getListarAlumnosByprofesor(){
       this.fullscreenLoading = true;
       var url = '/avances/getListarAlumnosByprofesor'
@@ -190,9 +206,12 @@ export default {
       })
     },
     limpiarCriterios(){
-      this.fillCrearComision.id_user = '';
-      this.fillCrearComision.Comentario = '';
-      this.fillCrearComision.Acuerdo = '';
+        this.fillCrearComision.idTesis = '';
+        this.fillCrearComision.Profesor1 = '';
+        this.fillCrearComision.Profesor2 = '';
+        this.fillCrearComision.NombrePEx = '';
+        this.fillCrearComision.EmailPEx = '';
+        this.fillCrearComision.InstitucionPEx = '';
     },
     abrirModal(){
       this.modalShow = !this.modalShow;
@@ -200,11 +219,11 @@ export default {
     validarRegistrarComision(){
       this.error = 0;
       this.mensajeError = [];
-        if(!this.fillCrearComision.id_user){
-          this.mensajeError.push("El alumno es un campo obligatorio")
+        if(!this.fillCrearComision.idTesis){
+          this.mensajeError.push("La selección de tesis es obligatoria");
         }
         if(!this.fillCrearComision.Profesor1){
-          this.mensajeError.push("El acuerdo es un campo obligatorio")
+          this.mensajeError.push("La selección del primer profesor es obligatoria");
         }
         if(this.mensajeError.length){
           this.error = 1;
@@ -219,7 +238,7 @@ export default {
       this.fullscreenLoading = true;
       var url = '/comisiones/setRegistrarComision'
       axios.post(url, {
-        'id_user'           : this.fillCrearComision.id_user,
+        'idTesis'           : this.fillCrearComision.idTesis,
         'Profesor1'         : this.fillCrearComision.Profesor1,
         'Profesor2'         : this.fillCrearComision.Profesor2,
         'NombrePEx'         : this.fillCrearComision.NombrePEx,
@@ -229,18 +248,18 @@ export default {
         this.fullscreenLoading = false;
         this.$router.push('/comisiones');
         Swal.fire({
-        icon: 'success',
-        title: 'Comision creada correctamente',
-        showConfirmButton: false,
-        timer: 1500
-      })
+            icon: 'success',
+            title: 'Comision creada correctamente',
+            showConfirmButton: false,
+            timer: 3000
+        })
       }).catch(response=>{
         this.fullscreenLoading = false;
         Swal.fire({
         icon: 'error',
         title: 'Comisión ya existe',
         showConfirmButton: false,
-        timer: 1500
+        timer: 3000
       })
       })
     },
@@ -256,8 +275,6 @@ export default {
     inicializarPaginacion(){
       this.pageNumber = 0;
     },
-
-  
   }// cierre methods
 }
 </script>

@@ -358,21 +358,17 @@ class AlumnoController extends Controller
         return $profesores;
     }
 
-    public function getListarEstudiantes(Request $request){
-
+    public function getAllUserRoll(Request $request){
         if(!$request->ajax()) return redirect('/');
-
-        $profesores = DB::table('users')
-                        ->join('users_roles', 'users_roles.id_user', '=', 'users.id_user')
-                        ->join('roles', 'roles.id', '=', 'users_roles.id_roles')
-                        ->select('users.id_user',DB::raw("CONCAT(users.nombres,' ',users.apellidos) as fullname"))
-                        ->where([
-                            ['roles.name', '=', 'Alumno'],
-                        ])
-                        ->orderBy('users.id_user', 'desc')
-                        ->get();
-        return $profesores;
+        $alumnos = User::all();
+        foreach ($alumnos as $alumno) {
+            foreach ($alumno->Users_Roles as $alumnoRol) {
+                $alumnoRol->Roles;
+            }
+        }
+        return $alumnos;
     }
+
     public function getUsersAlumnosParametros(Request $request){
         $alumnoBuscado = [];
         $rpta = User::where('rut', 'like',"%$request->rut%")
