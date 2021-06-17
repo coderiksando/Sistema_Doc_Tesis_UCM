@@ -21,7 +21,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([// cuenta de administrador
             'rut' => '11.111.111-1',
             'nombres'=>'Administrador',
-            'apellidos'=>'Emperador',
+            'apellidos'=>'Admin',
             'id_escuela'=>'1',
             'email'=>'admin@gmail.com',
             'password'     =>  Hash::make('12345'),
@@ -34,9 +34,9 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([// cuenta de administrador
             'rut' => '22.222.222-2',
             'nombres'=>'Profesor1',
-            'apellidos'=>'Empleado',
+            'apellidos'=>'Prof',
             'id_escuela'=>'1',
-            'email'=>'eriksandovalsepulveda@gmail.com',
+            'email'=>'profesor1@gmail.com',
             'password'     =>  Hash::make('12345'),
             'state' => 'A',
             'birthday' => DateTime::createFromFormat('m-d-Y', '12-16-2003'),
@@ -47,7 +47,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([// cuenta de administrador
             'rut' => '33.333.333-3',
             'nombres'=>'Director',
-            'apellidos'=>'Jefe',
+            'apellidos'=>'Dire',
             'id_escuela'=>'1',
             'email'=>'director@gmail.com',
             'password'     =>  Hash::make('12345'),
@@ -60,7 +60,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([// cuenta de administrador
             'rut' => '44.444.444-4',
             'nombres'=>'Coordinador',
-            'apellidos'=>'cordinitas',
+            'apellidos'=>'Cord',
             'id_escuela'=>'1',
             'email'=>'coordinador@gmail.com',
             'password' => Hash::make('12345'),
@@ -75,7 +75,7 @@ class UsersTableSeeder extends Seeder
             'nombres'=>'Alumno1',
             'apellidos'=>'alumno',
             'id_escuela'=>'1',
-            'email'=>'monox_13@hotmail.com',
+            'email'=>'alumno1@gmail.com',
             'password' => Hash::make('12345'),
             'state' => 'A',
             'birthday' => DateTime::createFromFormat('m-d-Y', '12-16-1803'),
@@ -103,7 +103,7 @@ class UsersTableSeeder extends Seeder
             'nombres'=>'Juan',
             'apellidos'=>'alumno',
             'id_escuela'=>'1',
-            'email'=>'erik.sandoval@alu.ucm.cl',
+            'email'=>'alumno2@gmail.com',
             'password' => Hash::make('12345'),
             'state' => 'A',
             'birthday' => DateTime::createFromFormat('m-d-Y', '12-16-1803'),
@@ -114,6 +114,6 @@ class UsersTableSeeder extends Seeder
             'f_salida' => DateTime::createFromFormat('m-d-Y', '01-01-2021')
         ]);
 
-        factory(User::class, 40)->create();
+        factory(User::class, 10)->create();
     }
 }

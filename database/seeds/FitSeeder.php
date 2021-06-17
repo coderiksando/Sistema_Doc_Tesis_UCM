@@ -32,6 +32,6 @@ class FitSeeder extends Seeder
             'aprobado_pg' => 'P'
         ]);
 
-        factory(Fit::class, 40)->create();
+        //factory(Fit::class, 10)->create();
     }
 }
