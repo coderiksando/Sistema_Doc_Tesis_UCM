@@ -16,6 +16,6 @@ class AvancesTesisSeeder extends Seeder
         DB::table('avancestesis')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        factory(AvancesTesis::class, 100)->create();
+        //factory(AvancesTesis::class, 100)->create();
     }
 }
