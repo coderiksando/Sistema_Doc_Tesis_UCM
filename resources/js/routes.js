@@ -263,6 +263,14 @@ export const rutas = [
     },
     props: true
 },
+{
+    path: '/tesis/constancia',
+    name: 'tesis.subirconstancia',
+    component: require('./components/modulos/tesis/subirconstancia').default,
+    beforeEnter: (to, from, next) => {
+        verificarAcceso(to, from, next);
+    }
+},
 /********** RUTAS MODULO DE AVANCES DE TESIS *********/
 {
     path: '/avances',

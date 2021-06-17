@@ -240,6 +240,10 @@ class PermissionsTableSeeder extends Seeder
             'name' => 'Parametros',
             'slug' => 'parametros.index'
         ]);
+        DB::table('permissions')->insert([
+            'name' => 'Constancia',
+            'slug' => 'tesis.subirconstancia'
+        ]);
     }
 }
 

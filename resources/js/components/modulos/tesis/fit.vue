@@ -91,29 +91,40 @@
                           </template>
                         </td>
                         <td>
-                          <router-link class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
+                          <router-link title="Ver FIT" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                             <i class="fas fa-folder"></i>
                           </router-link>
+                          <template v-if="(item.aprobado_pg == 'A' || item.aprobado_pg == 'V') && listRolPermisosByUsuario.includes('tesis.subirconstancia')">
+                            <router-link title="Subir constancia de examen" class="btn btn-success boton" :to="{name:'tesis.subirconstancia'}">
+                              <i class="fas fa-file-upload"></i>
+                            </router-link>
+                          </template>
                           <template v-if="item.aprobado_pg == 'A' || item.aprobado_pg == 'V'">
-                            <button class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
+                            <button title="Generar documento PDF" class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
                               <i class="fas fa-file-download"></i>
                             </button>
                           </template>
+                          <template v-if="item.constancia && rolActivo != 'Alumno'">
+                            <a title="Descargar constancia de examen" class="btn boton btn-info" :href="item.constancia.path" target="_blank">
+                              <i class="fas fa-file-download"></i>
+                            </a>
+                          </template>
+                          
                           <template v-if="(item.aprobado_pg == 'A' && (rolActivo == 'Director' || rolActivo == 'Coordinador')) || item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
                             <template v-if="item.aprobado_pg == 'R'">
-                                <button class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
+                                <button title="Ver razon de rechazo" class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
                                 <i class="fas fa-eye"></i>
                                 </button>
-                                <router-link class="btn boton btn-info" :to="{name:'tesis.editar', params:{id: item.id}}">
+                                <router-link title="Editar FIT" class="btn boton btn-info" :to="{name:'tesis.editar', params:{id: item.id}}">
                                 <i class="fas fa-pencil-alt"></i>
                                 </router-link>
                             </template>
 
                             <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
-                                <button class="btn boton btn-success" @click.prevent="setCambiarEstadoFIT(1, item.id)">
+                                <button title="Aprobar FIT" class="btn boton btn-success" @click.prevent="setCambiarEstadoFIT(1, item.id)">
                                   <i class="fas fa-check"></i>
                                 </button>
-                                <button class="btn boton btn-danger" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
+                                <button title="Rechazar FIT" class="btn boton btn-danger" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
                                   <i class="fas fa-trash"></i>
                                 </button>
                             </template>
