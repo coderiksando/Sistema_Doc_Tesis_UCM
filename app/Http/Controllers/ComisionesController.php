@@ -31,7 +31,7 @@ class ComisionesController extends Controller
             $comision->correo_p_externo = $request->EmailPEx;
             $comision->institucion_p_externo = $request->InstitucionPEx;
             $comision->save();
-            $this->reg('Crear comisión', 'Profesor');
+            $this->reg('Registrar Comisión', $comision->id,  $request->session()->get('rol'));
 
             return $comision;
         }
@@ -62,6 +62,8 @@ class ComisionesController extends Controller
         $comision->institucion_p_externo    = $request->InstitucionPEx;
         $comision->update();
         $this->reg('Editar comisión', 'Profesor');
+
+        $this->reg('Editar Comisión', $id,  $request->session()->get('rol'));
 
         return;
     }

@@ -263,6 +263,14 @@ export const rutas = [
     },
     props: true
 },
+{
+    path: '/tesis/constancia',
+    name: 'tesis.subirconstancia',
+    component: require('./components/modulos/tesis/subirconstancia').default,
+    beforeEnter: (to, from, next) => {
+        verificarAcceso(to, from, next);
+    }
+},
 /********** RUTAS MODULO DE AVANCES DE TESIS *********/
 {
     path: '/avances',
@@ -432,6 +440,15 @@ export const rutas = [
     path: '/reportes/detallesbitacoras/:id',
     name: 'reportes.detallesbitacoras',
     component: require('./components/modulos/reportes/detallesbitacoras').default,
+    beforeEnter: (to, from, next) => {
+        verificarAcceso(to, from, next);
+    },
+    props : true
+},
+{
+    path: '/reportes/logs',
+    name: 'reportes.logs',
+    component: require('./components/modulos/reportes/logs').default,
     beforeEnter: (to, from, next) => {
         verificarAcceso(to, from, next);
     },

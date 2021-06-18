@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Fit;
 use App\ArchivoPdf;
+use App\Log;
 use Illuminate\Support\Facades\DB;
 use App\Exports\TesisExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -104,6 +105,32 @@ class ReportesController extends Controller
         return $reportdata;
 
     }
+    public function getListarLogs(Request $request){
+        //if(!$request->ajax()) return redirect('/');
+
+        $actividad   = $request->cActividad;
+        $idUsuario   = $request->nIdUsuario;
+        $rol         = $request->cRol;
+        $fechaInicio = $request->dFechaInicio;
+        $fechaFin = $request->dFechaFin;
+        
+
+        $actividad     = ($actividad == NULL)   ? ($actividad = '')   : $actividad;
+        $idUsuario     = ($idUsuario == NULL)   ? ($idUsuario = '')   : $idUsuario;
+        $rol           = ($rol == NULL)         ? ($rol = '')         : $rol;
+        $fechaInicio   = ($fechaInicio == NULL) ? ($fechaInicio = '2000-01-01') : $fechaInicio;
+        $fechaFin      = ($fechaFin == NULL)    ? ($fechaFin = '2100-01-01')    : $fechaFin;
+
+        $logs = Log::select('actividad', 'rol', 'ip', 'target', 'logs.created_at as fecha', 'users.nombres', 'users.apellidos')
+                   ->join('users', 'logs.user_id', 'users.id_user')
+                   ->where('actividad', 'like', "%$actividad%")
+                   ->where('user_id', 'like', "%$idUsuario%")
+                   ->where('rol', 'like', "%$rol%")
+                   ->WhereBetween('logs.created_at', [$fechaInicio, $fechaFin])->get();
+        
+        return $logs;
+    }   
+
     public function export(Request $request){
         if(!$request->ajax()) return redirect('/');
 

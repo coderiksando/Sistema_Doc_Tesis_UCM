@@ -19,9 +19,9 @@ class UsersTableSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         DB::table('users')->insert([// cuenta de administrador
-            'rut' => '11.111.111-1',
+            'rut' => '11111111-1',
             'nombres'=>'Administrador',
-            'apellidos'=>'Emperador',
+            'apellidos'=>'Admin',
             'id_escuela'=>'1',
             'email'=>'admin@gmail.com',
             'password'     =>  Hash::make('12345'),
@@ -32,11 +32,11 @@ class UsersTableSeeder extends Seeder
             'grado_academico' => 'Admin'
         ]);
         DB::table('users')->insert([// cuenta de administrador
-            'rut' => '22.222.222-2',
+            'rut' => '22222222-2',
             'nombres'=>'Profesor1',
-            'apellidos'=>'Empleado',
+            'apellidos'=>'Prof',
             'id_escuela'=>'1',
-            'email'=>'eriksandovalsepulveda@gmail.com',
+            'email'=>'profesor1@gmail.com',
             'password'     =>  Hash::make('12345'),
             'state' => 'A',
             'birthday' => DateTime::createFromFormat('m-d-Y', '12-16-2003'),
@@ -45,9 +45,9 @@ class UsersTableSeeder extends Seeder
             'grado_academico' => 'Profe'
         ]);
         DB::table('users')->insert([// cuenta de administrador
-            'rut' => '33.333.333-3',
+            'rut' => '33333333-3',
             'nombres'=>'Director',
-            'apellidos'=>'Jefe',
+            'apellidos'=>'Dire',
             'id_escuela'=>'1',
             'email'=>'director@gmail.com',
             'password'     =>  Hash::make('12345'),
@@ -58,9 +58,9 @@ class UsersTableSeeder extends Seeder
             'grado_academico' => 'Direc'
         ]);
         DB::table('users')->insert([// cuenta de administrador
-            'rut' => '44.444.444-4',
+            'rut' => '44444444-4',
             'nombres'=>'Coordinador',
-            'apellidos'=>'cordinitas',
+            'apellidos'=>'Cord',
             'id_escuela'=>'1',
             'email'=>'coordinador@gmail.com',
             'password' => Hash::make('12345'),
@@ -71,11 +71,11 @@ class UsersTableSeeder extends Seeder
             'grado_academico' => 'Coordinador'
         ]);
         DB::table('users')->insert([// cuenta de administrador
-            'rut' => '18.576.437-0',
+            'rut' => '18576437-0',
             'nombres'=>'Alumno1',
             'apellidos'=>'alumno',
             'id_escuela'=>'1',
-            'email'=>'monox_13@hotmail.com',
+            'email'=>'alumno1@gmail.com',
             'password' => Hash::make('12345'),
             'state' => 'A',
             'birthday' => DateTime::createFromFormat('m-d-Y', '12-16-1803'),
@@ -86,7 +86,7 @@ class UsersTableSeeder extends Seeder
             'f_salida' => DateTime::createFromFormat('m-d-Y', '01-01-2021')
         ]);
         DB::table('users')->insert([// cuenta de administrador
-            'rut' => '66.666.666-6',
+            'rut' => '66666666-6',
             'nombres'=>'Secretaria',
             'apellidos'=>'asist',
             'id_escuela'=>'1',
@@ -99,11 +99,11 @@ class UsersTableSeeder extends Seeder
             'grado_academico' => 'secre'
         ]);
         DB::table('users')->insert([// cuenta de administrador
-            'rut' => '55.555.555-5',
+            'rut' => '55555555-5',
             'nombres'=>'Juan',
             'apellidos'=>'alumno',
             'id_escuela'=>'1',
-            'email'=>'erik.sandoval@alu.ucm.cl',
+            'email'=>'alumno2@gmail.com',
             'password' => Hash::make('12345'),
             'state' => 'A',
             'birthday' => DateTime::createFromFormat('m-d-Y', '12-16-1803'),
@@ -114,6 +114,6 @@ class UsersTableSeeder extends Seeder
             'f_salida' => DateTime::createFromFormat('m-d-Y', '01-01-2021')
         ]);
 
-        factory(User::class, 40)->create();
+        // factory(User::class, 10)->create();
     }
 }

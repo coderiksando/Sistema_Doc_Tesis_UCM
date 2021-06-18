@@ -151,6 +151,17 @@
                 </router-link>  
               </template>
             </li>
+            <li class="nav-item">
+              <template v-if="listPermisos.includes('reportes.logs')">
+                <router-link class="nav-link" :to="'/reportes/logs'">
+                  <i class="nav-icon fas fa-database"></i>
+                  <p>
+                    Registros
+                  </p>
+                </router-link>  
+              </template>
+            </li>
+            
           </template>
           <!-- VISTA PARA ADMINISTRACION DE REPORTES -->
           <template  v-if="listPermisos.includes('reportes.reportefit')">

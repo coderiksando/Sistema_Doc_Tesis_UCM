@@ -16,6 +16,6 @@ class BitacorasSeeder extends Seeder
         DB::table('bitacoras')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        factory(Bitacoras::class, 50)->create();
+        //factory(Bitacoras::class, 50)->create();
     }
 }

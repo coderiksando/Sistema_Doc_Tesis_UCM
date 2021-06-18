@@ -6,6 +6,7 @@ use App\Fit;
 use App\User;
 use App\Fit_User;
 use App\Users_Roles;
+use App\ArchivoPdf;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -123,6 +124,7 @@ class AlumnoController extends Controller
         foreach ($fits as $fit) {
             $listUsers = $fit->Fit_User->pluck('id_user');
             $listUsersDetails = User::whereIn('id_user', $listUsers)->get()->all();
+            $fit->constancia = ArchivoPdf::where('id_fit', $fit->id)->firstWhere('tipo_pdf', 'constancia_t');
             $fit->listUsers = $listUsersDetails;
         }
 

@@ -44,8 +44,8 @@ class FilesController extends Controller
 
         Storage::putFileAs('public/users', $file, $fileserver);
 
-        if ($tipo == 'final_t'){
-            $lastVersion = $this->getPdfFinal();
+        if ($tipo == 'final_t' || $tipo == 'constancia_t'){
+            $lastVersion = $this->getPdfFinal($request);
             if($lastVersion){
                 $name = last(explode('/', $lastVersion->path));
                 Storage::delete('public/users/'.$name);
@@ -63,10 +63,11 @@ class FilesController extends Controller
         return $rpta;
     }
 
-    public function getPdfFinal(){
+    public function getPdfFinal(Request $request){
+        $tipo = $request->tipo;
         $idUser = Auth::user()->id_user;
         $fit = Fit_User::Firstwhere('id_user', $idUser)->Fit;
-        $archivoPDF = ArchivoPdf::where('id_fit', $fit->id)->orderByDesc('created_at')->firstWhere('tipo_pdf', 'final_t');
+        $archivoPDF = ArchivoPdf::where('id_fit', $fit->id)->orderByDesc('created_at')->firstWhere('tipo_pdf', $tipo);
         // Debugbar::info(last(explode('/', $archivoPDF->path)));
         return $archivoPDF;
     }

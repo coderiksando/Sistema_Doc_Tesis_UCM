@@ -52,7 +52,7 @@
                           </div>
                         </div>
                         <div class="col-md-1">
-                          <a class="btn btn-warning boton" title="Descargar versión anterior" target="_blank" :href="lastFile.path">
+                          <a v-if="lastFile" class="btn btn-warning boton" title="Descargar versión anterior" target="_blank" :href="lastFile.path">
                             <i class="fas fa-file-download"> </i>
                           </a>
                         </div>
@@ -237,7 +237,11 @@ export default {
     getDocumento(){
       this.fullscreenLoading = true;
       var url = '/archivo/getPdfFinal';
-      axios.get(url,{}).then(response => {
+      axios.get(url,{
+        params: {
+          'tipo'    : 'final_t'
+        }
+        }).then(response => {
           this.lastFile = response.data;
           this.fillCrearFinalPdf.oArchivo.name = this.lastFile.filename;
           this.fullscreenLoading = false;

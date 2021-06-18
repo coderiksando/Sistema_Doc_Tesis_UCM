@@ -139,106 +139,114 @@ class PermissionsTableSeeder extends Seeder
             'name' => 'Crear Avances',
             'slug' => 'avances.crear'
         ]);
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //30
             'name' => 'Editar Avances',
             'slug' => 'avances.editar'
         ]);
         //Semillas Botones y funcionas exclusivas 
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //31
             'name' => 'Aprobar Fit',
             'slug' => 'tesis.aprobar'
         ]);
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //32
             'name' => 'Avances por usuario',
             'slug' => 'avances.listaralumnos'
         ]);  
         //Semillas administracion de notas pendientes
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //33
             'name' => 'Navegar notas pendientes',
             'slug' => 'notaspendientes.index'
         ]);
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //34
             'name' => 'Ingresar nota pendiente',
             'slug' => 'notaspendientes.crear'
         ]);
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //35
             'name' => 'Editar nota pendiente',
             'slug' => 'notaspendientes.editar'
         ]);
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //36
             'name' => 'Ingresar Prorrogas',
             'slug' => 'notaspendientes.prorroga'
         ]);    
         //Semillas administracion de notas pendientes  
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //37
             'name' => 'Navegar Bitacoras',
             'slug' => 'bitacoras.index'
         ]); 
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //38
             'name' => 'Crear Bitacoras',
             'slug' => 'bitacoras.crear'
         ]); 
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //39
             'name' => 'Editar Bitacoras',
             'slug' => 'bitacoras.editar'
         ]);
         //Semillas administracion de Comisiones
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //40
             'name' => 'Navegar Comisiones',
             'slug' => 'comisiones.index'
         ]); 
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //41
             'name' => 'Crear Comisiones',
             'slug' => 'comisiones.crear'
         ]); 
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //42
             'name' => 'Editar Comisiones',
             'slug' => 'comisiones.editar'
         ]);
         //Semillas administracion documentos secretaria 
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //43
             'name' => 'Navegar documentos alumnos',
             'slug' => 'actadefensa.index'
         ]); 
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //44
             'name' => 'Subir acta de defensa',
             'slug' => 'actadefensa.subiracta'
         ]); 
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //45
             'name' => 'Subir nota de tesis',
             'slug' => 'actadefensa.subirnota'
         ]); 
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //46
             'name' => 'Documentos alumnos',
             'slug' => 'documentos.index'
         ]); 
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //47
             'name' => 'EsAlumno',
             'slug' => 'EsAlumno'
         ]);
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //48
             'name' => 'EsProfesor',
             'slug' => 'EsProfesor'
         ]);
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //49
             'name' => 'Detalles avances alumno',
             'slug' => 'reportes.detallesavances'
         ]);
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //50
             'name' => 'Detalles avances alumno',
             'slug' => 'reportes.detallesbitacoras'
         ]);
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //51
             'name' => 'Subir version final de tesis',
             'slug' => 'avances.subirfinalpdf'
         ]);
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //52
             'name' => 'Registrar tesis finalizada',
             'slug' => 'registrar.tesis'
         ]);
-        DB::table('permissions')->insert([
+        DB::table('permissions')->insert([                  //53
             'name' => 'Parametros',
             'slug' => 'parametros.index'
+        ]);
+        DB::table('permissions')->insert([                  //54
+            'name' => 'Constancia',
+            'slug' => 'tesis.subirconstancia'
+        ]);
+        DB::table('permissions')->insert([                  //55
+            'name' => 'Logs',
+            'slug' => 'reportes.logs'
         ]);
     }
 }

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class UsersController extends Controller
 {
     public function getListarUsuarios(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
 
         
         $nIdUsuario   =   $request->nIdUsuario;
@@ -40,6 +40,7 @@ class UsersController extends Controller
                                                                     $cEstado,
                                                                     $cEscuela
                                                                 ]);
+        $rpta = collect($rpta)->sortBy('fullname')->values();
 
         return $rpta;
     }
