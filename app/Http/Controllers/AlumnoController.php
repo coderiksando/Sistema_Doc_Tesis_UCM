@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Fit;
 use App\User;
 use App\Fit_User;
+use App\Users_Roles;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,39 +24,44 @@ class AlumnoController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)){
-            return response()->json(['error' => 'Ingresa un correo válido'], 401);
+            return response()->json(['error' => 'Ingresa un correo válido.'], 400);
         }
-
+        $validarRut = User::where('rut', $request->cRut)->first();
+        if ($validarRut) {
+            return response()->json(['error' => 'Rut ingresado ya existente.'], 400);
+        }
         $validar = $request->validate([
-
             'email' =>'required|email|unique:users',
         ]);
-
         $cNombre = $request->cNombre;
         $cApellido = $request->cApellido;
-        $nIdEscuela = $request->nIdEscuela;
+        $cRut = $request->cRut;
         $cCorreo = $request->email;
-        $cContrasena = Hash::make($request->cContrasena);
-        $oFotografia = $request->oFotografia;
+        $password = Hash::make($request->cContrasena);
 
-        $cNombre = ($cNombre == NULL) ? ($cNombre = '') : $cNombre;
-        $cApellido = ($cApellido == NULL) ? ($cApellido = '') : $cApellido;
-        $nIdEscuela = ($nIdEscuela == NULL) ? ($nIdEscuela = '') : $nIdEscuela;
-        $cCorreo = ($cCorreo == NULL) ? ($cCorreo = '') : $cCorreo;
-        $cContrasena = ($cContrasena == NULL) ? ($cContrasena = '') : $cContrasena;
-        $oFotografia = ($oFotografia == NULL) ? ($oFotografia = NULL) : $oFotografia;
+        // $rpta = DB::select('call sp_alumno_setRegistrarAlumno (?, ?, ?, ?, ?, ?)',
+        //                                                         [
+        //                                                             $cNombre,
+        //                                                             $cApellido,
+        //                                                             $nIdEscuela,
+        //                                                             $cCorreo,
+        //                                                             $cContrasena,
+        //                                                             $oFotografia
+        //                                                         ]);
+        $user = new User;
+        $user->rut = $cRut;
+        $user->nombres = $cNombre;
+        $user->apellidos = $cApellido;
+        $user->email = $cCorreo;
+        $user->password = $password;
+        $user->save();
 
-        $rpta = DB::select('call sp_alumno_setRegistrarAlumno (?, ?, ?, ?, ?, ?)',
-                                                                [
-                                                                    $cNombre,
-                                                                    $cApellido,
-                                                                    $nIdEscuela,
-                                                                    $cCorreo,
-                                                                    $cContrasena,
-                                                                    $oFotografia
-                                                                ]);
-        $this->reg('registro', 'Alumno', $rpta[0]->nIdUsuario);
-        return $rpta[0]->nIdUsuario;
+        $rol_user = new Users_Roles;
+        $rol_user->id_user = $user->id_user;
+        $rol_user->id_roles = 2;
+        $rol_user->save();
+        $this->reg('Registro de usuario y rol', 'Alumno', $user->id_user);
+        return [$user, $rol_user];
     }
     public function setEditarRolAlumno(Request $request){
         if(!$request->ajax()) return redirect('/');

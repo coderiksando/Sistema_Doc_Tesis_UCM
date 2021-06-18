@@ -1,8 +1,8 @@
 <template>
 <div class="login-page">
-    <div class="register-box">
+    <div style="max-height: 100%;" class="register-box">
         <div class="register-logo">
-            <a href="../../index2.html"><b>Sistema de seguimiento de tesis </b><p>Facultad de Ingenieria UCM</p></a>
+            <a href="/"><b>Sistema de seguimiento de tesis </b><p>Facultad de Ingenieria UCM</p></a>
         </div>
 
         <div class="card">
@@ -28,24 +28,19 @@
                             </div>
                         </div>
                     </div>
-                    <div>Escuela</div>
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <el-select v-model="fillRegistrarAlumno.nIdEscuela" 
-                                placeholder="Asignar Escuela"
-                                clearable>
-                                <el-option
-                                    v-for="item in listEscuelas"
-                                    :key="item.id"
-                                    :label="item.nombre"
-                                    :value="item.id">
-                                </el-option>
-                                </el-select>
+                    <div>Rut</div>
+                    <div class="input-group mb-3">
+                        <input type="text" maxlength="30" v-model="fillRegistrarAlumno.cRut" @keyup.enter="setRegistrarAlumno" class="form-control" placeholder="Rut: 11111111-1" @blur="validarIngresoUsuarioRut($event.target.value)">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                            <span class="fas fa-user"></span>
                             </div>
                         </div>
+                        <p style="margin-top: 0rem; margin-bottom: 0rem;" class="invalid-feedback" v-show="addUserErrorMessage.rut === 1">Rut inválido</p>
+                    </div>
                     <div>Correo</div>
                     <div class="input-group mb-3">
-                        <input type="email" maxlength="50" v-model="fillRegistrarAlumno.cCorreo" @keyup.enter="setRegistrarAlumno" class="form-control" placeholder="Email" >
+                        <input type="email" maxlength="50" v-model="fillRegistrarAlumno.email" @keyup.enter="setRegistrarAlumno" class="form-control" placeholder="Email" >
                         <div class="input-group-append">
                             <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -67,7 +62,7 @@
                         Registrarme
                         </button>
                     </div>
-                <Router-link :to="{name:'login'}"> 
+                <Router-link :to="{name:'login'}">
                     <b>Ya tengo una cuenta</b>
                 </Router-link>
             </div>
@@ -97,139 +92,144 @@
 export default {
     data(){
         return{
-        fillRegistrarAlumno:{
-            cNombre: '',
-            cApellido: '',
-            nIdEscuela: '',
-            cCorreo: '',
-            cContrasena: '',
-            oFotografia: '',
-            nIdRol:  2
+            fillRegistrarAlumno:{
+                cNombre: '',
+                cApellido: '',
+                cRut: '',
+                email: '',
+                cContrasena: '',
+                nIdRol:  2
+            },
+            EmailError:[],
+            fullscreenLoading: false,
+            modalShow: false,
+            mostrarModal: {
+                display: 'block',
+                background: '#0000006b',
+            },
+            ocultarModal: {
+                display: 'none',
+            },
+            error: 0,
+            mensajeError:[],
+            addUserErrorMessage: {
+                boton: true,
+                nombre: 2,
+                email: 2,
+                rut: 2
+            }
+        }
+    },
+    mounted(){
+    },
+    methods:{
+        abrirModal(){
+        this.modalShow = !this.modalShow;
         },
-        EmailError:[],
-        listEscuelas:[],
-        fullscreenLoading: false,
-        modalShow: false,
-        mostrarModal: {
-            display: 'block',
-            background: '#0000006b',
+        setRegistrarAlumno(){
+            if (this.validarRegistrarAlumno()){
+                this.modalShow = true;
+                return;
+            }
+            this.setGuardarAlumno();
         },
-        ocultarModal: {
-            display: 'none',
+        validarRegistrarAlumno(){
+            this.error = 0;
+            this.mensajeError = [];
+            if(!this.fillRegistrarAlumno.cNombre){
+                this.mensajeError.push("El nombre es un campo obligatorio")
+            }
+            if(!this.fillRegistrarAlumno.cApellido){
+                this.mensajeError.push("El apellido es un campo obligatorio")
+            }
+            if(!this.fillRegistrarAlumno.email){
+                this.mensajeError.push("El correo es un campo obligatorio")
+            }
+            if(!this.fillRegistrarAlumno.cContrasena){
+                this.mensajeError.push("La contraseña es un campo obligatorio")
+            }
+            if(!this.fillRegistrarAlumno.cRut){
+                this.mensajeError.push("El RUT es un campo obligatorio")
+            }
+            if (this.addUserErrorMessage.rut === 1) {
+                this.mensajeError.push("El RUT no es válido")
+            }
+            if(this.mensajeError.length){
+                this.error = 1;
+            }
+            return this.error;
         },
-        error: 0,
-        mensajeError:[]
-        }
-  },
-   mounted(){
-    this.getListarEscuelas();
-  },
-  methods:{
-      abrirModal(){
-      this.modalShow = !this.modalShow;
-    },
-      getListarEscuelas(){
-      this.fullscreenLoading = true;
-      var url = '/administracion/escuelas/getListarEscuelas'
-      axios.get(url, {
+        setGuardarAlumno(nIdFile){
+            var url = 'authenticate/registro/setRegistrarAlumno'
+            axios.post(url, {
+                'cNombre'       : this.fillRegistrarAlumno.cNombre,
+                'cApellido'     : this.fillRegistrarAlumno.cApellido,
+                'cRut'          : this.fillRegistrarAlumno.cRut,
+                'email'         : this.fillRegistrarAlumno.email,
+                'cContrasena'   : this.fillRegistrarAlumno.cContrasena
+            }).then(response => {
+                // console.log(response.data);
+                // this.setEditarRolAlumno(response.data);
+                this.fullscreenLoading = false;
+                this.$router.push('/login');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Usuario registrado con exito',
+                    showConfirmButton: false,
+                    timer: 2500
+                })
+            }).catch(error => {
+                this.error = 0;
+                this.mensajeError = [];
+                if (error.response.status == 422){
+                    this.mensajeError.push("Este correo ya esta registrado en nuestro sistema.")
+                    this.error = 1;
+                    this.modalShow = true;
+                    return;
+                }
+                else{
+                    this.mensajeError.push(error.response.data.error);
+                    this.error = 1;
+                    this.modalShow = true;
+                    return;
+                }
+            })
+        },
+        setEditarRolAlumno(nIdUsuario){
+            this.fullscreenLoading = false;
+            //this.$router.push('/usuarios');
 
-      }).then(response => {
-          this.listEscuelas = response.data;
-          this.fullscreenLoading = false;
-      })
+            var url = '/authenticate/registro/setEditarRolAlumno'
+            axios.post(url, {
+                'nIdUsuario'    : nIdUsuario,
+                'nIdRol'  : this.fillRegistrarAlumno.nIdRol,
+            }).then(response => {
+                //console.log("Registro Usuario exitosamente");
+                this.fullscreenLoading = false;
+                this.$router.push('/login');
+            })
+        },
+        validarIngresoUsuarioRut(rut){
+            if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test( rut )) {
+                this.addUserErrorMessage.rut = true;
+            }
+            var tmp 	= rut.split('-');
+            var digv	= tmp[1];
+            var rut 	= tmp[0];
+            if ( digv == 'K' ) digv = 'k' ;
+            if (this.digitoVerificador(rut) == digv) {
+                this.addUserErrorMessage.rut = 0;
+            } else {
+                this.addUserErrorMessage.rut = 1;
+            }
+        },
+        digitoVerificador(T){
+            var M=0,S=1;
+            for(;T;T=Math.floor(T/10))
+                S=(S+T%10*(9-M++%6))%11;
+            return S?S-1:'k';
+        },
     },
-    setRegistrarAlumno(){
-      if (this.validarRegistrarAlumno()){
-          this.modalShow = true;
-          return;
-      }
-      if(!this.fillRegistrarAlumno.oFotografia || this.fillRegistrarAlumno.oFotografia == undefined){
-        //this.fullscreenLoading = true;
-        this.setGuardarAlumno();
-      } else {
-        this.setRegistrarArchivo();
-      }
-    },
-    validarRegistrarAlumno(){
-      this.error = 0;
-      this.mensajeError = [];
-
-        if(!this.fillRegistrarAlumno.cNombre){
-          this.mensajeError.push("el nombre es un campo obligatorio")
-        }
-        if(!this.fillRegistrarAlumno.cApellido){
-          this.mensajeError.push("el apellido es un campo obligatorio")
-        }
-        if(!this.fillRegistrarAlumno.cCorreo){
-          this.mensajeError.push("el correo es un campo obligatorio")
-        }
-        if(!this.fillRegistrarAlumno.cContrasena){
-          this.mensajeError.push("la contraseña es un campo obligatorio")
-        }
-        if(!this.fillRegistrarAlumno.nIdEscuela){
-          this.mensajeError.push("la escuela es un campo obligatorio")
-        }
-        if(this.mensajeError.length){
-          this.error = 1;
-        }
-        return this.error;
-    },
-    setGuardarAlumno(nIdFile){
-      var url = 'authenticate/registro/setRegistrarAlumno'
-      axios.post(url, {
-        'cNombre'    : this.fillRegistrarAlumno.cNombre,
-        'cApellido'  : this.fillRegistrarAlumno.cApellido,
-        'nIdEscuela'   : this.fillRegistrarAlumno.nIdEscuela,
-        'email'    : this.fillRegistrarAlumno.cCorreo,
-        'cContrasena': this.fillRegistrarAlumno.cContrasena,
-        
-        'oFotografia': nIdFile
-      }).then(response => {
-        this.setEditarRolAlumno(response.data);
-        this.fullscreenLoading = false;
-        this.$router.push('/login');
-        Swal.fire({
-        icon: 'success',
-        title: 'Usuario registrado con exito',
-        showConfirmButton: false,
-        timer: 1500
-      })
-      }).catch(error => {
-        this.error = 0;
-        this.mensajeError = [];
-        if (error.response.status == 422){
-          this.mensajeError.push("Este correo ya esta registrado en nuestro sistema")
-          this.error = 1;
-          this.modalShow = true;
-          return;
-        }
-        else{
-          this.mensajeError.push(error.response.data.error)
-          this.error = 1;
-          this.modalShow = true;
-          return;
-        }
-      })
-    },
-    setEditarRolAlumno(nIdUsuario){
-        this.fullscreenLoading = false;
-        //this.$router.push('/usuarios');
-
-        var url = '/authenticate/registro/setEditarRolAlumno'
-        axios.post(url, {
-        'nIdUsuario'    : nIdUsuario,
-        'nIdRol'  : this.fillRegistrarAlumno.nIdRol,
-      }).then(response => {
-        //console.log("Registro Usuario exitosamente");
-        this.fullscreenLoading = false;
-        this.$router.push('/login');
-      })
-    },
-  
-  
-  
-  },
-
 }
 </script>
 
