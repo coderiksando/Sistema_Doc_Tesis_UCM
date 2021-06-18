@@ -24,9 +24,9 @@ class AreasTesisTableSeeder extends Seeder
             'id_escuela' => '1',
             'nombre' => 'Tratamiento de Imagenes'
         ]);
-        DB::table('areatesis')->insert([
-            'id_escuela' => '2',
-            'nombre' => 'Diseño Sustentable'
-        ]);
+        // DB::table('areatesis')->insert([
+        //     'id_escuela' => '2',
+        //     'nombre' => 'Diseño Sustentable'
+        // ]);
     }
 }

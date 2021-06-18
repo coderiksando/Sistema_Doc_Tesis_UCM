@@ -19,6 +19,7 @@ class CreateLogsTable extends Migration
             $table->string('rol');
             $table->string('actividad');
             $table->string('ip');
+            $table->string('target');
             $table->timestamps();
         });
     }

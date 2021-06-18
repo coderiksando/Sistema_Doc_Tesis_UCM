@@ -445,6 +445,15 @@ export const rutas = [
     },
     props : true
 },
+{
+    path: '/reportes/logs',
+    name: 'reportes.logs',
+    component: require('./components/modulos/reportes/logs').default,
+    beforeEnter: (to, from, next) => {
+        verificarAcceso(to, from, next);
+    },
+    props : true
+},
 /******** RUTAS MODULO DE ADMINISTRACION ACTA DE DEFENSA Y CALIFICACION *********/
 {
     path: '/actadefensa',

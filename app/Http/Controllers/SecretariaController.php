@@ -101,6 +101,7 @@ class SecretariaController extends Controller
         $rpta->id_fit = $id;
         $rpta->tipo_pdf = 'acta';
         $rpta->save(); 
+        $this->reg('Subir Acta', $rpta->path,  $request->session()->get('rol'));
 
         return $rpta;
     }
@@ -137,5 +138,6 @@ class SecretariaController extends Controller
         }
 
         Fit::find($id)->update(['nota'=>$nota,'estado'=>$estado]);
+        $this->reg('Subir nota', $fit->id,  $request->session()->get('rol'));
     }
 }

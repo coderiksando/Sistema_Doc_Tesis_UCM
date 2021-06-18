@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 Route::post('/authenticate/login', 'Auth\LoginController@login');
 Route::get('/administracion/escuelas/getListarEscuelas', 'Administracion\EscuelasController@getListarEscuelas');
 Route::get('/administracion/reportes/getListarTesisHome', 'Administracion\ReportesController@getListarTesisHome');
+Route::get('/administracion/reportes/getListarLogs', 'Administracion\ReportesController@getListarLogs');
 Route::get('/reportes/getListarProfesorByEscuela', 'Administracion\ReportesController@getListarProfesorByEscuela');
 Route::post('/authenticate/registro/setRegistrarAlumno', 'AlumnoController@setRegistrarAlumno');
 Route::post('/authenticate/registro/setEditarRolAlumno', 'AlumnoController@setEditarRolAlumno');
