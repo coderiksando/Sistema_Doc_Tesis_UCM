@@ -29,7 +29,9 @@
               <div class="card-header">
                 <div class="row">
                   <div class="col-md-10">
-                    <h3 class="card-title">Formulario de registro rápido de documentos finalizados</h3>
+                    <h3 class="card-title">
+                      Formulario de registro rápido de documentos finalizados
+                    </h3>
                   </div>
                   <div class="col-md-2" style="text-align: right">
                     <button
@@ -246,10 +248,10 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Archivo</label>
-                        <div class="col-md-9">
+                        <label style="max-width: 12.5% !important;" class="col-md-3 col-form-label">Archivo</label>
+                        <div style="width: 87.5% !important; padding-right: 7.5px; padding-left: 7.5px;">
                           <div class="input-group">
                             <div class="input-group-prepend">
                               <span
@@ -289,6 +291,13 @@
                             El tamaño del archivo no puede superar los
                             {{ fileMaxSize }} MB.
                           </div>
+                          <div class="container">
+                            El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
+                        </div>
+                        <div class="container">
+                            Los formatos de archivo soportados son:
+                        <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
+                        </div>
                         </div>
                       </div>
                     </div>
@@ -500,7 +509,7 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <td>
+                            <td style="vertical-align: super !important;">
                               <div class="row">
                                 <div
                                   style="padding: 0px; margin: 0px"
@@ -511,6 +520,8 @@
                                     maxlength="250"
                                     placeholder="Nombre"
                                     v-model="newUser.nombres"
+                                    required
+                                    @blur="validarIngresoUsuarioNombre($event.target.value)"
                                   ></el-input>
                                 </div>
                                 <div
@@ -522,30 +533,44 @@
                                     maxlength="250"
                                     placeholder="Apellido"
                                     v-model="newUser.apellidos"
+                                    required
+                                    @blur="validarIngresoUsuarioNombre($event.target.value)"
                                   ></el-input>
+                                </div>
+                                <div
+                                  style="padding: 0px; margin: 0px"
+                                  class="col-md-12"
+                                >
+                                <p class="invalid-feedback" v-show="addUserErrorMessage.nombre === 1">Nombre inválido</p>
                                 </div>
                               </div>
                             </td>
-                            <td>
+                            <td style="vertical-align: super !important;">
                               <el-input
                                 type="text"
                                 maxlength="250"
                                 placeholder="11111111-1"
                                 v-model="newUser.rut"
+                                @blur="validarIngresoUsuarioRut($event.target.value)"
+                                required
                               ></el-input>
+                              <p class="invalid-feedback" v-show="addUserErrorMessage.rut === 1">Rut inválido</p>
                             </td>
-                            <td>
+                            <td style="vertical-align: super !important;">
                               <el-input
-                                type="text"
+                                v-model="newUser.email"
+                                @blur="validarIngresoUsuarioEmail($event.target.value)"
+                                type="email"
                                 maxlength="250"
                                 placeholder="ejemplo@alu.ucm.cl"
-                                v-model="newUser.email"
                               ></el-input>
+                              <p class="invalid-feedback" v-show="addUserErrorMessage.email === 1">Dirección de email inválida</p>
                             </td>
-                            <td>
+                            <td style="vertical-align: super !important;">
                               <button
                                 class="btn btn-info bnt-sm"
                                 @click.prevent="setIngresarNuevoAlumno"
+                                :disabled=addUserErrorMessage.boton
                               >
                                 <i class="fas fa-plus-square"></i>
                               </button>
@@ -573,12 +598,6 @@
                           </tr>
                         </tbody>
                       </table>
-                      <!-- <div class="row" v-for="(item, index) in listAlumnosBuscados" :key="index">
-                                        <button class="btn btn-primary w-100 mb-2"  @click="setIngresarAlumno(item)">
-                                                <p>Nombre: {{item.nombres}} {{item.apellidos}}</p>
-                                                <p>Rut: {{item.rut}}</p>
-                                        </button>
-                                    </div> -->
                     </template>
                   </div>
                 </div>
@@ -638,9 +657,11 @@
                   </td>
                 </tr>
                 <tr>
-                    <td><i class="fas fa-plus-square"></i></td>
-                    <td>Insertar</td>
-                    <td>Ingresa un estudiante partícipe ya existente o nuevo al FIT</td>
+                  <td><i class="fas fa-plus-square"></i></td>
+                  <td>Insertar</td>
+                  <td>
+                    Ingresa un estudiante partícipe ya existente o nuevo al FIT
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -680,6 +701,12 @@ export default {
         { value: "Memoria", label: "Memoria" },
         { value: "Proyecto de titulo", label: "Proyecto de titulo" },
       ],
+      addUserErrorMessage: {
+        boton: true,
+        nombre: 2,
+        email: 2,
+        rut: 2
+      },
       busquedaUsuario: {
         nombre: "",
         apellido: "",
@@ -695,7 +722,7 @@ export default {
       listProfesores: [],
       listEscuelas: [],
       listVinculacion: [],
-      listAlumnos: [],
+      listAllUser: [],
       listAlumnosBuscados: [],
       fullscreenLoading: false,
       modalShow: false,
@@ -714,6 +741,7 @@ export default {
       formatError: false,
       sizeError: false,
       fileMaxSize: 0,
+      invalidado: true
     };
   },
   computed: {},
@@ -751,10 +779,10 @@ export default {
     },
     getListarAlumnos() {
       this.fullscreenLoading = true;
-      var url = "/alumno/getListarEstudiantes";
+      var url = "/alumno/getAllUserRoll";
       axios.get(url, {}).then((response) => {
         this.inicializarPaginacion();
-        this.listAlumnos = response.data;
+        this.listAllUser = response.data;
         this.fullscreenLoading = false;
       });
     },
@@ -821,7 +849,6 @@ export default {
       return this.error;
     },
     setRegistrarTesisfinalizada() {
-      console.log(this.fillCrearFIT);
       if (this.validarRegistrarTesis()) {
         this.modalShow = true;
         return;
@@ -838,43 +865,44 @@ export default {
       }
     },
     setGuardarTesisfinalizada() {
-        this.fullscreenLoading = true;
-        var url = "/archivo/setRegistrarTesisfinalizada";
-        this.form.append("file", this.fillCrearFIT.oArchivo);
-        const config = { headers: { "Content-Type": "multipart/form-data" } };
-        axios.post(url, this.fillCrearFIT).then((response) => {
-            console.log(response);
-            this.form.append('id_fit', response.data);
-            axios.post(url, this.form, config).then((response) => {
-                console.log(response);
-                this.fullscreenLoading = false;
-                this.$router.push({ name: "dashboard.index" });
-                Swal.fire({
-                    icon: "success",
-                    title: "Documento ingresado correctamente",
-                    showConfirmButton: false,
-                    timer: 3000,
-                });
-
-            }).catch((response) => {
-                this.fullscreenLoading = false;
-                Swal.fire({
-                    icon: "error",
-                    title: "Error al ingresar documento",
-                    showConfirmButton: false,
-                    timer: 3000,
-                });
+      this.fullscreenLoading = true;
+      var url = "/archivo/setRegistrarTesisfinalizada";
+      this.form.append("file", this.fillCrearFIT.oArchivo);
+      const config = { headers: { "Content-Type": "multipart/form-data" } };
+      axios
+        .post(url, this.fillCrearFIT)
+        .then((response) => {
+          this.form.append("id_fit", response.data);
+          axios
+            .post(url, this.form, config)
+            .then((response) => {
+              this.fullscreenLoading = false;
+              this.$router.push({ name: "dashboard.index" });
+              Swal.fire({
+                icon: "success",
+                title: "Documento ingresado correctamente",
+                showConfirmButton: false,
+                timer: 3000,
+              });
+            })
+            .catch((response) => {
+              this.fullscreenLoading = false;
+              Swal.fire({
+                icon: "error",
+                title: "Error al ingresar documento",
+                showConfirmButton: false,
+                timer: 3000,
+              });
             });
-
-        }).catch((response) => {
-            this.fullscreenLoading = false;
-            Swal.fire({
+        })
+        .catch((response) => {
+          this.fullscreenLoading = false;
+          Swal.fire({
             icon: "error",
             title: "Error al ingresar documento",
             showConfirmButton: false,
             timer: 3000,
-            });
-
+          });
         });
     },
     nextPage() {
@@ -913,56 +941,61 @@ export default {
       this.listAlumnosBuscados = [];
     },
     setIngresarNuevoAlumno() {
-      let errorIngresoUser = false;
-      this.newUser.nombres =
-        this.newUser.nombres.charAt(0).toUpperCase() +
-        this.newUser.nombres.slice(1);
-      this.newUser.apellidos =
-        this.newUser.apellidos.charAt(0).toUpperCase() +
-        this.newUser.apellidos.slice(1);
-      this.fillCrearFIT.cUsers.forEach((user) => {
-        if (
-          user.rut === this.newUser.rut ||
-          user.email === this.newUser.email
-        ) {
-          errorIngresoUser = true;
+        let errorIngresoUser = false;
+        let errorRegisterUser = false;
+        this.newUser.nombres = this.newUser.nombres.charAt(0).toUpperCase() + this.newUser.nombres.slice(1);
+        this.newUser.apellidos = this.newUser.apellidos.charAt(0).toUpperCase() + this.newUser.apellidos.slice(1);
+        this.listAllUser.forEach((user) => {
+          if (user.rut === this.newUser.rut || user.email === this.newUser.email) {
+            errorIngresoUser = true;
+            this.newUser = user;
+          }
+        });
+        this.fillCrearFIT.cUsers.forEach((user) => {
+          if (user.rut === this.newUser.rut || user.email === this.newUser.email) {
+            errorRegisterUser = true;
+          }
+        });
+        if (!errorIngresoUser && !errorRegisterUser) {
+            this.fillCrearFIT.cUsers.push(Vue.util.extend({}, this.newUser));
         }
-      });
-      if (!errorIngresoUser) {
-        this.fillCrearFIT.cUsers.push(Vue.util.extend({}, this.newUser));
-        this.newUser.nombres = "";
-        this.newUser.apellidos = "";
-        this.newUser.rut = "";
-        this.newUser.email = "";
-      } else {
-        this.mensajeError = [];
-        this.mensajeError.push(
-          "Usuario seleccionado ya está enlistado en tu FIT."
-        );
-        this.abrirModal();
-      }
-      this.mostrarModalBusquedaEstudiante();
+        else {
+            this.mensajeError = [];
+            if (!errorRegisterUser) {
+                this.mensajeError.push(
+                    "El usuario que intenta crear ya existe, fue insertado el usuario anteriormente creado."
+                );
+                this.fillCrearFIT.cUsers.push(Vue.util.extend({}, this.newUser));
+            } else {
+                this.mensajeError.push(
+                    "Usuario seleccionado ya está enlistado en tu FIT."
+                );
+            }
+            this.abrirModal();
+        }
+        this.mostrarModalBusquedaEstudiante();
     },
     setIngresarAlumno(alumno) {
-      // seccion de revisión si usuario es incluido por segunda vez
-      let errorIngresoUser = false;
-      this.fillCrearFIT.cUsers.forEach((user) => {
-        if (user.rut === alumno.rut || user.email === alumno.email) {
-          errorIngresoUser = true;
+    // seccion de revisión si usuario es incluido por segunda vez
+        let errorIngresoUser = false;
+        this.fillCrearFIT.cUsers.forEach((user) => {
+            if (user.rut === alumno.rut || user.email === alumno.email) {
+                errorIngresoUser = true;
+            }
+        });
+        if (!errorIngresoUser) {
+            alumno.estadoConfirmado = "P";
+            this.fillCrearFIT.cUsers.push(alumno);
+        } else {
+            this.mensajeError = [];
+            this.mensajeError.push(
+            "Usuario seleccionado ya está enlistado en tu FIT."
+            );
+            this.abrirModal();
         }
-      });
-      if (!errorIngresoUser) {
-        alumno.estadoConfirmado = "P";
-        this.fillCrearFIT.cUsers.push(alumno);
-      } else {
-        this.mensajeError = [];
-        this.mensajeError.push(
-          "Usuario seleccionado ya está enlistado en tu FIT."
-        );
-        this.abrirModal();
-      }
-      this.mostrarModalBusquedaEstudiante();
+        this.mostrarModalBusquedaEstudiante();
     },
+
     eliminarEstudiante(estudianteEliminado) {
       let i = 0;
       let eliminado = 0;
@@ -981,8 +1014,62 @@ export default {
     mostrarModalAyuda() {
       this.modalAyuda = !this.modalAyuda;
     },
+    validarIngresoUsuarioNombre(){
+        if (this.newUser.nombres === '' || this.newUser.apellidos === '') {
+            this.addUserErrorMessage.nombre = 1;
+        } else {
+            this.addUserErrorMessage.nombre = 0;
+        }
+        this.validarErrores();
+    },
+    validarIngresoUsuarioRut(e){
+      if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test( e )) {
+			  this.addUserErrorMessage.rut = true;
+      }
+      var tmp 	= e.split('-');
+      var digv	= tmp[1];
+      var rut 	= tmp[0];
+		  if ( digv == 'K' ) digv = 'k' ;
+        if (this.digitoVerificador(rut) == digv) {
+            this.addUserErrorMessage.rut = 0;
+        } else {
+            this.addUserErrorMessage.rut = 1;
+        }
+        this.validarErrores();
+    },
+    digitoVerificador(T){
+		var M=0,S=1;
+		for(;T;T=Math.floor(T/10))
+			S=(S+T%10*(9-M++%6))%11;
+		return S?S-1:'k';
+	},
+    validarIngresoUsuarioEmail(e){
+        const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/;
+        // validacion de email javascript
+        if (reg.test(e)) {
+            this.addUserErrorMessage.email = 0;
+        } else {
+            this.addUserErrorMessage.email = 1;
+        }
+        this.validarErrores();
+    },
+    validarErrores() {
+        if (this.addUserErrorMessage.nombre !== 0 || this.addUserErrorMessage.rut !== 0 ||
+            this.addUserErrorMessage.email !== 0) {
+
+            this.addUserErrorMessage.boton = true;
+        } else {
+            this.addUserErrorMessage.boton = false;
+        }
+    }
   }, // cierre methods
 };
 </script>
 <style>
+.modal.show .modal-dialog {
+    height: 90%;
+}
+.scrollTable {
+    max-height: 100% !important;
+}
 </style>

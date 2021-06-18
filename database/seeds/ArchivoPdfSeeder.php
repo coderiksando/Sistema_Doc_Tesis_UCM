@@ -16,6 +16,6 @@ class ArchivoPdfSeeder extends Seeder
         DB::table('archivopdf')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        factory(ArchivoPdf::class, 10)->create();
+        //factory(ArchivoPdf::class, 10)->create();
     }
 }

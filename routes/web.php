@@ -70,7 +70,7 @@ Route::post('/alumno/setCambiarEstadoFIT', 'AlumnoController@setCambiarEstadoFIT
 Route::Post('/alumno/setEditarTesis', 'AlumnoController@setEditarTesis');
 Route::get('/alumno/getListarProfesores', 'AlumnoController@getListarProfesores');
 Route::get('/alumno/getListarMiTesis','AlumnoController@getListarMiTesis');
-Route::get('/alumno/getListarEstudiantes','AlumnoController@getListarEstudiantes');
+Route::get('/alumno/getAllUserRoll','AlumnoController@getAllUserRoll');
 Route::post('/alumno/getUsersAlumnosParametros','AlumnoController@getUsersAlumnosParametros');
 
 
