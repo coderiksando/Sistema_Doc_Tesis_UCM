@@ -49,12 +49,12 @@ class UserRoleSeeder extends Seeder
             'id_user' => 7,
             'id_roles' => 2
         ]);
-        
 
-        foreach(User::whereNotBetween('id_user', [1, 7])->get() as $user){
-            factory(Users_Roles::class)->create([
-                'id_user' => $user->id_user
-            ]);
-        }
+
+        // foreach(User::whereNotBetween('id_user', [1, 7])->get() as $user){
+        //     factory(Users_Roles::class)->create([
+        //         'id_user' => $user->id_user
+        //     ]);
+        // }
     }
 }

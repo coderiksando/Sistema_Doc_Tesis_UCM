@@ -30,6 +30,6 @@ class VinculacionesTableSeeder extends Seeder
             'descripcion' => 'Vinculacion de prueba1 '
         ]);
 
-        factory(Vinculaciones::class, 20)->create();
+        // factory(Vinculaciones::class, 20)->create();
     }
 }
