@@ -2,7 +2,7 @@
 
   <div>
     <!-- navbar -->
-    <Navbar :ruta="ruta"> </Navbar>
+    <Navbar class="navbar" :ruta="ruta"> </Navbar>
     <!-- Main Sidebar Container -->
       <Sidebar id="sidebar" class="sidebar" :ruta="ruta" :usuario="authUser" :listPermisos="listRolPermisosByUsuario"> </Sidebar>
     <!-- Content Wrapper. Contains page content -->
@@ -55,4 +55,21 @@ export default {
     @import '../../../public/css/modal.css';
     @import '../../../public/css/tableFixed.css';
     @import '../../../public/css/botonNormal.css';
+
+
+    .sidebar{
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      min-height: 85vh;
+      max-height: 85vh;
+      position: fixed !important;
+    }
+    .sidebar::-webkit-scrollbar {
+      width: 0 !important;
+    }
+
+    .navbar{
+      position: fixed;
+      width: 100%;
+    }
 </style>
