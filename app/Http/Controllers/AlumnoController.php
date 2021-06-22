@@ -40,15 +40,6 @@ class AlumnoController extends Controller
         $cCorreo = $request->email;
         $password = Hash::make($request->cContrasena);
 
-        // $rpta = DB::select('call sp_alumno_setRegistrarAlumno (?, ?, ?, ?, ?, ?)',
-        //                                                         [
-        //                                                             $cNombre,
-        //                                                             $cApellido,
-        //                                                             $nIdEscuela,
-        //                                                             $cCorreo,
-        //                                                             $cContrasena,
-        //                                                             $oFotografia
-        //                                                         ]);
         $user = new User;
         $user->rut = $cRut;
         $user->nombres = $cNombre;
@@ -61,7 +52,7 @@ class AlumnoController extends Controller
         $rol_user->id_user = $user->id_user;
         $rol_user->id_roles = 2;
         $rol_user->save();
-        $this->reg('Registro de usuario y rol', 'Alumno', $user->id_user);
+        $this->reg('Registro de usuario y rol', '0', 'Alumno', $user->id_user);
         return [$user, $rol_user];
     }
     public function setEditarRolAlumno(Request $request){
@@ -269,7 +260,6 @@ class AlumnoController extends Controller
 
         if ($cEstadoPg == 'A' && ($rol == 'Director' || $rol == 'Coordinador')) {
             $cEstadoPg = 'V';
-            Debugbar::info('hola we');
         }
 
         // ingresando la información nueva de fit

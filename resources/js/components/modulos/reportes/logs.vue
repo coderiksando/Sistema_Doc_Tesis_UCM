@@ -1,7 +1,7 @@
 <template>
     <div>
     <div class="container">
-        
+
       <div class="card">
         <div class="card-body">
           <div class="container-fluid">
@@ -41,7 +41,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Usuario</label>
                         <div class="col-md-9">
-                                <el-select filterable v-model="fillBuscarRegistros.nIdUsuario" 
+                                <el-select filterable v-model="fillBuscarRegistros.nIdUsuario"
                                 placeholder="Seleccionar usuario"
                                 clearable>
                                 <el-option
@@ -90,7 +90,7 @@
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listRegistrosPaginated.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
@@ -103,7 +103,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      
+
                       <tr v-for="(item, index) in listRegistrosPaginated" :key="index">
                         <td v-text="item.nombres + ' ' + item.apellidos"></td>
                         <td v-text="item.actividad"></td>
@@ -130,7 +130,7 @@
                             <router-link class="btn btn-flat btn-primary btn-sm" target="_blank" :to="{name:'tesis.ver', params:{id: item.target}}"><i class="fas fa-eye"></i></router-link>
                           </template>
                         </td>
-                        
+
                       </tr>
                     </tbody>
                   </table>
@@ -159,20 +159,9 @@
           </div>
         </div>
       </div>
-    
+
     </div>
     <!-- /.container -->
-
-    <!-- Footer -->
-    <footer class="py-5 bg-dark">
-        <div class="container" style="text-align: center">
-          <!-- Por favor por respeto a los colaboradores de este proyecto no eliminar las referencias de las personas que han participado-->
-        <strong >Sistema de gestión y administración de documentos <a href="https://www.ucm.cl">UCM</a>.</strong>&nbsp; All rights
-    reserved.
-        </div>
-        <!-- Por favor por respeto a los colaboradores de este proyecto no eliminar las referencias de las personas que han participado-->
-        <!-- /.container -->
-    </footer>
 
     <!-- Bootstrap core JavaScript -->
     </div>
@@ -189,7 +178,7 @@ export default {
           dfecharango: ''
         },
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
-         
+
         listRegistros:[],
         listRoles:['Alumno', 'Profesor', 'Director', 'Coordinador', 'Secretaria'],
         listUsuarios:[],
@@ -197,7 +186,7 @@ export default {
         pageNumber: 0,
         perPage: 5,
         modalShow: false,
-        modalOption: 0, 
+        modalOption: 0,
         mostrarModal: {
           display: 'block',
           background: '#0000006b',
@@ -211,7 +200,7 @@ export default {
     },
     computed: {
       pageCount(){
-        //obtener el numero de paginas 
+        //obtener el numero de paginas
         let a = this.listRegistros.length,
             b = this.perPage;
         return Math.ceil(a / b);

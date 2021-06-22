@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administracion;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,14 +15,14 @@ class UsersController extends Controller
     public function getListarUsuarios(Request $request){
         //if(!$request->ajax()) return redirect('/');
 
-        
+
         $nIdUsuario   =   $request->nIdUsuario;
         $cNombre      =   $request->cNombre;
         $cApellido    =   $request->cApellido;
         $cCorreo      =   $request->cCorreo;
         $cEstado      =   $request->cEstado;
         $cEscuela     =   $request->cEscuela;
-        
+
         $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = 0) : $nIdUsuario;
         $cNombre    = ($cNombre == NULL) ? ($cNombre = '') : $cNombre;
         $cApellido  = ($cApellido == NULL) ? ($cApellido = '') : $cApellido;
@@ -47,14 +48,14 @@ class UsersController extends Controller
 
     public function getListarUserById(Request $request){
         if(!$request->ajax()) return redirect('/');
-        
-        
+
+
         $rpta = DB::table('users')->where('id_user', $request->nIdUsuario)->first();
         //var_dump($rpta);
-        
+
         return response()->json([$rpta]);
     }
-    
+
     public function setRegistrarUsuario(Request $request){
         if(!$request->ajax()) return redirect('/');
 
@@ -120,6 +121,21 @@ class UsersController extends Controller
                                                                     $oFotografia
                                                                 ]);
     }
+    public function setEditarDetalleAlumno(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $iduser = Auth::id();
+        $user = User::find($iduser);
+        $user->id_escuela = $request->idEscuela;
+        $user->f_ingreso = $request->f_entrada;
+        $user->f_salida = $request->f_salida;
+        $user->telefono = $request->telefono;
+        $user->direccion = $request->direccion;
+        $user->grado_academico = 'Estudiante';
+        $user->save();
+        Auth::login($user);
+        return Auth::user();
+        // return $user;
+    }
     public function setCambiarEstadoUsuario(Request $request){
         if(!$request->ajax()) return redirect('/');
 
@@ -140,10 +156,10 @@ class UsersController extends Controller
 
         $nIdUsuario = $request->nIdUsuario;
         $nIdRol     = $request->nIdRol;
-       
+
         $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
         $nIdRol     = ($nIdRol == NULL) ? ($nIdRol = '') : $nIdRol;
-       
+
         $rpta = DB::select('call sp_Usuario_setEditarRolByUsuario (?, ?)',
                                                                 [
                                                                     $nIdUsuario,
@@ -154,9 +170,9 @@ class UsersController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         $nIdUsuario = $request->nIdUsuario;
-       
+
         $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
-       
+
         $rpta = DB::select('call sp_Usuario_getRolByUsuario (?)',
                                                                 [
                                                                     $nIdUsuario
@@ -167,9 +183,9 @@ class UsersController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         $nIdUsuario = $request->nIdUsuario;
-       
+
         $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
-       
+
         $rpta = DB::select('call sp_Usuario_getListarPermisosByRolAsignado (?)',
                                                                 [
                                                                     $nIdUsuario
@@ -180,9 +196,9 @@ class UsersController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         $nIdUsuario = $request->nIdUsuario;
-       
+
         $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = 0) : $nIdUsuario;
-       
+
         $rpta = DB::select('call sp_Usuario_getListarPermisosByUsuario (?)',
                                                                 [
                                                                     $nIdUsuario
@@ -193,7 +209,7 @@ class UsersController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         $nIdUsuario = $request->nIdUsuario;
-       
+
         $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = 0) : $nIdUsuario;
 
         try{
@@ -229,9 +245,9 @@ class UsersController extends Controller
         if(!$nIdUsuario){
             $nIdUsuario = Auth::id();
         }
-       
+
         $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = 0) : $nIdUsuario;
-       
+
         $rpta = DB::select('call sp_Usuario_getListarRolPermisosByUsuario (?)',
                                                                 [
                                                                     $nIdUsuario

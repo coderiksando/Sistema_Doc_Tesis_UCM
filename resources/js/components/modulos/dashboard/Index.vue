@@ -269,13 +269,101 @@
                 </div>
               </div>
             </template>
-
-
-
           </div>
         </div>
       </div>
     </div>
+
+    <div class="modal fade" :class="{ show: modalAddDetailsUser }" :style="modalAddDetailsUser ? mostrarModal : ocultarModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content scrollTable">
+          <div class="modal-header">
+            <h5 class="modal-title"><b>Ingreso de datos faltantes</b></h5>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Escuela perteneciente</label>
+                        <div class="col-md-9">
+                            <el-select v-model="detailsUser.idEscuela"
+                            filterable
+                            placeholder="Seleccione escuela"
+                            clearable>
+                            <el-option
+                                v-for="item in listEscuela"
+                                :key="item.id"
+                                :label="item.nombre"
+                                :value="item.id">
+                            </el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                </div>
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label">Dirección</label>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="detailsUser.direccion"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label">Teléfono</label>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="detailsUser.telefono"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label">Fecha de ingreso a la carrera</label>
+                  <div class="col-md-9">
+                    <el-date-picker
+                    v-model="detailsUser.f_entrada"
+                    type="month"
+                    placeholder="Fecha de inicio"
+                    value-format="yyyy-MM-dd"
+                    :picker-options="pickerOptions"
+                    @change="selectStart">
+                    </el-date-picker>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label">Fecha de término de asignaturas</label>
+                  <div class="col-md-9">
+                    <el-date-picker
+                    v-model="detailsUser.f_salida"
+                    type="month"
+                    placeholder="Fecha de término"
+                    value-format="yyyy-MM-dd"
+                    :picker-options="endOption">
+                    </el-date-picker>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <button class="btn btn-success w-100" @click="addDetailsUser">
+                  Ingresar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>
 </template>
 
@@ -287,13 +375,44 @@ props: ['usuario'],
             listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
             listRolByUser: JSON.parse(localStorage.getItem('rolUser')),
             myOwnUser: JSON.parse(localStorage.getItem('authUser')),
+            detailsUser: {
+                idEscuela: '',
+                direccion: '',
+                telefono: '',
+                f_entrada: '',
+                f_salida: ''
+            },
             listPermisos:[],
+            listEscuela: [],
+            modalAddDetailsUser: false,
+            mostrarModal: {
+                display: 'block',
+                background: '#0000006b'
+            },
+            ocultarModal: {
+                display: 'none',
+            },
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
+                }
+            },
+            endOption: {
+            },
         }
     },
     mounted(){
+        this.inicializacion();
         this.datosPendientes();
     },
     methods:{
+        inicializacion () {
+            const yearCalculated = 5*365*24*60*60*1000;
+            const month = (new Date().getMonth()) * 30*24*60*60*1000;
+            this.detailsUser.f_entrada = new Date(Date.now() - (yearCalculated + month));
+            this.detailsUser.f_salida = new Date(Date.now() - (month));
+            this.selectStart();
+        },
         datosPendientes() {
             this.fullscreenLoading = true;
             let atributoFaltante = false;
@@ -306,8 +425,66 @@ props: ['usuario'],
             }
             this.fullscreenLoading = false;
             if (atributoFaltante) {
-                console.log('modal')
+                this.modalAddDetailsUser = true;
+                this.getListarEscuela();
             }
+        },
+        mostrarModalIngresoDetalle () {
+            this.modalAddDetailsUser = !this.modalAddDetailsUser;
+        },
+        addDetailsUser() {
+            if (!this.verificacionDatos()) {
+                return;
+            } else {
+                this.fullscreenLoading = true;
+                const url = '/administracion/usuario/setEditarDetalleAlumno';
+                axios.post(url, this.detailsUser)
+                .then(response => {
+                    this.modalAddDetailsUser = false;
+                    this.fullscreenLoading = false;
+                    localStorage.setItem('authUser', JSON.stringify(response.data));
+                    this.myOwnUser = JSON.parse(localStorage.getItem('authUser'));
+                    Swal.fire({
+                        icon: "success",
+                        title: "Datos ingresados",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                })
+                .catch(response=>{
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Error al ingresar datos',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                })
+            }
+        },
+        getListarEscuela() {
+            this.fullscreenLoading = true;
+            const url = '/administracion/escuelas/getListarEscuelas';
+            axios.get(url, {
+            }).then(response => {
+                this.listEscuela = response.data;
+                this.fullscreenLoading = false;
+            })
+        },
+        selectStart() {
+            this.endOption = {
+                disabledDate: (time) => {
+                    return time.getTime() < Date.parse(this.detailsUser.f_entrada) || time.getTime() > Date.now();
+                }
+            };
+        },
+        verificacionDatos() {
+            if (!this.detailsUser.idEscuela || !this.detailsUser.f_entrada ||
+                !this.detailsUser.f_salida || !this.detailsUser.direccion ||
+                !this.detailsUser.telefono) {
+                    alert('Todos los campos son requeridos');
+                    return false;
+            }
+            return true;
         }
     },
 }

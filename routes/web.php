@@ -27,6 +27,7 @@ Route::get('/administracion/usuario/getListarUsuarios', 'Administracion\UsersCon
 Route::get('/administracion/usuario/getListarUserById', 'Administracion\UsersController@getListarUserById');
 Route::post('/administracion/usuario/setRegistrarUsuario', 'Administracion\UsersController@setRegistrarUsuario');
 Route::post('/administracion/usuario/setEditarUsuario', 'Administracion\UsersController@setEditarUsuario');
+Route::post('/administracion/usuario/setEditarDetalleAlumno', 'Administracion\UsersController@setEditarDetalleAlumno');
 Route::post('/administracion/usuario/setCambiarEstadoUsuario', 'Administracion\UsersController@setCambiarEstadoUsuario');
 Route::post('/administracion/usuario/setEditarRolByUsuario', 'Administracion\UsersController@setEditarRolByUsuario');
 Route::get('/administracion/usuario/getRolByUsuario', 'Administracion\UsersController@getRolByUsuario');
