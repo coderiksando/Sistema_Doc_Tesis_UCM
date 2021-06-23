@@ -323,6 +323,7 @@ class AlumnoController extends Controller
         return response()->json(['estado' => 'ok'], 200);
     }
     public function setGenerarDocumento(Request $request){
+        Debugbar::info($request->nIdTesis);
         $id = $request->nIdTesis;
         $datosfit = Fit::find($id);
         $datosfit->Vinculaciones;
