@@ -19,24 +19,28 @@ use Debugbar;
 class FilesController extends Controller
 {
     public function setRegistrarArchivo(Request $request){
+        $fileOwner = User::find(Auth::user()->id_user);
+        // eliminacion del archivo anterior
+        if ($fileOwner->File) {
+            $oldFile = $fileOwner->File;
+            $oldFileId = $fileOwner->File->id;
+            $fileOwner->id_files = NULL;
+            $fileOwner->save();
+            $oldFileName = last(explode('/', $oldFile->path));
+            Storage::delete('public/users/'.$oldFileName);
+            $oldFile = File::find($oldFileId);
+            $oldFile->delete();
+        }
         $file = $request->file;
         $bandera = Str::random(10);
         $filename = $file->getClientOriginalName();
         $fileserver = $bandera .'_'. $filename;
-
         Storage::putFileAs('public/users', $file, $fileserver);
-
         $archivo = new File;
         $archivo->path = asset('storage/users/'.$fileserver);
         $archivo->filename = $filename;
         $archivo->save();
         return $archivo;
-
-        // $rpta = DB::select('call sp_Usuario_setRegistrarArchivo (?, ?)',
-        //                                                         [
-        //                                                             asset('storage/users/'.$fileserver),
-        //                                                             $filename
-        //                                                         ]);
     }
     public function setRegistrarArchivoPDF(Request $request){
 

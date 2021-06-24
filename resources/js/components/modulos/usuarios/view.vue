@@ -119,7 +119,7 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label">Nueva contraseña</label>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control" v-model="fillEditarUsuarios.cContrasena" >
+                                    <input type="password" class="form-control" v-model="fillEditarUsuarios.cContrasena" >
                                 </div>
                             </div>
 
@@ -359,7 +359,9 @@ export default {
             this.fillVerUsuarios.cApellido      = this.fillEditarUsuarios.cApellido     = data.apellidos;
             this.fillVerUsuarios.cCorreo        = this.fillEditarUsuarios.cCorreo       = data.email;
             this.fillVerUsuarios.cEscuela       = this.fillEditarUsuarios.cEscuela      = data.id_escuela;
-            this.fillVerUsuarios.cRutaArchivo   = this.fillVerUsuarios.cRutaArchivo     = data.file.path;
+            if (data.file) {
+                this.fillVerUsuarios.cRutaArchivo   = this.fillVerUsuarios.cRutaArchivo     = data.file.path;
+            }
             this.fillVerUsuarios.direccion      = this.fillEditarUsuarios.direccion     = data.direccion;
             this.fillVerUsuarios.telefono       = this.fillEditarUsuarios.telefono      = data.telefono;
             this.fillVerUsuarios.f_nacimiento   = this.fillEditarUsuarios.f_nacimiento  = data.birthday;
@@ -395,7 +397,7 @@ export default {
             this.fillEditarUsuarios.idFotografia = nIdFile;
             var url = '/administracion/usuario/setEditarUsuarioView'
             axios.post(url, this.fillEditarUsuarios).then(response => {
-                console.log(response);
+                // console.log(response);
                 this.getRefrescarUsuarioAutenticado();
                 this.getUsuarioById();
                 this.fullscreenLoading = false;

@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use App\User;
 use App\PassRecovery;
 use App\Users_Roles;
+use Debugbar;
 
 
 class LoginController extends Controller
@@ -70,17 +71,21 @@ class LoginController extends Controller
         if (!isset($passwordReset->email)){
             return response()->json(['error' => 'Codigo invalido.'], 401);
         }
-
+        // Debugbar::info($passwordReset->email);
         $user = User::where('email', $passwordReset->email)->first();
+        // Debugbar::info($user);
         return response()->json($user, 200);
 
     }
     public function resetPassword(Request $request){
         if(!$request->ajax()) return redirect('/');
         //$user = user::select('email')->where('id_user', $request->id_user)->get();
-        $user = User::where('id_user', $request->id_user)->first();
-        $passwordReset = PassRecovery::where('email', $user->email)->first();
-        $passwordReset->delete();
+        $user = User::find($request->id_user);
+        $passwordReset = PassRecovery::where('email', $user->email)->get()->all();
+        foreach ($passwordReset as $pass) {
+            $pass->delete();
+        }
+        // Debugbar::info($passwordReset);
 
         $user->password = bcrypt($request->password);
         $user->save();
