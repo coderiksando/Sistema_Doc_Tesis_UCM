@@ -22,10 +22,6 @@ class RolePermissionAlumnoSeeder extends Seeder
         ]);
         DB::table('roles_permissions')->insert([
             'id_role' => 2,
-            'id_permission' => 19
-        ]);
-        DB::table('roles_permissions')->insert([
-            'id_role' => 2,
             'id_permission' => 22
         ]);
         DB::table('roles_permissions')->insert([

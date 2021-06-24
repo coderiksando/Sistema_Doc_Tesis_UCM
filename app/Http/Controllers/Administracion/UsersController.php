@@ -48,12 +48,10 @@ class UsersController extends Controller
 
     public function getListarUserById(Request $request){
         if(!$request->ajax()) return redirect('/');
-
-
-        $rpta = DB::table('users')->where('id_user', $request->nIdUsuario)->first();
-        //var_dump($rpta);
-
-        return response()->json([$rpta]);
+        $rpta = User::find($request->nIdUsuario);
+        $rpta->Escuelas;
+        $rpta->File;
+        return $rpta;
     }
 
     public function setRegistrarUsuario(Request $request){
@@ -96,7 +94,7 @@ class UsersController extends Controller
 
         var_dump($cContrasena);
         if($cContrasena != NULL){
-                $cContrasena = Hash::make($cContrasena);
+            $cContrasena = Hash::make($cContrasena);
         }
         var_dump($cContrasena);
         $cEscuela       = $request->cEscuela;
@@ -120,6 +118,34 @@ class UsersController extends Controller
                                                                     $cEscuela,
                                                                     $oFotografia
                                                                 ]);
+    }
+    public function setEditarUsuarioView(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $user = User::find($request->nIdUsuario);
+        // COmprobación de usuarios existentes Rut y Correo
+        $userCompRut = User::where('rut', $request->cRut)->first();
+        $userCompCorreo = User::where('email', $request->cCorreo)->first();
+        if ($userCompRut && $user->rut != $request->cRut) return response()->json(['error' => 'El Rut ingresado ya existe.'], 401);
+        if ($userCompCorreo && $user->email != $request->cCorreo) return response()->json(['error' => 'El correo ingresado ya existe.'], 401);
+
+        $user->rut          =   $request->cRut;
+        $user->nombres      =   $request->cNombre;
+        $user->apellidos    =   $request->cApellido;
+        $user->id_escuela   =   $request->cEscuela;
+        if ($request->idFotografia != 0) {
+            $user->id_files     =   $request->idFotografia;
+        }
+        $user->email        =   $request->cCorreo;
+        if ($request->cContrasena) {
+            $user->password     =   Hash::make($request->cContrasena);
+        }
+        $user->birthday     =   $request->f_nacimiento;
+        $user->f_ingreso    =   $request->f_entrada;
+        $user->f_salida     =   $request->f_salida;
+        $user->telefono     =   $request->telefono;
+        $user->direccion    =   $request->direccion;
+        $user->save();
+        return $user;
     }
     public function setEditarDetalleAlumno(Request $request){
         if(!$request->ajax()) return redirect('/');

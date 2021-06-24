@@ -6,6 +6,7 @@ use App\ArchivoPdf;
 use App\Fit_User;
 use App\Fit;
 use App\User;
+use App\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -25,12 +26,17 @@ class FilesController extends Controller
 
         Storage::putFileAs('public/users', $file, $fileserver);
 
-        $rpta = DB::select('call sp_Usuario_setRegistrarArchivo (?, ?)',
-                                                                [
-                                                                    asset('storage/users/'.$fileserver),
-                                                                    $filename
-                                                                ]);
-        return $rpta;
+        $archivo = new File;
+        $archivo->path = asset('storage/users/'.$fileserver);
+        $archivo->filename = $filename;
+        $archivo->save();
+        return $archivo;
+
+        // $rpta = DB::select('call sp_Usuario_setRegistrarArchivo (?, ?)',
+        //                                                         [
+        //                                                             asset('storage/users/'.$fileserver),
+        //                                                             $filename
+        //                                                         ]);
     }
     public function setRegistrarArchivoPDF(Request $request){
 
