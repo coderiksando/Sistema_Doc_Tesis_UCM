@@ -57,27 +57,35 @@ class SecretariaController extends Controller
         $id        = $request->nIdTesis;
         $logo      = public_path('img/logo_ucm_marca.png');
 
-        $datosmemo = DB::table('fit')
-                        ->leftjoin('vinculaciones', 'vinculaciones.id', '=','fit.id_vinculacion')
-                        ->leftjoin('comisiones', 'comisiones.id_tesis', '=','fit.id')
-                        ->join('users as alumno', 'alumno.id_user', '=', 'fit.id_alumno')
-                        ->join('users as profesor_guia', 'profesor_guia.id_user', '=', 'fit.id_profesorguia')
-                        ->join('escuelas', 'escuelas.id', '=', 'profesor_guia.id_escuela')
-                        ->join('users as profesor_1','profesor_1.id_user','=', 'comisiones.id_profesor1')
-                        ->leftjoin('users as profesor_2','profesor_2.id_user','=', 'comisiones.id_profesor2')
-                        ->select('escuelas.nombre as escuelaname','comisiones.id','comisiones.id_profesor1', 'comisiones.id_profesor2', 'comisiones.p_externo', 'fit.id_profesorguia as profe_guia',
-                                DB::raw("CONCAT(alumno.nombres,' ',alumno.apellidos) as Anombres"),
-                                DB::raw("CONCAT(profesor_guia.nombres,' ',profesor_guia.apellidos) as Pnombres"),
-                                DB::raw("CONCAT(profesor_1.nombres,' ',profesor_1.apellidos) as P1nombres"),
-                                DB::raw("CONCAT(profesor_2.nombres,' ',profesor_2.apellidos) as P2nombres"),
-                                'fit.id as id_fit','fit.titulo', 'fit.rut_int1')
-                        ->where('fit.id', '=', $id)
-                        ->get();
+        // $datosmemo = DB::table('fit')
+        //                 ->leftjoin('vinculaciones', 'vinculaciones.id', '=','fit.id_vinculacion')
+        //                 ->leftjoin('comisiones', 'comisiones.id_tesis', '=','fit.id')
+        //                 ->join('users as alumno', 'alumno.id_user', '=', 'fit.id_alumno')
+        //                 ->join('users as profesor_guia', 'profesor_guia.id_user', '=', 'fit.id_profesorguia')
+        //                 ->join('escuelas', 'escuelas.id', '=', 'profesor_guia.id_escuela')
+        //                 ->join('users as profesor_1','profesor_1.id_user','=', 'comisiones.id_profesor1')
+        //                 ->leftjoin('users as profesor_2','profesor_2.id_user','=', 'comisiones.id_profesor2')
+        //                 ->select('escuelas.nombre as escuelaname','comisiones.id','comisiones.id_profesor1', 'comisiones.id_profesor2', 'comisiones.p_externo', 'fit.id_profesorguia as profe_guia',
+        //                         DB::raw("CONCAT(alumno.nombres,' ',alumno.apellidos) as Anombres"),
+        //                         DB::raw("CONCAT(profesor_guia.nombres,' ',profesor_guia.apellidos) as Pnombres"),
+        //                         DB::raw("CONCAT(profesor_1.nombres,' ',profesor_1.apellidos) as P1nombres"),
+        //                         DB::raw("CONCAT(profesor_2.nombres,' ',profesor_2.apellidos) as P2nombres"),
+        //                         'fit.id as id_fit','fit.titulo', 'fit.rut_int1')
+        //                 ->where('fit.id', '=', $id)
+        //                 ->get();
+
+        $datosmemo = Fit::find($id);
+        $alumnos = User::select('nombres', 'apellidos', 'rut')->whereIn('id_user', $datosmemo->Fit_User->pluck('id_user')->all())->get();
+        $datosmemo->alumnos = $alumnos->all();
+
+
+
+
         $fechainicial = Carbon::now();            
-        $datosmemo[0]->fechainicial = $fechainicial->toFormattedDateString();  
+        $datosmemo->fechainicial = $fechainicial->toFormattedDateString();  
         $fechafinal   = Carbon::now();
         $fechafinal   = $fechafinal->addDay(21);
-        $datosmemo[0]->fechafinal = $fechafinal->format('d-m-Y');
+        $datosmemo->fechafinal = $fechafinal->format('d-m-Y');
         $pdf          = PDF::loadView('reportes.tesis.pdf.memorevision',[
                                     'datosmemo' => $datosmemo,
                                     'logo' => $logo,

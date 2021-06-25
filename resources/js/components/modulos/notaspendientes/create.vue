@@ -160,7 +160,14 @@ export default {
       Swal.fire({
         icon: 'warning',
         title: 'Importante!',
-        text: 'Tengase presente que este formulario solo es para dejar constancia a nivel de facultad, por lo que aun es necesario realizar la solicitud a traves del portal del alumno.',
+        text: 'Tenga presente que este formulario solo es para dejar constancia a nivel de facultad, por lo que aun es necesario realizar la solicitud a traves del portal del alumno.',
+        confirmButtonText: 'Abrir portal del alumno',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+      }).then((response) => {
+        if (response.value) {
+          window.open('http://www.portalalumnos.ucm.cl/v2/');
+        }
       })
     },
     nextPage(){

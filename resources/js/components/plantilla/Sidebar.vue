@@ -1,6 +1,6 @@
 <template>
   
-  <aside class="main-sidebar sidebar-dark-primary elevation-4 ">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar">
     <!-- Brand Logo -->
       <a href="#" class="brand-link">
         <img :src="ruta + '/img/ucm3.png'"
@@ -10,7 +10,7 @@
         <span class="brand-text font-weight-light">SGYAD UCM</span>
       </a>
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="container">
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
