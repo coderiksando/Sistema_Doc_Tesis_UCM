@@ -124,20 +124,6 @@
                       </tr>
                     </tbody>
                   </table>
-                  <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                      <li class="page-item" v-if="pageNumber > 0">
-                        <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                      </li>
-                      <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                        :class="[page == pageNumber ? 'active' : '']">
-                        <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                      </li>
-                      <li class="page-item" v-if="pageNumber < pageCount -1">
-                        <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                      </li>
-                    </ul>
-                  </div>
                 </template>
                 <template v-else>
                   <div class="callout callout-info">
@@ -146,7 +132,20 @@
                 </template>
               </div>
             </div>
-
+          </div>
+          <div class="card-footer clearfix">
+            <ul class="pagination pagination-sm m-0 float-right">
+              <li class="page-item" v-if="pageNumber > 0">
+                <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+              </li>
+              <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                :class="[page == pageNumber ? 'active' : '']">
+                <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+              </li>
+              <li class="page-item" v-if="pageNumber < pageCount -1">
+                <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -168,7 +167,7 @@ export default {
         {value: 'R', label: 'Rechazada'},
         {value: 'V', label: 'Vencida'}
       ],
-      listNotasPendientes:null,
+      listNotasPendientes: [],
       listAlumnos:[],
       fullscreenLoading: false,
       pageNumber: 0,
@@ -210,19 +209,6 @@ export default {
     }
   },
   methods:{
-    getListarAvancesByAlumno(){
-      this.fullscreenLoading = true;
-      var url = '/avances/getListarAvancesByAlumno'
-      axios.get(url, {
-        params: {
-          'id_user' : this.fillBsqAvanceByAlumno.id_user,
-        }
-      }).then(response => {
-          this.inicializarPaginacion();
-          this.listAvances = response.data;
-          this.fullscreenLoading = false;
-      })
-    },
     getListarAlumnosByprofesor(){
       this.fullscreenLoading = true;
       var url = '/avances/getListarAlumnosByprofesor'
@@ -262,6 +248,7 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listNotasPendientes = response.data;
+          console.log(response.data);
           this.fullscreenLoading = false;
       })
     },

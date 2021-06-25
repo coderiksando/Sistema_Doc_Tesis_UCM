@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Log;
+use App\Fit_User;
 use Illuminate\Http\Request;
 use Debugbar;
 
@@ -32,6 +33,21 @@ class Controller extends BaseController
             'target'    => $target
 
         ]);
+    }
+
+    function getFit(){
+        $idUser    = Auth::id();  
+        Debugbar::info($idUser);                           
+        $FitUser   = Fit_User::Firstwhere('id_user', $idUser);
+        Debugbar::info($FitUser);  
+        $Fit = [];
+
+        if ($FitUser) {
+            $Fit = $FitUser->Fit;
+        }
+        
+        return $Fit;
+        //return response()->json($Fit);
     }
 
 }
