@@ -10,7 +10,7 @@
         <span class="brand-text font-weight-light">SGYAD UCM</span>
       </a>
     <!-- Sidebar -->
-    <div class="container">
+    <div class="sidebar">
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
@@ -37,6 +37,9 @@
             Cerrar Sesión
           </a>
           <template v-if="listRolByUser.length > 1">
+          <div style="text-align: center;">
+            <a>Seleccionar rol</a>
+          </div>
           <a>
             <el-select placeholder="Elegir rol" v-model="rolActivo" @change="cambiarRol">
               <el-option
@@ -322,8 +325,8 @@ export default {
       var url='/authenticate/logout'
       axios.post(url).then(response => {
         if(response.data.code == 204){
-          this.$router.push({name: 'home'})
-          location.reload();
+          window.location.href = '/';
+          //location.reload();
           localStorage.clear();
           this.fullscreenLoading = false;
         }

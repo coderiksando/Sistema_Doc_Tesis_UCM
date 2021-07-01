@@ -7,7 +7,7 @@
 <script>
 export default {
    mounted() {
-            this.getRefrescarUsuarioAutenticado();
+            //this.getRefrescarUsuarioAutenticado();
         },
         methods: {
             getRefrescarUsuarioAutenticado() {
