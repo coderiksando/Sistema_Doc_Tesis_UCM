@@ -16,6 +16,7 @@ class ReportesController extends Controller
 {
     public function getListarTesisReporte(Request $request){
         if(!$request->ajax()) return redirect('/');
+        Debugbar::info($request);
 
         $rut                = $request->nRut;
         $idescuela          = $request->nIdEscuela;
@@ -55,9 +56,9 @@ class ReportesController extends Controller
                             ->where([[(function($query) use ($estado_notap){
                                     $query
                                         ->orwhere('notaspendientes.estado', 'like', "%$estado_notap%")
-                                        ->orwhere('notaspendientes.estado','=', null)  ;   
+                                        ->orwhere('notaspendientes.estado','=', null)  ;
                             })]])
-                            
+
                             //
                             ->Where('fit.rut_int1', 'like', "%$rut%")
                             ->Where('alumno.id_escuela', 'like', "%$idescuela%")
@@ -74,12 +75,12 @@ class ReportesController extends Controller
         $titulo             = $request->cTitulo;
         $idescuela          = $request->nIdEscuela;
         $idprofesor         = $request->nIdProfesor;
-        
+
 
         $titulo             = ($titulo == NULL) ?          ($titulo = '')         : $titulo;
         $idescuela          = ($idescuela == NULL) ?    ($idescuela = '')   : $idescuela;
         $idprofesor         = ($idprofesor == NULL) ?   ($idprofesor = '')  : $idprofesor;
-        
+
 
         //$archivosPdf = ArchivoPdf::where('tipo_pdf', 'final_t')->get();
 
@@ -113,7 +114,7 @@ class ReportesController extends Controller
         $rol         = $request->cRol;
         $fechaInicio = $request->dFechaInicio;
         $fechaFin = $request->dFechaFin;
-        
+
 
         $actividad     = ($actividad == NULL)   ? ($actividad = '')   : $actividad;
         $idUsuario     = ($idUsuario == NULL)   ? ($idUsuario = '')   : $idUsuario;
@@ -127,9 +128,9 @@ class ReportesController extends Controller
                    ->where('user_id', 'like', "%$idUsuario%")
                    ->where('rol', 'like', "%$rol%")
                    ->WhereBetween('logs.created_at', [$fechaInicio, $fechaFin])->get();
-        
+
         return $logs;
-    }   
+    }
 
     public function export(Request $request){
         if(!$request->ajax()) return redirect('/');
@@ -140,7 +141,8 @@ class ReportesController extends Controller
     }
     public function getListarProfesorByEscuela(Request $request){
         if(!$request->ajax()) return redirect('/');
-        
+        Debugbar::info($request);
+
         $escuela     = $request->nIdEscuela;
 
         $escuela     = ($escuela == NULL) ? ($escuela = '') : $escuela;

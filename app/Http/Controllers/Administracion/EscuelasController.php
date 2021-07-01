@@ -2,26 +2,39 @@
 
 namespace App\Http\Controllers\Administracion;
 
+use App\Facultad;
+use App\Escuelas;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class EscuelasController extends Controller
 {
+    public function getListarFacultades(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $facultades = Facultad::get()->all();
+        return $facultades;
+    }
     public function getListarEscuelas(Request $request){
         if(!$request->ajax()) return redirect('/');
 
         $nIdEscuela     = $request->nIdEscuela;
         $cNombre   =   $request->cNombre;
-        
+
         $nIdEscuela = ($nIdEscuela == NULL) ? ($nIdEscuela = 0) : $nIdEscuela;
         $cNombre = ($cNombre == NULL) ? ($cNombre = '') : $cNombre;
 
-        $rpta = DB::select('call sp_Escuelas_getListarEscuelas (?, ?)',
-                                                                [
-                                                                    $nIdEscuela,
-                                                                    $cNombre
-                                                                ]);
+        // $rpta = DB::select('call sp_Escuelas_getListarEscuelas (?, ?)',
+        //                                                         [
+        //                                                             $nIdEscuela,
+        //                                                             $cNombre
+        //                                                         ]);
+        $rpta = Escuelas::where('id', $nIdEscuela)
+                        ->orWhere('nombre', 'like', "%$cNombre%")
+                        ->get();
+        foreach($rpta as $escuela){
+            $escuela->Facultad;
+        }
         return $rpta;
     }
     public function setRegistrarEscuelas(Request $request){
@@ -29,7 +42,7 @@ class EscuelasController extends Controller
 
         $cNombre   =   $request->cNombre;
 
-        
+
         $cNombre = ($cNombre == NULL) ? ($cNombre = '') : $cNombre;
 
         DB::select('call sp_Escuelas_setRegistrarEscuelas (?)',
@@ -41,9 +54,9 @@ class EscuelasController extends Controller
 
         if(!$request->ajax()) return redirect('/');
 
-        $nIdEscuela =   $request->nIdEscuela; 
+        $nIdEscuela =   $request->nIdEscuela;
         $cNombre    =   $request->cNombre;
-      
+
         $nIdEscuela = ($nIdEscuela == NULL) ? ($nIdEscuela = 0) : $nIdEscuela;
         $cNombre = ($cNombre == NULL) ? ($cNombre = '') : $cNombre;
 
@@ -54,5 +67,5 @@ class EscuelasController extends Controller
                                                                 ]);
 
     }
-    
+
 }
