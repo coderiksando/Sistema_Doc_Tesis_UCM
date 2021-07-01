@@ -44,4 +44,9 @@ class Fit extends Model
     public function User_P_Coguia(){
         return $this->belongsTo(User::class, 'id_p_co_guia', 'id_user');
     }
+    public function getAlumnos(){
+        return $this->Fit_User->map(function ($item, $key){
+            return $item->User;
+        });
+    }
 }

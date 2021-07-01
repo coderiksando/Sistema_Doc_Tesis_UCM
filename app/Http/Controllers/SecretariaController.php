@@ -45,8 +45,7 @@ class SecretariaController extends Controller
 
         $actas = $fits->map(function ($item, $key) {
             $acta = ArchivoPdf::select('path')->where('id_fit', $item->id)->firstWhere('tipo_pdf', 'acta');
-            $alumnos = User::select('nombres', 'apellidos', 'rut')->whereIn('id_user', Fit_User::where('id_fit', $item->id)->pluck('id_user'))->get()->all();
-            $item->alumnos = $alumnos;
+            $item->alumnos = $item->getAlumnos();
             return collect($item)->merge($acta);
         });
     

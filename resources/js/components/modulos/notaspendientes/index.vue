@@ -107,7 +107,11 @@
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in listarNotasPendientesPaginated" :key="index">
-                        <td v-text="item.full_name"></td>
+                        <td> <!-- itera mostrando la cantidad total de estudiantes -->
+                            <div v-for="(itemUser, index) in item.alumnos" :key="index">
+                                <p v-text="itemUser.nombres + ' ' + itemUser.apellidos"></p>
+                            </div>
+                        </td>
                         <td v-text="item.fecha_presentacion"></td>  
                         <td v-text="item.fecha_propuesta"></td>  
                         <td v-text="item.fecha_prorroga"></td>  
