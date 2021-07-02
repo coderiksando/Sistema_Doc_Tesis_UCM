@@ -230,7 +230,7 @@ export default {
     }
   },
   mounted(){
-    this.getEstadoTesis()
+    this.getEstadoTesis();
     this.getListarAvances();
     this.getListarAlumnosByprofesor();
   },
@@ -252,7 +252,6 @@ export default {
         var url = '/avances/getEstadoTesis'
         axios.get(url, {
       }).then(response => {
-          console.log(response.data);
           if(response.data){
             this.fillEstadoTesis.cEstado     = response.data;
           }
@@ -273,10 +272,8 @@ export default {
     },
     getListarAlumnosByprofesor(){
       this.fullscreenLoading = true;
-      console.log(this.selectedEstado);
       this.selectedAlumno = {};
       var url = '/avances/getListarAlumnosByprofesor';
-      console.log(this.selectedEstado.valor)
       axios.get(url, {
         params: {
           'estado'    : this.selectedEstado.valor

@@ -23,7 +23,7 @@
               </div>
             </template>
             <template v-if="listRolPermisosByUsuario.includes('notaspendientes.crear')">
-              <template v-if="listNotasPendientes.length == 0">
+              <template v-if="listNotasPendientes.length == 0 && fillEstadoTesis.cEstado  == 'D'">
                 <router-link class="btn btn-info bnt-sm" :to="'/notaspendientes/crear'">
                   <i class="fas fa-plus-square"></i> Solicitar Nota Pendiente
                 </router-link>
@@ -166,6 +166,9 @@ export default {
         estado: '',
         dfecharango: '',
       },
+      fillEstadoTesis:{
+        cEstado: '',
+      },
       listEstadosNotaP: [
         {value: 'P', label: 'Activa'},
         {value: 'R', label: 'Rechazada'},
@@ -207,6 +210,7 @@ export default {
     if(this.listRolPermisosByUsuario.includes('EsAlumno'))
     {
       this.getMiNotaP();
+      this.getEstadoTesis();
     }
     else{
       this.getListarNotasPendientes();
@@ -221,6 +225,15 @@ export default {
           this.inicializarPaginacion();
           this.listAlumnos = response.data;
           this.fullscreenLoading = false;
+      })
+    },
+    getEstadoTesis(){
+        var url = '/avances/getEstadoTesis'
+        axios.get(url, {
+      }).then(response => {
+          if(response.data){
+            this.fillEstadoTesis.cEstado     = response.data;
+          }
       })
     },
     limpiarCriteriosBsq(){
@@ -252,7 +265,6 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listNotasPendientes = response.data;
-          console.log(response.data);
           this.fullscreenLoading = false;
       })
     },

@@ -303,7 +303,6 @@ export default {
         }).then(response => {
             this.inicializarPaginacion();
             this.listTesis = response.data;
-            console.log(this.listTesis);
             this.fullscreenLoading = false;
         })
       },

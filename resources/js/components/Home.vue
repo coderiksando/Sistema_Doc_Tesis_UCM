@@ -7,11 +7,11 @@
 <script>
 export default {
    mounted() {
-            // this.getRefrescarUsuarioAutenticado();
+            this.getRefrescarUsuarioAutenticado();
         },
         methods: {
             getRefrescarUsuarioAutenticado() {
-                if (this.$router.currentRoute.name != 'login') {
+                if (this.$router.currentRoute.name != 'login' && this.$router.currentRoute.name != 'home') {
                     var url = '/authenticate/getRefrescarUsuarioAutenticado'
                     axios.get(url).then(response => {
                     }).catch(error => {
