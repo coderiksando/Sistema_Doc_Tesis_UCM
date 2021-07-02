@@ -116,14 +116,16 @@
                         <td v-text="item.fecha_propuesta"></td>  
                         <td v-text="item.fecha_prorroga"></td>  
                         <td>
-                            <template  v-if="listRolPermisosByUsuario.includes('notaspendientes.editar')">
+                            <template  v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
                               <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'notaspendientes.editar', params:{id: item.id}}">
                                 <i class="fas fa-pencil-alt"></i> Editar
                               </router-link>
                             </template>
-                            <router-link class="btn btn-flat btn-success btn-sm" :to="{name:'notaspendientes.prorroga', params:{id: item.id}}">
-                              <i class="fas fa-calendar-check"></i> Solicitar Prorroga
-                            </router-link>      
+                            <template v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
+                              <router-link class="btn btn-flat btn-success btn-sm" :to="{name:'notaspendientes.prorroga', params:{id: item.id}}">
+                                <i class="fas fa-calendar-check"></i> Solicitar Prorroga
+                              </router-link>
+                            </template>    
                         </td>
                       </tr>
                     </tbody>

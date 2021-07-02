@@ -104,7 +104,7 @@ class NotasPendientesController extends Controller
         $nIdNotaP       = ($nIdNotaP == NULL) ? ($nIdNotaP = 0) : $nIdNotaP;
         $NotasP = DB::table('fit')
                         ->join('notaspendientes', 'notaspendientes.id_tesis', '=','fit.id')
-                        ->where('fit.aprobado_pg', '=', 'P')
+                        ->where('fit.estado', '=', 'D')
                         ->where(function($query) use ($estado, $nIdNotaP, $IdProfesor, $dFechaInicio, $dFechaFin){
                             $query->Where('notaspendientes.estado', '=', $estado);
                             $query->orWhere('notaspendientes.id', '=', $nIdNotaP);

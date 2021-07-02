@@ -70,7 +70,12 @@
         <table width="90%" cellspacing="1" cellspacing="1" align="center">
             <tr>
                 <td width="50"><b>A  :  </b></td>
-                <td><b>{{$datosmemo->Comisiones->UserP1->nombres.' '. $datosmemo->Comisiones->UserP1->apellidos}} <br> {{$datosmemo->Comisiones->UserP2->nombres.' '.$datosmemo->Comisiones->UserP2->apellidos}}</b></td>
+                <td>
+                <b>{{$datosmemo->Comisiones->UserP1->nombres.' '. $datosmemo->Comisiones->UserP1->apellidos}} <br> 
+                    @if($datosmemo->Comisiones->UserP2)
+                    {{$datosmemo->Comisiones->UserP2->nombres.' '.$datosmemo->Comisiones->UserP2->apellidos}}</b>
+                    @endif
+                </td>
             </tr>
             <tr>
                 <td></td>
@@ -94,7 +99,7 @@
             <tr>
                 <td style="font-weight: bold;">Ref. </td>
                 @if(count($datosmemo->alumnos) == 1)
-                <td>Envia tesis a revision de alumno {{$datosmemo->alumnos[0]->nombres.''.$datosmemo->alumnos[0]->apellidos}}</td>
+                <td>Envia tesis a revision del alumno {{$datosmemo->alumnos[0]->nombres.' '.$datosmemo->alumnos[0]->apellidos}}</td>
                 @else
                 <td>Envia tesis a revision de los alumnos
                     @foreach ($datosmemo->alumnos as $alumno)
@@ -147,7 +152,7 @@
                                     @endif
                                 @endforeach
                             @endif
-                            , quisiera solicitar a Ud. que una vez que recepcionado el documento, en el plazo de 15 dias habiles ({{$datosmemo->fechafinal}}), entregue el informe de evaluacion de este trabajo al profesor guia, {{$datosmemo->User_P_Guia->nombres.' '.$datosmemo->User_P_Guia->apellidos}}.
+                            <span>, quisiera solicitar a Ud. que una vez recepcionado el documento, en el plazo de 15 dias habiles ({{$datosmemo->fechafinal}}), entregue el informe de evaluacion de este trabajo al profesor guia, {{$datosmemo->User_P_Guia->nombres.' '.$datosmemo->User_P_Guia->apellidos}}.</span>
                         </div>
                     </td>
                 </tr>

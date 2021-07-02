@@ -19,6 +19,7 @@ class CreateFitTable extends Migration
             $table->bigInteger('id_vinculacion')->unsigned()->nullable();
             $table->bigInteger('id_p_guia')->unsigned();
             $table->bigInteger('id_p_co_guia')->unsigned()->nullable();
+            $table->bigInteger('id_escuela')->unsigned()->nullable();
             // $table->bigInteger('id_pdftesis')->unsigned()->nullable();
             // $table->bigInteger('id_actadefensa')->unsigned()->nullable();
             $table->decimal('nota', 2, 1)->nullable();
@@ -47,6 +48,7 @@ class CreateFitTable extends Migration
             $table->foreign('id_vinculacion')->references('id')->on('vinculaciones')->onDelete('set null');
             $table->foreign('id_p_guia')->references('id_user')->on('users');
             $table->foreign('id_p_co_guia')->references('id_user')->on('users');
+            $table->foreign('id_escuela')->references('id')->on('escuelas');
             // $table->foreign('id_pdftesis')->references('id')->on('pdftesis')->onDelete('set null');
             // $table->foreign('id_actadefensa')->references('id')->on('pdftesis');
             $table->timestamps();
