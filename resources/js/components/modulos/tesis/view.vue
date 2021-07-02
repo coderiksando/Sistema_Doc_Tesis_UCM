@@ -282,7 +282,9 @@ export default {
     getUsuarioVer(data){
           this.fillVerFIT.cTitulo = data.titulo;
           this.fillVerFIT.cProfesorguia = data.user__p__guia.nombres + ' ' + data.user__p__guia.apellidos;
-          this.fillVerFIT.cProfesorCoGuia = data.user__p__coguia.nombres + ' ' + data.user__p__coguia.apellidos;
+          if (data.user__p__coguia) {
+              this.fillVerFIT.cProfesorCoGuia = data.user__p__coguia.nombres + ' ' + data.user__p__coguia.apellidos;
+          }
           this.fillVerFIT.nIdVinculacion = data.vinculaciones.nombre;
           this.fillVerFIT.cTipo = data.tipo;
           this.fillVerFIT.cObjetivoGeneral = data.objetivo_general;
