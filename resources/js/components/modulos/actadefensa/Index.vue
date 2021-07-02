@@ -261,10 +261,8 @@ export default {
       axios.post(url, {
           'nIdTesis' :id_tesis
       }, config).then(response => {
-          console.log(response.data);
           var oMyBlob = new Blob([response.data], {type : 'application/pdf'});
           var url = URL.createObjectURL(oMyBlob);
-          //console.log(url)
           window.open(url);
           //this.listTesis = response.data;
           //this.fullscreenLoading = false;
@@ -278,10 +276,8 @@ export default {
       axios.post(url, {
           'nIdTesis' :id_tesis
       }, config).then(response => {
-          console.log(response.data);
           var oMyBlob = new Blob([response.data], {type : 'application/pdf'});
           var url = URL.createObjectURL(oMyBlob);
-          //console.log(url)
           window.open(url);
           //this.listTesis = response.data;
           //this.fullscreenLoading = false;
@@ -299,9 +295,6 @@ export default {
     getListarAlumnos(){
       this.fullscreenLoading = true;
       var url = '/secretaria/getListarAlumnos'
-      console.log(this.fillBsqAlumno.cNombre)
-      console.log(this.fillBsqAlumno.nEstadoAlumno)
-      console.log(this.fillBsqAlumno.nIdEscuela)
       axios.get(url, {
         params: {
           'cNombre'    : this.fillBsqAlumno.cNombre,
@@ -310,7 +303,6 @@ export default {
           'nEstadoAlumno' : this.fillBsqAlumno.nEstadoAlumno
         }
       }).then(response => {
-          console.log(response.data);
           this.inicializarPaginacion();
           this.listAlumnos = response.data;
           this.fullscreenLoading = false;

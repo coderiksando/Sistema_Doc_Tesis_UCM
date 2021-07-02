@@ -105,7 +105,7 @@ class NotasPendientesController extends Controller
         $NotasP = DB::table('fit')
                         ->join('notaspendientes', 'notaspendientes.id_tesis', '=','fit.id')
                         ->where('fit.aprobado_pg', '=', 'P')
-                        ->where(function($query) use ($estado, $nIdNotaP, $IdProfesor){
+                        ->where(function($query) use ($estado, $nIdNotaP, $IdProfesor, $dFechaInicio, $dFechaFin){
                             $query->Where('notaspendientes.estado', '=', $estado);
                             $query->orWhere('notaspendientes.id', '=', $nIdNotaP);
                             $query->orWhere('fit.id_p_guia', '=', $IdProfesor);

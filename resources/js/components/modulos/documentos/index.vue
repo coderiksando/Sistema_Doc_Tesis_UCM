@@ -229,10 +229,8 @@ export default {
       axios.post(url, {
           'nIdTesis' : id_tesis
       }, config).then(response => {
-          console.log(response.data);
           var oMyBlob = new Blob([response.data], {type : 'application/pdf'});
           var url = URL.createObjectURL(oMyBlob);
-          //console.log(url)
           window.open(url);
           //this.listTesis = response.data;
           //this.fullscreenLoading = false;
@@ -246,10 +244,8 @@ export default {
       axios.post(url, {
           'nIdTesis' :id_tesis
       }, config).then(response => {
-          console.log(response.data);
           var oMyBlob = new Blob([response.data], {type : 'application/pdf'});
           var url = URL.createObjectURL(oMyBlob);
-          //console.log(url)
           window.open(url);
           //this.listTesis = response.data;
           //this.fullscreenLoading = false;
