@@ -371,9 +371,9 @@ class AlumnoController extends Controller
     public function getUsersAlumnosParametros(Request $request){
         $alumnoBuscado = [];
         $rpta = User::where('rut', 'like',"%$request->rut%")
-                    ->orWhere('nombres','like', "%$request->nombre%")
-                    ->orWhere('apellidos','like', "%$request->apellido%")
-                    ->orWhere('email','like', "%$request->email%")
+                    ->where('nombres','like', "%$request->nombre%")
+                    ->where('apellidos','like', "%$request->apellido%")
+                    ->where('email','like', "%$request->email%")
                     ->get()->all();
         foreach($rpta as $user){
             foreach($user->Users_Roles->all() as $user_rol){

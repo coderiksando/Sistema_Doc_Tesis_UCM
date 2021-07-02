@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 /*********      RUTAS MODULO DE AUTENTICACION , REGISTRO  Y RECUPERACION DE CONTRASENA     *********/
 Route::post('/authenticate/login', 'Auth\LoginController@login');
 Route::get('/administracion/escuelas/getListarEscuelas', 'Administracion\EscuelasController@getListarEscuelas');
+Route::get('/administracion/escuelas/getListarFacultades', 'Administracion\EscuelasController@getListarFacultades');
 Route::get('/administracion/reportes/getListarTesisHome', 'Administracion\ReportesController@getListarTesisHome');
 Route::get('/administracion/reportes/getListarLogs', 'Administracion\ReportesController@getListarLogs');
 Route::get('/reportes/getListarProfesorByEscuela', 'Administracion\ReportesController@getListarProfesorByEscuela');
