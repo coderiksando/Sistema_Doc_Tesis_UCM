@@ -191,7 +191,8 @@
                                         <div class="col-md-12">
                                             <h3><b>{{'Tabla de integrantes (máximo ' + maxStudentNumber + ' alumnos)'}}</b></h3>
                                         </div>
-                                        <table class ="table table-hover table-head-fixed t-fixed projects ">
+                                        <div class="table table-responsive">
+                                        <table class ="table table-hover table-head-fixed text-nowrap projects">
                                             <thead>
                                                 <tr>
                                                     <th>Nombre integrante</th>
@@ -230,6 +231,7 @@
                                             </tr>
                                             </tbody>
                                         </table>
+                                        </div>
                                         <div class="col-md-6">
                                             <button class="btn btn-info bnt-sm" @click.prevent="mostrarModalBusquedaEstudiante">
                                                 <i class="fas fa-user-plus"></i>

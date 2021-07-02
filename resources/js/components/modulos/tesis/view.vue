@@ -148,7 +148,8 @@
                                     <div class="col-md-12">
                                         <h3><b v-text="'Tabla de integrantes'"></b></h3>
                                     </div>
-                                    <table class ="table table-hover table-head-fixed t-fixed projects">
+                                    <div class="table table-responsive">
+                                    <table class ="table table-hover table-head-fixed text-nowrap projects">
                                         <thead>
                                             <tr>
                                                 <th>Nombre integrante</th>
@@ -164,6 +165,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

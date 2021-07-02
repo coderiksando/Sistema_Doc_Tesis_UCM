@@ -43,11 +43,11 @@
                     <form v-on:submit.prevent="changePassword">
                         <div class="form-group">
                             <label>3. Ingresa tu nueva contraseña</label>
-                            <input 
-                            type="text" 
+                            <input
+                            type="text"
                             class="form-control"
                             v-model="newPassword"
-                            v-bind:class="{ 'is-invalid': errorNewPassword}" 
+                            v-bind:class="{ 'is-invalid': errorNewPassword}"
                             placeholder="nueva contraseña">
                             <div class="invalid-feedback">
                                 {{errorNewPassword}}
@@ -55,11 +55,11 @@
                         </div>
                         <div class="form-group">
                             <label>Repetir Contraseña</label>
-                            <input 
-                            type="text" 
+                            <input
+                            type="text"
                             class="form-control"
                             v-model="passwordAgain"
-                            v-bind:class="{ 'is-invalid': errorPasswordAgain}" 
+                            v-bind:class="{ 'is-invalid': errorPasswordAgain}"
                             placeholder="repetir contraseña">
                             <div class="invalid-feedback">
                                 {{errorPasswordAgain}}
@@ -110,9 +110,9 @@
                         <b>Recuperar contraseña</b>
                     </router-link>
                 </p>
-                
+
                 -->
-                
+
             </div>
         </div>
     </div>
@@ -137,7 +137,7 @@ export default {
             errorPasswordAgain: null,
             tokenValid: false,
             id_user: null,
-                
+
         }
     },
     methods: {
@@ -159,7 +159,7 @@ export default {
                 var url = '/passrecovery/sendToken'
                 axios.post(url, {
                     'email' : this.email,
-            }).then(() => {
+                }).then(() => {
                     this.infoEmail = 'Correo enviado';
                     this.k=true;
                     this.i=false;

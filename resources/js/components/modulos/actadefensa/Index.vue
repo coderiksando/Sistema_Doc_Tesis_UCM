@@ -145,26 +145,26 @@
                       </tr>
                     </tbody>
                   </table>
-                  <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                      <li class="page-item" v-if="pageNumber > 0">
-                        <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                      </li>
-                      <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                        :class="[page == pageNumber ? 'active' : '']">
-                        <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                      </li>
-                      <li class="page-item" v-if="pageNumber < pageCount -1">
-                        <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                      </li>
-                    </ul>
-                  </div>
                 </template>
                 <template v-else>
                   <div class="callout callout-info">
                     <h5> No se han encontrado resultados...</h5>
                   </div>
                 </template>
+              </div>
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item" v-if="pageNumber > 0">
+                    <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+                  </li>
+                  <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                    :class="[page == pageNumber ? 'active' : '']">
+                    <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+                  </li>
+                  <li class="page-item" v-if="pageNumber < pageCount -1">
+                    <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -261,10 +261,8 @@ export default {
       axios.post(url, {
           'nIdTesis' :id_tesis
       }, config).then(response => {
-          console.log(response.data);
           var oMyBlob = new Blob([response.data], {type : 'application/pdf'});
           var url = URL.createObjectURL(oMyBlob);
-          //console.log(url)
           window.open(url);
           //this.listTesis = response.data;
           //this.fullscreenLoading = false;
@@ -278,10 +276,8 @@ export default {
       axios.post(url, {
           'nIdTesis' :id_tesis
       }, config).then(response => {
-          console.log(response.data);
           var oMyBlob = new Blob([response.data], {type : 'application/pdf'});
           var url = URL.createObjectURL(oMyBlob);
-          //console.log(url)
           window.open(url);
           //this.listTesis = response.data;
           //this.fullscreenLoading = false;
@@ -299,9 +295,6 @@ export default {
     getListarAlumnos(){
       this.fullscreenLoading = true;
       var url = '/secretaria/getListarAlumnos'
-      console.log(this.fillBsqAlumno.cNombre)
-      console.log(this.fillBsqAlumno.nEstadoAlumno)
-      console.log(this.fillBsqAlumno.nIdEscuela)
       axios.get(url, {
         params: {
           'cNombre'    : this.fillBsqAlumno.cNombre,
@@ -310,7 +303,6 @@ export default {
           'nEstadoAlumno' : this.fillBsqAlumno.nEstadoAlumno
         }
       }).then(response => {
-          console.log(response.data);
           this.inicializarPaginacion();
           this.listAlumnos = response.data;
           this.fullscreenLoading = false;

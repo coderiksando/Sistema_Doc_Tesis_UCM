@@ -191,13 +191,17 @@
                     <td style="text-align: center;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td> <strong>1.-</strong>  {{$datosfit->Comisiones}}</td>
+                    <td> <strong>1.-</strong> {{$datosfit->Comisiones->UserP1->nombres.' '.$datosfit->Comisiones->UserP1->apellidos}}</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td> <strong>2.-</strong>  {{$datosfit->Comisiones}}</td>
+                    @if ($datosfit->Comisiones->UserP2)
+                        <td> <strong>2.-</strong> {{$datosfit->Comisiones->UserP2->nombres.' '.$datosfit->Comisiones->UserP2->apellidos}}</td>
+                    @else
+                        <td> <strong>2.-</strong></td>
+                    @endif
                 </tr>
                 <tr>
                     <td style="text-align: center;">&nbsp;</td>
@@ -209,19 +213,19 @@
                     <td style="text-align: center;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><strong>NOMBRE:</strong> {{$datosfit->Comisiones}} </td>
+                    <td><strong>NOMBRE:</strong> {{$datosfit->Comisiones->p_externo}} </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td> <strong>CORREO:</strong>  {{$datosfit->Comisiones}}</td>
+                    <td> <strong>CORREO:</strong>  {{$datosfit->Comisiones->correo_p_externo}}</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td> <strong>INSTITUCION:</strong>  {{$datosfit->Comisiones}}</td>
+                    <td> <strong>INSTITUCION:</strong>  {{$datosfit->Comisiones->institucion_p_externo}}</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">&nbsp;</td>

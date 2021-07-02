@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading.fullscreen.lock="fullscreenLoading">
       <div class="content-header">
         <div class="container-fluid">
         <div class="row mb-2">
@@ -9,28 +9,28 @@
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
         </div>
-        
-        <div class="content container-fluid"> 
+
+        <div class="content container-fluid">
             <div class="row">
                 <div class="col-md-4">
             <!-- Profile Image -->
             <div class="card card-primary card-outline">
               <div class="card-body box-profile">
                 <div class="text-center">
-                  
+
                   <template v-if="!fillVerUsuarios.cRutaArchivo">
-                              <img class="profile-user-img img-fluid img-circle img-max-heigth" src="/img/avatar.png" alt="User profile picture">  
-                          </template>
-                  <template v-else> 
-                              <img :src="fillVerUsuarios.cRutaArchivo" :alt="fillVerUsuarios.cNombre" class="profile-user-img img-fluid img-circle img-max-heigth"> 
+                        <img class="profile-user-img img-fluid img-circle img-max-heigth" src="/img/avatar.png" alt="User profile picture">
+                  </template>
+                  <template v-else>
+                              <img :src="fillVerUsuarios.cRutaArchivo" :alt="fillVerUsuarios.cNombre" class="profile-user-img img-fluid img-circle img-max-heigth">
                   </template>
                 </div>
 
-                <h3 class="profile-username text-center">{{fillVerUsuarios.cNombre + ' ' + fillEditarUsuarios.cApellido}}</h3>
+                <h3 class="profile-username text-center">{{fillVerUsuarios.cNombre + ' ' + fillVerUsuarios.cApellido}}</h3>
 
                 <p class="text-muted text-center">{{fillVerUsuarios.cNombreRol}}</p>
 
-      
+
               </div>
               <!-- /.card-body -->
             </div>
@@ -48,8 +48,8 @@
                 <p class="text-muted" v-text="fillVerUsuarios.cCorreo">
                 </p>
 
-                
-                
+
+
               </div>
               <!-- /.card-body -->
             </div>
@@ -61,7 +61,7 @@
                   <div class="card-header p-2">
                     <ul class="nav nav-pills position-reverse">
                       <router-link class="nav-link active" :to="'/usuarios'">
-                        <i class="fas fa-arrow-left"></i>Regresar
+                        <i class="fas fa-arrow-left"></i> Regresar
                       </router-link>
                     </ul>
                   </div><!-- /.card-header -->
@@ -70,44 +70,148 @@
 
                       <div class="tab-pane active" id="settings">
                         <form class="form-horizontal">
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Nombres</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="fillEditarUsuarios.cNombre" @keyup.enter="setEditarUsuario">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Escuela</label>
+                                <div class="col-md-9">
+                                    <el-select v-model="fillEditarUsuarios.cEscuela"
+                                    filterable
+                                    placeholder="Seleccione escuela"
+                                    clearable>
+                                    <el-option
+                                        v-for="item in listEscuela"
+                                        :key="item.id"
+                                        :label="item.nombre"
+                                        :value="item.id">
+                                    </el-option>
+                                    </el-select>
+                                </div>
                             </div>
-                          </div>
-                           <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Apellidos</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="fillEditarUsuarios.cApellido" @keyup.enter="setEditarUsuario">
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Rut</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" v-model="fillEditarUsuarios.cRut" @blur="verificacionRut">
+                                    <div v-show="rutError"><p style="color: red; margin-bottom: 0px;">Rut ingresado no válido</p></div>
+                                </div>
                             </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Correo</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="fillEditarUsuarios.cCorreo" @keyup.enter="setEditarUsuario">
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Nombres</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" v-model="fillEditarUsuarios.cNombre" >
+                                </div>
                             </div>
-                          </div>
-                          
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Contraseña</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="fillEditarUsuarios.cContrasena" @keyup.enter="setEditarUsuario">
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Apellidos</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" v-model="fillEditarUsuarios.cApellido" >
+                                </div>
                             </div>
-                          </div>
-                        
-                          
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Fotografia</label>
-                            <div class="col-md-9">
-                                <input type="file" class="form-control"  @change="getFile">
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Correo</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" v-model="fillEditarUsuarios.cCorreo" >
+                                </div>
                             </div>
-                          </div>
-                        
-                    
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Nueva contraseña</label>
+                                <div class="col-md-9">
+                                    <input type="password" class="form-control" v-model="fillEditarUsuarios.cContrasena" >
+                                </div>
+                            </div>
+
+                            <template v-if="fillVerUsuarios.cNombreRol === 'Alumno'">
+                                <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Fecha de ingreso</label>
+                                <div class="col-md-9">
+                                    <el-date-picker
+                                    style="width: 100%;"
+                                    v-model="fillEditarUsuarios.f_entrada"
+                                    type="month"
+                                    placeholder="Fecha de inicio"
+                                    value-format="yyyy-MM-dd"
+                                    :picker-options="pickerOptions"
+                                    @change="selectStart">
+                                    </el-date-picker>
+                                </div>
+                                </div>
+
+                                <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Fecha de término</label>
+                                <div class="col-md-9">
+                                    <el-date-picker
+                                    style="width: 100%;"
+                                    v-model="fillEditarUsuarios.f_salida"
+                                    type="month"
+                                    placeholder="Fecha de término"
+                                    value-format="yyyy-MM-dd"
+                                    :picker-options="endOption">
+                                    </el-date-picker>
+                                </div>
+                                </div>
+                            </template>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Dirección</label>
+                                <div class="col-md-9">
+                                    <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="fillEditarUsuarios.direccion"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Teléfono</label>
+                                <div class="col-md-9">
+                                    <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="fillEditarUsuarios.telefono"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Fotografía (opcional)</label>
+                                <div class="col-md-9">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" :class="{ 'is-invalid' : formatError}" id="input1" @change="getFile" lang="es">
+                                        <label class="custom-file-label" for="input1">{{fillEditarUsuarios.oFotografia ? fillEditarUsuarios.oFotografia.name : 'Seleccionar archivo'}}</label>
+                                    </div>
+                                    <div v-show="!formatError && !fillEditarUsuarios.oFotografia" class="custom-file">
+                                        Los formatos de archivo soportados son:
+                                        <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
+                                    </div>
+                                    <div class="custom-file invalid-feedback" v-show="formatError">
+                                        El formato del archivo no es soportado.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Fecha de nacimiento (opcional)</label>
+                            <div class="col-md-9">
+                                <el-date-picker
+                                style="width: 100%;"
+                                v-model="fillEditarUsuarios.f_nacimiento"
+                                placeholder="Fecha de nacimiento"
+                                value-format="yyyy-MM-dd"
+                                :picker-options="pickerOptions">
+                                </el-date-picker>
+                            </div>
+                            </div>
+
+
                           <div class="form-group row">
-                            <div class=" col-sm-12">
-                              <button class="btn btn-flat btn-info btnFull" @click.prevent="setEditarUsuario">Editar</button>
+                            <div class=" col-sm-6">
+                              <button style="margin: 2px;" :disabled="formatError || rutError" class="btn btn-info btnFull" @click.prevent="setEditarUsuario">Editar</button>
+                            </div>
+                            <div class=" col-sm-6">
+                              <button style="margin: 2px;" class="btn btn-primary btnFull" @click.prevent="reestablecerDatos">Reestablecer</button>
                             </div>
                           </div>
                         </form>
@@ -119,7 +223,7 @@
                 </div>
                 <!-- /.nav-tabs-custom -->
               </div>
-          
+
             </div>
         </div>
 
@@ -144,175 +248,273 @@
 
 <script>
 export default {
-  data(){
-    return{
-      fillEditarUsuarios:{
-        nIdUsuario: this.$attrs.id_user,
-        cNombre: '',
-        cApellido: '',
-        cCorreo: '',
-        cContrasena: '',
-        cEscuela: '',
-        oFotografia: '',
-        cRutaArchivo: ''
-      },
-      fillVerUsuarios:{
-        nIdUsuario: this.$attrs.id_user,
-        cNombre: '',
-        cApellido: '',
-        cCorreo: '',
-        cContrasena: '',
-        cEscuela: '',
-        oFotografia: '',
-        cRutaArchivo: '',
-        cNombreRol: ''
-      },
-      form: new FormData,
-      modalShow: false,
-      mostrarModal: {
-        display: 'block',
-        background: '#0000006b',
-      },
-      ocultarModal: {
-        display: 'none',
-      },
-      error: 0,
-      mensajeError:[]
+    data(){
+        return{
+            fillEditarUsuarios:{
+                nIdUsuario: this.$attrs.id_user,
+                cRut: '',
+                cNombre: '',
+                cApellido: '',
+                cCorreo: '',
+                cContrasena: '',
+                cEscuela: '',
+                oFotografia: '',
+                cRutaArchivo: '',
+                direccion: '',
+                telefono: '',
+                f_entrada: '',
+                f_salida: '',
+                f_nacimiento: '',
+                idFotografia: ''
+            },
+            fillVerUsuarios:{
+                nIdUsuario: this.$attrs.id_user,
+                cNombre: '',
+                cApellido: '',
+                cCorreo: '',
+                cContrasena: '',
+                cEscuela: '',
+                oFotografia: '',
+                cRutaArchivo: '',
+                cNombreRol: ''
+            },
+            form: new FormData,
+            modalShow: false,
+            mostrarModal: {
+                display: 'block',
+                background: '#0000006b',
+            },
+            ocultarModal: {
+                display: 'none',
+            },
+            error: 0,
+            mensajeError:[],
+            formatError : false,
+            fileTypes: ['.jpg','.png',],
+            dataUser: {},
+            listEscuela: [],
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
+                }
+            },
+            endOption: {
+            },
+            rutError: false,
+            fullscreenLoading:false
+        }
+    },
+    mounted(){
+        this.inicializacion();
+        this.getUsuarioById();
+        this.getRolByUsuario();
+        this.getListarEscuela();
+    },
+    methods:{
+        inicializacion () {
+            this.fullscreenLoading = true;
+            const yearCalculated = 5*365*24*60*60*1000;
+            const month = (new Date().getMonth()) * 30*24*60*60*1000;
+            this.fillEditarUsuarios.f_entrada = new Date(Date.now() - (yearCalculated + month));
+            this.fillEditarUsuarios.f_salida = new Date(Date.now() - (month));
+            this.selectStart();
+        },
+        getFile(e){
+            this.formatError = false;
+            this.fillEditarUsuarios.oFotografia = e.target.files[0];
+            if (!this.fillEditarUsuarios.oFotografia) return;
+            const fileName = this.fillEditarUsuarios.oFotografia.name;
+            var dots = fileName.split(".")
+            var fileType = "." + dots[dots.length-1];
+            if (this.fileTypes.join(".").indexOf(fileType) == -1){
+                this.formatError = true;
+            }
+        },
+        getRolByUsuario(){
+            var url = '/administracion/usuario/getRolByUsuario'
+            axios.get(url, {
+                params:{
+                'nIdUsuario' : this.fillVerUsuarios.nIdUsuario
+                }
+            }).then(response => {
+                this.fillVerUsuarios.cNombreRol = (response.data.length == 0) ? '' : response.data[0].name;
+            })
+        },
+        getUsuarioById(){
+            var url = '/administracion/usuario/getListarUserById'
+            // console.log("nIdUsuario", this.fillEditarUsuarios.nIdUsuario)
+            axios.get(url, {
+                params: {
+                'nIdUsuario' : this.fillEditarUsuarios.nIdUsuario
+                }
+            }).then(response => {
+                this.dataUser = response.data;
+                // console.log(this.dataUser);
+                this.getUsuario(response.data);
+            })
+        },
+        getUsuario(data){
+            this.fillVerUsuarios.cRut           = this.fillEditarUsuarios.cRut          = data.rut;
+            this.fillVerUsuarios.cNombre        = this.fillEditarUsuarios.cNombre       = data.nombres;
+            this.fillVerUsuarios.cApellido      = this.fillEditarUsuarios.cApellido     = data.apellidos;
+            this.fillVerUsuarios.cCorreo        = this.fillEditarUsuarios.cCorreo       = data.email;
+            this.fillVerUsuarios.cEscuela       = this.fillEditarUsuarios.cEscuela      = data.id_escuela;
+            if (data.file) {
+                this.fillVerUsuarios.cRutaArchivo   = this.fillVerUsuarios.cRutaArchivo     = data.file.path;
+            }
+            this.fillVerUsuarios.direccion      = this.fillEditarUsuarios.direccion     = data.direccion;
+            this.fillVerUsuarios.telefono       = this.fillEditarUsuarios.telefono      = data.telefono;
+            this.fillVerUsuarios.f_nacimiento   = this.fillEditarUsuarios.f_nacimiento  = data.birthday;
+            this.fillVerUsuarios.f_entrada      = this.fillEditarUsuarios.f_entrada     = data.f_ingreso;
+            this.fillVerUsuarios.f_salida       = this.fillEditarUsuarios.f_salida      = data.f_salida;
+        },
+        abrirModal(){
+            this.modalShow = !this.modalShow;
+        },
+        setEditarUsuario(){
+            if (this.validarRegistrarUsuario()){
+                this.modalShow = true;
+                return;
+            }
+            this.fullscreenLoading = true;
+            if(!this.fillEditarUsuarios.oFotografia || this.fillEditarUsuarios.oFotografia == undefined){
+                this.setGuardarUsuario(0);
+            } else {
+                this.setRegistrarArchivo();
+            }
+        },
+        setRegistrarArchivo(){
+            this.form.append('file', this.fillEditarUsuarios.oFotografia)
+            const config = { headers: {'Content-Type': 'multipart/form-data'}}
+            var url = '/archivo/setRegistrarArchivo'
+            axios.post(url, this.form, config).then(response =>{
+                // console.log(response)
+                var nIdFile = response.data.id;
+                this.setGuardarUsuario(nIdFile);
+            })
+        },
+        setGuardarUsuario(nIdFile){
+            this.fillEditarUsuarios.idFotografia = nIdFile;
+            var url = '/administracion/usuario/setEditarUsuarioView'
+            axios.post(url, this.fillEditarUsuarios).then(response => {
+                // console.log(response);
+                this.getRefrescarUsuarioAutenticado();
+                this.getUsuarioById();
+                this.fullscreenLoading = false;
+            }).catch(error=>{
+                this.mensajeError.push(error.response.data.error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al ingresar datos',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                this.fullscreenLoading = false;
+                if (this.mensajeError.length > 0) {
+                    this.modalShow = true;
+                }
+            })
+        },
+        getRefrescarUsuarioAutenticado(){
+            var url = '/authenticate/getRefrescarUsuarioAutenticado'
+            axios.get(url).then(response => {
+                // console.log(response.data);
+                EventBus.$emit('verifyAuthenticatedUser', response.data);
+                this.fullscreenLoading = false;
+                this.getUsuarioById();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Se actualizo correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            })
+        },
+        validarRegistrarUsuario(){
+            this.error = 0;
+            this.mensajeError = [];
+            if(!this.fillEditarUsuarios.cNombre){
+                this.mensajeError.push("El nombre es un campo obligatorio")
+            }
+            if(!this.fillEditarUsuarios.cApellido){
+                this.mensajeError.push("El apellido es un campo obligatorio")
+            }
+            if(!this.fillEditarUsuarios.cCorreo){
+                this.mensajeError.push("El correo es un campo obligatorio")
+            }
+            if(!this.fillEditarUsuarios.cEscuela){
+                this.mensajeError.push("La carrera es un campo obligatorio")
+            }
+            if(!this.fillEditarUsuarios.direccion){
+                this.mensajeError.push("La dirección es un campo obligatorio")
+            }
+            if(!this.fillEditarUsuarios.telefono){
+                this.mensajeError.push("El teléfono es un campo obligatorio")
+            }
+            if(!this.fillEditarUsuarios.f_entrada){
+                this.mensajeError.push("La fecha de ingreso a la carrera es un campo obligatorio")
+            }
+            if(!this.fillEditarUsuarios.f_salida){
+                this.mensajeError.push("La fecha de término de asignaturas es un campo obligatorio")
+            }
+            if(this.mensajeError.length){
+                this.error = 1;
+            }
+            return this.error;
+        },
+        reestablecerDatos() {
+            this.fillEditarUsuarios.cRut            = this.fillVerUsuarios.cRut;
+            this.fillEditarUsuarios.cNombre         = this.fillVerUsuarios.cNombre;
+            this.fillEditarUsuarios.cApellido       = this.fillVerUsuarios.cApellido;
+            this.fillEditarUsuarios.cCorreo         = this.fillVerUsuarios.cCorreo;
+            this.fillEditarUsuarios.cEscuela        = this.fillVerUsuarios.cEscuela;
+            this.fillEditarUsuarios.oFotografia     = '';
+            this.fillEditarUsuarios.cContrasena     = '';
+            this.fillEditarUsuarios.direccion       = this.fillVerUsuarios.direccion;
+            this.fillEditarUsuarios.telefono        = this.fillVerUsuarios.telefono;
+            this.fillEditarUsuarios.f_nacimiento    = this.fillVerUsuarios.f_nacimiento;
+            this.fillEditarUsuarios.f_entrada       = this.fillVerUsuarios.f_entrada;
+            this.fillEditarUsuarios.f_salida        = this.fillVerUsuarios.f_salida;
+            this.rutError = false;
+            this.formatError = false;
+        },
+        getListarEscuela() {
+            this.fullscreenLoading = true;
+            const url = '/administracion/escuelas/getListarEscuelas';
+            axios.get(url, {
+            }).then(response => {
+                this.listEscuela = response.data;
+                this.fullscreenLoading = false;
+            })
+        },
+        selectStart() {
+            this.endOption = {
+                disabledDate: (time) => {
+                    return time.getTime() < Date.parse(this.fillEditarUsuarios.f_entrada) || time.getTime() > Date.now();
+                }
+            };
+        },
+        verificacionRut () {
+            if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test( rut )) {
+                this.rutError = true;
+            }
+            var tmp 	= this.fillEditarUsuarios.cRut.split('-');
+            var digv	= tmp[1];
+            var rut 	= tmp[0];
+            if ( digv == 'K' ) digv = 'k' ;
+            if (this.digitoVerificador(rut) == digv) {
+                this.rutError = false;
+            } else {
+                this.rutError = true;
+            }
+        },
+        digitoVerificador(T){
+            var M=0,S=1;
+            for(;T;T=Math.floor(T/10))
+                S=(S+T%10*(9-M++%6))%11;
+            return S?S-1:'k';
+        },
     }
-  },
-  mounted(){
-      this.getUsuarioById();
-      this.getRolByUsuario();
-  },
-  methods:{
-    getFile(e){
-      this.fillEditarUsuarios.oFotografia = e.target.files[0];
-    },
-    getRolByUsuario(){
-      var url = '/administracion/usuario/getRolByUsuario'
-      axios.get(url, {
-        params:{
-          'nIdUsuario' : this.fillVerUsuarios.nIdUsuario
-        }
-      }).then(response => {
-          this.fillVerUsuarios.cNombreRol = (response.data.length == 0) ? '' : response.data[0].name;
-          this.fullscreenLoading = false;
-      })
-    },
-  getUsuarioById(){
-        this.fullscreenLoading = true;
-        var url = '/administracion/usuario/getListarUserById'
-        console.log("nIdUsuario", this.fillEditarUsuarios.nIdUsuario)
-        axios.get(url, {
-        params: {
-          'nIdUsuario' : this.fillEditarUsuarios.nIdUsuario
-        }
-      }).then(response => {
-          console.log("la respuesta", response)
-          console.log("la respuesta en 0", response.data[0])
-          this.getUsuarioEditar(response.data[0])
-          this.getUsuarioVer(response.data[0])
-
-          this.fullscreenLoading = false;
-      })
-    },
-    getUsuarioEditar(data){
-          this.fillEditarUsuarios.cNombre = data.nombres;
-          this.fillEditarUsuarios.cApellido = data.apellidos;
-          this.fillEditarUsuarios.cCorreo = data.email;
-          this.fillEditarUsuarios.cEscuela = data.id_escuela;
-    },
-    getUsuarioVer(data){
-          this.fillVerUsuarios.cNombre = data.nombres;
-          this.fillVerUsuarios.cApellido = data.apellidos;
-          this.fillVerUsuarios.cCorreo = data.email;
-          this.fillVerUsuarios.cEscuela = data.id_escuela;
-          this.fillVerUsuarios.cRutaArchivo = data.profile_image;
-    },
-    abrirModal(){
-      this.modalShow = !this.modalShow;
-    },
-    setEditarUsuario(){
-      if (this.validarRegistrarUsuario()){
-          this.modalShow = true;
-          return;
-      }
-      this.fullscreenLoading = true;
-      if(!this.fillEditarUsuarios.oFotografia || this.fillEditarUsuarios.oFotografia == undefined){
-        
-        this.setGuardarUsuario(0);
-      } else {
-        this.setRegistrarArchivo();
-      }
-    },
-    setRegistrarArchivo(){
-      this.form.append('file', this.fillEditarUsuarios.oFotografia)
-      const config = { headers: {'Content-Type': 'multipart/form-data'}}
-      var url = '/archivo/setRegistrarArchivo'
-      axios.post(url, this.form, config).then(response =>{
-        console.log(response)
-        var nIdFile = response.data[0].nIdFile;
-        this.setGuardarUsuario(nIdFile);
-      }) 
-    },
-    setGuardarUsuario(nIdFile){
-      var url = '/administracion/usuario/setEditarUsuario'
-
-      axios.post(url, {
-        'nIdUsuario' : this.fillEditarUsuarios.nIdUsuario, 
-        'cNombre'    : this.fillEditarUsuarios.cNombre,
-        'cApellido'  : this.fillEditarUsuarios.cApellido,
-        'cCorreo'    : this.fillEditarUsuarios.cCorreo,
-        'cContrasena': this.fillEditarUsuarios.cContrasena,
-        'cEscuela'   : this.fillEditarUsuarios.cEscuela,
-        'oFotografia': nIdFile
-      }).then(response => {
-        this.getRefrescarUsuarioAutenticado();
-        this.fullscreenLoading = false;
-        this.getUsuarioById();
-        Swal.fire({
-        icon: 'success',
-        title: 'Editado Correctamente',
-        showConfirmButton: false,
-        timer: 1500
-      })
-      })
-    },
-    getRefrescarUsuarioAutenticado(){
-      var url = '/authenticate/getRefrescarUsuarioAutenticado'
-      axios.get(url).then(response => {
-        console.log(response.data);
-        EventBus.$emit('verifyAuthenticatedUser', response.data);
-        this. fullscreenLoading = false;
-        this.getUsuarioById();
-        Swal.fire({
-        icon: 'success',
-        title: 'Se actualizo correctamente',
-        showConfirmButton: false,
-        timer: 1500
-      })
-      }) 
-    },
-    validarRegistrarUsuario(){
-      this.error = 0;
-      this.mensajeError = [];
-
-        if(!this.fillEditarUsuarios.cNombre){
-          this.mensajeError.push("el nombre es un campo obligatorio")
-        }
-        if(!this.fillEditarUsuarios.cApellido){
-          this.mensajeError.push("el apellido es un campo obligatorio")
-        }
-        if(!this.fillEditarUsuarios.cCorreo){
-          this.mensajeError.push("el correo es un campo obligatorio")
-        }
-        if(this.mensajeError.length){
-          this.error = 1;
-        }
-        return this.error;
-    },
-    
-  }
 }
 </script>
 

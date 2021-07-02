@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
    
-    <title>memorandum revision alumno {{$datosmemo[0]->Anombres}}</title>
+    <title>Memorandum revision alumno {{$datosmemo->alumnos[0]->nombres.' '.$datosmemo->alumnos[0]->apellidos}}</title>
     <style>
         @page{
             margin: 1.3rem;
@@ -53,7 +53,7 @@
                 <td WIDTH="200">
                 <img src="{{$logo}}" alt="Logo UCM" class="logo", width="200" height="80">
                 </td>
-                <td >FACULTAD DE CIENCIAS DE LA INGENIERIA <br> ESCUELA DE {{$datosmemo[0]->escuelaname}}</td>
+                <td >FACULTAD DE CIENCIAS DE LA INGENIERIA <br> ESCUELA DE {{$datosmemo->User_P_Guia->Escuelas->nombre}}</td>
             </tr>
         </table>
         <table width="100%" cellspacing="0" cellspacing="1" align="center">
@@ -61,7 +61,7 @@
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td style="text-align: center;">MEMORANDUM REVISION DE TESIS</td>
+                <td style="text-align: center; font-weight: bold;">MEMORANDUM REVISION DE TESIS</td>
             </tr>
         </table>
         <br>
@@ -69,33 +69,52 @@
        
         <table width="90%" cellspacing="1" cellspacing="1" align="center">
             <tr>
-                <td width="50">A  :  </td>
-                <td>{{$datosmemo[0]->P1nombres}} <br> {{$datosmemo[0]->P2nombres}} </td>
+                <td width="50"><b>A  :  </b></td>
+                <td><b>{{$datosmemo->Comisiones->UserP1->nombres.' '. $datosmemo->Comisiones->UserP1->apellidos}} <br> {{$datosmemo->Comisiones->UserP2->nombres.' '.$datosmemo->Comisiones->UserP2->apellidos}}</b></td>
             </tr>
             <tr>
                 <td></td>
-                <td>{{$datosmemo[0]->p_externo}}</td>
+                <td>
+                    @if($datosmemo->Comisiones->p_externo)
+                        <b >{{$datosmemo->Comisiones->p_externo}}</b><br>
+                    @endif
+                    Profesores de comisión
+                </td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td>DE :</td>
-                <td>MG. Roberto Ahumada Garcia <br>Coordinador de Tesis y Memoria</td>
+                <td style="font-weight: bold;">DE :</td>
+                <td><b>MG. Roberto Ahumada Garcia</b> <br>Coordinador de Tesis y Memoria</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td>Ref. </td>
-                <td>Envia tesis a revision de alumno {{$datosmemo[0]->Anombres}}</td>
+                <td style="font-weight: bold;">Ref. </td>
+                @if(count($datosmemo->alumnos) == 1)
+                <td>Envia tesis a revision de alumno {{$datosmemo->alumnos[0]->nombres.''.$datosmemo->alumnos[0]->apellidos}}</td>
+                @else
+                <td>Envia tesis a revision de los alumnos
+                    @foreach ($datosmemo->alumnos as $alumno)
+                        @if($loop->last)
+                            {{'y '.$alumno->nombres.' '.$alumno->apellidos}}
+                        @elseif($loop->first)
+                            {{$alumno->nombres.' '.$alumno->apellidos}}
+                        @else
+                            {{', '.$alumno->nombres.' '.$alumno->apellidos}}
+                        @endif
+                    @endforeach
+                </td>
+                @endif
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td>Fecha :</td>
-                <td>TALCA, {{$datosmemo[0]->fechainicial}}</td>
+                <td style="font-weight: bold;">Fecha :</td>
+                <td>TALCA, {{$datosmemo->fechainicial}}</td>
             </tr>
             <br>
         </table>
@@ -111,9 +130,26 @@
                     <td style="text-align: center;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="text-align: justify;">Junto con saludarle, y como integrante de la comision de examen de Titulo "{{$datosmemo[0]->titulo}}", del alumno
-                        {{$datosmemo[0]->Anombres}}, rut {{$datosmemo[0]->rut_int1}}, quisiera solicitar a Ud. que una vez que recepcionado el documento, en el plazo de 
-                        15 dias habiles ({{$datosmemo[0]->fechafinal}}), entregue el informe de evaluacion de este trabajo al profesor guia, {{$datosmemo[0]->Pnombres}}.</td>
+                    <td>
+                        <div style="text-align: justify; text-justify: inter-word;">
+                            Junto con saludarle, y como integrante de la comision de examen de Titulo <b>"{{$datosmemo->titulo}}"</b>, 
+                            @if(count($datosmemo->alumnos) == 1)
+                                del alumno {{$datosmemo->alumnos[0]->nombres.' '.$datosmemo->alumnos[0]->apellidos}}
+                            @else
+                                de los alumnos
+                                @foreach ($datosmemo->alumnos as $alumno)
+                                    @if($loop->last)
+                                        {{'y '.$alumno->nombres.' '.$alumno->apellidos.', Rut: '.$alumno->rut}}
+                                    @elseif($loop->first)
+                                        {{$alumno->nombres.' '.$alumno->apellidos.', Rut: '.$alumno->rut}}
+                                    @else
+                                        {{', '.$alumno->nombres.' '.$alumno->apellidos.', Rut: '.$alumno->rut}}
+                                    @endif
+                                @endforeach
+                            @endif
+                            , quisiera solicitar a Ud. que una vez que recepcionado el documento, en el plazo de 15 dias habiles ({{$datosmemo->fechafinal}}), entregue el informe de evaluacion de este trabajo al profesor guia, {{$datosmemo->User_P_Guia->nombres.' '.$datosmemo->User_P_Guia->apellidos}}.
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">&nbsp;</td>
@@ -128,7 +164,7 @@
                     <td style="text-align: center;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="text-align: center;">A la espera de una favorable recepcion y respuesta, saluda atentamente a usted,</td>
+                    <td style="text-align: left;">A la espera de una favorable recepcion y respuesta, saluda atentamente a usted,</td>
                 </tr>
             </table>
             <table width="100%" cellspacing="0" cellspacing="1" align="center">
@@ -162,15 +198,15 @@
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
-                    <td>_________________________________</td>
+                    <td><b>_________________________________</b></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
-                    <td style="text-align: left;">MG.-ROBERTO AHUMADA GARCIA</td>
+                    <td style="text-align: left; font-weight: bold;">MG.-ROBERTO AHUMADA GARCIA</td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
-                    <td style="text-align: left;">Coordinador de Tesis y Memorias</td>
+                    <td style="text-align: left; font-weight: bold;">Coordinador de Tesis y Memorias</td>
                 </tr>
             </table>
 

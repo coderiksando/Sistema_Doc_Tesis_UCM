@@ -1,6 +1,6 @@
 <template>
   
-  <aside class="main-sidebar sidebar-dark-primary elevation-4 ">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar">
     <!-- Brand Logo -->
       <a href="#" class="brand-link">
         <img :src="ruta + '/img/ucm3.png'"
@@ -37,6 +37,9 @@
             Cerrar Sesión
           </a>
           <template v-if="listRolByUser.length > 1">
+          <div style="text-align: center;">
+            <a>Seleccionar rol</a>
+          </div>
           <a>
             <el-select placeholder="Elegir rol" v-model="rolActivo" @change="cambiarRol">
               <el-option
@@ -151,6 +154,17 @@
                 </router-link>  
               </template>
             </li>
+            <li class="nav-item">
+              <template v-if="listPermisos.includes('reportes.logs')">
+                <router-link class="nav-link" :to="'/reportes/logs'">
+                  <i class="nav-icon fas fa-database"></i>
+                  <p>
+                    Registros
+                  </p>
+                </router-link>  
+              </template>
+            </li>
+            
           </template>
           <!-- VISTA PARA ADMINISTRACION DE REPORTES -->
           <template  v-if="listPermisos.includes('reportes.reportefit')">
@@ -311,8 +325,8 @@ export default {
       var url='/authenticate/logout'
       axios.post(url).then(response => {
         if(response.data.code == 204){
-          this.$router.push({name: 'home'})
-          location.reload();
+          window.location.href = '/';
+          //location.reload();
           localStorage.clear();
           this.fullscreenLoading = false;
         }

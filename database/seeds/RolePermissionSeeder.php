@@ -101,11 +101,31 @@ class RolePermissionSeeder extends Seeder
         ]);
         DB::table('roles_permissions')->insert([
             'id_role' => 1,
+            'id_permission' => 25
+        ]);
+        DB::table('roles_permissions')->insert([
+            'id_role' => 1,
+            'id_permission' => 30
+        ]);
+        DB::table('roles_permissions')->insert([
+            'id_role' => 1,
+            'id_permission' => 39
+        ]);
+        DB::table('roles_permissions')->insert([
+            'id_role' => 1,
+            'id_permission' => 42
+        ]);
+        DB::table('roles_permissions')->insert([
+            'id_role' => 1,
             'id_permission' => 52
         ]);
         DB::table('roles_permissions')->insert([
             'id_role' => 1,
             'id_permission' => 53
+        ]);
+        DB::table('roles_permissions')->insert([
+            'id_role' => 1,
+            'id_permission' => 55
         ]);
     }
 }

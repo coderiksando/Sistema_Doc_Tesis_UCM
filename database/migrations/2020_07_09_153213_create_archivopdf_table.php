@@ -18,7 +18,7 @@ class CreateArchivoPDFTable extends Migration
             $table->bigInteger('id_fit')->unsigned();
             $table->string('path');
             $table->string('filename');
-            $table->enum('tipo_pdf',['acta','avance_t','final_t'])->default('avance_t');
+            $table->enum('tipo_pdf',['acta','avance_t','final_t', 'constancia_t'])->default('avance_t');
 
 
             $table->timestamps();

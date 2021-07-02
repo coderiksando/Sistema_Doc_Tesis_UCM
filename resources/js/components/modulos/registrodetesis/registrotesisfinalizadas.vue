@@ -949,6 +949,7 @@ export default {
           if (user.rut === this.newUser.rut || user.email === this.newUser.email) {
             errorIngresoUser = true;
             this.newUser = user;
+            console.log(this.newUser)
           }
         });
         this.fillCrearFIT.cUsers.forEach((user) => {
@@ -956,16 +957,30 @@ export default {
             errorRegisterUser = true;
           }
         });
+        this.mensajeError = [];
         if (!errorIngresoUser && !errorRegisterUser) {
             this.fillCrearFIT.cUsers.push(Vue.util.extend({}, this.newUser));
         }
         else {
-            this.mensajeError = [];
             if (!errorRegisterUser) {
-                this.mensajeError.push(
-                    "El usuario que intenta crear ya existe, fue insertado el usuario anteriormente creado."
-                );
-                this.fillCrearFIT.cUsers.push(Vue.util.extend({}, this.newUser));
+                let alumno = true;
+                // verificacion si es alumno
+                this.newUser.users__roles.forEach(user_rol => {
+                    if (user_rol.roles.name != 'Alumno') {
+                        alumno = false;
+                    }
+                });
+                if (alumno) {
+                    this.mensajeError.push(
+                        "El usuario que intenta crear ya existe, fue insertado el usuario anteriormente creado."
+                    );
+                    this.fillCrearFIT.cUsers.push(Vue.util.extend({}, this.newUser));
+                } else {
+                    this.mensajeError.push(
+                        "El usuario que intenta crear ya existe, pero es un usuario no válido como integrante."
+                    );
+                    this.newUser = {};
+                }
             } else {
                 this.mensajeError.push(
                     "Usuario seleccionado ya está enlistado en tu FIT."

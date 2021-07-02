@@ -126,20 +126,18 @@ export default {
     getFile(element){
       this.formatError = false
       this.sizeError = false
+      if (!element) return;
       this.fillSubirActa.oArchivo = element.target.files[0];
       if (!this.fillSubirActa.oArchivo) return;
-      //console.log(this.fillCrearAvances.oArchivo);
       const fileName = this.fillSubirActa.oArchivo.name;
       const fileSize = this.fillSubirActa.oArchivo.size;
       var dots = fileName.split(".")
       var fileType = "." + dots[dots.length-1];
       if (this.fileTypes.join(".").indexOf(fileType) == -1){
         this.formatError = true;
-        console.log(this.fileTypes.join(".").indexOf(fileType));
       }
       if (fileSize >= this.fileMaxSize*1000000){
         this.sizeError = true;
-        console.log(this.sizetError);
       }
     },
     limpiarCriterios(){
@@ -217,7 +215,7 @@ export default {
       var url = '/admin/parametros';
       axios.post(url,{'params': ['ActaFormato', 'ActaSize']}).then(response => {
           this.fileTypes = response.data[0];
-          this.fileMaxSize = response.data[1];
+          this.fileMaxSize = response.data[1][0];
       })
     }
   }// cierre methods

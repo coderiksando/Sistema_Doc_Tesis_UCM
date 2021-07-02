@@ -238,10 +238,11 @@
                         }}</b>
                       </h3>
                     </div>
+                    <div class="table table-responsive">
                     <table
                       class="
                         table table-hover table-head-fixed
-                        t-fixed
+                        text-nowrap
                         projects
                       "
                     >
@@ -295,6 +296,7 @@
                         </tr>
                       </tbody>
                     </table>
+                    </div>
 
                     <!-- revision de estado de una promesa -->
                     <!-- <div class="col-md-6"></div>

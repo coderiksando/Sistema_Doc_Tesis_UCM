@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Debugbar;
 
 class AvancesController extends Controller
 {
@@ -109,7 +110,7 @@ class AvancesController extends Controller
         $rpta->updated_at   = Carbon::now();
         $rpta->save(); 
         
-        $this->reg('Registrar avance', 'Alumno');
+        $this->reg('Registrar avance', $rpta->id, 'Alumno');
         return $rpta;
     }
     public function setRegistrarFinalPdf(Request $request){
@@ -141,7 +142,7 @@ class AvancesController extends Controller
             AvancesTesis::find($id)->update(['descripcion'=>$descripcion, 'created_at' =>$fecha, 'id_archivo' =>$id_archivo]);
             $archivo->delete();
         }
-        $this->reg('Editar avance', 'Alumno');
+        $this->reg('Editar avance', $id, 'Alumno');
     }
     public function getEstadoTesis(Request $request){
         if(!$request->ajax()) return redirect('/');

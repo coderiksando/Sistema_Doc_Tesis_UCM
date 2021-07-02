@@ -95,8 +95,16 @@
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in listarAlumnosPaginated" :key="index">
-                        <td v-text="item.full_name"></td>
-                        <td v-text="item.rut_int1"></td>
+                        <td> <!-- itera mostrando la cantidad total de estudiantes -->
+                            <div v-for="(itemUser, index) in item.alumnos" :key="index">
+                                <p v-text="itemUser.nombres + ' ' + itemUser.apellidos"></p>
+                            </div>
+                        </td>
+                        <td> <!-- itera mostrando la cantidad total de estudiantes -->
+                            <div v-for="(itemUser, index) in item.alumnos" :key="index">
+                                <p v-text="itemUser.rut"></p>
+                            </div>
+                        </td>
                         <td>
                           <template v-if="item.estado_tesis == 'D'">
                             <span class="badge badge-warning" >En desarrollo</span>
@@ -109,13 +117,13 @@
                           </template>
                         </td>
                         <td >
-                          <button class="btn btn-flat btn-primary btn-sm" @click.prevent="setGenerarDocumento(item.id_tesis)">
+                          <button class="btn btn-flat btn-primary btn-sm" @click.prevent="setGenerarDocumento(item.id)">
                               <i class="fas fa-file-download"></i> Fit
                             </button>
-                            <button class="btn btn-flat btn-success btn-sm" @click.prevent="setGenerarMemoRevision(item.id_tesis)">
+                            <button class="btn btn-flat btn-success btn-sm" @click.prevent="setGenerarMemoRevision(item.id)">
                               <i class="fas fa-file-download"></i> Memo Revision
                             </button>
-                          <a class="btn btn-flat btn-warning btn-sm" :href="item.path"><i class="fas fa-file-download"> </i> Acta Defensa </a>
+                          <a class="btn btn-flat btn-warning btn-sm" target="_blank" :href="item.path"><i class="fas fa-file-download"> </i> Acta Defensa </a>
                         </td>
                       </tr>
                     </tbody>
@@ -219,12 +227,10 @@ export default {
 
       var url = '/administracion/tesis/setGenerarDocumento'
       axios.post(url, {
-          'nIdTesis' :id_tesis
+          'nIdTesis' : id_tesis
       }, config).then(response => {
-          console.log(response.data);
           var oMyBlob = new Blob([response.data], {type : 'application/pdf'});
           var url = URL.createObjectURL(oMyBlob);
-          //console.log(url)
           window.open(url);
           //this.listTesis = response.data;
           //this.fullscreenLoading = false;
@@ -238,10 +244,8 @@ export default {
       axios.post(url, {
           'nIdTesis' :id_tesis
       }, config).then(response => {
-          console.log(response.data);
           var oMyBlob = new Blob([response.data], {type : 'application/pdf'});
           var url = URL.createObjectURL(oMyBlob);
-          //console.log(url)
           window.open(url);
           //this.listTesis = response.data;
           //this.fullscreenLoading = false;

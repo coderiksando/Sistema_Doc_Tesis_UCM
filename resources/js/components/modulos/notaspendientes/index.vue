@@ -23,7 +23,7 @@
               </div>
             </template>
             <template v-if="listRolPermisosByUsuario.includes('notaspendientes.crear')">
-              <template v-if="listNotasPendientes.length == 0">
+              <template v-if="listNotasPendientes.length == 0 && fillEstadoTesis.cEstado  == 'D'">
                 <router-link class="btn btn-info bnt-sm" :to="'/notaspendientes/crear'">
                   <i class="fas fa-plus-square"></i> Solicitar Nota Pendiente
                 </router-link>
@@ -107,7 +107,11 @@
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in listarNotasPendientesPaginated" :key="index">
-                        <td v-text="item.full_name"></td>
+                        <td> <!-- itera mostrando la cantidad total de estudiantes -->
+                            <div v-for="(itemUser, index) in item.alumnos" :key="index">
+                                <p v-text="itemUser.nombres + ' ' + itemUser.apellidos"></p>
+                            </div>
+                        </td>
                         <td v-text="item.fecha_presentacion"></td>  
                         <td v-text="item.fecha_propuesta"></td>  
                         <td v-text="item.fecha_prorroga"></td>  
@@ -124,20 +128,6 @@
                       </tr>
                     </tbody>
                   </table>
-                  <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                      <li class="page-item" v-if="pageNumber > 0">
-                        <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                      </li>
-                      <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                        :class="[page == pageNumber ? 'active' : '']">
-                        <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                      </li>
-                      <li class="page-item" v-if="pageNumber < pageCount -1">
-                        <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                      </li>
-                    </ul>
-                  </div>
                 </template>
                 <template v-else>
                   <div class="callout callout-info">
@@ -146,7 +136,20 @@
                 </template>
               </div>
             </div>
-
+          </div>
+          <div class="card-footer clearfix">
+            <ul class="pagination pagination-sm m-0 float-right">
+              <li class="page-item" v-if="pageNumber > 0">
+                <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+              </li>
+              <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                :class="[page == pageNumber ? 'active' : '']">
+                <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+              </li>
+              <li class="page-item" v-if="pageNumber < pageCount -1">
+                <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -163,12 +166,15 @@ export default {
         estado: '',
         dfecharango: '',
       },
+      fillEstadoTesis:{
+        cEstado: '',
+      },
       listEstadosNotaP: [
         {value: 'P', label: 'Activa'},
         {value: 'R', label: 'Rechazada'},
         {value: 'V', label: 'Vencida'}
       ],
-      listNotasPendientes:null,
+      listNotasPendientes: [],
       listAlumnos:[],
       fullscreenLoading: false,
       pageNumber: 0,
@@ -204,25 +210,13 @@ export default {
     if(this.listRolPermisosByUsuario.includes('EsAlumno'))
     {
       this.getMiNotaP();
+      this.getEstadoTesis();
     }
     else{
       this.getListarNotasPendientes();
     }
   },
   methods:{
-    getListarAvancesByAlumno(){
-      this.fullscreenLoading = true;
-      var url = '/avances/getListarAvancesByAlumno'
-      axios.get(url, {
-        params: {
-          'id_user' : this.fillBsqAvanceByAlumno.id_user,
-        }
-      }).then(response => {
-          this.inicializarPaginacion();
-          this.listAvances = response.data;
-          this.fullscreenLoading = false;
-      })
-    },
     getListarAlumnosByprofesor(){
       this.fullscreenLoading = true;
       var url = '/avances/getListarAlumnosByprofesor'
@@ -231,6 +225,15 @@ export default {
           this.inicializarPaginacion();
           this.listAlumnos = response.data;
           this.fullscreenLoading = false;
+      })
+    },
+    getEstadoTesis(){
+        var url = '/avances/getEstadoTesis'
+        axios.get(url, {
+      }).then(response => {
+          if(response.data){
+            this.fillEstadoTesis.cEstado     = response.data;
+          }
       })
     },
     limpiarCriteriosBsq(){
