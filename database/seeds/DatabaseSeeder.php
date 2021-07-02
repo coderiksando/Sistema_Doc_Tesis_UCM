@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call([RolePermissionSeeder::class]);
         $this->call([UserRoleSeeder::class]);
         $this->call([AreasTesisTableSeeder::class]);
-        //$this->call([VinculacionesTableSeeder::class]);
+        $this->call([VinculacionesTableSeeder::class]);
         $this->call([RolePermissionAlumnoSeeder::class]);
         $this->call([RolePermissionCoordinadorSeeder::class]);
         $this->call([RolePermissionProfesorSeeder::class]);
