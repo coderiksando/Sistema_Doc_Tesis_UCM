@@ -121,25 +121,35 @@
                             <label class="col-md-3 col-form-label">Fecha de última asignatura cursada</label>
                             <div class="col-md-9">
                                 <el-date-picker
-                                    v-model="fillBsqTesisReporte.dfecharango"
-                                    type="monthrange"
-                                    range-separator="Hasta"
-                                    start-placeholder="Fecha Inicio"
-                                    end-placeholder="Fecha Fin"
-                                    value-format="yyyy-MM-dd">
+                                    v-model="fillBsqTesisReporte.dfecharango[0]"
+                                    type="month"
+                                    placeholder="Inicio"
+                                    value-format="yyyy-MM-dd"
+                                    :picker-options="pickerOptions"
+                                    @change="selectStart">
+                                </el-date-picker>
+                                <el-date-picker
+                                    v-model="fillBsqTesisReporte.dfecharango[1]"
+                                    type="month"
+                                    placeholder="Término"
+                                    value-format="yyyy-MM-dd"
+                                    :picker-options="endOption">
                                 </el-date-picker>
                             </div>
                         </div>
                     </div>
-
                   </div>
                 </form>
               </div>
               <div class="card-footer">
                 <div class="row">
                   <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarTesisReporte" v-loading.fullscreen.lock="fullscreenLoading"
-                      >Buscar</button>
+                      <!-- consulta los datos de la fecha son iguales en forma booleana  -->
+                    <button :disabled="!!fillBsqTesisReporte.dfecharango[0] !== !!fillBsqTesisReporte.dfecharango[1]"
+                    class="btn btn-flat btn-info btnWidth" @click.prevent="getListarTesisReporte"
+                    v-loading.fullscreen.lock="fullscreenLoading">
+                        Buscar
+                    </button>
                     <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
                   </div>
                 </div>
@@ -250,7 +260,7 @@
           cNombreI1: '',
           cEstadoPg: '',
           cEstadoD: '',
-          dfecharango: '',
+          dfecharango: [],
           cEstadoTesis: ''
         },
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
@@ -296,7 +306,17 @@
           display: 'none',
         },
         error: 0,
-        mensajeError:[]
+        mensajeError:[],
+        pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          }
+        },
+        endOption: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          }
+        },
       }
     },
     computed: {
@@ -329,125 +349,131 @@
       this.getListarEscuelas();
       this.getListarFacultades();
       this.getListarProfesorByEscuela();
+      this.selectStart();
     },
     methods:{
-      getListarEscuelas(){
-        this.fullscreenLoading = true;
-        var url = '/administracion/escuelas/getListarEscuelas'
-        axios.get(url, {
-        }).then(response => {
-            this.listEscuelasOriginal = response.data;
-            this.listEscuelas = response.data;
-            this.fullscreenLoading = false;
-        })
-      },
-      getListarFacultades(){
-        this.fullscreenLoading = true;
-        var url = '/administracion/escuelas/getListarFacultades'
-        axios.get(url, {
-        }).then(response => {
-            this.listFacultades = response.data;
-            this.fullscreenLoading = false;
-        })
-      },
-      getListarEscuelaByFacultad(){
-        this.fullscreenLoading = true;
-        this.listEscuelas = this.listEscuelasOriginal;
-        const idFacultad = this.fillBsqTesisReporte.nIdFacultad;
-        if (idFacultad !== '') {
-            this.listEscuelas = this.listEscuelas.filter(function(escuela) {
-                return escuela.facultad.id === idFacultad;
-            });
-        }
-        this.fullscreenLoading = false;
-      },
-      getListarProfesorByEscuela(){
-        this.fullscreenLoading = true;
-        var url = '/reportes/getListarProfesorByEscuela'
-        axios.get(url, {
-          params: {
-            'nIdEscuela' : this.fillBsqTesisReporte.nIdEscuela,
-          }
-        }).then(response => {
-            this.listProfesores = response.data;
-            this.fullscreenLoading = false;
-        })
-      },
-      setGenerarDocumento(){
-        //this.fullscreenLoading = true;
-        var url = '/administracion/reportes/export'
-        axios.get(url, {
-            responseType: 'blob',
-            params:{
-                'listTesis': JSON.stringify(this.listTesis)
+        getListarEscuelas(){
+            this.fullscreenLoading = true;
+            var url = '/administracion/escuelas/getListarEscuelas'
+            axios.get(url, {
+            }).then(response => {
+                this.listEscuelasOriginal = response.data;
+                this.listEscuelas = response.data;
+                this.fullscreenLoading = false;
+            })
+        },
+        getListarFacultades(){
+            this.fullscreenLoading = true;
+            var url = '/administracion/escuelas/getListarFacultades'
+            axios.get(url, {
+            }).then(response => {
+                this.listFacultades = response.data;
+                this.fullscreenLoading = false;
+            })
+        },
+        getListarEscuelaByFacultad(){
+            this.fullscreenLoading = true;
+            this.listEscuelas = this.listEscuelasOriginal;
+            const idFacultad = this.fillBsqTesisReporte.nIdFacultad;
+            if (idFacultad !== '') {
+                this.listEscuelas = this.listEscuelas.filter(function(escuela) {
+                    return escuela.facultad.id === idFacultad;
+                });
             }
-        }).then(response => {
-          var oMyBlob = new Blob([response.data], {type : 'application/vnd.ms-excel'});
-          var url = document.createElement('a')
-          url.href = URL.createObjectURL(oMyBlob);
-          url.download = 'usuarios.xlsx'
-          url.click()
-        })
-      },
-      getListarTesisReporte(){
-          console.log(this.fillBsqTesisReporte)
-        this.fullscreenLoading = true;
-        var url = '/administracion/reportes/getListarTesisReporte'
-        axios.get(url, {
-          params: {
-            'nRut'          : this.fillBsqTesisReporte.nRut,
-            'nIdEscuela'    : this.fillBsqTesisReporte.nIdEscuela,
-            'cEstadoNotap'  : this.fillBsqTesisReporte.cEstadoNotap,
-            'dFechaUR'      : this.fillBsqTesisReporte.dFechaUR,
-            'nIdProfesor'   : this.fillBsqTesisReporte.nIdProfesor,
-            'cTipo'         : this.fillBsqTesisReporte.cTipo,
-            'cEstadoTesis'  : this.fillBsqTesisReporte.cEstadoTesis,
-            'dFechaInicio'  : (!this.fillBsqTesisReporte.dfecharango) ? '' : this.fillBsqTesisReporte.dfecharango[0],
-            'dFechaFin'     : (!this.fillBsqTesisReporte.dfecharango) ? '' : this.fillBsqTesisReporte.dfecharango[1],
-          }
-        }).then(response => {
-            this.inicializarPaginacion();
-            this.listTesis = response.data;
             this.fullscreenLoading = false;
-        })
-      },
-      limpiarCriteriosBsq(){
-        this.fillBsqTesisReporte.nRut = '';
-        this.fillBsqTesisReporte.nIdEscuela = '';
-        this.fillBsqTesisReporte.cEstadoNotap = '';
-        this.fillBsqTesisReporte.dFechaUR = '';
-        this.fillBsqTesisReporte.nIdProfesor = '';
-        this.fillBsqTesisReporte.cTipo = '';
+        },
+        getListarProfesorByEscuela(){
+            this.fullscreenLoading = true;
+            var url = '/reportes/getListarProfesorByEscuela'
+            axios.get(url, {
+            params: {
+                'nIdEscuela' : this.fillBsqTesisReporte.nIdEscuela,
+            }
+            }).then(response => {
+                this.listProfesores = response.data;
+                this.fullscreenLoading = false;
+            })
+        },
+        setGenerarDocumento(){
+            //this.fullscreenLoading = true;
+            var url = '/administracion/reportes/export'
+            axios.get(url, {
+                responseType: 'blob',
+                params:{
+                    'listTesis': JSON.stringify(this.listTesis)
+                }
+            }).then(response => {
+            var oMyBlob = new Blob([response.data], {type : 'application/vnd.ms-excel'});
+            var url = document.createElement('a')
+            url.href = URL.createObjectURL(oMyBlob);
+            url.download = 'usuarios.xlsx'
+            url.click()
+            })
+        },
+        getListarTesisReporte(){
+            console.log(this.fillBsqTesisReporte)
+            this.fullscreenLoading = true;
+            var url = '/administracion/reportes/getListarTesisReporte'
+            axios.get(url, {
+            params: {
+                'nRut'          : this.fillBsqTesisReporte.nRut,
+                'nIdFacultad'   : this.fillBsqTesisReporte.nIdFacultad,
+                'nIdEscuela'    : this.fillBsqTesisReporte.nIdEscuela,
+                'cEstadoNotap'  : this.fillBsqTesisReporte.cEstadoNotap,
+                'nIdProfesor'   : this.fillBsqTesisReporte.nIdProfesor,
+                'cEstadoTesis'  : this.fillBsqTesisReporte.cEstadoTesis,
+                'dFechaInicio'  : (!this.fillBsqTesisReporte.dfecharango) ? '' : this.fillBsqTesisReporte.dfecharango[0],
+                'dFechaFin'     : (!this.fillBsqTesisReporte.dfecharango) ? '' : this.fillBsqTesisReporte.dfecharango[1],
+            }
+            }).then(response => {
+                console.log(response.data);
+                this.inicializarPaginacion();
+                this.listTesis = response.data;
+                this.fullscreenLoading = false;
+            })
+        },
+        limpiarCriteriosBsq(){
+            this.fillBsqTesisReporte.nRut = '';
+            this.fillBsqTesisReporte.nIdEscuela = '';
+            this.fillBsqTesisReporte.cEstadoNotap = '';
+            this.fillBsqTesisReporte.nIdProfesor = '';
 
-        this.fillBsqTesisReporte.cEstadoTesis = '';
-        this.fillBsqTesisReporte.dfecharango = '';
-      },
-      limpiarBandejaUsuarios(){
-        this.listTesis = [];
-      },
-      nextPage(){
-        this.pageNumber++;
-      },
-      prevPage(){
-        this.pageNumber--;
-      },
-      selectPage(page){
-        this.pageNumber = page;
-      },
-      inicializarPaginacion(){
-        this.pageNumber = 0;
-      },
-      abrirModal(){
-        this.modalShow = !this.modalShow;
-        this.limpiarModal();
-      },
-      limpiarModal(){
-        this.fillVerFIT.cNombre = ''
-        this.fillVerFIT.cSlug = ''
-        this.listPermisos = [];
-        this.modalOption = 0;
-      },
-
+            this.fillBsqTesisReporte.cEstadoTesis = '';
+            this.fillBsqTesisReporte.dfecharango = '';
+        },
+        limpiarBandejaUsuarios(){
+            this.listTesis = [];
+        },
+        nextPage(){
+            this.pageNumber++;
+        },
+        prevPage(){
+            this.pageNumber--;
+        },
+        selectPage(page){
+            this.pageNumber = page;
+        },
+        inicializarPaginacion(){
+            this.pageNumber = 0;
+        },
+        abrirModal(){
+            this.modalShow = !this.modalShow;
+            this.limpiarModal();
+        },
+        limpiarModal(){
+            this.fillVerFIT.cNombre = ''
+            this.fillVerFIT.cSlug = ''
+            this.listPermisos = [];
+            this.modalOption = 0;
+        },
+        selectStart() {
+            this.fillBsqTesisReporte.dfecharango[1] = null;
+            this.endOption = {
+                disabledDate: (time) => {
+                    return time.getTime() < Date.parse(this.fillBsqTesisReporte.dfecharango[0]) || time.getTime() > Date.now();
+                }
+            };
+        }
 
     }//cierre de methods
   }
