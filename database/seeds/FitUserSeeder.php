@@ -18,14 +18,14 @@ class FitUserSeeder extends Seeder
         DB::table('fit_user')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        Fit_User::create([
-            'id_user' => '5',
-            'id_fit' => '1'
-        ]);
-        Fit_User::create([
-            'id_user' => '7',
-            'id_fit' => '1'
-        ]);
+        // Fit_User::create([
+        //     'id_user' => '5',
+        //     'id_fit' => '1'
+        // ]);
+        // Fit_User::create([
+        //     'id_user' => '7',
+        //     'id_fit' => '1'
+        // ]);
 
         // foreach (Roles::find(2)->Users_Roles->where('id_user', '<>', '5') as $user) {
         //     Fit_User::create([

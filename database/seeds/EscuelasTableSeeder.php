@@ -19,7 +19,7 @@ class EscuelasTableSeeder extends Seeder
         DB::table('escuelas')->insert([
             'id'=>'1',
             'id_facultad'=>'1',
-            'nombre'=>'INGENIERIA CIVIL INFORMATICA'
+            'nombre'=>'Ingeniería Civil Informática'
         ]);
         // DB::table('escuelas')->insert([
         //     'id'=>'2',
