@@ -72,10 +72,12 @@ class ReportesController extends Controller
                     ->get();
         foreach ($fits as $fit) {
             $fit->Bitacoras;
+            $fit->AvancesTesis;
             $fit->NotasPendientes;
             $fit->Vinculaciones;
             $fit->Comisiones;
             $fit->User_P_Guia;
+            $fit->User_P_Guia->Escuelas;
             $fit->User_P_Coguia;
             $fit->getAlumnos();
         }

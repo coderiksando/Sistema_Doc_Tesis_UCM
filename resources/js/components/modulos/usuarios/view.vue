@@ -451,10 +451,10 @@ export default {
             if(!this.fillEditarUsuarios.telefono){
                 this.mensajeError.push("El teléfono es un campo obligatorio")
             }
-            if(!this.fillEditarUsuarios.f_entrada){
+            if(!this.fillEditarUsuarios.f_entrada && this.fillVerUsuarios.cNombreRol === 'Alumno'){
                 this.mensajeError.push("La fecha de ingreso a la carrera es un campo obligatorio")
             }
-            if(!this.fillEditarUsuarios.f_salida){
+            if(!this.fillEditarUsuarios.f_salida && this.fillVerUsuarios.cNombreRol === 'Alumno'){
                 this.mensajeError.push("La fecha de término de asignaturas es un campo obligatorio")
             }
             if(this.mensajeError.length){
