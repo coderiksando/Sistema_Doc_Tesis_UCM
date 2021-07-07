@@ -10,6 +10,7 @@ use App\Log;
 use Illuminate\Support\Facades\DB;
 use App\Exports\TesisExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 use Debugbar;
 
 class ReportesController extends Controller
@@ -187,15 +188,17 @@ class ReportesController extends Controller
         $actividad     = ($actividad == NULL)   ? ($actividad = '')   : $actividad;
         $idUsuario     = ($idUsuario == NULL)   ? ($idUsuario = '')   : $idUsuario;
         $rol           = ($rol == NULL)         ? ($rol = '')         : $rol;
-        $fechaInicio   = ($fechaInicio == NULL) ? ($fechaInicio = '2000-01-01') : $fechaInicio;
-        $fechaFin      = ($fechaFin == NULL)    ? ($fechaFin = '2100-01-01')    : $fechaFin;
+        $fechaInicio   = ($fechaInicio == NULL) ? ($fechaInicio = '2000-01-01') : Carbon::parse($fechaInicio)->startOfDay();
+        $fechaFin      = ($fechaFin == NULL)    ? ($fechaFin = '2100-01-01')    : Carbon::parse($fechaFin)->endOfDay();
+
 
         $logs = Log::select('actividad', 'rol', 'ip', 'target', 'logs.created_at as fecha', 'users.nombres', 'users.apellidos')
                    ->join('users', 'logs.user_id', 'users.id_user')
                    ->where('actividad', 'like', "%$actividad%")
                    ->where('user_id', 'like', "%$idUsuario%")
                    ->where('rol', 'like', "%$rol%")
-                   ->WhereBetween('logs.created_at', [$fechaInicio, $fechaFin])->get();
+                   ->WhereBetween('logs.created_at', [$fechaInicio, $fechaFin])
+                   ->orderByDesc('logs.created_at')->get();
 
         return $logs;
     }

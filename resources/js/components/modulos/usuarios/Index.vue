@@ -134,9 +134,9 @@
                             <i class="fas fa-folder"></i> Ver
                           </router-link>
                           <template v-if="item.state == 'A'">
-                            <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'usuarios.editar', params:{id_user: item.id_user}}">
+                            <!-- <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'usuarios.editar', params:{id_user: item.id_user}}">
                               <i class="fas fa-pencil-alt"></i> Editar
-                            </router-link>
+                            </router-link> -->
                             <router-link class="btn btn-flat btn-success btn-sm" :to="{name:'usuarios.permisos', params:{id_user: item.id_user}}">
                               <i class="fas fa-key"></i> Permisos
                             </router-link>
@@ -154,26 +154,26 @@
                       </tr>
                     </tbody>
                   </table>
-                  <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                      <li class="page-item" v-if="pageNumber > 0">
-                        <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                      </li>
-                      <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                        :class="[page == pageNumber ? 'active' : '']">
-                        <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                      </li>
-                      <li class="page-item" v-if="pageNumber < pageCount -1">
-                        <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                      </li>
-                    </ul>
-                  </div>
                 </template>
                 <template v-else>
                   <div class="callout callout-info">
                     <h5> No se han encontrado resultados...</h5>
                   </div>
                 </template>
+              </div>
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item" v-if="pageNumber > 0">
+                    <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+                  </li>
+                  <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                    :class="[page == pageNumber ? 'active' : '']">
+                    <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+                  </li>
+                  <li class="page-item" v-if="pageNumber < pageCount -1">
+                    <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>

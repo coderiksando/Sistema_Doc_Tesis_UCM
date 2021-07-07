@@ -176,7 +176,7 @@
                 }).then(response => {
                     console.log(response.data);
                     this.fullscreenLoading = false;
-                    this.$router.push('/parametros');
+                    // this.$router.push('/parametros');
                     Swal.fire({
                     icon: 'success',
                     title: 'Parámetros guardados correctamente',

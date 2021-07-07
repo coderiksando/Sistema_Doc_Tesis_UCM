@@ -10,7 +10,7 @@ class VinculacionController extends Controller
 {
     public function getListarVinculacion(Request $request){
 
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
 
         $nIdVinculacion     =   $request->nIdVinculacion;
         $cNombre            =   $request->cNombre;
@@ -28,7 +28,8 @@ class VinculacionController extends Controller
                                                                     $cNombre,
                                                                     $cTipo,
                                                                     $cDescripcion
-                                                                ]);
+                                                                ])->where('estado', 'A');
+        // $rpta->where('estado', 'A')->get();
         return $rpta;
     }
 

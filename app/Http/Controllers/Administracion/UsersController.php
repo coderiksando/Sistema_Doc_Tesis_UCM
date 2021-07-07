@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Administracion;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Users_Roles;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,20 +29,35 @@ class UsersController extends Controller
         $cApellido  = ($cApellido == NULL) ? ($cApellido = '') : $cApellido;
         $cCorreo    = ($cCorreo == NULL) ? ($cCorreo = '') : $cCorreo;
         $cEstado    = ($cEstado == NULL) ? ($cEstado = '') : $cEstado;
-        $cEscuela   = ($cEscuela == NULL) ? ($cEscuela = 0) : $cEscuela;
+        $cEscuela   = ($cEscuela == NULL) ? ($cEscuela = '') : $cEscuela;
 
         $iduser   = Auth::id();
+    
+        $admins = Users_Roles::where('id_roles', '1')->pluck('id_user')->all();
 
-        $rpta = DB::select('call sp_Usuario_getListarUsuarios (?, ?, ?, ?, ?, ?)',
-                                                                [
-                                                                    $iduser,
-                                                                    $cNombre,
-                                                                    $cApellido,
-                                                                    $cCorreo,
-                                                                    $cEstado,
-                                                                    $cEscuela
-                                                                ]);
-        $rpta = collect($rpta)->sortBy('fullname')->values();
+        $rpta = DB::table('users')
+        ->leftjoin('files', 'users.id_files', '=', 'files.id')
+        ->select('*')->selectRaw('CONCAT_WS(" ", nombres, apellidos) as fullname, files.path as profile_image')
+        ->where('nombres', 'like', "%$cNombre%")
+        ->where('apellidos', 'like', "%$cApellido%")
+        ->where('users.email', 'like', "%$cCorreo%")
+        ->where('users.id_escuela', 'like', "%$cEscuela%")
+        ->where('users.state', 'like', "%$cEstado%")
+        ->where('users.id_user', '<>', "%$iduser%")
+        ->whereNotIn('users.id_user', $admins)
+        ->orderBy('nombres')->get();
+
+
+        // $rpta = DB::select('call sp_Usuario_getListarUsuarios (?, ?, ?, ?, ?, ?)',
+        //                                                         [
+        //                                                             $iduser,
+        //                                                             $cNombre,
+        //                                                             $cApellido,
+        //                                                             $cCorreo,
+        //                                                             $cEstado,
+        //                                                             $cEscuela
+        //                                                         ]);
+        // $rpta = collect($rpta)->sortBy('fullname')->values();
 
         return $rpta;
     }
