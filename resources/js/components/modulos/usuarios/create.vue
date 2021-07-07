@@ -31,57 +31,78 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Nombres</label>
-                        <div class="col-md-9">
+                        <label class="col-md-4 col-form-label">Nombres</label>
+                        <div class="col-md-8">
                             <input type="text" class="form-control" v-model="fillCrearUsuarios.cNombre" @keyup.enter="setRegistrarUsuario">
                         </div>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Apellidos</label>
-                        <div class="col-md-9">
+                        <label class="col-md-4 col-form-label">Apellidos</label>
+                        <div class="col-md-8">
                             <input type="text" class="form-control" v-model="fillCrearUsuarios.cApellido" @keyup.enter="setRegistrarUsuario">
                         </div>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Correo</label>
-                        <div class="col-md-9">
+                        <label class="col-md-4 col-form-label">Correo</label>
+                        <div class="col-md-8">
                             <input type="text" class="form-control" v-model="fillCrearUsuarios.cCorreo" @keyup.enter="setRegistrarUsuario">
                         </div>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Contraseña</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" v-model="fillCrearUsuarios.cContrasena" @keyup.enter="setRegistrarUsuario">
+                          <label class="col-md-4 col-form-label">Asignar Escuela</label>
+                          <div class="col-md-8">
+                              <el-select v-model="fillCrearUsuarios.cEscuela"
+                                placeholder="Asignar Escuela"
+                                clearable>
+                                <el-option
+                                    v-for="item in listEscuelas"
+                                    :key="item.id"
+                                    :label="item.nombre"
+                                    :value="item.id">
+                                </el-option>
+                              </el-select>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Contraseña</label>
+                        <div class="col-md-8">
+                          <div class="input-group">
+                            <input id="txtPassword" type="password" class="form-control" v-model="fillCrearUsuarios.cContrasena" @keyup.enter="setRegistrarUsuario" @change="checkPassword">
+                            <div class="input-group-append">
+                              <button id="show_password" class="btn btn-primary" type="button" @click.prevent="showPassword('txtPassword')"> <span id="txtPasswordIcon" class="fa fa-eye-slash icon txtPasswordIco"></span> </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                        <div class="col-md-6">
-                          <div class="form-group row">
-                              <label class="col-md-3 col-form-label">Asignar Escuela</label>
-                              <div class="col-md-9">
-                                  <el-select v-model="fillCrearUsuarios.cEscuela"
-                                  placeholder="Asignar Escuela"
-                                  clearable>
-                                  <el-option
-                                      v-for="item in listEscuelas"
-                                      :key="item.id"
-                                      :label="item.nombre"
-                                      :value="item.id">
-                                  </el-option>
-                                  </el-select>
-                              </div>
-                          </div>
-                      </div>
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Rol</label>
-                        <div class="col-md-9">
+                        <label class="col-md-4 col-form-label">Repetir Contraseña</label>
+                        <div class="col-md-8">
+                          <div class="input-group">
+                            <input id="txtConfPassword" type="password" class="form-control" :class="{ 'is-invalid' : passError}" v-model="fillCrearUsuarios.cConfContrasena" @keyup.enter="setRegistrarUsuario" @change="checkPassword">
+                            <div class="input-group-append">
+                              <button id="show_password" class="btn btn-primary" type="button" @click.prevent="showPassword('txtConfPassword')"> <span id="txtConfPasswordIcon" class="fa fa-eye-slash icon txtConfPasswordIco"></span> </button>
+                            </div>
+                          </div>
+                          <div class="custom-file invalid-feedback no-margin" v-show="passError">
+                            Las constraseñas no coinciden.
+                          </div>
+                        </div>
+                      </div>
+                    </div>  
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Rol</label>
+                        <div class="col-md-8">
                             <el-select v-model="fillCrearUsuarios.nIdRol"
                             placeholder="Asignar un Rol"
                             clearable>
@@ -141,6 +162,7 @@ export default {
         cApellido: '',
         cCorreo: '',
         cContrasena: '',
+        cConfContrasena: '',
         cEscuela: '',
         oFotografia: '',
         nIdRol: ''
@@ -158,7 +180,8 @@ export default {
         display: 'none',
       },
       error: 0,
-      mensajeError:[]
+      mensajeError:[],
+      passError: false
 
     }
   },
@@ -200,8 +223,10 @@ export default {
       this.fillCrearUsuarios.cApellido = '';
       this.fillCrearUsuarios.cCorreo = '';
       this.fillCrearUsuarios.cContrasena = '';
+      this.fillCrearUsuarios.cConfContrasena = '';
       this.fillCrearUsuarios.cEscuela = '';
       this.fillCrearUsuarios.oFotografia = '';
+      this.passError = false;
     },
     abrirModal(){
       this.modalShow = !this.modalShow;
@@ -233,22 +258,25 @@ export default {
       this.mensajeError = [];
 
         if(!this.fillCrearUsuarios.cNombre){
-          this.mensajeError.push("el nombre es un campo obligatorio")
+          this.mensajeError.push("El nombre es un campo obligatorio")
         }
         if(!this.fillCrearUsuarios.cApellido){
-          this.mensajeError.push("el apellido es un campo obligatorio")
+          this.mensajeError.push("El apellido es un campo obligatorio")
         }
         if(!this.fillCrearUsuarios.cCorreo){
-          this.mensajeError.push("el correo es un campo obligatorio")
+          this.mensajeError.push("El correo es un campo obligatorio")
         }
         if(!this.fillCrearUsuarios.cContrasena){
-          this.mensajeError.push("la contraseña es un campo obligatorio")
+          this.mensajeError.push("La contraseña es un campo obligatorio")
         }
         if(!this.fillCrearUsuarios.cEscuela){
-          this.mensajeError.push("la escuela es un campo obligatorio")
+          this.mensajeError.push("La escuela es un campo obligatorio")
         }
         if(!this.fillCrearUsuarios.nIdRol){
-          this.mensajeError.push("el Rol es un campo obligatorio")
+          this.mensajeError.push("El Rol es un campo obligatorio")
+        }
+        if (this.fillCrearUsuarios.cContrasena != this.fillCrearUsuarios.cConfContrasena) {
+          this.mensajeError.push("Las contraseñas no coinciden")
         }
         if(this.mensajeError.length){
           this.error = 1;
@@ -281,6 +309,25 @@ export default {
         this.fullscreenLoading = false;
         this.$router.push('/usuarios');
       })
+    },
+    showPassword(idInput){
+      var cambio = document.getElementById(idInput);
+      if(cambio.type == "password"){
+        cambio.type = "text";
+        $('.' + idInput + 'Ico').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+      }else{
+        cambio.type = "password";
+        $('.' + idInput + 'Ico').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+      }
+    },
+    checkPassword(){
+      if (this.fillCrearUsuarios.cContrasena != this.fillCrearUsuarios.cConfContrasena){
+        if (this.fillCrearUsuarios.cConfContrasena != '') {
+          this.passError = true;
+        }
+      }else{
+        this.passError = false;
+      }
     }
 
   }// cierre methods
