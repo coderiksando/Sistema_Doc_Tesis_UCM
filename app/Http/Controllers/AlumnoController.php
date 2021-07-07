@@ -354,13 +354,15 @@ class AlumnoController extends Controller
                         ->where([
                             ['roles.name', '=', 'Profesor'],
                             ['users.id_user', '<>', $nIdUsuario]
-                        ])->orderBy('fullname')->get();
+                        ])
+                        ->where('state', 'A')
+                        ->orderBy('fullname')->get();
         return $profesores;
     }
 
     public function getAllUserRoll(Request $request){
         if(!$request->ajax()) return redirect('/');
-        $alumnos = User::all();
+        $alumnos = User::where('state', 'A')->get();
         foreach ($alumnos as $alumno) {
             foreach ($alumno->Users_Roles as $alumnoRol) {
                 $alumnoRol->Roles;
@@ -375,6 +377,7 @@ class AlumnoController extends Controller
                     ->where('nombres','like', "%$request->nombre%")
                     ->where('apellidos','like', "%$request->apellido%")
                     ->where('email','like', "%$request->email%")
+                    ->where('state', 'A')
                     ->get()->all();
         foreach($rpta as $user){
             foreach($user->Users_Roles->all() as $user_rol){

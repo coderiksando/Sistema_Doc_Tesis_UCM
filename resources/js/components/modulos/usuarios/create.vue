@@ -65,7 +65,7 @@
                           <div class="form-group row">
                               <label class="col-md-3 col-form-label">Asignar Escuela</label>
                               <div class="col-md-9">
-                                  <el-select v-model="fillCrearUsuarios.cEscuela" 
+                                  <el-select v-model="fillCrearUsuarios.cEscuela"
                                   placeholder="Asignar Escuela"
                                   clearable>
                                   <el-option
@@ -82,7 +82,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Rol</label>
                         <div class="col-md-9">
-                            <el-select v-model="fillCrearUsuarios.nIdRol" 
+                            <el-select v-model="fillCrearUsuarios.nIdRol"
                             placeholder="Asignar un Rol"
                             clearable>
                               <el-option
@@ -92,14 +92,6 @@
                                 :value="item.id">
                               </el-option>
                             </el-select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Fotografia</label>
-                        <div class="col-md-9">
-                            <input type="file" class="form-control" @change="getFile">
                         </div>
                       </div>
                     </div>
@@ -171,13 +163,13 @@ export default {
     }
   },
   computed: {
-    
+
   },
   mounted(){
     this.getListarRoles();
     this.getListarEscuelas();
   },
-  
+
   methods:{
     getListarEscuelas(){
       this.fullscreenLoading = true;
@@ -234,7 +226,7 @@ export default {
         console.log(response)
         var nIdFile = response.data[0].nIdFile;
         this.setGuardarUsuario(nIdFile);
-      }) 
+      })
     },
     validarRegistrarUsuario(){
       this.error = 0;
@@ -290,7 +282,7 @@ export default {
         this.$router.push('/usuarios');
       })
     }
-  
+
   }// cierre methods
 }
 </script>
