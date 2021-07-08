@@ -83,10 +83,10 @@
                         <td>
                           
                           <button class="btn btn-flat btn-primary btn-sm" @click.prevent="abrirModalByOption('roles', 'ver', item)">
-                            <i class="fas fa-folder"></i> Ver
+                            <i title="Ver" class="fas fa-eye"></i>
                           </button>
                             <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'roles.editar', params:{id: item.id}}">
-                              <i class="fas fa-pencil-alt"></i> Editar
+                              <i title="Editar" class="fas fa-pencil-alt"></i>
                             </router-link>   
                         </td>
                       </tr>

@@ -54,7 +54,7 @@ class AreaTesisController extends Controller
 
         if(!$request->ajax()) return redirect('/');
 
-        $testarea = DB::table('areatesis')->where('nombre', $request->nombre)->where('id_escuela', $request->id_escuela)->exists();
+        $testarea = DB::table('areatesis')->where('nombre', $request->nombre)->where('id_escuela', $request->id_escuela)->where('id', '<>', $request->id)->exists();
 
         if ($testarea){
             return response(['error' => 'Elemento ya existe'], 409);

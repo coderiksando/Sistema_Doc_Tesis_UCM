@@ -91,14 +91,14 @@
               </template>
             </li>
             <li class="nav-item">
-              <template v-if="listPermisos.includes('permisos.index')">
+              <!-- <template v-if="listPermisos.includes('permisos.index')">
                 <router-link class="nav-link" :to="'/permisos'">
                   <i class="nav-icon fas fa-key"></i>
                   <p>
                     Permisos
                   </p>
                 </router-link>  
-              </template>
+              </template> -->
               <template v-if="listPermisos.includes('registrar.tesis')">
                 <router-link class="nav-link" :to="'/registrodetesis'">
                   <i class="nav-icon fas fa-user-graduate"></i>

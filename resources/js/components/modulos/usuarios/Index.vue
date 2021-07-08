@@ -123,31 +123,31 @@
                         <td v-text="item.email"></td>
                         <td>
                           <template v-if="item.state == 'A'">
-                            <span class="badge badge-success" v-text="item.state_alias"></span>
+                            <span class="badge badge-success">Activo</span>
                           </template>
                           <template v-else>
-                            <span class="badge badge-danger" v-text="item.state_alias"></span>
+                            <span class="badge badge-danger">Inactivo</span>
                           </template>
                         </td>
                         <td>
                           <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'usuarios.ver', params:{id_user: item.id_user}}">
-                            <i class="fas fa-folder"></i> Ver
+                            <i title="Ver y Editar" class="fas fa-eye"></i>
                           </router-link>
                           <template v-if="item.state == 'A'">
                             <!-- <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'usuarios.editar', params:{id_user: item.id_user}}">
                               <i class="fas fa-pencil-alt"></i> Editar
                             </router-link> -->
                             <router-link class="btn btn-flat btn-success btn-sm" :to="{name:'usuarios.permisos', params:{id_user: item.id_user}}">
-                              <i class="fas fa-key"></i> Permisos
+                              <i title="Permisos" class="fas fa-key"></i>
                             </router-link>
                             <button class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarEstadoUsuario(1, item.id_user)">
-                              <i class="fas fa-trash"></i>Desactivar
+                              <i title="Desactivar usuario" class="fas fa-ban"></i>
                             </button>
 
                           </template>
                           <template v-else>
                             <button class="btn btn-flat btn-success btn-sm" @click.prevent="setCambiarEstadoUsuario(2, item.id_user)">
-                              <i class="fas fa-trash"></i>Activar
+                              <i title="Activar usuario" class="fas fa-check-circle"></i>
                             </button>
                           </template>
                         </td>
@@ -276,7 +276,7 @@ export default {
     },
     setCambiarEstadoUsuario(op, id_user){
       Swal.fire({
-      title: 'Estas seguro? ' + ((op == 1) ? 'desactivar ' : 'activar ') + ' el usuario',
+      title: '¿Está seguro de que desea ' + ((op == 1) ? 'desactivar ' : 'activar ') + ' el usuario?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

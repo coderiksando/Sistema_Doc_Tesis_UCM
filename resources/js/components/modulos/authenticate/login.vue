@@ -27,13 +27,13 @@
         <div class="login-box">
             <div class="login-logo">
                 <router-link :to="{name:'login'}">
-                    <b>Iniciar Sesion</b>
+                    <b>Iniciar Sesión</b>
                 </router-link>
             </div>
             <!-- /.login-logo -->
             <div class="card">
                 <div class="card-body login-card-body">
-                    <p class="login-box-msg">Ingresa tus credenciales para inicia sesion</p>
+                    <p class="login-box-msg">Ingresa tus credenciales para iniciar sesión</p>
 
                     <form method="post">
                         <div class="input-group mb-3">
