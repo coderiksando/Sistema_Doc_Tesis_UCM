@@ -90,7 +90,7 @@
                           <div class="input-group">
                             <input id="txtConfPassword" type="password" class="form-control" :class="{ 'is-invalid' : passError}" v-model="fillCrearUsuarios.cConfContrasena" @keyup.enter="setRegistrarUsuario" @change="checkPassword">
                             <div class="input-group-append">
-                              <button id="show_password" class="btn btn-primary" type="button" @click.prevent="showPassword('txtConfPassword')"> <span id="txtConfPasswordIcon" class="fa fa-eye-slash icon txtConfPasswordIco"></span> </button>
+                              <button id="show_confpassword" class="btn btn-primary" type="button" @click.prevent="showPassword('txtConfPassword')"> <span id="txtConfPasswordIcon" class="fa fa-eye-slash icon txtConfPasswordIco"></span> </button>
                             </div>
                           </div>
                           <div class="custom-file invalid-feedback no-margin" v-show="passError">
@@ -103,16 +103,30 @@
                       <div class="form-group row">
                         <label class="col-md-4 col-form-label">Rol</label>
                         <div class="col-md-8">
-                            <el-select v-model="fillCrearUsuarios.nIdRol"
-                            placeholder="Asignar un Rol"
-                            clearable>
-                              <el-option
-                                v-for="item in listRoles"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
-                              </el-option>
-                            </el-select>
+                          <multiselect
+                            v-model="listRoles.value"
+                            mode="tags"
+                            label='name'
+                            track-by="id"
+                            placeholder="Seleccionar roles"
+                            :options="listRoles.options"
+                            :multiple="true"
+                            selectLabel="Seleccionar"
+                            selectedLabel="Seleccionado"
+                            deselectLabel="Presiona enter para remover">
+                            <span slot="noResult">Rol no encontrado.</span>
+                          </multiselect>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Rut</label>
+                        <div class="col-md-8">
+                            <input type="text" placeholder="12345678-9" class="form-control" :class="{ 'is-invalid' : rutError}" v-model="fillCrearUsuarios.cRut" @keyup.enter="setRegistrarUsuario" @change="validarIngresoUsuarioRut($event.target.value)">
+                            <div class="custom-file invalid-feedback no-margin" v-show="rutError">
+                                Formato de RUT invalido.
+                            </div>
                         </div>
                       </div>
                     </div>
@@ -154,7 +168,9 @@
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect';
 export default {
+  components: { Multiselect },
   data(){
     return{
       fillCrearUsuarios:{
@@ -164,10 +180,13 @@ export default {
         cContrasena: '',
         cConfContrasena: '',
         cEscuela: '',
+        cRut: '',
         oFotografia: '',
-        nIdRol: ''
       },
-      listRoles: [],
+      listRoles: {
+        value: [],
+        options : []
+      },
       listEscuelas:[],
       form : new FormData,
       fullscreenLoading: false,
@@ -181,8 +200,8 @@ export default {
       },
       error: 0,
       mensajeError:[],
-      passError: false
-
+      passError: false,
+      rutError: false
     }
   },
   computed: {
@@ -211,7 +230,7 @@ export default {
 
       }).then(response => {
           //this.inicializarPaginacion();
-          this.listRoles = response.data;
+          this.listRoles.options = response.data;
           this.fullscreenLoading = false;
       })
     },
@@ -225,8 +244,11 @@ export default {
       this.fillCrearUsuarios.cContrasena = '';
       this.fillCrearUsuarios.cConfContrasena = '';
       this.fillCrearUsuarios.cEscuela = '';
+      this.fillCrearUsuarios.cRut = '';
       this.fillCrearUsuarios.oFotografia = '';
+      this.listRoles.value = [];
       this.passError = false;
+      this.rutError = false;
     },
     abrirModal(){
       this.modalShow = !this.modalShow;
@@ -236,12 +258,8 @@ export default {
           this.modalShow = true;
           return;
       }
-      if(!this.fillCrearUsuarios.oFotografia || this.fillCrearUsuarios.oFotografia == undefined){
         this.fullscreenLoading = true;
         this.setGuardarUsuario();
-      } else {
-        this.setRegistrarArchivo();
-      }
     },
     setRegistrarArchivo(){
       this.form.append('file', this.fillCrearUsuarios.oFotografia)
@@ -260,6 +278,12 @@ export default {
         if(!this.fillCrearUsuarios.cNombre){
           this.mensajeError.push("El nombre es un campo obligatorio")
         }
+        if(!this.fillCrearUsuarios.cRut){
+          this.mensajeError.push("El rut es un campo obligatorio")
+        }
+        if(this.rutError){
+          this.mensajeError.push("El formato de RUT es invalido")
+        }
         if(!this.fillCrearUsuarios.cApellido){
           this.mensajeError.push("El apellido es un campo obligatorio")
         }
@@ -272,8 +296,8 @@ export default {
         if(!this.fillCrearUsuarios.cEscuela){
           this.mensajeError.push("La escuela es un campo obligatorio")
         }
-        if(!this.fillCrearUsuarios.nIdRol){
-          this.mensajeError.push("El Rol es un campo obligatorio")
+        if(this.listRoles.value.length == 0){
+          this.mensajeError.push("El rol es un campo obligatorio")
         }
         if (this.fillCrearUsuarios.cContrasena != this.fillCrearUsuarios.cConfContrasena) {
           this.mensajeError.push("Las contraseñas no coinciden")
@@ -291,9 +315,16 @@ export default {
         'cCorreo'    : this.fillCrearUsuarios.cCorreo,
         'cContrasena': this.fillCrearUsuarios.cContrasena,
         'cEscuela'   : this.fillCrearUsuarios.cEscuela,
+        'cRut'       : this.fillCrearUsuarios.cRut,
         'oFotografia': nIdFile
       }).then(response => {
-        this.setEditarRolByUsuario(response.data);
+        if (response.data) {
+          this.setEditarRolByUsuario(response.data);
+        }else{
+          this.mensajeError.push("El correo está en uso.")
+          this.fullscreenLoading = false;
+          this.modalShow = true;
+        }
       })
     },
     setEditarRolByUsuario(nIdUsuario){
@@ -303,7 +334,7 @@ export default {
         var url = '/administracion/usuario/setEditarRolByUsuario'
         axios.post(url, {
         'nIdUsuario'    : nIdUsuario,
-        'nIdRol'  : this.fillCrearUsuarios.nIdRol,
+        'nIdRol'  : this.listRoles.value,
       }).then(response => {
         //console.log("Registro Usuario exitosamente");
         this.fullscreenLoading = false;
@@ -328,7 +359,27 @@ export default {
       }else{
         this.passError = false;
       }
-    }
+    },
+    validarIngresoUsuarioRut(rut){
+            if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test( rut )) {
+                this.rutError = true;
+            }
+            var tmp 	= rut.split('-');
+            var digv	= tmp[1];
+            var rut 	= tmp[0];
+            if ( digv == 'K' ) digv = 'k' ;
+            if (this.digitoVerificador(rut) == digv) {
+                this.rutError = false;
+            } else {
+                this.rutError = true;
+            }
+        },
+        digitoVerificador(T){
+            var M=0,S=1;
+            for(;T;T=Math.floor(T/10))
+                S=(S+T%10*(9-M++%6))%11;
+            return S?S-1:'k';
+        },
 
   }// cierre methods
 }

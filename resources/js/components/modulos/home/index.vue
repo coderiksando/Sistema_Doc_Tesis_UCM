@@ -4,7 +4,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-        <a class="navbar-brand" href="#">SGYAD UCM</a>
+        <a class="navbar-brand">SGYAD UCM</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -29,12 +29,14 @@
     <header class="bg-primary py-5 mb-5">
         <div class="container h-150">
         <div class="row h-150 align-items-center">
-            <div class="col-lg-12">
-            <br>
-            <br>
-            <img src="/img/logoucm.png" >
-            <h2 class="display-4 text-white mt-5 mb-2" style="text-align:justify">Repositorio academico Facultad de Ciencias de la Ingenieria Universidad Catolica del Maule</h2>
-            <p class="lead mb-5 text-white-50" ></p>
+            <div class="col-md-12 mt-4">
+              <td class="col-md-3">
+                <img class="mt-3" src="/img/logoucm.png" >
+              </td>
+              <td class="col-md-9">
+                  <h1 class="display-5 text-white mb-2" style="text-align:justify">Repositorio academico Facultad de Ciencias de la Ingenieria Universidad Catolica del Maule</h1>
+              </td>
+              <p class="lead mb-5 text-white-50" ></p>
             </div>
         </div>
         </div>
