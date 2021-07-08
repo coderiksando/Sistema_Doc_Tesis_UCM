@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Debugbar;
 
 class UsersController extends Controller
 {
@@ -47,18 +48,6 @@ class UsersController extends Controller
         ->whereNotIn('users.id_user', $admins)
         ->orderBy('nombres')->get();
 
-
-        // $rpta = DB::select('call sp_Usuario_getListarUsuarios (?, ?, ?, ?, ?, ?)',
-        //                                                         [
-        //                                                             $iduser,
-        //                                                             $cNombre,
-        //                                                             $cApellido,
-        //                                                             $cCorreo,
-        //                                                             $cEstado,
-        //                                                             $cEscuela
-        //                                                         ]);
-        // $rpta = collect($rpta)->sortBy('fullname')->values();
-
         return $rpta;
     }
 
@@ -74,6 +63,7 @@ class UsersController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         $cNombre        = $request->cNombre;
+        $cRut           = $request->cRut;
         $cApellido      = $request->cApellido;
         $cCorreo        = $request->cCorreo;
         $cContrasena    = Hash::make($request->cContrasena);
@@ -87,16 +77,21 @@ class UsersController extends Controller
         $cEscuela       = ($cEscuela == NULL) ? ($cEscuela = '') : $cEscuela;
         $oFotografia    = ($oFotografia == NULL) ? ($oFotografia = NULL) : $oFotografia;
 
-        $rpta = DB::select('call sp_Usuario_setRegistrarUsuario (?, ?, ?, ?, ?, ?)',
-                                                                [
-                                                                    $cNombre,
-                                                                    $cApellido,
-                                                                    $cCorreo,
-                                                                    $cContrasena,
-                                                                    $cEscuela,
-                                                                    $oFotografia
-                                                                ]);
-        return $rpta[0]->nIdUsuario;
+        $chekMail = User::where('email', $cCorreo)->count();
+        if ($chekMail) {
+            return 0;
+        }
+
+        $newUser = User::create([
+            'nombres' => $cNombre,
+            'apellidos' => $cApellido,
+            'email' => $cCorreo,
+            'password' => $cContrasena,
+            'id_escuela' => $cEscuela,
+            'rut' => $cRut
+        ]);
+
+        return $newUser->id_user;
     }
     //     EDITAR USUARIOS
     public function setEditarUsuario(Request $request){
@@ -202,11 +197,12 @@ class UsersController extends Controller
         $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
         $nIdRol     = ($nIdRol == NULL) ? ($nIdRol = '') : $nIdRol;
 
-        $rpta = DB::select('call sp_Usuario_setEditarRolByUsuario (?, ?)',
-                                                                [
-                                                                    $nIdUsuario,
-                                                                    $nIdRol
-                                                                ]);
+        foreach ($nIdRol as $rol) {
+            Users_Roles::create([
+                'id_user' => $nIdUsuario,
+                'id_roles' => $rol['id']
+            ]);
+        }
     }
     public function getRolByUsuario(Request $request){
         if(!$request->ajax()) return redirect('/');

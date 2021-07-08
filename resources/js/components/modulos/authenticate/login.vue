@@ -1,64 +1,99 @@
 <template>
-<div class="login-page">
-    <div class="login-box">
-        <div class="login-logo">
-            <router-link :to="{name:'login'}">
-                <b>Iniciar Sesion</b>
-            </router-link>
-        </div>
-        <!-- /.login-logo -->
-        <div class="card">
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">Ingresa tus credenciales para inicia sesion</p>
-
-                <form method="post">
-                    <div class="input-group mb-3">
-                    <input type="email" @keyup.enter="login" v-model="fillLogin.cEmail" class="form-control" placeholder="Email">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="password" @keyup.enter="login" v-model="fillLogin.cContrasena" class="form-control" placeholder="Contraseña">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-                <div class="row">
-                    <div class="col-md-12">
-                        <span v-if="error">
-                            <div v-for="(e, index) in mensajeError" :key="index" v-text="e" class="callout callout-danger"></div>
-                        </span>
-                    </div>
-                </div>
-                <div class="social-auth-links text-center mb-3">
-                    <button class="btn btn-flat btn-block btn-danger" @click.prevent="login" v-loading.fullscreen.lock="fullscreenLoading">
-                     Iniciar sesion
-                    </button>
-                </div>
-                <p class="mb-0">
-                    <router-link :to="{name:'registro'}">
-                        <b>Registrarme como alumno</b>
-                    </router-link>
-                </p>
-                <p class="mb-0">
-                    <router-link :to="{name:'passrecovery'}">
-                        <b>Recuperar contraseña</b>
-                    </router-link>
-                </p>
-                <!-- /.social-auth-links -->
+<div>
+    <div class="login-page">
+    <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <div class="container">
+            <a class="navbar-brand">SGYAD UCM</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                <router-link  :to="'/'">
+                <li class="nav-item">
+                    <a class="nav-link">Home</a>
+                </li>
+                </router-link>
+                <router-link  :to="'/login'">
+                <li class="nav-item">
+                    <a class="nav-link">Ingresar</a>
+                </li>
+                </router-link>
+                </ul>
             </div>
-            <!-- /.login-card-body -->
+            </div>
+        </nav>
+        <div class="login-box">
+            <div class="login-logo">
+                <router-link :to="{name:'login'}">
+                    <b>Iniciar Sesión</b>
+                </router-link>
+            </div>
+            <!-- /.login-logo -->
+            <div class="card">
+                <div class="card-body login-card-body">
+                    <p class="login-box-msg">Ingresa tus credenciales para iniciar sesión</p>
+
+                    <form method="post">
+                        <div class="input-group mb-3">
+                        <input type="email" @keyup.enter="login" v-model="fillLogin.cEmail" class="form-control" placeholder="Email">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="password" @keyup.enter="login" v-model="fillLogin.cContrasena" class="form-control" placeholder="Contraseña">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span v-if="error">
+                                <div v-for="(e, index) in mensajeError" :key="index" v-text="e" class="callout callout-danger"></div>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="social-auth-links text-center mb-3">
+                        <button class="btn btn-flat btn-block btn-primary" @click.prevent="login" v-loading.fullscreen.lock="fullscreenLoading">
+                        Iniciar sesion
+                        </button>
+                    </div>
+                    <p class="mb-0">
+                        <router-link :to="{name:'registro'}">
+                            <b>Registrarme como alumno</b>
+                        </router-link>
+                    </p>
+                    <p class="mb-0">
+                        <router-link :to="{name:'passrecovery'}">
+                            <b>Recuperar contraseña</b>
+                        </router-link>
+                    </p>
+                    <!-- /.social-auth-links -->
+                </div>
+                <!-- /.login-card-body -->
+            </div>
         </div>
     </div>
+    <!-- Footer -->
+    <footer class="py-4 text-center text-lg-start bg-dark text-muted">
+        <div class="container" style="text-align: center">
+          <!-- Por favor por respeto a los colaboradores de este proyecto no eliminar las referencias de las personas que han participado-->
+        <strong >Sistema de gestión y administración de documentos <a href="https://www.ucm.cl">UCM</a>.</strong>&nbsp; All rights reserved.
+        </div>
+        <!-- Por favor por respeto a los colaboradores de este proyecto no eliminar las referencias de las personas que han participado-->
+        <!-- /.container -->
+    </footer>
 </div>
 </template>
+
 
 <script>
 export default {

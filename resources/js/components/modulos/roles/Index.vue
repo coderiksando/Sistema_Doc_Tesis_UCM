@@ -83,10 +83,10 @@
                         <td>
                           
                           <button class="btn btn-flat btn-primary btn-sm" @click.prevent="abrirModalByOption('roles', 'ver', item)">
-                            <i class="fas fa-folder"></i> Ver
+                            <i title="Ver" class="fas fa-eye"></i>
                           </button>
                             <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'roles.editar', params:{id: item.id}}">
-                              <i class="fas fa-pencil-alt"></i> Editar
+                              <i title="Editar" class="fas fa-pencil-alt"></i>
                             </router-link>   
                         </td>
                       </tr>
@@ -118,14 +118,14 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
+    <div class="modal fade scrollTable" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Sistema de tesis UCM</h5>
             <button class="close" @click="abrirModal"></button>
           </div>
-          <div class="modal-body scrollTable">
+          <div class="modal-body">
             
             <template v-if="modalOption == 1">
               <div class="callout callout-danger" style="padding: 5px" v-for="(item, index) in mensajeError" :key="index" v-text="item"></div>
@@ -166,7 +166,7 @@
                         </div>
                         <div class="card-body table-resposive">
                           <template v-if="listPermisos.length">
-                          <div class="scrollTable">
+                          <div>
                             <table class ="table table-hover table-head-fixed text-nowrap projects">
                               <thead>
                                 <tr>
