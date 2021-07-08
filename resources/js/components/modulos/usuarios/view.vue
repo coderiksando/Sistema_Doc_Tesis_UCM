@@ -119,7 +119,24 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label">Nueva contraseña</label>
                                 <div class="col-md-9">
-                                    <input type="password" class="form-control" v-model="fillEditarUsuarios.cContrasena" >
+                                    <div class="input-group">
+                                    <input id="pass1" type="password" class="form-control" v-model="fillEditarUsuarios.cContrasena" @blur="passwordVerification" autocomplete="off">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" @click.prevent="showPassword('pass1')"><span id="pass1" class="fa fa-eye-slash icon txtPasswordIco"></span></button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Repetir nueva contraseña</label>
+                                <div class="col-md-9">
+                                    <div class="input-group">
+                                    <input id="pass2" type="password" class="form-control" v-model="repeatedPassword" @blur="passwordVerification" autocomplete="off">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" @click.prevent="showPassword('pass2')"><span id="pass2" class="fa fa-eye-slash icon txtPasswordIco"></span></button>
+                                    </div>
+                                    </div>
+                                    <div v-show="passwordError===1"><p style="color: red; margin-bottom: 0px;">Las contraseñas no coinciden</p></div>
                                 </div>
                             </div>
 
@@ -208,7 +225,7 @@
 
                           <div class="form-group row">
                             <div class=" col-sm-6">
-                              <button style="margin: 2px;" :disabled="formatError || rutError" class="btn btn-info btnFull" @click.prevent="setEditarUsuario">Editar</button>
+                              <button style="margin: 2px;" :disabled="formatError || rutError || passwordError===1" class="btn btn-info btnFull" @click.prevent="setEditarUsuario">Editar</button>
                             </div>
                             <div class=" col-sm-6">
                               <button style="margin: 2px;" class="btn btn-primary btnFull" @click.prevent="reestablecerDatos">Reestablecer</button>
@@ -301,7 +318,9 @@ export default {
             endOption: {
             },
             rutError: false,
-            fullscreenLoading:false
+            fullscreenLoading:false,
+            repeatedPassword: '',
+            passwordError: 2,
         }
     },
     mounted(){
@@ -470,6 +489,7 @@ export default {
             this.fillEditarUsuarios.cEscuela        = this.fillVerUsuarios.cEscuela;
             this.fillEditarUsuarios.oFotografia     = '';
             this.fillEditarUsuarios.cContrasena     = '';
+            this.repeatedPassword                   = '';
             this.fillEditarUsuarios.direccion       = this.fillVerUsuarios.direccion;
             this.fillEditarUsuarios.telefono        = this.fillVerUsuarios.telefono;
             this.fillEditarUsuarios.f_nacimiento    = this.fillVerUsuarios.f_nacimiento;
@@ -514,6 +534,23 @@ export default {
                 S=(S+T%10*(9-M++%6))%11;
             return S?S-1:'k';
         },
+        passwordVerification () {
+            this.passwordError = 0;
+            this.passwordVerification;
+            if (this.repeatedPassword !== this.fillEditarUsuarios.cContrasena) {
+                this.passwordError = 1;
+            }
+        },
+        showPassword (idPass) {
+            const cambio = document.getElementById(idPass);
+            if (cambio.type == 'password') {
+                cambio.type = 'text';
+                $('.' + idPass + 'Ico').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+            } else {
+                cambio.type = 'password';
+                $('.' + idPass + 'Ico').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+            }
+        }
     }
 }
 </script>

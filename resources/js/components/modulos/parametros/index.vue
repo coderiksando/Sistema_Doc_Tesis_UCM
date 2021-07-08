@@ -1,6 +1,18 @@
 <template>
 <div>
     <meta charset="utf-8"/>
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-12">
+            <h1 class="m-0 text-dark">Parametros del Sistema</h1>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
     <div class="card-body">
         <div class="container-fluid">
             <div class="card card-info">
@@ -54,6 +66,21 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-10">
+                            <div class="form-group row">
+                                <label class="col-md-8 col-form-label">Peso máximo constancia de examen (MB)</label>
+                                <div class="col-md-3">
+                                    <input type="number" max="100" class="form-control" v-model="constanciaSize">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-info btn-block" @click.prevent="resetConstanciaSize">
+                                <i class="fa fa-redo"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label">Formatos Avances de Tesis</label>
@@ -97,6 +124,28 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Formatos constancia de examen</label>
+                                <div class="col-md-7">
+                                    <Multiselect
+                                    v-model="formatosConstancia.value"
+                                    mode="tags"
+                                    placeholder="Seleccionar formatos"
+                                    :options="formatosConstancia.options"
+                                    :taggable="true"
+                                    :multiple="true"
+                                    tag-placeholder="Agregar formato"
+                                    selectLabel="Presiona enter para seleccionar"
+                                    selectedLabel="Seleccionado"
+                                    deselectLabel="Presiona enter para remover"
+                                    @tag="addTagAvance"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <div class="row">
@@ -109,7 +158,7 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 </div>
 </template>
 
@@ -128,12 +177,18 @@
             value: [],
             options: ['.pdf', '.doc', '.xml']
         },
+        formatosConstancia:{
+            value: [],
+            options: ['.pdf', '.doc', '.xml']
+        },
         maxStudentNumber : 0,
         avancesTesisSize: 0,
         actaSize: 0,
+        constanciaSize: 0,
         defMaxStudentNumber : 0,
         defAvancesTesisSize: 0,
         defActaSize: 0,
+        defConstanciaSize: 0,
         fullscreenLoading: false
       }
     },
@@ -156,23 +211,28 @@
         },
         getParametros(){
             var url = '/admin/parametros';
-            axios.post(url,{'params': ['MaxStudentNumber', 'AvancesTesisSize', 'ActaSize', 'AvancesTesisFormato', 'ActaFormato']}).then(response => {
+            axios.post(url,{'params': ['MaxStudentNumber', 'AvancesTesisSize', 'ActaSize', 'ConstanciaSize', 'AvancesTesisFormato', 'ActaFormato', 'ConstanciaFormato']}).then(response => {
                 this.maxStudentNumber = this.defMaxStudentNumber = parseInt(response.data[0][0]);
                 this.avancesTesisSize = this.defAvancesTesisSize = parseInt(response.data[1][0]);
                 this.actaSize = this.defActaSize = parseInt(response.data[2][0]);
-                this.formatosAvance.value = response.data[3];
-                this.formatosActa.value = response.data[4];
+                this.constanciaSize = this.defConstanciaSize = parseInt(response.data[3][0]);
+                this.formatosAvance.value = response.data[4];
+                this.formatosActa.value = response.data[5];
+                this.formatosConstancia.value = response.data[6];
+                console.log(response)
             })
         },
         guardarParametros(){
             var url = '/admin/setParametros';
             this.fullscreenLoading = true;
             axios.post(url,{
-                'MaxStudentNumber' : this.maxStudentNumber, 
-                'AvancesTesisSize': this.avancesTesisSize, 
-                'ActaSize' : this.actaSize, 
-                'AvancesTesisFormato' : this.formatosAvance.value, 
-                'ActaFormato' : this.formatosActa.value
+                'MaxStudentNumber' : this.maxStudentNumber,
+                'AvancesTesisSize': this.avancesTesisSize,
+                'ActaSize' : this.actaSize,
+                'ConstanciaSize' : this.constanciaSize,
+                'AvancesTesisFormato' : this.formatosAvance.value,
+                'ActaFormato' : this.formatosActa.value,
+                'ConstanciaFormato' : this.formatosConstancia.value
                 }).then(response => {
                     console.log(response.data);
                     this.fullscreenLoading = false;
@@ -193,6 +253,9 @@
         },
         resetActaSize(){
             this.actaSize = this.defActaSize;
+        },
+        resetConstanciaSize () {
+            this.constanciaSize = this.defConstanciaSize;
         }
     }
 }

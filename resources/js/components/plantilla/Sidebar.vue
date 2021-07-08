@@ -1,12 +1,12 @@
 <template>
-  
+
   <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar">
     <!-- Brand Logo -->
       <a href="#" class="brand-link">
         <img :src="ruta + '/img/ucm3.png'"
             alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3"
-            style="opacity: .8">   
+            style="opacity: .8">
         <span class="brand-text font-weight-light">SGYAD UCM</span>
       </a>
     <!-- Sidebar -->
@@ -17,11 +17,11 @@
           <template v-if="!usuario.id_files">
             <img :src="ruta + '/img/avatar.png'" class="img-circle elevation-2" :alt="usuario.fullname">
           </template>
-          
+
           <template v-else>
             <img :src="usuario.file.path" class="img-circle elevation-2" :alt="usuario.fullname" style="height:34px !important;">
           </template>
-          
+
         </div>
         <div class="info">
           <router-link class="d-block" :to="{name: 'usuarios.ver', params:{id_user: usuario.id_user}}">
@@ -29,7 +29,7 @@
           </router-link>
         </div>
       </div>
-      
+
 
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="container">
@@ -97,16 +97,18 @@
                   <p>
                     Permisos
                   </p>
-                </router-link>  
+                </router-link>
               </template>
-              <template v-if="listPermisos.includes('registrar.tesis')">
+            </li>
+            <li class="nav-item">
+            <template v-if="listPermisos.includes('registrar.tesis')">
                 <router-link class="nav-link" :to="'/registrodetesis'">
-                  <i class="nav-icon fas fa-user-graduate"></i>
-                  <p>
+                    <i class="nav-icon fas fa-user-graduate"></i>
+                    <p>
                     Registrar tesis finalizadas
-                  </p>
-                </router-link>  
-              </template>
+                    </p>
+                </router-link>
+            </template>
             </li>
           </template>
           <template  v-if="listPermisos.includes('escuelas.index', 'areatesis.index')">
@@ -118,7 +120,7 @@
                   <p>
                     Escuelas
                   </p>
-                </router-link>  
+                </router-link>
               </template>
             </li>
             <li class="nav-item">
@@ -129,7 +131,7 @@
                     Areas de tesis
                   </p>
                 </router-link>
-              </template>    
+              </template>
             </li>
             <li class="nav-item">
               <template v-if="listPermisos.includes('vinculacion.index')">
@@ -139,7 +141,7 @@
                     Vinculaciones
                   </p>
                 </router-link>
-              </template>    
+              </template>
             </li>
           </template>
           <template  v-if="listPermisos.includes('parametros.index')">
@@ -151,7 +153,7 @@
                   <p>
                     Parametros
                   </p>
-                </router-link>  
+                </router-link>
               </template>
             </li>
             <li class="nav-item">
@@ -161,10 +163,10 @@
                   <p>
                     Registros
                   </p>
-                </router-link>  
+                </router-link>
               </template>
             </li>
-            
+
           </template>
           <!-- VISTA PARA ADMINISTRACION DE REPORTES -->
           <template  v-if="listPermisos.includes('reportes.reportefit')">
@@ -176,7 +178,7 @@
                   <p>
                     Reportes Tesis
                   </p>
-                </router-link>  
+                </router-link>
               </template>
             </li>
           </template>
@@ -190,12 +192,12 @@
                   <p>
                     Acta de defensa y nota
                   </p>
-                </router-link>  
+                </router-link>
               </template>
             </li>
           </template>
           <template  v-if="listPermisos.includes('documentos.index')">
-            
+
             <li class="nav-item">
               <template v-if="listPermisos.includes('documentos.index') && (rolActivo == 'Director' || rolActivo == 'Secretaria' )">
                 <router-link class="nav-link" :to="'/documentos'">
@@ -203,7 +205,7 @@
                   <p>
                     Documentos alumnos
                   </p>
-                </router-link>  
+                </router-link>
               </template>
             </li>
           </template>
@@ -217,7 +219,7 @@
                     <p>
                       Inscribir/Revisa FIT
                     </p>
-                  </router-link>  
+                  </router-link>
                 </template>
               </li>
               <li class="nav-item">
@@ -227,7 +229,7 @@
                     <p>
                       Avances de tesis
                     </p>
-                  </router-link>  
+                  </router-link>
                 </template>
               </li>
               <li class="nav-item">
@@ -237,7 +239,7 @@
                     <p>
                       Bitácoras
                     </p>
-                  </router-link>  
+                  </router-link>
                 </template>
               </li>
               <li class="nav-item">
@@ -247,7 +249,7 @@
                     <p>
                       Comisiones
                     </p>
-                  </router-link>  
+                  </router-link>
                 </template>
               </li>
               <li class="nav-item">
@@ -258,7 +260,7 @@
                         Vinculaciones
                     </p>
                   </router-link>
-                </template>  
+                </template>
               </li>
           </template>
 
@@ -271,7 +273,7 @@
                     <p>
                       Nota pendiente
                     </p>
-                  </router-link>  
+                  </router-link>
                 </template>
               </li>
           </template>
@@ -291,7 +293,7 @@
               </a>
             </li>
           </template>
-          
+
 
 
 
@@ -330,7 +332,7 @@ export default {
           localStorage.clear();
           this.fullscreenLoading = false;
         }
-        
+
       })
     },
     cambiarRol(){

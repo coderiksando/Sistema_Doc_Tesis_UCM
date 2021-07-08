@@ -95,7 +95,7 @@ class FilesController extends Controller
                 $rpta->path = asset('storage/users/'.$fileserver);
                 $rpta->filename = $filename;
                 $rpta->id_fit = $request->id_fit;
-                $rpta->tipo_pdf = 'final_t';
+                $rpta->tipo_pdf = $request->type;
                 $rpta->save();
             }
         } else {

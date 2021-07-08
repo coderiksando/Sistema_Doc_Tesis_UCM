@@ -33,12 +33,20 @@ class ParametrosSeeder extends Seeder
             'valor'=>'.pdf',
         ]);
         Parametro::create([
+            'parametro'=>'ConstanciaFormato',
+            'valor'=>'.pdf',
+        ]);
+        Parametro::create([
             'parametro'=>'ActaSize',
             'valor'=>'10',
         ]);
         Parametro::create([
             'parametro'=>'AvancesTesisSize',
             'valor'=>'50',
+        ]);
+        Parametro::create([
+            'parametro'=>'ConstanciaSize',
+            'valor'=>'10',
         ]);
     }
 }
