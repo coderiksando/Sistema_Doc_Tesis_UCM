@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Crear Vinculacion</h1>
+            <h1 class="m-0 text-dark">Crear vinculación</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -24,7 +24,7 @@
           <div class="container-fluid">
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario Registrar Vinculacion</h3>
+                            <h3 class="card-title">Formulario registrar vinculación</h3>
                         </div>
                             <div class="card-body">
                                 <form role="form">
@@ -41,7 +41,7 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Tipos</label>
                                                 <div class="col-md-9">
-                                                    <el-select v-model="fillCrearVinculacion.cTipo" 
+                                                    <el-select v-model="fillCrearVinculacion.cTipo"
                                                     placeholder="Seleccione un Tipo"
                                                     clearable>
                                                     <el-option
@@ -56,7 +56,7 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Descripcion</label>
+                                                <label class="col-md-3 col-form-label">Descripción</label>
                                                 <div class="col-md-9">
                                                     <input type="text" maxlength="70" class="form-control" v-model="fillCrearVinculacion.cDescripcion" @keyup.enter="setRegistrarVinculacion">
                                                 </div>
@@ -77,10 +77,10 @@
                         </div>
 
             </div>
-        </div> 
+        </div>
     </div>
 </div>
-               
+
 
 
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
@@ -204,7 +204,7 @@ export default {
       this.pageNumber = 0;
     },
 
-  
+
   }// cierre methods
 }
 </script>

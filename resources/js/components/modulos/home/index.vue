@@ -34,7 +34,7 @@
                 <img class="mt-3" src="/img/logoucm.png" >
               </td>
               <td class="col-md-9">
-                  <h1 class="display-5 text-white mb-2" style="text-align:justify">Repositorio academico Facultad de Ciencias de la Ingenieria Universidad Catolica del Maule</h1>
+                  <h1 class="display-5 text-white mb-2" style="text-align:justify">Repositorio académico de la Facultad de Ciencias de la Ingeniería Universidad Católica del Maule</h1>
               </td>
               <p class="lead mb-5 text-white-50" ></p>
             </div>
@@ -44,20 +44,20 @@
 
     <!-- Page Content -->
     <div class="container">
-        
+
       <div class="card">
         <div class="card-body">
           <div class="container-fluid">
               <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda de tesis</h3>
+                <h3 class="card-title">Criterios de búsqueda de tesis</h3>
               </div>
               <div class="card-body">
                 <form role="form">
                   <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Titulo</label>
+                            <label class="col-md-3 col-form-label">Título</label>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" v-model="fillBsqTesis.cTitulo">
                             </div>
@@ -84,7 +84,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Profesor</label>
                         <div class="col-md-9">
-                                <el-select filterable v-model="fillBsqTesis.nIdProfesor" 
+                                <el-select filterable v-model="fillBsqTesis.nIdProfesor"
                                 placeholder="Asignar Profesor"
                                 clearable>
                                 <el-option
@@ -114,23 +114,22 @@
             <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title">
-                  Bandeja de Resultados</h3>
+                  Bandeja de resultados</h3>
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listTesis.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
                         <th>PDF</th>
-                        <th>Titulo</th>
+                        <th>Título</th>
                         <th>Profesor</th>
                         <th>Escuela</th>
-                        
                       </tr>
                     </thead>
                     <tbody>
-                      
+
                       <tr v-for="(item, index) in listTesis" :key="index">
                         <td>
                           <a class="btn btn-flat btn-warning btn-sm" :href="item.path" target="_blank"><i class="fas fa-file-download"> </i> PDF</a>
@@ -138,7 +137,7 @@
                         <td v-text="item.titulo"></td>
                         <td v-text="item.nombres + ' ' + item.apellidos"></td>
                         <td v-text="item.nombre"></td>
-                        
+
                       </tr>
                     </tbody>
                   </table>
@@ -167,7 +166,7 @@
           </div>
         </div>
       </div>
-    
+
     </div>
     <!-- /.container -->
 
@@ -198,7 +197,7 @@ export default {
           cEstadoTesis: ''
         },
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
-         
+
         listTesis:[],
         listEscuelas:[],
         listProfesores:[],
@@ -206,7 +205,7 @@ export default {
         pageNumber: 0,
         perPage: 10,
         modalShow: false,
-        modalOption: 0, 
+        modalOption: 0,
         mostrarModal: {
           display: 'block',
           background: '#0000006b',
@@ -220,7 +219,7 @@ export default {
     },
     computed: {
       pageCount(){
-        //obtener el numero de paginas 
+        //obtener el numero de paginas
         let a = this.listTesis.length,
             b = this.perPage;
         return Math.ceil(a / b);
@@ -344,7 +343,7 @@ export default {
         this.listPermisos = [];
         this.modalOption = 0;
       },
-    
+
     }
 }
 </script>

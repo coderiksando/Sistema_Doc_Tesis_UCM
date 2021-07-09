@@ -25,7 +25,7 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda</h3>
+                <h3 class="card-title">Criterios de búsqueda</h3>
               </div>
               <div class="card-body">
                 <form role="form">
@@ -58,7 +58,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Estado</label>
                         <div class="col-md-9">
-                            <el-select v-model="fillBsqUsuarios.cEstado" 
+                            <el-select v-model="fillBsqUsuarios.cEstado"
                             placeholder="Seleccione un estado"
                             clearable>
                               <el-option
@@ -73,7 +73,7 @@
                     </div>
                   </div>
                 </form>
-              
+
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -92,7 +92,7 @@
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listarUsuariosPaginated.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
@@ -208,7 +208,7 @@ export default {
   },
   computed: {
     pageCount(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listUsuarios.length,
           b = this.perPage;
       return Math.ceil(a / b);

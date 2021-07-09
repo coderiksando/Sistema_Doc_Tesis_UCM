@@ -1,5 +1,17 @@
 <template>
     <div>
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-12">
+            <h1 class="m-0 text-dark">Registros del sistema</h1>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
     <div class="container">
 
       <div class="card">
@@ -7,7 +19,7 @@
           <div class="container-fluid">
               <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda de registros</h3>
+                <h3 class="card-title">Criterios de búsqueda de registros</h3>
               </div>
               <div class="card-body">
                 <form role="form">
@@ -86,7 +98,7 @@
             <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title">
-                  Bandeja de Resultados</h3>
+                  Bandeja de resultados</h3>
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listRegistrosPaginated.length">

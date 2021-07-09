@@ -8,7 +8,7 @@
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
-    </div> 
+    </div>
 
     <div class="container container-fluid">
       <div class="card">
@@ -16,8 +16,8 @@
           <div class="card-header">
             <div class="card-tools">
                 <router-link class="btn btn-info bnt-sm" :to="'/bitacoras/crear'">
-              <i class="fas fa-plus-square"></i> Ingresar Bitácora
-            </router-link> 
+              <i class="fas fa-plus-square"></i> Ingresar bitácora
+            </router-link>
             </div>
           </div>
         </template>
@@ -26,7 +26,7 @@
               <template  v-if="listRolPermisosByUsuario.includes('avances.listaralumnos')">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda</h3>
+                <h3 class="card-title">Criterios de búsqueda</h3>
               </div>
              <!-- Filtro de busqueda de avances -->
               <div class="card-body">
@@ -54,7 +54,7 @@
                   </div>
                 </form>
               </div> <!-- Filtro de busqueda de avances -->
-              
+
               <div class="card-footer">
                 <div class="row">
                   <div class="col-md-4 offset-4">
@@ -73,7 +73,7 @@
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listBitacoras.length">
-                  
+
                   <table class ="table table-hover text-nowrap projects">
                     <thead>
                       <tr>
@@ -98,7 +98,7 @@
                           <router-link class="btn btn-info boton" :to="{name:'bitacoras.editar', params:{id: item.id}}">
                               <i class="fas fa-pencil-alt"></i>
                             </router-link>
-                        </template>    
+                        </template>
                         </td>
                       </tr>
                     </tbody>
@@ -106,7 +106,7 @@
                 </template>
                 <template v-else>
                   <div class="callout callout-info">
-                    <h5> No se han encontrado resultados...</h5>
+                    <h5>No se han encontrado resultados...</h5>
                   </div>
                 </template>
               </div>
@@ -155,7 +155,7 @@ export default {
       pageNumber: 0,
       perPage: 5,
       modalShow: false,
-      modalOption: 0, 
+      modalOption: 0,
       mostrarModal: {
         display: 'block',
         background: '#0000006b',
@@ -169,7 +169,7 @@ export default {
   },
   computed: {
     pageCount(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listBitacoras.length,
           b = this.perPage;
       return Math.ceil(a / b);
@@ -219,7 +219,7 @@ export default {
       this.fullscreenLoading = true;
       var url = '/bitacoras/getListarMisBitacoras'
       axios.get(url, {
-        
+
       }).then(response => {
           this.inicializarPaginacion();
           this.listBitacoras = response.data;
@@ -277,7 +277,7 @@ export default {
 <style>
   .scrollTable{
     max-height: 350px !important;
-    overflow: auto !important; 
+    overflow: auto !important;
   }
   .boton{
     border:0px !important;
@@ -291,5 +291,5 @@ export default {
     border: none;
     resize: none;
   }
-  
+
 </style>

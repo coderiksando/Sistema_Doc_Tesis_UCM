@@ -39,11 +39,11 @@
             <!-- About Me Box -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Acerca de mi</h3>
+                <h3 class="card-title">Acerca de mí</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <strong><i class="fas fa-envelope-open-text"></i> Correo</strong>
+                <strong><i class="fas fa-envelope-open-text"></i>Correo</strong>
 
                 <p class="text-muted" v-text="fillVerUsuarios.cCorreo">
                 </p>

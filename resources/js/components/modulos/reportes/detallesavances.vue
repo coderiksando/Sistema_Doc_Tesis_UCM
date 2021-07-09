@@ -17,7 +17,7 @@
             <div class="card-tools">
               <router-link class="btn btn-info bnt-sm" :to="'/reportes'">
                 <i class="fas fa-arrow-left"></i> Volver a Reportes
-              </router-link> 
+              </router-link>
             </div>
           </div>
         </template>
@@ -26,17 +26,17 @@
             <template  v-if="listRolPermisosByUsuario.includes('avances.listaralumnos')">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda</h3>
-              </div>              
+                <h3 class="card-title">Criterios de búsqueda</h3>
+              </div>
              <!-- Filtro de busqueda de avances -->
               <div class="card-body">
                 <form role="form">
                   <div class="row">
                     <div class="col-md-9">
                       <div class="form-group row">
-                          <label class="col-md-3 col-form-label">Seleccionar Alumno</label>
+                          <label class="col-md-3 col-form-label">Seleccionar alumno</label>
                           <div class="col-md-9">
-                              <el-select v-model="fillBsqAvanceByAlumno.id_user" 
+                              <el-select v-model="fillBsqAvanceByAlumno.id_user"
                               placeholder="Asignar alumno"
                               clearable>
                               <el-option
@@ -63,24 +63,24 @@
               </div>
             </div>
           </template>
-              
+
             <div class="card card-info">
               <div class="card-header">
                 <h3 class="card-title">Bandeja de resultados</h3>
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listarAvancesPaginated.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
                         <th>Fecha</th>
-                        <th>Descripcion</th>
-                        <th>Archivo Asociado</th>
-                        <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">            
+                        <th>Descripción</th>
+                        <th>Archivo asociado</th>
+                        <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">
                           <th>Editar</th>
                         </template>
-                        
+
                       </tr>
                     </thead>
                     <tbody>
@@ -92,8 +92,8 @@
                         </td>
 
                         <td>
-                          
-                          <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">            
+
+                          <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">
                             <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'avances.editar', params:{id: item.id}}">
                                 <i class="fas fa-pencil-alt"></i> Editar
                               </router-link>
@@ -148,7 +148,7 @@ export default {
       pageNumber: 0,
       perPage: 5,
       modalShow: false,
-      modalOption: 0, 
+      modalOption: 0,
       mostrarModal: {
         display: 'block',
         background: '#0000006b',
@@ -161,9 +161,9 @@ export default {
     }
   },
   computed: {
-    
+
     pageCount(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listAvances.length,
           b = this.perPage;
       return Math.ceil(a / b);
@@ -194,7 +194,7 @@ export default {
     //this.getListarAlumnosByprofesor();
   },
   methods:{
-    
+
     limpiarCriteriosBsq(){
       this.fillBsqAvanceByAlumno.cNombre = '';
       this.fillBsqAvanceByAlumno.cSlug = '';
@@ -258,6 +258,6 @@ export default {
 <style>
   .scrollTable{
     max-height: 350px !important;
-    overflow: auto !important; 
+    overflow: auto !important;
   }
 </style>

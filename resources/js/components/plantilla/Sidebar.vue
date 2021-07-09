@@ -34,7 +34,7 @@
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="container">
           <a href="#" class="btn btn-danger btn-block" @click.prevent="logout" v-loading.fullscreen.lock="fullscreenLoading">
-            Cerrar Sesión
+            Cerrar sesión
           </a>
           <template v-if="listRolByUser.length > 1">
           <div style="text-align: center;">
@@ -149,7 +149,7 @@
                 <router-link class="nav-link" :to="'/parametros'">
                   <i class="nav-icon fas fa-cog"></i>
                   <p>
-                    Parametros
+                    Parámetros
                   </p>
                 </router-link>
               </template>
@@ -291,17 +291,6 @@
               </a>
             </li>
           </template>
-
-
-
-
-
-
-
-
-
-
-
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

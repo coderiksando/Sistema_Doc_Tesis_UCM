@@ -23,7 +23,7 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda</h3>
+                <h3 class="card-title">Criterios de búsqueda</h3>
               </div>
               <div class="card-body">
                 <form role="form">
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Url amigable</label>
+                        <label class="col-md-3 col-form-label">Url</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" v-model="fillBsqRol.cSlug" @keyup.enter="getListarRoles">
                         </div>
@@ -47,7 +47,7 @@
 
                   </div>
                 </form>
-              
+
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -66,28 +66,28 @@
               </div>
               <div class="card-body table-resposive">
                 <template v-if="listarRolesPaginated.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
                         <th>Nombre</th>
-                        <th>Url amigable </th>
-                        <th>Acciones </th>
+                        <th>Url</th>
+                        <th>Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in listarRolesPaginated" :key="index">
                         <td v-text="item.name"></td>
                         <td v-text="item.slug"></td>
-                      
+
                         <td>
-                          
+
                           <button class="btn btn-flat btn-primary btn-sm" @click.prevent="abrirModalByOption('roles', 'ver', item)">
                             <i title="Ver" class="fas fa-eye"></i>
                           </button>
                             <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'roles.editar', params:{id: item.id}}">
                               <i title="Editar" class="fas fa-pencil-alt"></i>
-                            </router-link>   
+                            </router-link>
                         </td>
                       </tr>
                     </tbody>
@@ -126,7 +126,7 @@
             <button class="close" @click="abrirModal"></button>
           </div>
           <div class="modal-body">
-            
+
             <template v-if="modalOption == 1">
               <div class="callout callout-danger" style="padding: 5px" v-for="(item, index) in mensajeError" :key="index" v-text="item"></div>
             </template>
@@ -134,7 +134,7 @@
                     <div class="container-fluid">
                       <div class="card card-info">
                         <div class="card-header">
-                          <h3 class="card-title">Informacion del Rol</h3>
+                          <h3 class="card-title">Información del Rol</h3>
                         </div>
                         <div class="card-body ">
                           <form role="form">
@@ -149,7 +149,7 @@
                               </div>
                               <div class="col-md-12">
                                 <div class="form-group row">
-                                  <label class="col-md-12 col-form-label">Url amigable</label>
+                                  <label class="col-md-12 col-form-label">Url</label>
                                   <div class="col-md-9">
                                       <span class="form-control" v-text="fillVerRol.cSlug"></span>
                                   </div>
@@ -162,7 +162,7 @@
 
                       <div class="card card-info">
                         <div class="card-header">
-                          <h3 class="card-title">Listado de Permisos</h3>
+                          <h3 class="card-title">Listado de permisos</h3>
                         </div>
                         <div class="card-body table-resposive">
                           <template v-if="listPermisos.length">
@@ -171,7 +171,7 @@
                               <thead>
                                 <tr>
                                   <th>Nombre</th>
-                                  <th>Url amigable </th>
+                                  <th>Url</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -221,7 +221,7 @@ export default {
       pageNumber: 0,
       perPage: 5,
       modalShow: false,
-      modalOption: 0, 
+      modalOption: 0,
       mostrarModal: {
         display: 'block',
         background: '#0000006b',
@@ -234,9 +234,9 @@ export default {
     }
   },
   computed: {
-    
+
     pageCount(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listRoles.length,
           b = this.perPage;
       return Math.ceil(a / b);
@@ -262,7 +262,7 @@ export default {
     }
   },
   methods:{
-    
+
     limpiarCriteriosBsq(){
       this.fillBsqRol.cNombre = '';
       this.fillBsqRol.cSlug = '';
@@ -332,19 +332,19 @@ export default {
                 this.getListarPermisosByRol(data.id);
               }
               break;
-          
+
             default:
               break;
           }
         }
-        
+
         break;
-    
+
       default:
         break;
     }
   },
-   
+
 
   }//cierre de methods
 }
@@ -353,6 +353,6 @@ export default {
 <style>
   .scrollTable{
     max-height: 350px !important;
-    overflow: auto !important; 
+    overflow: auto !important;
   }
 </style>

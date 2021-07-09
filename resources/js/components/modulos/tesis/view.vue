@@ -121,7 +121,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                        <label class="col-md-3 col-form-label">Objetivos especificos</label>
+                                        <label class="col-md-3 col-form-label">Objetivos específicos</label>
                                         <div class="col-md-9">
                                             <el-input
                                                 type="textarea"

@@ -22,14 +22,14 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda</h3>
+                <h3 class="card-title">Criterios de búsqueda</h3>
               </div>
               <div class="card-body">
                 <form role="form">
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Nombre Escuela</label>
+                        <label class="col-md-3 col-form-label">Nombre escuela</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" v-model="fillBsqEscuela.cNombre" @keyup.enter="getListarEscuelas">
                         </div>
@@ -55,21 +55,21 @@
               </div>
               <div class="card-body table-resposive">
                 <template v-if="listarEscuelasPaginated.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
                         <th>Nombre</th>
-                        <th>Acciones </th>
+                        <th>Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in listarEscuelasPaginated" :key="index">
-                        <td v-text="item.nombre"></td>  
+                        <td v-text="item.nombre"></td>
                         <td>
                             <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'escuelas.editar', params:{id: item.id}}">
                               <i class="fas fa-pencil-alt"></i> Editar
-                            </router-link>   
+                            </router-link>
                         </td>
                       </tr>
                     </tbody>
@@ -118,9 +118,9 @@ export default {
     }
   },
   computed: {
-    
+
     pageCount(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listEscuelas.length,
           b = this.perPage;
       return Math.ceil(a / b);
@@ -144,7 +144,7 @@ export default {
     }
   },
   methods:{
-    
+
     limpiarCriteriosBsq(){
       this.fillBsqEscuela.cNombre = '';
     },
@@ -210,7 +210,7 @@ export default {
         break;
       }
     },
-   
+
 
   }//cierre de methods
 }
@@ -219,6 +219,6 @@ export default {
 <style>
   .scrollTable{
     max-height: 350px !important;
-    overflow: auto !important; 
+    overflow: auto !important;
   }
 </style>

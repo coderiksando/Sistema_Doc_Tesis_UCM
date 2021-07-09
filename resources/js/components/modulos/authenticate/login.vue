@@ -27,7 +27,7 @@
         <div class="login-box">
             <div class="login-logo">
                 <router-link :to="{name:'login'}">
-                    <b>Iniciar Sesión</b>
+                    <b>Iniciar sesión</b>
                 </router-link>
             </div>
             <!-- /.login-logo -->
@@ -63,7 +63,7 @@
                     </div>
                     <div class="social-auth-links text-center mb-3">
                         <button class="btn btn-flat btn-block btn-primary" @click.prevent="login" v-loading.fullscreen.lock="fullscreenLoading">
-                        Iniciar sesion
+                        Iniciar sesión
                         </button>
                     </div>
                     <p class="mb-0">
@@ -160,13 +160,13 @@ export default {
         loginSuccess(){
             this.$router.push({name: 'dashboard.index'})
                 location.reload();
-        }, 
+        },
         getListarRolPermisosByUsuario(authUser){
             var ruta = '/administracion/usuario/getListarRolPermisosByUsuario'
             axios.get(ruta, {
                 params: {
                     'nIdUsuario' : authUser.id_user
-                } 
+                }
             }).then( response => {
                 this.listRolPermisosByUsuario = response.data;
                 this.getRolByUser(authUser);
@@ -177,7 +177,7 @@ export default {
             axios.get(ruta, {
                 params: {
                     'nIdUsuario' : authUser.id_user
-                } 
+                }
             }).then( response => {
                 this.RolByUser = response.data;
                 this.filterListarRolPermisosByUsuario(authUser);

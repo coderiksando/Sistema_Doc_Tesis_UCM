@@ -21,24 +21,24 @@
             <template v-if="listRolPermisosByUsuario.includes('tesis.crear') ">
               <div class="card card-success">
                 <div class="card-header d-flex justify-content-center">
-                  <h1 class="card-title">Ingreso de formulario de inscripcion de tesis</h1>
+                  <h1 class="card-title">Ingreso de formulario de inscripción de tesis</h1>
                 </div>
                 <div class="card-body d-flex justify-content-center border border-success">
                     <div class="row text-justify">
                       <div class="col-md-12">
-                        <h5 class="card-text">La principal funcion como estudiante sera completar el formulario de inscripcion
-                          de tesis en donde debes definir parametros como profesor guia, titulo, contribucion esperada y otros similares a los utilizados
-                          en el formulario tradicional de inscripcion. </h5>
+                        <h5 class="card-text">La principal función como estudiante sera completar el formulario de inscripción
+                          de tesis en donde debes definir parametros como profesor guía, título, contribución esperada y otros similares a los utilizados
+                          en el formulario tradicional de inscripción. </h5>
                         <img src="/img/ingresarFIT.png" class="img-fluid" alt="Responsive image">
                         <br>
                         <br>
-                        <h5 class="card-text">Una vez que completes tu FIT podras revisar su estado en espera de la aprobacion de tu profesor guia,
+                        <h5 class="card-text">Una vez que completes tu FIT podras revisar su estado en espera de la aprobacion de tu profesor guía,
                           mientras este en estado "pendiente" podras seguir editandolo, ademas podras darte cuenta que el sistema no te permitira ingresar
                           un nuevo formulario </h5>
                         <img src="/img/EsperaFit.png" class="img-fluid" alt="Responsive image">
                         <br>
                         <br>
-                        <h5 class="card-text">Finalmente, cuando tu FIT es aprobado por el profesor guia el sistema te permitira descargar una copia de este en formato PDF. </h5>
+                        <h5 class="card-text">Finalmente, cuando tu FIT es aprobado por el profesor guía el sistema te permitira descargar una copia de este en formato PDF. </h5>
                         <img src="/img/DescargarFIT.png" class="img-fluid" alt="Responsive image">
                       </div>
                     </div>
@@ -54,7 +54,7 @@
                 <div class="card-body d-flex justify-content-center border border-success">
                     <div class="row text-justify">
                       <div class="col-md-12">
-                        <h5 class="card-text"> Cuando ya han aprobado tu formulario de inscripcion podras ingresar a la seccion de avances, donde podras
+                        <h5 class="card-text"> Cuando ya han aprobado tu formulario de inscripción podras ingresar a la seccion de avances, donde podras
                           visualizar los avances de tesis que ya hayas subido o subir uno nuevo, ademas veras la opcion de subir el pdf final
                           de tu tesis las cual se desbloquea una vez que apruebas tu tesis, este pdf final es el que estara disponible para todos
                           los usuarios que lo requieran y se posible descargarlo desde nuestro home. </h5>
@@ -63,7 +63,7 @@
                         <br>
                         <h5 class="card-text">Para subir un avance debes seleccionar el archivo pdf ademas de
                           indicar una pequeña descripcion de su contenido, el sistema le avisara mediante email a
-                          tu profesor guia que haz subido un avance de tesis. </h5>
+                          tu profesor guía que haz subido un avance de tesis. </h5>
                         <img src="/img/AvancesCreate.png" class="img-fluid" alt="Responsive image" >
                       </div>
                     </div>
@@ -127,7 +127,7 @@
             <template v-if="listRolPermisosByUsuario.includes('tesis.aprobar') ">
               <div class="card card-success">
                 <div class="card-header card-header d-flex justify-content-center">
-                  <h3 class="card-title">Aprobar formulario de inscripcion de tesis</h3>
+                  <h3 class="card-title">Aprobar formulario de inscripción de tesis</h3>
                 </div>
                 <div class="card-body d-flex justify-content-center border border-success">
                     <div class="row text-justify">
@@ -242,7 +242,7 @@
                       <div class="col-md-12">
                         <h5 class="card-text">En el apartado de documentos del alumno los usuarios de tipo secretaria o director podran buscar y seleccionar alumnos
                           registrados en el sistema con el objetivo de descargar los documentos referentes al proceso de tesis que tengas asociados tales como
-                          formulario de inscripcion de tesis(FIT) y acta de defensa ademas, de generar un memo de revision de tesis el cual calculara los
+                          formulario de inscripción de tesis(FIT) y acta de defensa ademas, de generar un memo de revision de tesis el cual calculara los
                           dias habiles de revision a partir del momento en el que es generado.</h5>
                         <img src="/img/DocumentosIndex.png" class="img-fluid" alt="Responsive image" >
                       </div>
@@ -260,7 +260,7 @@
                     <div class="row text-justify">
                       <div class="col-md-12">
                         <h5 class="card-text">El usuario con rol Coordinador podra hacer una busqueda detallada  de la informacion de los alumnos
-                          registrados en el sistema ya sea clasificandolos en base a la escuela a la cual pertenecen, profesor guia, estado de tesis y demas,
+                          registrados en el sistema ya sea clasificandolos en base a la escuela a la cual pertenecen, profesor guía, estado de tesis y demas,
                           junto con esto podra ver los registros individuales de los avances y bitacoras asociadas, de ser necesario podra exportar los resultados
                           de su busqueda a excel.</h5>
                         <img src="/img/Reportes.png" class="img-fluid" alt="Responsive image" >

@@ -607,7 +607,7 @@
                       >
                         <thead>
                           <tr>
-                            <th class="col-md-4">Nombre integrante</th>
+                            <th class="col-md-4">Nombre de integrante</th>
                             <th class="col-md-2">Rut</th>
                             <th class="col-md-4">Correo electrónico</th>
                             <th class="col-md-2">Acción</th>

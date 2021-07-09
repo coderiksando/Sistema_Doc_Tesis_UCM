@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1 class="m-0 text-dark"><b>Formulario de Inscripción de Tesis (FIT)</b></h1>
+            <h1 class="m-0 text-dark"><b>Formulario de inscripción de tesis (FIT)</b></h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -109,7 +109,7 @@
                               <i class="fas fa-file-download"></i>
                             </a>
                           </template>
-                          
+
                           <template v-if="(item.aprobado_pg == 'A' && (rolActivo == 'Director' || rolActivo == 'Coordinador')) || item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
                             <template v-if="item.aprobado_pg == 'R'">
                                 <button title="Ver razon de rechazo" class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
@@ -157,113 +157,9 @@
             </div>
           </div>
         </div>
-
-        <!-- SEGUNDOD BODY SI ES ADMIN-->
-        <template v-if="listRolByUser[0].id === 6">
-          <div class="content-header mine">
-            <div class="container-fluid">
-              <h1 class="m-0 text-dark">Otros FID</h1>
-              <h5>Formularios de alumnos con otros profesores</h5>
-          </div><!-- /.container-fluid -->
-        </div>
-                <div class="card-body">
-          <div class="container-fluid">
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Bandeja de resultados</h3>
-              </div>
-              <div class="card-body table table-responsive">
-                <template v-if="listAllTesis.length">
-
-                  <table class ="table table-hover table-head-fixed t-fixed projects ">
-                    <thead>
-                      <tr>
-                        <th>Alumno</th>
-                        <th>Estado FIT</th>
-                        <th>Estado Tesis</th>
-                        <th>Acciones </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(item, index) in listAllTesis" :key="index">
-
-
-                        <td v-text="item.nombre_int1"></td>
-                        <td>
-                          <template v-if="item.aprobado_pg == 'P'">
-                            <span class="badge badge-warning" >Pendiente</span>
-                          </template>
-                          <template v-else-if="item.aprobado_pg == 'A'">
-                            <span class="badge badge-success">Aprobado</span>
-                          </template>
-                          <template v-else>
-                            <span class="badge badge-danger">Rechazado</span>
-                          </template>
-                        </td>
-                        <td>
-                          <template v-if="item.estado == 'D'">
-                            <span class="badge badge-warning" >En desarrollo</span>
-                          </template>
-                          <template v-else-if="item.estado == 'A'">
-                            <span class="badge badge-success" >Aprobada</span>
-                          </template>
-                          <template v-else>
-                            <span class="badge badge-danger" >Reprobada</span>
-                          </template>
-                        </td>
-                        <td>
-                          <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: item.id}}">
-                            <i class="fas fa-folder"></i> Ver
-                          </router-link>
-                          <template v-if="item.aprobado_pg == 'A'">
-                            <button class="btn btn-flat btn-light btn-sm" @click.prevent="setGenerarDocumento(item.id)">
-                              <i class="fas fa-pencil-alt"></i> Ver PDF
-                            </button>
-                          </template>
-                          <template v-if="item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
-                            <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'tesis.editar', params:{id: item.id}}">
-                              <i class="fas fa-pencil-alt"></i> Editar
-                            </router-link>
-                            <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
-                                <button class="btn btn-flat btn-success btn-sm" @click.prevent="setCambiarEstadoFIT(1, item.id)">
-                                  <i class="fas fa-check"></i>Aprobar
-                                </button>
-                                <button class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
-                                  <i class="fas fa-trash"></i>Rechazar
-                                </button>
-                            </template>
-                          </template>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                      <li class="page-item" v-if="pageNumber > 0">
-                        <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                      </li>
-                      <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                        :class="[page == pageNumber ? 'active' : '']">
-                        <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                      </li>
-                      <li class="page-item" v-if="pageNumber < pageCount -1">
-                        <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                      </li>
-                    </ul>
-                  </div>
-                </template>
-                <template v-else>
-                  <div class="callout callout-info">
-                    <h5> No se han encontrado resultados...</h5>
-                  </div>
-                </template>
-              </div>
-            </div>
-          </div>
-        </div>
-        </template>
       </div>
     </div>
+
     <div class="modal fade" :class="{ show: modalAyuda }" :style="modalAyuda ? mostrarModal : ocultarModal">
         <div class="modal-dialog">
         <div class="modal-content">
@@ -277,7 +173,7 @@
                     <tr>
                         <th class="col-md-1">Ícono</th>
                         <th class="col-md-2">Nombre</th>
-                        <th class="col-md-9">Detalle</th>
+                        <th class="col-md-9">Detalles</th>
                     </tr>
                 </thead>
                 <tbody>

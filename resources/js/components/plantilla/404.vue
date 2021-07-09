@@ -1,5 +1,5 @@
 <template>
-  
+
     <div class="content-header">
       <div class="container-fluid">
         <div class="info-box">
@@ -10,7 +10,7 @@
                 <h3><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Pagina no encontrada</h3>
 
                 <p>
-                    No fue posible encontrar la pagina a la cual estas tratando de ingresar
+                    No fue posible encontrar la página a la cual estás tratando de ingresar
                 </p>
 
                 </div>

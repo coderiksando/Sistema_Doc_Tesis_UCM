@@ -26,16 +26,16 @@
                 <div class="col-md-5">
                         <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title">Listar Permisos del Rol {{fillPermisos.cNombreRol}}</h3>
+                                <h3 class="card-title">Listar permisos del rol {{fillPermisos.cNombreRol}}</h3>
                             </div>
                             <div class="card-body table-resposive">
                                   <template v-if="listPermisosByRolAsignado.length">
-                                    
+
                                     <table class ="table table-hover table-head-fixed text-nowrap projects">
                                       <thead>
                                         <tr>
                                           <th>Nombre</th>
-                                          <th>Url Amigable</th>
+                                          <th>Url</th>
                                         </tr>
                                       </thead>
                                       <tbody>
@@ -46,7 +46,7 @@
                                         </tr>
                                       </tbody>
                                     </table>
-                                    
+
                                   </template>
                                   <template v-else>
                                     <div class="callout callout-info">
@@ -59,17 +59,17 @@
                     <div class="col-md-7">
                         <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title">Listar Permisos</h3>
+                                <h3 class="card-title">Listar permisos</h3>
                             </div>
                             <div class="card-body table-resposive">
                                   <template v-if="listPermisosFilter.length">
-                                    
+
                                     <table class ="table table-hover table-head-fixed text-nowrap projects">
                                       <thead>
                                         <tr>
                                           <th>Accion</th>
                                           <th>Nombre</th>
-                                          <th>Url Amigable</th>
+                                          <th>Url</th>
                                         </tr>
                                       </thead>
                                       <tbody>
@@ -84,7 +84,7 @@
                                         </tr>
                                       </tbody>
                                     </table>
-                                    
+
                                   </template>
                                   <template v-else>
                                     <div class="callout callout-info">
@@ -104,10 +104,10 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
 </div>
-               
+
 
 
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
@@ -173,13 +173,13 @@ export default {
     abrirModal(){
       this.modalShow = !this.modalShow;
     },
-    
+
     getListarPermisosByRolAsignado(){
         var ruta = '/administracion/usuario/getListarPermisosByRolAsignado'
         axios.get(ruta, {
             params: {
                 'nIdUsuario' : this.fillPermisos.nIdUsuario
-            } 
+            }
         }).then( response => {
             this.listPermisosByRolAsignado = response.data;
         })
@@ -200,7 +200,7 @@ export default {
         axios.get(ruta, {
             params: {
                 'nIdUsuario' : this.fillPermisos.nIdUsuario
-            } 
+            }
         }).then( response => {
             this.listPermisos = response.data;
             this.filterPermisosByUsuario();
@@ -288,7 +288,7 @@ export default {
           timer: 1500
         })
     },
-  
+
   }// cierre methods
 }
 </script>

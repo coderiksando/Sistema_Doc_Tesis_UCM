@@ -31,7 +31,7 @@
               <div class="card-header">
                 <div class="row">
                   <div class="col-md-6">
-                    <h3 class="card-title">Formulario de edición FIT</h3>
+                    <h3 class="card-title">Formulario de edición de FIT</h3>
                   </div>
                   <div class="col-md-6" style="text-align: right">
                     <button
@@ -298,58 +298,6 @@
                     </table>
                     </div>
 
-                    <!-- revision de estado de una promesa -->
-                    <!-- <div class="col-md-6"></div>
-                                        <template v-if="fillEditarFIT.cUsers.length">
-                                            <template v-for="(item, index) in fillEditarFIT.cUsers">
-                                                <div class="col-md-9" :key="index">
-                                                    <h3><b v-text="'Integrante Nº' + (index+1)"></b></h3>
-                                                </div>
-                                                <template v-if="myOwnUser.id_user && item.id_user">
-                                                    <template v-if="item.id_user !== myOwnUser.id_user">
-                                                        <div class="col-md-3" :key="'boton' + index">
-                                                            <div class="text-right mb-2">
-                                                                <button class="btn btn-danger" @click.prevent="eliminarEstudiante(item)">
-                                                                    <i class="fas fa-trash"></i> Eliminar
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </template>
-                                                </template>
-                                                <div class="col-md-6" :key="'nombre' + index">
-                                                    <div class="form-group row">
-                                                        <label class="col-md-3 col-form-label">Nombre</label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" readonly class="form-control" v-model="item.nombres" @keyup.enter="setRegistrarTesis">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6" :key="'rut' + index">
-                                                    <div class="form-group row">
-                                                        <label class="col-md-3 col-form-label">Apellido</label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" readonly class="form-control" v-model="item.apellidos" @keyup.enter="setRegistrarTesis">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6" :key="'telefono' + index">
-                                                    <div class="form-group row">
-                                                        <label class="col-md-3 col-form-label">Rut</label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" readonly class="form-control" v-model="item.rut" @keyup.enter="setRegistrarTesis">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6" :key="'email' + index">
-                                                    <div class="form-group row">
-                                                        <label class="col-md-3 col-form-label">email</label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" readonly class="form-control" v-model="item.email" @keyup.enter="setRegistrarTesis">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </template>
-                                        </template> -->
                     <div class="col-md-6">
                       <button
                         class="btn btn-info bnt-sm"

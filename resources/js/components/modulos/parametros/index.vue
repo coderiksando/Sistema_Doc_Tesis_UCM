@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1 class="m-0 text-dark">Parametros del Sistema</h1>
+            <h1 class="m-0 text-dark">Parámetros del sistema</h1>
           </div>
           <!-- /.col -->
         </div>
@@ -17,13 +17,13 @@
         <div class="container-fluid">
             <div class="card card-info">
                 <div class="card-header">
-                    <h3 class="card-title">Parametros del Sistema</h3>
+                    <h3 class="card-title">Parámetros del sistema</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-10">
                             <div class="form-group row">
-                                <label class="col-md-8 col-form-label">Estudiantes maximos por tesis</label>
+                                <label class="col-md-8 col-form-label">Estudiantes máximos por tesis</label>
                                 <div class="col-md-3">
                                     <input type="number" max="100" class="form-control" v-model="maxStudentNumber">
                                 </div>
@@ -83,7 +83,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label">Formatos Avances de Tesis</label>
+                                <label class="col-md-4 col-form-label">Formatos de avances de tesis</label>
                                 <div class="col-md-7">
                                     <Multiselect
                                     v-model="formatosAvance.value"
@@ -105,7 +105,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label">Formatos Actas de Tesis</label>
+                                <label class="col-md-4 col-form-label">Formatos de actas de tesis</label>
                                 <div class="col-md-7">
                                     <Multiselect
                                     v-model="formatosActa.value"
@@ -127,7 +127,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label">Formatos constancia de examen</label>
+                                <label class="col-md-4 col-form-label">Formatos de constancia de exámen</label>
                                 <div class="col-md-7">
                                     <Multiselect
                                     v-model="formatosConstancia.value"

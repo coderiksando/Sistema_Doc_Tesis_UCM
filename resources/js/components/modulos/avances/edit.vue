@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Editar Avance</h1>
+            <h1 class="m-0 text-dark">Editar avance</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -22,7 +22,7 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Formulario Editar Avance</h3>
+                <h3 class="card-title">Formulario de edición de avance</h3>
               </div>
               <div class="card-body">
                 <form role="form" id="form-avance2">
@@ -55,7 +55,7 @@
                           </div>
                           <div class="custom-file invalid-feedback no-margin" v-show="sizeError">
                             El tamaño del archivo no puede superar los {{fileMaxSize}} MB.
-                          </div>  
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -65,9 +65,9 @@
                   El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
                 </div>
                 <div class="container">
-                  Los formatos de archivo soportados son: 
+                  Los formatos de archivo soportados son:
                   <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
-                </div> 
+                </div>
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -195,12 +195,12 @@ export default {
         console.log(response)
         var nIdFile = response.data.id;
         this.setGuardarAvance(nIdFile);
-      }) 
+      })
     },
     setGuardarAvance(nIdFile){
       var url = '/avances/setEditarAvance'
       axios.post(url, {
-        'id'             : this.fillEditarAvance.nIdAvance, 
+        'id'             : this.fillEditarAvance.nIdAvance,
         'descripcion'    : this.fillEditarAvance.cDescripcion,
         'id_archivo'     : nIdFile,
       }).then(response => {
@@ -238,8 +238,8 @@ export default {
           this.fileMaxSize = response.data[1][0];
       })
     }
-    
-  
+
+
   }// cierre methods
 }
 </script>
