@@ -159,7 +159,7 @@
         </div>
 
         <!-- SEGUNDOD BODY SI ES ADMIN-->
-        <template v-if="listRolByUser[0].nIdRol === 6">
+        <template v-if="listRolByUser[0].id === 6">
           <div class="content-header mine">
             <div class="container-fluid">
               <h1 class="m-0 text-dark">Otros FID</h1>

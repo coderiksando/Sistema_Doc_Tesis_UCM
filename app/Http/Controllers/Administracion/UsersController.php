@@ -15,7 +15,7 @@ use Debugbar;
 class UsersController extends Controller
 {
     public function getListarUsuarios(Request $request){
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
 
         $nIdUsuario   =   $request->nIdUsuario;
@@ -196,6 +196,8 @@ class UsersController extends Controller
 
         $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
         $nIdRol     = ($nIdRol == NULL) ? ($nIdRol = '') : $nIdRol;
+
+        Users_Roles::where('id_user', $nIdUsuario)->delete();
 
         foreach ($nIdRol as $rol) {
             Users_Roles::create([
