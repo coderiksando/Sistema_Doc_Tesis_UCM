@@ -989,7 +989,13 @@ export default {
         this.mensajeError.push("La Nota es un campo obligatorio");
       }
       if (!this.tesisFile) {
-        this.mensajeError.push("El archivo de tesis un campo obligatorio");
+        this.mensajeError.push("El archivo de tesis es un campo obligatorio");
+      }
+      if (!this.actaFile) {
+        this.mensajeError.push("El archivo de acta es un campo obligatorio");
+      }
+      if (!this.constFile) {
+        this.mensajeError.push("El archivo de constancia es un campo obligatorio");
       }
       if (!this.fillCrearFIT.cObjetivoGeneral) {
         this.mensajeError.push("El objetivo general es un campo obligatorio");
