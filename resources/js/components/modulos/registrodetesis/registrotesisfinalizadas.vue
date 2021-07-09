@@ -306,7 +306,7 @@
 
                     <div class="col-md-6">
                       <div class="noPadNoMar col-md-12 form-group row">
-                        <label class="noPadNoMar col-md-12 col-form-label">Acta de defensa de tesis (opcional)</label>
+                        <label class="noPadNoMar col-md-12 col-form-label">Acta de defensa de tesis</label>
                         <div class="noPadNoMar container-fluid">
                           <div class="input-group">
                             <div class="input-group-prepend">
@@ -358,7 +358,7 @@
 
                     <div class="col-md-6">
                       <div class="noPadNoMar col-md-12 form-group row">
-                        <label  class="noPadNoMar col-md-12 col-form-label">Constancia de examen (opcional)</label>
+                        <label  class="noPadNoMar col-md-12 col-form-label">Constancia de examen</label>
                         <div class="noPadNoMar container-fluid">
                           <div class="input-group">
                             <div class="input-group-prepend">
