@@ -237,6 +237,7 @@
                         <div class="col-md-9">
                           <template>
                             <el-input-number
+                              style="width: 100%;"
                               v-model="fillCrearFIT.Nota"
                               size="large"
                               :min="1"
@@ -793,6 +794,7 @@ export default {
         oArchivo: "",
         nIdPg: "",
         nIdCoPg: "",
+        nIdEscuela: '',
         nIdVinculacion: "",
         cTipo: "",
         cObjetivoGeneral: "",
@@ -1030,6 +1032,7 @@ export default {
       this.tesisForm.append("file", this.tesisFile);
       this.actaForm.append("file", this.actaFile);
       this.constForm.append("file", this.constFile);
+      this.fillCrearFIT.nIdEscuela = this.listProfesores.find(profesor => profesor.id_user == this.fillCrearFIT.nIdPg).id_escuela;
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       axios.post(url, this.fillCrearFIT)
         .then((response) => {

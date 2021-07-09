@@ -104,6 +104,7 @@ class FilesController extends Controller
             $registroFit->id_p_guia = $request->nIdPg;
             $registroFit->id_p_co_guia = $request->nIdCoPg;
             $registroFit->id_vinculacion = $request->nIdVinculacion;
+            $registroFit->id_escuela = $request->nIdEscuela;
             $registroFit->titulo = $request->cTitulo;
             $registroFit->tipo = $request->cTipo;
             $registroFit->objetivo_general = $request->cObjetivoGeneral;
@@ -127,6 +128,7 @@ class FilesController extends Controller
                     $newUser->nombres = $user->nombres;
                     $newUser->apellidos = $user->apellidos;
                     $newUser->password = Hash::make('12345');
+                    $newUser->id_escuela = $registroFit->id_escuela;
                     $newUser->save();
                     $newFitUser = new Fit_User;
                     $newFitUser->id_user = $newUser->id_user;

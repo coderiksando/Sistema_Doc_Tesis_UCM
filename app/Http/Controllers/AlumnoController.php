@@ -354,7 +354,7 @@ class AlumnoController extends Controller
         $profesores = DB::table('users')
                         ->join('users_roles', 'users_roles.id_user', '=', 'users.id_user')
                         ->join('roles', 'roles.id', '=', 'users_roles.id_roles')
-                        ->select('users.id_user',DB::raw("CONCAT(users.nombres,' ',users.apellidos) as fullname"))
+                        ->select('users.id_user',DB::raw("CONCAT(users.nombres,' ',users.apellidos) as fullname"), 'users.id_escuela')
                         ->where('users.state', 'A')
                         ->where([
                             ['roles.name', '=', 'Profesor'],
