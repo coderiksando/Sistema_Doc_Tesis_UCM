@@ -20,4 +20,7 @@ class Escuelas extends Model
     public function AreaTesis(){
         return $this->hasMany(AreaTesis::class, 'id_escuela', 'id');
     }
+    public function Fit(){
+        return $this->hasOne(Escuelas::class, 'id_escuela', 'id');
+    }
 }

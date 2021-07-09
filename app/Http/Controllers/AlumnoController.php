@@ -212,11 +212,16 @@ class AlumnoController extends Controller
         if(!$request->ajax()) return redirect('/');
         $fit = $request->data;
         $fit = (object) $fit;
+        $firstUser = $fit->cUsers[0];
+        $firstUser = (object) $firstUser;
+        $firstUserEscuela = $firstUser->id_escuela;
+        $firstUserEscuela = (int) $firstUserEscuela;
 
-        DB::transaction(function () use ($fit) {
+        DB::transaction(function () use ($fit, $firstUserEscuela) {
             $registroFit = new Fit;
             $registroFit->id_p_guia = $fit->nIdPg;
             $registroFit->id_p_co_guia = $fit->nIdCoPg;
+            $registroFit->id_escuela = $firstUserEscuela;
             $registroFit->id_vinculacion = $fit->nIdVinculacion;
             $registroFit->titulo = $fit->cTitulo;
             $registroFit->tipo = $fit->cTipo;

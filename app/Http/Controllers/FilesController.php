@@ -6,6 +6,7 @@ use App\ArchivoPdf;
 use App\Fit_User;
 use App\Fit;
 use App\User;
+use App\Users_Roles;
 use App\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -131,6 +132,11 @@ class FilesController extends Controller
                     $newFitUser->id_user = $newUser->id_user;
                     $newFitUser->id_fit = $registroFit->id;
                     $newFitUser->save();
+                    $newUserRol = new Users_Roles;
+                    // se establece el usuario como alumno (2)
+                    $newUserRol->id_user = $newUser->id_user;
+                    $newUserRol->id_roles = 2;
+                    $newUserRol->save();
                 }
             }
             return $registroFit->id;
