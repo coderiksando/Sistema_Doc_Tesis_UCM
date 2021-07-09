@@ -200,7 +200,7 @@ export default {
           'nIdUsuario' : this.fillEditarUsuarios.nIdUsuario
         }
       }).then(response => {
-          this.fillEditarUsuarios.nIdRol = (response.data.length == 0) ? '' : response.data[0].nIdRol;
+          this.fillEditarUsuarios.nIdRol = (response.data.length == 0) ? '' : response.data[0].id;
           this.fullscreenLoading = false;
       })
     },

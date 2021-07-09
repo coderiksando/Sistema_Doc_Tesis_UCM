@@ -44,7 +44,7 @@
             <el-select placeholder="Elegir rol" v-model="rolActivo" @change="cambiarRol">
               <el-option
                   v-for="item in listRolByUser"
-                  :key="item.nIdRol"
+                  :key="item.id"
                   :label="item.name"
                   :value="item.name">
               </el-option>

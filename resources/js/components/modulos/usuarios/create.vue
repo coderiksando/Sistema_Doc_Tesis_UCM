@@ -223,7 +223,7 @@ export default {
           this.fullscreenLoading = false;
       })
     },
-      getListarRoles(){
+    getListarRoles(){
       this.fullscreenLoading = true;
       var url = '/administracion/roles/getListarRoles'
       axios.get(url, {

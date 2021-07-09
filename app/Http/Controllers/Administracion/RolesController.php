@@ -27,7 +27,8 @@ class RolesController extends Controller
                                                                     $cNombre,
                                                                     $cSlug
                                                                 ]);
-        return $rpta;
+        
+        return collect($rpta)->where('name', '!=', 'Administrador');
 
     }
     public function getListarPermisosByRol(Request $request){
