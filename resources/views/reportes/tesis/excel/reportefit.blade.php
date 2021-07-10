@@ -10,43 +10,78 @@
     <table>
         <thead>
         <tr>
-            <th>Nombre Alumno1</th>
-            <th>Rut Alumno1</th>
-            <th>Nombre Alumno2</th>
-            <th>Rut Alumno2</th>
-            <th>Profesor Tutor</th>
+            <th>Numeración</th>
+            <th>Nombres</th>
+            <th>Rut</th>
+            <th>Fecha última asignatura cursada</th>
+            <th>Profesor Guía</th>
             <th>Tipo</th>
-            <th>Fecha ultima Bitacora</th>
-            <th>Comentario bitacora</th>
-            <th>Fecha ultimo Avance </th>
+            <th>Fecha última bitácora</th>
+            <th>Comentario bitácora</th>
+            <th>Fecha último avance </th>
             <th>Estado</th>
-            <th>Fecha Aceptacion de formulario</th>
-            <th>Fecha Nota Pendiente</th>
-            <th>Fecha Prorroga nota P</th>
-            <th>Año que curso su ultimo ramo</th>
+            <th>Fecha creación del formulario</th>
+            <th>Fecha nota pendiente</th>
+            <th>Fecha prorroga nota Pend.</th>
         </tr>
         </thead>
         <tbody>
+        @php($count=0)
         @foreach($reportefit as $datatesis)
+            @php($count++)
+            @php($i=0)
+            @php($large=count($datatesis->fit__user))
+            @foreach($datatesis->fit__user as $fit_user)
             <tr>
-                <td>{{ $datatesis->nombre_int1 }}</td>
-                <td>{{ $datatesis->rut_int1 }}</td>
-                <td>{{ $datatesis->nombre_int2 }}</td>
-                <td>{{ $datatesis->rut_int2 }}</td>
-                <td>{{ $datatesis->nombre_pt }}</td>
-                <td>{{ $datatesis->tipo_trabajo }}</td>
-                <td>{{ $datatesis->fecha_bitacora }}</td>
-                <td>{{ $datatesis->comentario_bitacora }}</td>
-                <td>{{ $datatesis->fecha_avance }}</td>
-                <td>{{ $datatesis->estado }}</td>
-                <td>{{ $datatesis->fecha_inscripcion }}</td>
-                <td>{{ $datatesis->fecha_notap }}</td>
-                <td>{{ $datatesis->prorroga_notap }}</td>
-                <td>{{ $datatesis->fecha_ultimoramo }}</td>
+                @if($i==0)
+                    <td>{{ $count }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->nombres.' '.$datatesis->fit__user[$i]->user->apellidos }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->rut }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->f_salida }}</td>
+                    <td>{{ $datatesis->user__p__guia->nombres.' '.$datatesis->user__p__guia->apellidos }}</td>
+                    <td>{{ $datatesis->tipo }}</td>
+                @if($datatesis->bitacoras)
+                    <td>{{ $datatesis->bitacoras[count($datatesis->bitacoras)] }}</td>
+                    <td>{{ $datatesis->bitacoras[count($datatesis->bitacoras)] }}</td>
+                @else
+                    <td></td>
+                    <td></td>
+                @endif
+                @if($datatesis->avances_tesis)
+                    <td>{{ $datatesis->avances_tesis[count($datatesis->avances_tesis)] }}</td>
+                @else
+                    <td></td>
+                @endif
+                    <td>{{ $datatesis->estado }}</td>
+                    <td>{{ $datatesis->created_at }}</td>
+                @if($datatesis->notas_pendientes)
+                    <td>{{ $datatesis->notas_pendientes->fecha_autorizada }}</td>
+                    <td>{{ $datatesis->notas_pendientes->fecha_autorizada }}</td>
+                @else
+                    <td></td>
+                    <td></td>
+                @endif
+                @else
+                    <td></td>
+                    <td>{{ $datatesis->fit__user[$i]->user->nombres.' '.$datatesis->fit__user[$i]->user->apellidos }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->rut }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->f_salida }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                @endif
+                @php($i++)
             </tr>
+            @endforeach
+            <tr></tr>
         @endforeach
         </tbody>
     </table>
-    
 </body>
 </html>

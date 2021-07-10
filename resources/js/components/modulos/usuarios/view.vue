@@ -39,11 +39,11 @@
             <!-- About Me Box -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Acerca de mi</h3>
+                <h3 class="card-title">Acerca de mí</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <strong><i class="fas fa-envelope-open-text"></i> Correo</strong>
+                <strong><i class="fas fa-envelope-open-text"></i>Correo</strong>
 
                 <p class="text-muted" v-text="fillVerUsuarios.cCorreo">
                 </p>
@@ -119,11 +119,28 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label">Nueva contraseña</label>
                                 <div class="col-md-9">
-                                    <input type="password" class="form-control" v-model="fillEditarUsuarios.cContrasena" >
+                                    <div class="input-group">
+                                    <input id="pass1" type="password" class="form-control" v-model="fillEditarUsuarios.cContrasena" @blur="passwordVerification">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" @click.prevent="showPassword('pass1')"><span id="pass1" class="fa fa-eye-slash icon txtPasswordIco"></span></button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Repetir nueva contraseña</label>
+                                <div class="col-md-9">
+                                    <div class="input-group">
+                                    <input id="pass2" type="password" class="form-control" v-model="repeatedPassword" @blur="passwordVerification" autocomplete="off">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" @click.prevent="showPassword('pass2')"><span id="pass2" class="fa fa-eye-slash icon txtPasswordIco"></span></button>
+                                    </div>
+                                    </div>
+                                    <div v-show="passwordError===1"><p style="color: red; margin-bottom: 0px;">Las contraseñas no coinciden</p></div>
                                 </div>
                             </div>
 
-                            <template v-if="fillVerUsuarios.cNombreRol === 'Alumno'">
+                            <template v-if="listRoles.value.find(esAlumno)">
                                 <div class="form-group row">
                                 <label class="col-md-3 col-form-label">Fecha de ingreso</label>
                                 <div class="col-md-9">
@@ -193,22 +210,38 @@
                             </div>
 
                             <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Fecha de nacimiento (opcional)</label>
-                            <div class="col-md-9">
-                                <el-date-picker
-                                style="width: 100%;"
-                                v-model="fillEditarUsuarios.f_nacimiento"
-                                placeholder="Fecha de nacimiento"
-                                value-format="yyyy-MM-dd"
-                                :picker-options="pickerOptions">
-                                </el-date-picker>
+                                <label class="col-md-3 col-form-label">Fecha de nacimiento (opcional)</label>
+                                <div class="col-md-9">
+                                    <el-date-picker
+                                    style="width: 100%;"
+                                    v-model="fillEditarUsuarios.f_nacimiento"
+                                    placeholder="Fecha de nacimiento"
+                                    value-format="yyyy-MM-dd"
+                                    :picker-options="pickerOptions">
+                                    </el-date-picker>
+                                </div>
                             </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Roles</label>
+                                <div class="col-md-9">
+                                    <multiselect
+                                        v-model="listRoles.value"
+                                        mode="tags"
+                                        label='name'
+                                        track-by="id"
+                                        placeholder="Seleccionar roles"
+                                        :options="listRoles.options"
+                                        :multiple="true"
+                                        selectLabel="Seleccionar"
+                                        selectedLabel="Seleccionado"
+                                        deselectLabel="Presiona enter para remover">
+                                        <span slot="noResult">Rol no encontrado.</span>
+                                    </multiselect>
+                                </div>
                             </div>
-
-
                           <div class="form-group row">
                             <div class=" col-sm-6">
-                              <button style="margin: 2px;" :disabled="formatError || rutError" class="btn btn-info btnFull" @click.prevent="setEditarUsuario">Editar</button>
+                              <button style="margin: 2px;" :disabled="formatError || rutError || passwordError===1" class="btn btn-info btnFull" @click.prevent="setEditarUsuario">Editar</button>
                             </div>
                             <div class=" col-sm-6">
                               <button style="margin: 2px;" class="btn btn-primary btnFull" @click.prevent="reestablecerDatos">Reestablecer</button>
@@ -247,7 +280,9 @@
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect';
 export default {
+    components: { Multiselect },
     data(){
         return{
             fillEditarUsuarios:{
@@ -301,7 +336,13 @@ export default {
             endOption: {
             },
             rutError: false,
-            fullscreenLoading:false
+            fullscreenLoading:false,
+            repeatedPassword: '',
+            passwordError: 2,
+            listRoles: {
+                value: [],
+                options: ['Admin', 'otro']
+            }
         }
     },
     mounted(){
@@ -309,6 +350,7 @@ export default {
         this.getUsuarioById();
         this.getRolByUsuario();
         this.getListarEscuela();
+        this.getListarRoles();
     },
     methods:{
         inicializacion () {
@@ -337,7 +379,16 @@ export default {
                 'nIdUsuario' : this.fillVerUsuarios.nIdUsuario
                 }
             }).then(response => {
-                this.fillVerUsuarios.cNombreRol = (response.data.length == 0) ? '' : response.data[0].name;
+                this.listRoles.value = response.data;
+            })
+        },
+        getListarRoles(){
+            var url = '/administracion/roles/getListarRoles'
+            axios.get(url, {
+            }).then(response => {
+                //this.inicializarPaginacion();
+                this.listRoles.options = response.data;
+                this.fullscreenLoading = false;
             })
         },
         getUsuarioById(){
@@ -400,7 +451,7 @@ export default {
                 // console.log(response);
                 this.getRefrescarUsuarioAutenticado();
                 this.getUsuarioById();
-                this.fullscreenLoading = false;
+                this.setEditarRolByUsuario(this.fillEditarUsuarios.nIdUsuario);
             }).catch(error=>{
                 this.mensajeError.push(error.response.data.error);
                 Swal.fire({
@@ -413,6 +464,15 @@ export default {
                 if (this.mensajeError.length > 0) {
                     this.modalShow = true;
                 }
+            })
+        },
+        setEditarRolByUsuario(nIdUsuario){
+            var url = '/administracion/usuario/setEditarRolByUsuario'
+            axios.post(url, {
+            'nIdUsuario'    : nIdUsuario,
+            'nIdRol'  : this.listRoles.value,
+            }).then(response => {
+                this.fullscreenLoading = false;
             })
         },
         getRefrescarUsuarioAutenticado(){
@@ -428,6 +488,7 @@ export default {
                     showConfirmButton: false,
                     timer: 1500
                 })
+                this.$router.push('/usuarios');
             })
         },
         validarRegistrarUsuario(){
@@ -451,11 +512,14 @@ export default {
             if(!this.fillEditarUsuarios.telefono){
                 this.mensajeError.push("El teléfono es un campo obligatorio")
             }
-            if(!this.fillEditarUsuarios.f_entrada){
+            if(!this.fillEditarUsuarios.f_entrada && this.listRoles.value.find(this.esAlumno)){
                 this.mensajeError.push("La fecha de ingreso a la carrera es un campo obligatorio")
             }
-            if(!this.fillEditarUsuarios.f_salida){
+            if(!this.fillEditarUsuarios.f_salida && this.listRoles.value.find(this.esAlumno)){
                 this.mensajeError.push("La fecha de término de asignaturas es un campo obligatorio")
+            }
+            if(this.listRoles.value.length == 0){
+                this.mensajeError.push("Los usuarios deben poseer al menos 1 rol")
             }
             if(this.mensajeError.length){
                 this.error = 1;
@@ -470,6 +534,7 @@ export default {
             this.fillEditarUsuarios.cEscuela        = this.fillVerUsuarios.cEscuela;
             this.fillEditarUsuarios.oFotografia     = '';
             this.fillEditarUsuarios.cContrasena     = '';
+            this.repeatedPassword                   = '';
             this.fillEditarUsuarios.direccion       = this.fillVerUsuarios.direccion;
             this.fillEditarUsuarios.telefono        = this.fillVerUsuarios.telefono;
             this.fillEditarUsuarios.f_nacimiento    = this.fillVerUsuarios.f_nacimiento;
@@ -513,6 +578,26 @@ export default {
             for(;T;T=Math.floor(T/10))
                 S=(S+T%10*(9-M++%6))%11;
             return S?S-1:'k';
+        },
+        passwordVerification () {
+            this.passwordError = 0;
+            this.passwordVerification;
+            if (this.repeatedPassword !== this.fillEditarUsuarios.cContrasena) {
+                this.passwordError = 1;
+            }
+        },
+        showPassword (idPass) {
+            const cambio = document.getElementById(idPass);
+            if (cambio.type == 'password') {
+                cambio.type = 'text';
+                $('.' + idPass + 'Ico').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+            } else {
+                cambio.type = 'password';
+                $('.' + idPass + 'Ico').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
+            }
+        },
+        esAlumno(rol){
+            return rol.name == 'Alumno';
         },
     }
 }

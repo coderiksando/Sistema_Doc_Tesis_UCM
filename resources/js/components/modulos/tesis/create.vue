@@ -26,7 +26,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h3 class="card-title">Formulario inscripción de tesis</h3>
+                                    <h3 class="card-title">Formulario de inscripción de tesis</h3>
                                 </div>
                                 <div class="col-md-6" style="text-align: right;">
                                     <button class="btn btn-secondary" @click.prevent="mostrarModalAyuda">Ayuda
@@ -396,12 +396,6 @@
                           </tr>
                         </tbody>
                       </table>
-                      <!-- <div class="row" v-for="(item, index) in listAlumnosBuscados" :key="index">
-                                            <button class="btn btn-primary w-100 mb-2"  @click="setIngresarAlumno(item)">
-                                                    <p>Nombre: {{item.nombres}} {{item.apellidos}}</p>
-                                                    <p>Rut: {{item.rut}}</p>
-                                            </button>
-                                        </div> -->
                     </template>
                   </div>
                 </div>

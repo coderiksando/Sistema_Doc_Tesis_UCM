@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Editar Usuario</h1>
+            <h1 class="m-0 text-dark">Editar usuario</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -22,7 +22,7 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Formulario Editar Usuario</h3>
+                <h3 class="card-title">Formulario de edición de usuario</h3>
               </div>
               <div class="card-body">
                 <form role="form">
@@ -61,9 +61,9 @@
                     </div>
                     <div class="col-md-6">
                           <div class="form-group row">
-                              <label class="col-md-3 col-form-label">Asignar Escuela</label>
+                              <label class="col-md-3 col-form-label">Asignar escuela</label>
                               <div class="col-md-9">
-                                  <el-select v-model="fillEditarUsuarios.cEscuela" 
+                                  <el-select v-model="fillEditarUsuarios.cEscuela"
                                   placeholder="Asignar Escuela"
                                   clearable>
                                   <el-option
@@ -80,7 +80,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Rol</label>
                         <div class="col-md-9">
-                            <el-select v-model="fillEditarUsuarios.nIdRol" 
+                            <el-select v-model="fillEditarUsuarios.nIdRol"
                             placeholder="Asignar un Rol"
                             clearable>
                               <el-option
@@ -95,14 +95,14 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Fotografia</label>
+                        <label class="col-md-3 col-form-label">Fotografía</label>
                         <div class="col-md-9">
                             <input type="file" class="form-control"  @change="getFile">
                         </div>
                       </div>
                     </div>
                   </div>
-                </form>     
+                </form>
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -200,7 +200,7 @@ export default {
           'nIdUsuario' : this.fillEditarUsuarios.nIdUsuario
         }
       }).then(response => {
-          this.fillEditarUsuarios.nIdRol = (response.data.length == 0) ? '' : response.data[0].nIdRol;
+          this.fillEditarUsuarios.nIdRol = (response.data.length == 0) ? '' : response.data[0].id;
           this.fullscreenLoading = false;
       })
     },
@@ -240,7 +240,7 @@ export default {
       }
       this.fullscreenLoading = true;
       if(!this.fillEditarUsuarios.oFotografia || this.fillEditarUsuarios.oFotografia == undefined){
-        
+
         this.setGuardarUsuario(0);
       } else {
         this.setRegistrarArchivo();
@@ -254,13 +254,13 @@ export default {
         console.log(response)
         var nIdFile = response.data[0].nIdFile;
         this.setGuardarUsuario(nIdFile);
-      }) 
+      })
     },
     setGuardarUsuario(nIdFile){
       var url = '/administracion/usuario/setEditarUsuario'
       console.log("contra", this.fillEditarUsuarios.cContrasena)
       axios.post(url, {
-        'nIdUsuario' : this.fillEditarUsuarios.nIdUsuario, 
+        'nIdUsuario' : this.fillEditarUsuarios.nIdUsuario,
         'cNombre'    : this.fillEditarUsuarios.cNombre,
         'cApellido'  : this.fillEditarUsuarios.cApellido,
         'cCorreo'    : this.fillEditarUsuarios.cCorreo,
@@ -309,9 +309,9 @@ export default {
         }
         return this.error;
     },
-    
-    
-  
+
+
+
   }// cierre methods
 }
 </script>

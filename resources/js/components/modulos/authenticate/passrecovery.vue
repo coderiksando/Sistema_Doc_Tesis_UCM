@@ -34,7 +34,7 @@
                             <div class="invalid-feedback">
                                 {{infoToken}}
                             </div>
-                            <button type="submit" class="btn btn-secondary">Validar Codigo</button>
+                            <button type="submit" class="btn btn-secondary">Validar código</button>
                         </div>
                     </form>
                 </div>
@@ -65,54 +65,9 @@
                                 {{errorPasswordAgain}}
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success"> Cambiar Contraseña</button>
+                        <button type="submit" class="btn btn-success">Cambiar contraseña</button>
                     </form>
                 </div>
-                <!--
-                <form method="post">
-                    <div class="input-group mb-3">
-                    <input type="email" @keyup.enter="login" v-model="fillLogin.cEmail" class="form-control" placeholder="Email">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="password" @keyup.enter="login" v-model="fillLogin.cContrasena" class="form-control" placeholder="Contraseña">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-                <div class="row">
-                    <div class="col-md-12">
-                        <span v-if="error">
-                            <div v-for="(e, index) in mensajeError" :key="index" v-text="e" class="callout callout-danger"></div>
-                        </span>
-                    </div>
-                </div>
-                <div class="social-auth-links text-center mb-3">
-                    <button class="btn btn-flat btn-block btn-danger" @click.prevent="login" v-loading.fullscreen.lock="fullscreenLoading">
-                     Iniciar sesion
-                    </button>
-                </div>
-                <p class="mb-0">
-                    <router-link :to="{name:'registro'}">
-                        <b>Registrarme como alumno</b>
-                    </router-link>
-                </p>
-                <p class="mb-0">
-                    <router-link :to="{name:'registro'}">
-                        <b>Recuperar contraseña</b>
-                    </router-link>
-                </p>
-
-                -->
-
             </div>
         </div>
     </div>

@@ -6,6 +6,7 @@ use App\ArchivoPdf;
 use App\Fit_User;
 use App\Fit;
 use App\User;
+use App\Users_Roles;
 use App\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -84,6 +85,7 @@ class FilesController extends Controller
 
     public function setRegistrarTesisfinalizada(Request $request){
         if(!$request->ajax()) return redirect('/');
+        Debugbar::info($request);
         if ($request->file) {
             $file = $request->file;
             $bandera = Str::random(10);
@@ -95,7 +97,7 @@ class FilesController extends Controller
                 $rpta->path = asset('storage/users/'.$fileserver);
                 $rpta->filename = $filename;
                 $rpta->id_fit = $request->id_fit;
-                $rpta->tipo_pdf = 'final_t';
+                $rpta->tipo_pdf = $request->type;
                 $rpta->save();
             }
         } else {
@@ -103,6 +105,7 @@ class FilesController extends Controller
             $registroFit->id_p_guia = $request->nIdPg;
             $registroFit->id_p_co_guia = $request->nIdCoPg;
             $registroFit->id_vinculacion = $request->nIdVinculacion;
+            $registroFit->id_escuela = $request->nIdEscuela;
             $registroFit->titulo = $request->cTitulo;
             $registroFit->tipo = $request->cTipo;
             $registroFit->objetivo_general = $request->cObjetivoGeneral;
@@ -126,11 +129,17 @@ class FilesController extends Controller
                     $newUser->nombres = $user->nombres;
                     $newUser->apellidos = $user->apellidos;
                     $newUser->password = Hash::make('12345');
+                    $newUser->id_escuela = $registroFit->id_escuela;
                     $newUser->save();
                     $newFitUser = new Fit_User;
                     $newFitUser->id_user = $newUser->id_user;
                     $newFitUser->id_fit = $registroFit->id;
                     $newFitUser->save();
+                    $newUserRol = new Users_Roles;
+                    // se establece el usuario como alumno (2)
+                    $newUserRol->id_user = $newUser->id_user;
+                    $newUserRol->id_roles = 2;
+                    $newUserRol->save();
                 }
             }
             return $registroFit->id;

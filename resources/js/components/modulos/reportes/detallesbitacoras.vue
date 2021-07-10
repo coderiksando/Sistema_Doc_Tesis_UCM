@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Bitacoras</h1>
+            <h1 class="m-0 text-dark">Bitácoras</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -16,8 +16,8 @@
           <div class="card-header">
             <div class="card-tools">
                 <router-link class="btn btn-info bnt-sm" :to="'/reportes'">
-                    <i class="fas fa-arrow-left"></i> Volver a Reportes
-                </router-link> 
+                    <i class="fas fa-arrow-left"></i> Volver a reportes
+                </router-link>
             </div>
           </div>
         </template>
@@ -26,7 +26,7 @@
               <template  v-if="listRolPermisosByUsuario.includes('avances.listaralumnos')">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda</h3>
+                <h3 class="card-title">Criterios de búsqueda</h3>
               </div>
              <!-- Filtro de busqueda de avances -->
               <div class="card-body">
@@ -36,7 +36,7 @@
                       <div class="form-group row">
                           <label class="col-md-3 col-form-label">Seleccionar alumno</label>
                           <div class="col-md-9">
-                              <el-select v-model="fillBsqBitacoraByAlumno.id_user" 
+                              <el-select v-model="fillBsqBitacoraByAlumno.id_user"
                               placeholder="Asignar alumno"
                               clearable>
                               <el-option
@@ -52,7 +52,7 @@
                   </div>
                 </form>
               </div> <!-- Filtro de busqueda de avances -->
-              
+
               <div class="card-footer">
                 <div class="row">
                   <div class="col-md-4 offset-4">
@@ -71,7 +71,7 @@
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listBitacoras.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects ">
                     <thead>
                       <tr>
@@ -139,7 +139,7 @@ export default {
       pageNumber: 0,
       perPage: 5,
       modalShow: false,
-      modalOption: 0, 
+      modalOption: 0,
       mostrarModal: {
         display: 'block',
         background: '#0000006b',
@@ -153,7 +153,7 @@ export default {
   },
   computed: {
     pageCount(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listBitacoras.length,
           b = this.perPage;
       return Math.ceil(a / b);
@@ -198,7 +198,7 @@ export default {
       this.fullscreenLoading = true;
       var url = '/bitacoras/getListarMisBitacoras'
       axios.get(url, {
-        
+
       }).then(response => {
           this.inicializarPaginacion();
           this.listBitacoras = response.data;
@@ -247,7 +247,7 @@ export default {
 <style>
   .scrollTable{
     max-height: 350px !important;
-    overflow: auto !important; 
+    overflow: auto !important;
   }
 
 </style>

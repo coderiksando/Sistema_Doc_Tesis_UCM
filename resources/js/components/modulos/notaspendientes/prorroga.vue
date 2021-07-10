@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Ingresar Prorroga de Nota Pendiente</h1>
+            <h1 class="m-0 text-dark">Ingresar prorroga de nota pendiente</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -25,7 +25,7 @@
 
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario Fecha de Prorroga</h3>
+                            <h3 class="card-title">Formulario de ingreso de fecha de prorroga</h3>
                         </div>
                             <div class="card-body">
                                 <form role="form">
@@ -33,7 +33,7 @@
                                         <div class="form-group row">
                                               <div class="col-md-12">
                                                 <template>
-                                                    <label class="col-md-6 col-form-label">Fecha Propuesta de Prorroga</label>
+                                                    <label class="col-md-6 col-form-label">Fecha propuesta de prorroga</label>
                                                         <el-date-picker
                                                             v-model="fillEditarNotaP.fecha_prorroga"
                                                             type="date"
@@ -58,10 +58,10 @@
                             </div>
                         </div>
             </div>
-        </div> 
+        </div>
     </div>
 </div>
-               
+
 
 
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">

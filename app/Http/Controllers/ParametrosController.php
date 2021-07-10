@@ -22,17 +22,21 @@ class ParametrosController extends Controller
 
     public function setParametros(Request $request){
         $maxStudentNumber    = $request->MaxStudentNumber;
-        $avancesTesisSize    = $request->AvancesTesisSize; 
+        $avancesTesisSize    = $request->AvancesTesisSize;
         $actaSize            = $request->ActaSize;
+        $constanciaSize      = $request->ConstanciaSize;
         $avancesTesisFormato = $request->AvancesTesisFormato;
         $actaFormato         = $request->ActaFormato;
+        $constanciaFormato   = $request->ConstanciaFormato;
 
         Parametro::where('parametro', 'MaxStudentNumber')->update(['valor' => $maxStudentNumber]);
         Parametro::where('parametro', 'AvancesTesisSize')->update(['valor' => $avancesTesisSize]);
         Parametro::where('parametro', 'ActaSize')->update(['valor' => $actaSize]);
+        Parametro::where('parametro', 'ConstanciaSize')->update(['valor' => $constanciaSize]);
 
         Parametro::where('parametro', 'AvancesTesisFormato')->delete();
         Parametro::where('parametro', 'ActaFormato')->delete();
+        Parametro::where('parametro', 'ConstanciaFormato')->delete();
 
         foreach ($avancesTesisFormato as $formato) {
             Parametro::create([
@@ -43,6 +47,12 @@ class ParametrosController extends Controller
         foreach ($actaFormato as $formato) {
             Parametro::create([
                 'parametro'=>'ActaFormato',
+                'valor'=> $formato
+            ]);
+        }
+        foreach ($constanciaFormato as $formato) {
+            Parametro::create([
+                'parametro'=>'ConstanciaFormato',
                 'valor'=> $formato
             ]);
         }

@@ -23,7 +23,7 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda</h3>
+                <h3 class="card-title">Criterios de búsqueda</h3>
               </div>
               <div class="card-body">
                 <form role="form">
@@ -40,7 +40,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Escuela</label>
                         <div class="col-md-9">
-                            <el-select v-model="fillBsqAreaTesis.nIdEscuela" 
+                            <el-select v-model="fillBsqAreaTesis.nIdEscuela"
                             placeholder="Seleccione una escuela"
                             clearable>
                               <el-option
@@ -55,7 +55,7 @@
                     </div>
                   </div>
                 </form>
-              
+
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -74,7 +74,7 @@
               </div>
               <div class="card-body table-resposive">
                 <template v-if="listarAreaTesisPaginated.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
@@ -89,11 +89,11 @@
                         <td v-text="item.escuela_alias">
 
                         </td>
-                      
+
                         <td>
                             <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'areatesis.editar', params:{id: item.id}}">
                               <i class="fas fa-pencil-alt"></i> Editar
-                            </router-link>   
+                            </router-link>
                         </td>
                       </tr>
                     </tbody>
@@ -138,15 +138,6 @@ export default {
         nIdEscuela: ''
       },
       listAreaTesis:[],
-      /*listEscuelas: [
-        {value: 1, label: 'Ing. Civil Informatica'},
-        {value: 2, label: 'Arquitectura'},
-        {value: 3, label: 'Ing. Civil'},
-        {value: 4, label: 'Contruccion Civil'},
-        {value: 5, label: 'Ing. Civil Industrial'},
-        {value: 6, label: 'Ing. civil Electronica'},
-        {value: 7, label: 'Ing. en Contruccion'}
-      ],*/
       listEscuelas:[],
       fullscreenLoading: false,
       pageNumber: 0,
@@ -158,9 +149,9 @@ export default {
     this.getListarEscuelas();
   },
   computed: {
-    
+
     pageCount(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listAreaTesis.length,
           b = this.perPage;
       return Math.ceil(a / b);
@@ -228,7 +219,7 @@ export default {
     inicializarPaginacion(){
       this.pageNumber = 0;
     },
-    
+
   }//cierre de methods
 }
 </script>
@@ -236,6 +227,6 @@ export default {
 <style>
   .scrollTable{
     max-height: 350px !important;
-    overflow: auto !important; 
+    overflow: auto !important;
   }
 </style>

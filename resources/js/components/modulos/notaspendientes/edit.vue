@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Editar Nota Pendiente</h1>
+            <h1 class="m-0 text-dark">Editar nota pendiente</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -25,7 +25,7 @@
 
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario Editar Nota Pendiente</h3>
+                            <h3 class="card-title">Formulario de edición de notas pendientes</h3>
                         </div>
                             <div class="card-body">
                                 <form role="form">
@@ -33,14 +33,14 @@
                                         <div class="form-group row">
                                               <div class="col-md-12">
                                                 <template>
-                                                    <label class="col-md-3 col-form-label">Fecha Propuesta</label>
+                                                    <label class="col-md-3 col-form-label">Fecha propuesta</label>
                                                         <el-date-picker
                                                             v-model="fillEditarNotaP.fecha_propuesta"
                                                             type="date"
                                                             size="large"
                                                             value-format="yyyy-MM-dd"
                                                             placeholder="Selecionar fecha de nota pendiente">
-        
+
                                                         </el-date-picker>
                                                 </template>
                                                 </div>
@@ -60,10 +60,10 @@
                         </div>
 
             </div>
-        </div> 
+        </div>
     </div>
 </div>
-               
+
 
 
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">

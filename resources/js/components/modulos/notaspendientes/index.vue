@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Notas Pendientes</h1>
+            <h1 class="m-0 text-dark">Notas pendientes</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -18,90 +18,36 @@
             <template v-if="listRolPermisosByUsuario.includes('EsAlumno') && listNotasPendientes.length > 0">
               <div>
               <router-link class="btn btn-info bnt-sm link-disabled" :to="''">
-                <i class="fas fa-plus-square"></i> Usted ya ingreso una nota pendiente
+                <i class="fas fa-plus-square"></i>Usted ya ingreso una nota pendiente
               </router-link>
               </div>
             </template>
             <template v-if="listRolPermisosByUsuario.includes('notaspendientes.crear')">
               <template v-if="listNotasPendientes.length == 0 && fillEstadoTesis.cEstado  == 'D'">
                 <router-link class="btn btn-info bnt-sm" :to="'/notaspendientes/crear'">
-                  <i class="fas fa-plus-square"></i> Solicitar Nota Pendiente
+                  <i class="fas fa-plus-square"></i>Solicitar nota pendiente
                 </router-link>
               </template>
             </template>
           </div>
         </div>
-        
+
         <div class="card-body">
           <div class="container-fluid">
-            <!-- inicio formulario de busqueda-->
-           <!-- <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda</h3>
-              </div>
-              <div class="card-body">
-                <form role="form">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Estado</label>
-                        <div class="col-md-9">
-                            <el-select v-model="fillBsqNotasPendientes.estado" 
-                            placeholder="Seleccione un estado"
-                            clearable>
-                              <el-option
-                                v-for="item in listEstadosNotaP"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                              </el-option>
-                            </el-select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Rango Fecha de vencimiento</label>
-                            <div class="col-md-9">
-                                <el-date-picker
-                                    v-model="fillBsqNotasPendientes.dfecharango"
-                                    type="daterange"
-                                    range-separator="Hasta"
-                                    start-placeholder="Fecha Inicio"
-                                    end-placeholder="Fecha Fin"
-                                    value-format="yyyy-MM-dd">
-                                </el-date-picker>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarNotasPendientes" v-loading.fullscreen.lock="fullscreenLoading"
-                      >Buscar</button>
-                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
-                  </div>
-                </div>
-              </div>
-            </div>  cierre formulario de busqueda-->
-
             <div class="card card-info">
               <div class="card-header">
                 <h3 class="card-title">Bandeja de resultados</h3>
               </div>
               <div class="card-body table-responsive">
                 <template v-if="listarNotasPendientesPaginated.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
                         <th>Alumno</th>
                         <th>Fecha de ingreso</th>
                         <th>Fecha propuesta</th>
-                        <th>Fecha prorroga</th>
+                        <th>Fecha prórroga</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
@@ -112,9 +58,9 @@
                                 <p v-text="itemUser.nombres + ' ' + itemUser.apellidos"></p>
                             </div>
                         </td>
-                        <td v-text="item.fecha_presentacion"></td>  
-                        <td v-text="item.fecha_propuesta"></td>  
-                        <td v-text="item.fecha_prorroga"></td>  
+                        <td v-text="item.fecha_presentacion"></td>
+                        <td v-text="item.fecha_propuesta"></td>
+                        <td v-text="item.fecha_prorroga"></td>
                         <td>
                             <template  v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
                               <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'notaspendientes.editar', params:{id: item.id}}">
@@ -123,9 +69,9 @@
                             </template>
                             <template v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
                               <router-link class="btn btn-flat btn-success btn-sm" :to="{name:'notaspendientes.prorroga', params:{id: item.id}}">
-                                <i class="fas fa-calendar-check"></i> Solicitar Prorroga
+                                <i class="fas fa-calendar-check"></i> Solicitar prórroga
                               </router-link>
-                            </template>    
+                            </template>
                         </td>
                       </tr>
                     </tbody>
@@ -289,7 +235,7 @@ export default {
 <style>
   .scrollTable{
     max-height: 350px !important;
-    overflow: auto !important; 
+    overflow: auto !important;
   }
   .el-range-editor.el-input__inner{
     width: 100% !important;

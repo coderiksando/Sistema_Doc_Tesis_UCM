@@ -25,7 +25,7 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda</h3>
+                <h3 class="card-title">Criterios de búsqueda</h3>
               </div>
               <div class="card-body">
                 <form role="form">
@@ -58,7 +58,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Estado</label>
                         <div class="col-md-9">
-                            <el-select v-model="fillBsqUsuarios.cEstado" 
+                            <el-select v-model="fillBsqUsuarios.cEstado"
                             placeholder="Seleccione un estado"
                             clearable>
                               <el-option
@@ -73,7 +73,7 @@
                     </div>
                   </div>
                 </form>
-              
+
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -92,7 +92,7 @@
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listarUsuariosPaginated.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
@@ -123,57 +123,57 @@
                         <td v-text="item.email"></td>
                         <td>
                           <template v-if="item.state == 'A'">
-                            <span class="badge badge-success" v-text="item.state_alias"></span>
+                            <span class="badge badge-success">Activo</span>
                           </template>
                           <template v-else>
-                            <span class="badge badge-danger" v-text="item.state_alias"></span>
+                            <span class="badge badge-danger">Inactivo</span>
                           </template>
                         </td>
                         <td>
                           <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'usuarios.ver', params:{id_user: item.id_user}}">
-                            <i class="fas fa-folder"></i> Ver
+                            <i title="Ver y Editar" class="fas fa-eye"></i>
                           </router-link>
                           <template v-if="item.state == 'A'">
-                            <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'usuarios.editar', params:{id_user: item.id_user}}">
+                            <!-- <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'usuarios.editar', params:{id_user: item.id_user}}">
                               <i class="fas fa-pencil-alt"></i> Editar
-                            </router-link>
+                            </router-link> -->
                             <router-link class="btn btn-flat btn-success btn-sm" :to="{name:'usuarios.permisos', params:{id_user: item.id_user}}">
-                              <i class="fas fa-key"></i> Permisos
+                              <i title="Permisos" class="fas fa-key"></i>
                             </router-link>
                             <button class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarEstadoUsuario(1, item.id_user)">
-                              <i class="fas fa-trash"></i>Desactivar
+                              <i title="Desactivar usuario" class="fas fa-ban"></i>
                             </button>
 
                           </template>
                           <template v-else>
                             <button class="btn btn-flat btn-success btn-sm" @click.prevent="setCambiarEstadoUsuario(2, item.id_user)">
-                              <i class="fas fa-trash"></i>Activar
+                              <i title="Activar usuario" class="fas fa-check-circle"></i>
                             </button>
                           </template>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                      <li class="page-item" v-if="pageNumber > 0">
-                        <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                      </li>
-                      <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                        :class="[page == pageNumber ? 'active' : '']">
-                        <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                      </li>
-                      <li class="page-item" v-if="pageNumber < pageCount -1">
-                        <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                      </li>
-                    </ul>
-                  </div>
                 </template>
                 <template v-else>
                   <div class="callout callout-info">
                     <h5> No se han encontrado resultados...</h5>
                   </div>
                 </template>
+              </div>
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item" v-if="pageNumber > 0">
+                    <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+                  </li>
+                  <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                    :class="[page == pageNumber ? 'active' : '']">
+                    <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+                  </li>
+                  <li class="page-item" v-if="pageNumber < pageCount -1">
+                    <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -208,7 +208,7 @@ export default {
   },
   computed: {
     pageCount(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listUsuarios.length,
           b = this.perPage;
       return Math.ceil(a / b);
@@ -276,7 +276,7 @@ export default {
     },
     setCambiarEstadoUsuario(op, id_user){
       Swal.fire({
-      title: 'Estas seguro? ' + ((op == 1) ? 'desactivar ' : 'activar ') + ' el usuario',
+      title: '¿Está seguro de que desea ' + ((op == 1) ? 'desactivar ' : 'activar ') + ' el usuario?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

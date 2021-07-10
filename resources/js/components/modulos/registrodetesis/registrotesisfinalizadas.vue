@@ -196,7 +196,7 @@
                     <div class="col-md-6">
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label"
-                          >Objetivos específico</label
+                          >Objetivos específicos</label
                         >
                         <div class="col-md-9">
                           <el-input
@@ -237,10 +237,11 @@
                         <div class="col-md-9">
                           <template>
                             <el-input-number
+                              style="width: 100%;"
                               v-model="fillCrearFIT.Nota"
                               size="large"
                               :min="1"
-                              :precision="2"
+                              :precision="1"
                               :step="0.1"
                               :max="7"
                             ></el-input-number>
@@ -248,10 +249,11 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-12">
-                      <div class="form-group row">
-                        <label style="max-width: 12.5% !important;" class="col-md-3 col-form-label">Archivo</label>
-                        <div style="width: 87.5% !important; padding-right: 7.5px; padding-left: 7.5px;">
+
+                    <div class="col-md-6">
+                      <div class="noPadNoMar col-md-12 form-group row">
+                        <label class="noPadNoMar col-md-12 col-form-label">Tesis final (opcional)</label>
+                        <div class="noPadNoMar container-fluid">
                           <div class="input-group">
                             <div class="input-group-prepend">
                               <span
@@ -267,40 +269,145 @@
                                 class="custom-file-input"
                                 id="input1"
                                 :class="{
-                                  'is-invalid': formatError || sizeError,
+                                  'is-invalid': tesisParams.formatError || tesisParams.sizeError,
                                 }"
-                                @change="getFile"
+                                @change="getFileRut"
                               />
                               <label class="custom-file-label" for="input1">{{
-                                fillCrearFIT.oArchivo
-                                  ? fillCrearFIT.oArchivo.name
+                                tesisFile
+                                  ? tesisFile.name
                                   : "Seleccionar archivo"
                               }}</label>
                             </div>
                           </div>
                           <div
                             class="custom-file invalid-feedback no-margin"
-                            v-show="formatError"
+                            v-show="tesisParams.formatError"
                           >
                             El formato del archivo no es soportado.
                           </div>
                           <div
                             class="custom-file invalid-feedback no-margin"
-                            v-show="sizeError"
+                            v-show="tesisParams.sizeError"
                           >
                             El tamaño del archivo no puede superar los
-                            {{ fileMaxSize }} MB.
+                            {{ tesisParams.size }} MB.
                           </div>
                           <div class="container">
-                            El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
+                            El tamaño máximo de los archivos es: {{tesisParams.size}} MB.
                         </div>
                         <div class="container">
                             Los formatos de archivo soportados son:
-                        <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
+                        <span v-for="item in tesisParams.types" :key="item" v-text="item +' '"></span>
                         </div>
                         </div>
                       </div>
                     </div>
+
+                    <div class="col-md-6">
+                      <div class="noPadNoMar col-md-12 form-group row">
+                        <label class="noPadNoMar col-md-12 col-form-label">Acta de defensa de tesis (opcional)</label>
+                        <div class="noPadNoMar container-fluid">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span
+                                class="input-group-text"
+                              >
+                                <i class="fas fa-file-upload"></i>
+                              </span>
+                            </div>
+                            <div class="custom-file">
+                              <input
+                                type="file"
+                                class="custom-file-input"
+                                :class="{
+                                  'is-invalid': actaParams.formatError || actaParams.sizeError,
+                                }"
+                                @change="getFileActa"
+                              />
+                              <label class="custom-file-label" for="input1">{{
+                                actaFile
+                                  ? actaFile.name
+                                  : "Seleccionar archivo"
+                              }}</label>
+                            </div>
+                          </div>
+                          <div
+                            class="custom-file invalid-feedback no-margin"
+                            v-show="actaParams.formatError"
+                          >
+                            El formato del archivo no es soportado.
+                          </div>
+                          <div
+                            class="custom-file invalid-feedback no-margin"
+                            v-show="actaParams.sizeError"
+                          >
+                            El tamaño del archivo no puede superar los
+                            {{ actaParams.size }} MB.
+                          </div>
+                          <div class="container">
+                            El tamaño máximo de los archivos es: {{actaParams.size}} MB.
+                        </div>
+                        <div class="container">
+                            Los formatos de archivo soportados son:
+                        <span v-for="item in actaParams.types" :key="item" v-text="item +' '"></span>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="noPadNoMar col-md-12 form-group row">
+                        <label  class="noPadNoMar col-md-12 col-form-label">Constancia de examen (opcional)</label>
+                        <div class="noPadNoMar container-fluid">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span
+                                class="input-group-text"
+                              >
+                                <i class="fas fa-file-upload"></i>
+                              </span>
+                            </div>
+                            <div class="custom-file">
+                              <input
+                                type="file"
+                                class="custom-file-input"
+                                :class="{
+                                  'is-invalid': constParams.formatError || constParams.sizeError,
+                                }"
+                                @change="getFileConst"
+                              />
+                              <label class="custom-file-label" for="input1">{{
+                                constFile
+                                  ? constFile.name
+                                  : "Seleccionar archivo"
+                              }}</label>
+                            </div>
+                          </div>
+                          <div
+                            class="custom-file invalid-feedback no-margin"
+                            v-show="constParams.formatError"
+                          >
+                            El formato del archivo no es soportado.
+                          </div>
+                          <div
+                            class="custom-file invalid-feedback no-margin"
+                            v-show="constParams.sizeError"
+                          >
+                            El tamaño del archivo no puede superar los
+                            {{ constParams.size }} MB.
+                          </div>
+                          <div class="container">
+                            El tamaño máximo de los archivos es: {{constParams.size}} MB.
+                        </div>
+                        <div class="container">
+                            Los formatos de archivo soportados son:
+                        <span v-for="item in constParams.types" :key="item" v-text="item +' '"></span>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <div class="col-md-12">
                       <h3>
                         <b>{{ "Tabla de integrantes" }}</b>
@@ -501,7 +608,7 @@
                       >
                         <thead>
                           <tr>
-                            <th class="col-md-4">Nombre integrante</th>
+                            <th class="col-md-4">Nombre de integrante</th>
                             <th class="col-md-2">Rut</th>
                             <th class="col-md-4">Correo electrónico</th>
                             <th class="col-md-2">Acción</th>
@@ -687,6 +794,7 @@ export default {
         oArchivo: "",
         nIdPg: "",
         nIdCoPg: "",
+        nIdEscuela: '',
         nIdVinculacion: "",
         cTipo: "",
         cObjetivoGeneral: "",
@@ -695,7 +803,9 @@ export default {
         cContribucion: "",
         cUsers: [],
       },
-      form: new FormData(),
+      tesisForm: new FormData(),
+      actaForm: new FormData(),
+      constForm: new FormData(),
       listTipo: [
         { value: "Tesis", label: "Tesis" },
         { value: "Memoria", label: "Memoria" },
@@ -737,11 +847,27 @@ export default {
       },
       error: 0,
       mensajeError: [],
-      fileTypes: [],
-      formatError: false,
-      sizeError: false,
-      fileMaxSize: 0,
-      invalidado: true
+      tesisParams: {
+          types: [],
+          size: 0,
+          formatError: false,
+          sizeError: false
+      },
+      actaParams: {
+          types: [],
+          size: 0,
+          formatError: false,
+          sizeError: false
+      },
+      constParams: {
+          types: [],
+          size: 0,
+          formatError: false,
+          sizeError: false
+      },
+      tesisFile: '',
+      actaFile: '',
+      constFile: '',
     };
   },
   computed: {},
@@ -755,27 +881,63 @@ export default {
     getParametros() {
       var url = "/admin/parametros";
       axios
-        .post(url, { params: ["AvancesTesisFormato", "AvancesTesisSize"] })
+        .post(url, { params: ['AvancesTesisSize', 'AvancesTesisFormato', 'ActaSize', 'ActaFormato', 'ConstanciaSize', 'ConstanciaFormato'] })
         .then((response) => {
-          this.fileTypes = response.data[0];
-          this.fileMaxSize = response.data[1][0];
+          this.tesisParams.size  = response.data[0][0];
+          this.tesisParams.types   = response.data[1];
+          this.actaParams.size = response.data[2][0];
+          this.actaParams.types  = response.data[3];
+          this.constParams.size = response.data[4][0];
+          this.constParams.types  = response.data[5];
         });
     },
-    getFile(element) {
-      this.formatError = false;
-      this.sizeError = false;
-      this.fillCrearFIT.oArchivo = element.target.files[0];
-      if (!this.fillCrearFIT.oArchivo) return;
-      const fileName = this.fillCrearFIT.oArchivo.name;
-      const fileSize = this.fillCrearFIT.oArchivo.size;
+    getFileRut(element) {
+      this.tesisParams.formatError = false;
+      this.tesisParams.sizeError = false;
+      this.tesisFile = element.target.files[0];
+      if (!this.tesisFile) return;
+      const fileName = this.tesisFile.name;
+      const fileSize = this.tesisFile.size;
       var dots = fileName.split(".");
       var fileType = "." + dots[dots.length - 1];
-      if (this.fileTypes.join(".").indexOf(fileType) == -1) {
-        this.formatError = true;
+      if (this.tesisParams.types.join(".").indexOf(fileType) == -1) {
+        this.tesisParams.formatError = true;
       }
-      if (fileSize >= this.fileMaxSize * 1000000) {
-        this.sizeError = true;
+      if (fileSize >= this.tesisParams.size * 1000000) {
+        this.tesisParams.sizeError = true;
       }
+    },
+    getFileActa (element) {
+        this.actaParams.formatError = false;
+        this.actaParams.sizeError = false;
+        this.actaFile = element.target.files[0];
+        if (!this.actaFile) return;
+        const fileName = this.actaFile.name;
+        const fileSize = this.actaFile.size;
+        var dots = fileName.split(".");
+        var fileType = "." + dots[dots.length - 1];
+        if (this.actaParams.types.join(".").indexOf(fileType) == -1) {
+            this.actaParams.formatError = true;
+        }
+        if (fileSize >= this.actaParams.size * 1000000) {
+            this.actaParams.sizeError = true;
+        }
+    },
+    getFileConst (element) {
+        this.constParams.formatError = false;
+        this.constParams.sizeError = false;
+        this.constFile = element.target.files[0];
+        if (!this.constFile) return;
+        const fileName = this.constFile.name;
+        const fileSize = this.constFile.size;
+        var dots = fileName.split(".");
+        var fileType = "." + dots[dots.length - 1];
+        if (this.constParams.types.join(".").indexOf(fileType) == -1) {
+            this.constParams.formatError = true;
+        }
+        if (fileSize >= this.constParams.size * 1000000) {
+            this.constParams.sizeError = true;
+        }
     },
     getListarAlumnos() {
       this.fullscreenLoading = true;
@@ -826,9 +988,6 @@ export default {
       if (!this.fillCrearFIT.Nota) {
         this.mensajeError.push("La Nota es un campo obligatorio");
       }
-      if (!this.fillCrearFIT.oArchivo) {
-        this.mensajeError.push("El archivo de tesis un campo obligatorio");
-      }
       if (!this.fillCrearFIT.cObjetivoGeneral) {
         this.mensajeError.push("El objetivo general es un campo obligatorio");
       }
@@ -837,11 +996,23 @@ export default {
           "Los objetivos especificos es un campo obligatorio"
         );
       }
-      if (this.sizeError) {
-        this.mensajeError.push("El archivo es demasiado pesado");
+      if (this.tesisParams.sizeError) {
+        this.mensajeError.push("El archivo de tesis es demasiado pesado");
       }
-      if (this.formatError) {
-        this.mensajeError.push("Los formatos permitidos son:" + this.fileTypes);
+      if (this.tesisParams.formatError) {
+        this.mensajeError.push("Los formatos de tesis permitidos son:" + this.tesisParams.types);
+      }
+      if (this.actaParams.sizeError) {
+        this.mensajeError.push("El archivo de acta es demasiado pesado");
+      }
+      if (this.actaParams.formatError) {
+        this.mensajeError.push("Los formatos de acta permitidos son:" + this.tesisParams.types);
+      }
+      if (this.constParams.sizeError) {
+        this.mensajeError.push("El archivo de constancia es demasiado pesado");
+      }
+      if (this.constParams.formatError) {
+        this.mensajeError.push("Los formatos de constancia permitidos son:" + this.tesisParams.types);
       }
       if (this.mensajeError.length) {
         this.error = 1;
@@ -853,47 +1024,89 @@ export default {
         this.modalShow = true;
         return;
       }
-      if (
-        !this.fillCrearFIT.oArchivo ||
-        this.fillCrearFIT.oArchivo == undefined
-      ) {
-        this.validarRegistrarTesis();
-        this.modalShow = true;
-        return;
-      } else {
         this.setGuardarTesisfinalizada();
-      }
     },
     setGuardarTesisfinalizada() {
       this.fullscreenLoading = true;
       var url = "/archivo/setRegistrarTesisfinalizada";
-      this.form.append("file", this.fillCrearFIT.oArchivo);
+      this.tesisForm.append("file", this.tesisFile);
+      this.actaForm.append("file", this.actaFile);
+      this.constForm.append("file", this.constFile);
+      this.fillCrearFIT.nIdEscuela = this.listProfesores.find(profesor => profesor.id_user == this.fillCrearFIT.nIdPg).id_escuela;
       const config = { headers: { "Content-Type": "multipart/form-data" } };
-      axios
-        .post(url, this.fillCrearFIT)
+      axios.post(url, this.fillCrearFIT)
         .then((response) => {
-          this.form.append("id_fit", response.data);
-          axios
-            .post(url, this.form, config)
-            .then((response) => {
-              this.fullscreenLoading = false;
-              this.$router.push({ name: "dashboard.index" });
-              Swal.fire({
-                icon: "success",
-                title: "Documento ingresado correctamente",
-                showConfirmButton: false,
-                timer: 3000,
-              });
-            })
-            .catch((response) => {
-              this.fullscreenLoading = false;
-              Swal.fire({
-                icon: "error",
-                title: "Error al ingresar documento",
-                showConfirmButton: false,
-                timer: 3000,
-              });
-            });
+            this.tesisForm.append("id_fit", response.data);
+            this.tesisForm.append("type", 'final_t');
+            this.actaForm.append("id_fit", response.data);
+            this.actaForm.append("type", 'acta');
+            this.constForm.append("id_fit", response.data);
+            this.constForm.append("type", 'constancia_t');
+            let ingreso = {
+                tesis: false,
+                acta: false,
+                const: false
+            };
+            // tesis
+            if (this.tesisFile && this.tesisFile != undefined) {
+                axios.post(url, this.tesisForm, config)
+                .then((response) => {
+                    ingreso.tesis = true;
+                    this.terminoIngreso (ingreso);
+                })
+                .catch((response) => {
+                this.fullscreenLoading = false;
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error al ingresar documento",
+                        showConfirmButton: false,
+                        timer: 3000,
+                    });
+                });
+            } else {
+                ingreso.tesis = true;
+                this.terminoIngreso (ingreso);
+            }
+            if (this.actaFile && this.actaFile != undefined) {
+                // acta
+                axios.post(url, this.actaForm, config)
+                .then((response) => {
+                    ingreso.acta = true;
+                    this.terminoIngreso (ingreso);
+                })
+                .catch((response) => {
+                this.fullscreenLoading = false;
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error al ingresar documento",
+                        showConfirmButton: false,
+                        timer: 3000,
+                    });
+                });
+            } else {
+                ingreso.acta = true;
+                this.terminoIngreso (ingreso);
+            }
+            if (this.constFile && this.constFile != undefined) {
+                // constancia
+                axios.post(url, this.constForm, config)
+                .then((response) => {
+                    ingreso.const = true;
+                    this.terminoIngreso (ingreso);
+                })
+                .catch((response) => {
+                this.fullscreenLoading = false;
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error al ingresar documento",
+                        showConfirmButton: false,
+                        timer: 3000,
+                    });
+                });
+            } else {
+                ingreso.const = true;
+                this.terminoIngreso (ingreso);
+            }
         })
         .catch((response) => {
           this.fullscreenLoading = false;
@@ -949,7 +1162,6 @@ export default {
           if (user.rut === this.newUser.rut || user.email === this.newUser.email) {
             errorIngresoUser = true;
             this.newUser = user;
-            console.log(this.newUser)
           }
         });
         this.fillCrearFIT.cUsers.forEach((user) => {
@@ -1010,7 +1222,6 @@ export default {
         }
         this.mostrarModalBusquedaEstudiante();
     },
-
     eliminarEstudiante(estudianteEliminado) {
       let i = 0;
       let eliminado = 0;
@@ -1076,6 +1287,18 @@ export default {
         } else {
             this.addUserErrorMessage.boton = false;
         }
+    },
+    terminoIngreso(ingreso) {
+        if (ingreso.tesis && ingreso.acta && ingreso.const) {
+            this.fullscreenLoading = false;
+            this.$router.push({ name: "dashboard.index" });
+            Swal.fire({
+                icon: "success",
+                title: "Documentos ingresados correctamente",
+                showConfirmButton: false,
+                timer: 3000,
+            });
+        }
     }
   }, // cierre methods
 };
@@ -1086,5 +1309,11 @@ export default {
 }
 .scrollTable {
     max-height: 100% !important;
+}
+.noPadNoMar {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
 }
 </style>

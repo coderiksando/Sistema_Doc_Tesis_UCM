@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Solicitud de Nota pendiente</h1>
+            <h1 class="m-0 text-dark">Solicitud de nota pendiente</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -26,17 +26,17 @@
 
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario Registro de Nota pendiente</h3>
+                            <h3 class="card-title">Formulario de registro de notas pendientes</h3>
                         </div>
                             <div class="card-body">
                                 <form role="form">
                                     <div class="row">
-                                        
+
                                         <div class="col-md-12">
                                             <div class="form-group row">
                                               <div class="col-md-12">
                                                 <template>
-                                                    <label class="col-md-3 col-form-label">Fecha Propuesta</label>
+                                                    <label class="col-md-3 col-form-label">Fecha propuesta</label>
                                                         <el-date-picker
                                                             v-model="fillCrearNotaP.fecha_propuesta"
                                                             type="date"
@@ -47,7 +47,7 @@
                                                 </template>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -63,10 +63,10 @@
                         </div>
 
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
-               
+
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -155,7 +155,7 @@ export default {
         this.$router.push('/notaspendientes');
       })
     },
-    
+
     alertaNotaP(){
       Swal.fire({
         icon: 'warning',

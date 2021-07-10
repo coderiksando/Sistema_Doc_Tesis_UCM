@@ -12,35 +12,35 @@
 
     <div class="container container-fluid">
       <div class="card">
-        <template  v-if="listRolPermisosByUsuario.includes('avances.crear')">            
+        <template  v-if="listRolPermisosByUsuario.includes('avances.crear')">
           <div class="card-header">
             <div class="card-tools">
             <template v-if="fillEstadoTesis.cEstado  == 'A'">
               <router-link class="btn btn-success btn-sm bt-fh"  :to="'/avances/subirfinalpdf'">
-                <i class="fas fa-file-upload float fa-fw"></i> Subir PDF final
+                <i class="fas fa-file-upload float fa-fw"></i>Subir PDF final
               </router-link>
             </template>
             <template v-if="fillEstadoTesis.cEstado  == 'D' || fillEstadoTesis.cEstado  == 'R'">
               <router-link class="btn btn-danger btn-sm link-disabled bt-fh" :to="''">
-                <i class="fas fa-lock fa-fw"></i> Aun no puedes subir el PDF final
+                <i class="fas fa-lock fa-fw"></i>Aún no puedes subir el PDF final
               </router-link>
             </template>
             <template v-if="fillEstadoTesis.cEstado  == 'D'">
               <router-link class="btn btn-info btn-sm bt-fh" :to="'/avances/crear'">
-                <i class="fas fa-plus-square fa-fw"></i> Subir Avance
+                <i class="fas fa-plus-square fa-fw"></i> Subir avance
               </router-link>
             </template>
-              
+
             </div>
           </div>
-        </template> 
+        </template>
         <div class="card-body">
           <div class="container-fluid">
             <template  v-if="listRolPermisosByUsuario.includes('avances.listaralumnos')">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda</h3>
-              </div>              
+                <h3 class="card-title">Criterios de búsqueda</h3>
+              </div>
              <!-- Filtro de busqueda de avances -->
               <div class="card-body">
                 <form role="form">
@@ -66,7 +66,7 @@
                           </div>
                       </div>
                       <div class="form-group row">
-                          <label class="col-md-3 col-form-label">Seleccionar Alumno</label>
+                          <label class="col-md-3 col-form-label">Seleccionar alumno</label>
                           <div class="col-md-9">
                               <Multiselect
                                 v-model="selectedAlumno"
@@ -98,19 +98,19 @@
               </div>
             </div>
           </template>
-              
+
             <div class="card card-info">
               <div class="card-header">
                 <h3 class="card-title">Bandeja de resultados</h3>
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listarAvancesPaginated.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
                         <th>Fecha</th>
-                        <th>Descripcion</th>
+                        <th>Descripción</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
@@ -124,11 +124,11 @@
                           <a class="btn btn-warning boton" :href="item.archivo_pdf.path" target="_blank">
                             <i class="fas fa-file-download"> </i>
                           </a>
-                          <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">            
+                          <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">
                             <router-link class="btn btn-info boton" :to="{name:'avances.editar', params:{id: item.id}}">
                                 <i class="fas fa-pencil-alt"></i>
                             </router-link>
-                          </template>                         
+                          </template>
                         </td>
                       </tr>
                     </tbody>
@@ -179,8 +179,8 @@ export default {
       listAvances:[],
       listAlumnos:[],
       listEstados: [
-        {nombre: 'En desarrollo', valor: 'D'}, 
-        {nombre: 'Aprobada', valor: 'A'}, 
+        {nombre: 'En desarrollo', valor: 'D'},
+        {nombre: 'Aprobada', valor: 'A'},
         {nombre: 'Reprobada', valor: 'R'}],
       selectedAlumno:{},
       selectedEstado: {nombre: 'En desarrollo', valor: 'D'},
@@ -189,7 +189,7 @@ export default {
       pageNumber: 0,
       perPage: 5,
       modalShow: false,
-      modalOption: 0, 
+      modalOption: 0,
       mostrarModal: {
         display: 'block',
         background: '#0000006b',
@@ -202,9 +202,9 @@ export default {
     }
   },
   computed: {
-    
+
     pageCount(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listAvances.length,
           b = this.perPage;
       return Math.ceil(a / b);
@@ -317,7 +317,7 @@ export default {
 <style>
   .scrollTable{
     max-height: 350px !important;
-    overflow: auto !important; 
+    overflow: auto !important;
   }
 
   .boton{

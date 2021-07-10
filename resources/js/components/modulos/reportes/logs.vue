@@ -1,5 +1,17 @@
 <template>
     <div>
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-12">
+            <h1 class="m-0 text-dark">Registros del sistema</h1>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
     <div class="container">
 
       <div class="card">
@@ -7,7 +19,7 @@
           <div class="container-fluid">
               <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda de registros</h3>
+                <h3 class="card-title">Criterios de búsqueda de registros</h3>
               </div>
               <div class="card-body">
                 <form role="form">
@@ -86,7 +98,7 @@
             <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title">
-                  Bandeja de Resultados</h3>
+                  Bandeja de resultados</h3>
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listRegistrosPaginated.length">
@@ -109,7 +121,7 @@
                         <td v-text="item.actividad"></td>
                         <td v-text="item.ip"></td>
                         <td v-text="item.rol"></td>
-                        <td v-text="item.fecha"></td>
+                        <td>{{item.fecha | moment }}</td>
                         <td>
                           <template v-if="item.actividad == 'Registrar avance' || item.actividad == 'Editar avance'">
                             <router-link class="btn btn-flat btn-primary btn-sm" target="_blank" :to="{name:'avances.editar', params:{id: item.target}}"><i class="fa fa-eye"></i></router-link>
@@ -168,6 +180,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
     data(){
       return{
@@ -226,6 +239,12 @@ export default {
     },
     mounted(){
       this.getListarUsuarios();
+    },
+    filters:{
+      moment: function (date) {
+        moment.locale('es');
+        return moment(date).format('DD/MM/YYYY, h:mm a');
+      }
     },
     methods:{
       getListarUsuarios(){

@@ -32,9 +32,9 @@
                     <thead>
                       <tr>
                         <th>Alumno</th>
-                        <th>profesor 1</th>
-                        <th>profesor 2</th>
-                        <th>profesor externo</th>
+                        <th>Profesor 1</th>
+                        <th>Profesor 2</th>
+                        <th>Profesor externo</th>
                         <th>Acciones </th>
                       </tr>
                     </thead>

@@ -15,11 +15,11 @@
         <template  v-if="listRolPermisosByUsuario.includes('vinculacion.crear')">
           <div class="card-header">
             <div class="card-tools">
-              
+
                   <router-link class="btn btn-info bnt-sm" :to="'/vinculacion/crear'">
-                    <i class="fas fa-plus-square"></i> Nueva vinculacion
+                    <i class="fas fa-plus-square"></i> Nueva vinculación
                   </router-link>
-              
+
             </div>
           </div>
         </template>
@@ -27,7 +27,7 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda</h3>
+                <h3 class="card-title">Criterios de búsqueda</h3>
               </div>
               <div class="card-body">
                 <form role="form">
@@ -44,7 +44,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Tipos</label>
                         <div class="col-md-9">
-                            <el-select v-model="fillBsqVinculacion.cTipo" 
+                            <el-select v-model="fillBsqVinculacion.cTipo"
                             placeholder="Seleccione un Tipo"
                             clearable>
                               <el-option
@@ -59,7 +59,7 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Descripcion</label>
+                        <label class="col-md-3 col-form-label">Descripción</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" v-model="fillBsqVinculacion.cDescripcion" @keyup.enter="getListarVinculacion">
                         </div>
@@ -68,7 +68,7 @@
 
                   </div>
                 </form>
-              
+
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -87,18 +87,18 @@
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listarVinculacionPaginated.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
                         <th>Nombre</th>
                         <th>tipo</th>
-                        <th>Descripcion</th>
+                        <th>Descripción</th>
                         <th>Estado</th>
                         <template  v-if="listRolPermisosByUsuario.includes('vinculacion.editar')">
-                              <th>Acciones </th> 
-                          </template> 
-                        
+                              <th>Acciones </th>
+                          </template>
+
                       </tr>
                     </thead>
                     <tbody>
@@ -115,13 +115,13 @@
                           </template>
                         </td>
                         <td>
-                         <template  v-if="listRolPermisosByUsuario.includes('vinculacion.editar')"> 
+                         <template  v-if="listRolPermisosByUsuario.includes('vinculacion.editar')">
                           <template v-if="item.estado == 'A'">
-                            
+
                               <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'vinculacion.editar', params:{id: item.id}}">
                               <i class="fas fa-pencil-alt"></i> Editar
-                            </router-link>  
-                          
+                            </router-link>
+
                             <button class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarVinculacion(1, item.id)">
                               <i class="fas fa-trash"></i>Desactivar
                             </button>
@@ -132,7 +132,7 @@
                               <i class="fas fa-trash"></i>Activar
                             </button>
                           </template>
-                        </template> 
+                        </template>
                         </td>
                       </tr>
                     </tbody>
@@ -192,9 +192,9 @@ export default {
     }
   },
   computed: {
-    
+
     pageCount(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listVinculacion.length,
           b = this.perPage;
       return Math.ceil(a / b);
@@ -272,9 +272,9 @@ export default {
               break;
           }
         }
-        
+
         break;
-    
+
       default:
         break;
     }
@@ -306,7 +306,7 @@ export default {
       }
     })
     }
-   
+
 
   }//cierre de methods
 }
@@ -315,6 +315,6 @@ export default {
 <style>
   .scrollTable{
     max-height: 350px !important;
-    overflow: auto !important; 
+    overflow: auto !important;
   }
 </style>

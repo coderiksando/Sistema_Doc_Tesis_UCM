@@ -212,11 +212,16 @@ class AlumnoController extends Controller
         if(!$request->ajax()) return redirect('/');
         $fit = $request->data;
         $fit = (object) $fit;
+        $firstUser = $fit->cUsers[0];
+        $firstUser = (object) $firstUser;
+        $firstUserEscuela = $firstUser->id_escuela;
+        $firstUserEscuela = (int) $firstUserEscuela;
 
-        DB::transaction(function () use ($fit) {
+        DB::transaction(function () use ($fit, $firstUserEscuela) {
             $registroFit = new Fit;
             $registroFit->id_p_guia = $fit->nIdPg;
             $registroFit->id_p_co_guia = $fit->nIdCoPg;
+            $registroFit->id_escuela = $firstUserEscuela;
             $registroFit->id_vinculacion = $fit->nIdVinculacion;
             $registroFit->titulo = $fit->cTitulo;
             $registroFit->tipo = $fit->cTipo;
@@ -349,17 +354,20 @@ class AlumnoController extends Controller
         $profesores = DB::table('users')
                         ->join('users_roles', 'users_roles.id_user', '=', 'users.id_user')
                         ->join('roles', 'roles.id', '=', 'users_roles.id_roles')
-                        ->select('users.id_user',DB::raw("CONCAT(users.nombres,' ',users.apellidos) as fullname"))
+                        ->select('users.id_user',DB::raw("CONCAT(users.nombres,' ',users.apellidos) as fullname"), 'users.id_escuela')
+                        ->where('users.state', 'A')
                         ->where([
                             ['roles.name', '=', 'Profesor'],
                             ['users.id_user', '<>', $nIdUsuario]
-                        ])->orderBy('fullname')->get();
+                        ])
+                        ->where('state', 'A')
+                        ->orderBy('fullname')->get();
         return $profesores;
     }
 
     public function getAllUserRoll(Request $request){
         if(!$request->ajax()) return redirect('/');
-        $alumnos = User::all();
+        $alumnos = User::where('state', 'A')->get();
         foreach ($alumnos as $alumno) {
             foreach ($alumno->Users_Roles as $alumnoRol) {
                 $alumnoRol->Roles;
@@ -374,6 +382,7 @@ class AlumnoController extends Controller
                     ->where('nombres','like', "%$request->nombre%")
                     ->where('apellidos','like', "%$request->apellido%")
                     ->where('email','like', "%$request->email%")
+                    ->where('state', 'A')
                     ->get()->all();
         foreach($rpta as $user){
             foreach($user->Users_Roles->all() as $user_rol){

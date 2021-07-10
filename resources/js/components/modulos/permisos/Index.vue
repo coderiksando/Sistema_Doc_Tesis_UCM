@@ -23,7 +23,7 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda</h3>
+                <h3 class="card-title">Criterios de búsqueda</h3>
               </div>
               <div class="card-body">
                 <form role="form">
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Url amigable</label>
+                        <label class="col-md-3 col-form-label">Url</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" v-model="fillBsqPermiso.cSlug" @keyup.enter="getListarPermisos">
                         </div>
@@ -47,7 +47,7 @@
 
                   </div>
                 </form>
-              
+
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -66,24 +66,24 @@
               </div>
               <div class="card-body table-resposive">
                 <template v-if="listarPermisosPaginated.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
                         <th>Nombre</th>
-                        <th>Url amigable </th>
-                        <th>Acciones </th>
+                        <th>Url</th>
+                        <th>Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in listarPermisosPaginated" :key="index">
                         <td v-text="item.name"></td>
                         <td v-text="item.slug"></td>
-                      
+
                         <td>
                             <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'permisos.editar', params:{id: item.id}}">
                               <i class="fas fa-pencil-alt"></i> Editar
-                            </router-link>   
+                            </router-link>
                         </td>
                       </tr>
                     </tbody>
@@ -135,9 +135,9 @@ export default {
     }
   },
   computed: {
-    
+
     pageCount(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listPermisos.length,
           b = this.perPage;
       return Math.ceil(a / b);
@@ -163,7 +163,7 @@ export default {
     }
   },
   methods:{
-    
+
     limpiarCriteriosBsq(){
       this.fillBsqPermiso.cNombre = '';
       this.fillBsqPermiso.cSlug = '';
@@ -227,14 +227,14 @@ export default {
               break;
           }
         }
-        
+
         break;
-    
+
       default:
         break;
     }
   },
-   
+
 
   }//cierre de methods
 }
@@ -243,6 +243,6 @@ export default {
 <style>
   .scrollTable{
     max-height: 350px !important;
-    overflow: auto !important; 
+    overflow: auto !important;
   }
 </style>

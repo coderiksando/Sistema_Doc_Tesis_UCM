@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Crear Rol</h1>
+            <h1 class="m-0 text-dark">Crear rol</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -26,7 +26,7 @@
                 <div class="col-md-5">
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario Registrar Rol</h3>
+                            <h3 class="card-title">Formulario de registo de rol</h3>
                         </div>
                             <div class="card-body">
                                 <form role="form">
@@ -41,7 +41,7 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Url amigable</label>
+                                                <label class="col-md-3 col-form-label">Url</label>
                                                 <div class="col-md-9">
                                                     <input type="text" class="form-control" v-model="fillCrearRol.cSlug" @keyup.enter="setRegistrarRolPermisos">
                                                 </div>
@@ -62,7 +62,7 @@
                     <div class="col-md-7">
                         <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title">Listar Permisos</h3>
+                                <h3 class="card-title">Listar permisos</h3>
                             </div>
                             <div class="card-body table-resposive">
                                   <template v-if="listPermisosFilter.length">
@@ -70,9 +70,9 @@
                                       <table class ="table table-hover table-head-fixed text-nowrap projects">
                                         <thead>
                                           <tr>
-                                            <th>Accion</th>
+                                            <th>Acción</th>
                                             <th>Nombre</th>
-                                            <th>Url Amigable</th>
+                                            <th>Url</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -99,10 +99,10 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
 </div>
-               
+
 
 
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
@@ -236,7 +236,7 @@ export default {
     marcarFila(index){
       this.listPermisosFilter[index].checked = !this.listPermisosFilter[index].checked;
     },
-  
+
   }// cierre methods
 }
 </script>

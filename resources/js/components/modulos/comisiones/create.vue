@@ -89,7 +89,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Email Profesor Externo</label>
+                                                <label class="col-md-3 col-form-label">Email profesor externo</label>
                                                 <div class="col-md-9">
                                                     <input type="text" placeholder="Email profesor externo" class="form-control" v-model="fillCrearComision.EmailPEx" @keyup.enter="setRegistrarComision">
                                                 </div>

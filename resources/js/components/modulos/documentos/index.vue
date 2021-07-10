@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Ingresar nota y Acta de defensa </h1>
+            <h1 class="m-0 text-dark">Ingresar nota y acta de defensa</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -25,14 +25,14 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Criterios de busqueda</h3>
+                <h3 class="card-title">Criterios de búsqueda</h3>
               </div>
               <div class="card-body">
                 <form role="form">
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Nombres o apellido</label>
+                        <label class="col-md-3 col-form-label">Nombres o apellidos</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" v-model="fillBsqAlumno.cNombre" @keyup.enter="getListarAlumnos">
                         </div>
@@ -83,13 +83,13 @@
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listarAlumnosPaginated.length">
-                  
+
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
                         <th>Nombre</th>
                         <th>Rut</th>
-                        <th>Estado Tesis</th>
+                        <th>Estado de tesis</th>
                         <th>Descargar</th>
                       </tr>
                     </thead>
@@ -181,7 +181,7 @@ export default {
   },
   computed: {
     pageCount(){
-      //obtener el numero de paginas 
+      //obtener el numero de paginas
       let a = this.listAlumnos.length,
           b = this.perPage;
       return Math.ceil(a / b);

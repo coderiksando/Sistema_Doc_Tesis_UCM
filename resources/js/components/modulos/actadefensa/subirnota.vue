@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Ingresar Nota Final de Tesis</h1>
+            <h1 class="m-0 text-dark">Ingresar nota final de tesis</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -26,21 +26,21 @@
 
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario Registro de Nota tesista</h3>
+                            <h3 class="card-title">Formulario registro de nota tesista</h3>
                         </div>
                             <div class="card-body">
                                 <form role="form">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Nota Final Tesis</label>
+                                                <label class="col-md-3 col-form-label">Nota final tesis</label>
                                                 <div class="col-md-9">
                                                     <template>
                                                         <el-input-number v-model="fillSubirNota.Nota" size="large" :min="1" :precision="2" :step="0.1" :max="7"></el-input-number>
                                                     </template>
                                                 </div>
                                             </div>
-                                        </div>  
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -56,10 +56,10 @@
                         </div>
 
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
-               
+
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -132,7 +132,7 @@ export default {
       this.fullscreenLoading = true;
       var url = '/secretaria/setRegistrarNota'
       axios.post(url, {
-        'id_tesis'        : this.fillSubirNota.IdTesis,  
+        'id_tesis'        : this.fillSubirNota.IdTesis,
         'nota'            : this.fillSubirNota.Nota
       }).then(response => {
         this.fullscreenLoading = false;

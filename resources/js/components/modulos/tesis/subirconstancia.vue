@@ -64,9 +64,9 @@
                   El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
                 </div>
                 <div class="container">
-                  Los formatos de archivo soportados son: 
+                  Los formatos de archivo soportados son:
                   <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
-                </div> 
+                </div>
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -129,13 +129,13 @@ export default {
     }
   },
   computed: {
-    
+
   },
   mounted(){
     this.getParametros();
     this.getDocumento();
   },
-  
+
   methods:{
     getFile(element){
       this.btnDis = false;
@@ -219,11 +219,11 @@ export default {
         if(this.formatError){
           this.mensajeError.push("Los formatos permitidos son:" +this.fileTypes);
         }
-      
+
         if(this.mensajeError.length){
           this.error = 1;
         }
-        
+
         return this.error;
     },
     getParametros(){
@@ -256,7 +256,7 @@ export default {
   height: 0% !important;
 }
 
-.custom-file-label{ 
+.custom-file-label{
   white-space: nowrap;
   text-overflow: clip;
   overflow: hidden;

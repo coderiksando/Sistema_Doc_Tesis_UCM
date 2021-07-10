@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Crear Escuela</h1>
+            <h1 class="m-0 text-dark">Crear escuela</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -26,7 +26,7 @@
 
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario Registrar Escuela</h3>
+                            <h3 class="card-title">Formulario de registro de escuelas</h3>
                         </div>
                             <div class="card-body">
                                 <form role="form">
@@ -54,10 +54,10 @@
                         </div>
 
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
-               
+
 
 
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
@@ -151,7 +151,7 @@ export default {
       this.pageNumber = 0;
     },
 
-  
+
   }// cierre methods
 }
 </script>

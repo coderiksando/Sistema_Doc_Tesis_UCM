@@ -4,16 +4,18 @@ namespace App\Http\Controllers\Administracion;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Users_Roles;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Debugbar;
 
 class UsersController extends Controller
 {
     public function getListarUsuarios(Request $request){
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
 
         $nIdUsuario   =   $request->nIdUsuario;
@@ -28,20 +30,23 @@ class UsersController extends Controller
         $cApellido  = ($cApellido == NULL) ? ($cApellido = '') : $cApellido;
         $cCorreo    = ($cCorreo == NULL) ? ($cCorreo = '') : $cCorreo;
         $cEstado    = ($cEstado == NULL) ? ($cEstado = '') : $cEstado;
-        $cEscuela   = ($cEscuela == NULL) ? ($cEscuela = 0) : $cEscuela;
+        $cEscuela   = ($cEscuela == NULL) ? ($cEscuela = '') : $cEscuela;
 
         $iduser   = Auth::id();
+    
+        $admins = Users_Roles::where('id_roles', '1')->pluck('id_user')->all();
 
-        $rpta = DB::select('call sp_Usuario_getListarUsuarios (?, ?, ?, ?, ?, ?)',
-                                                                [
-                                                                    $iduser,
-                                                                    $cNombre,
-                                                                    $cApellido,
-                                                                    $cCorreo,
-                                                                    $cEstado,
-                                                                    $cEscuela
-                                                                ]);
-        $rpta = collect($rpta)->sortBy('fullname')->values();
+        $rpta = DB::table('users')
+        ->leftjoin('files', 'users.id_files', '=', 'files.id')
+        ->select('*')->selectRaw('CONCAT_WS(" ", nombres, apellidos) as fullname, files.path as profile_image')
+        ->where('nombres', 'like', "%$cNombre%")
+        ->where('apellidos', 'like', "%$cApellido%")
+        ->where('users.email', 'like', "%$cCorreo%")
+        ->where('users.id_escuela', 'like', "%$cEscuela%")
+        ->where('users.state', 'like', "%$cEstado%")
+        ->where('users.id_user', '<>', "%$iduser%")
+        ->whereNotIn('users.id_user', $admins)
+        ->orderBy('nombres')->get();
 
         return $rpta;
     }
@@ -58,6 +63,7 @@ class UsersController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         $cNombre        = $request->cNombre;
+        $cRut           = $request->cRut;
         $cApellido      = $request->cApellido;
         $cCorreo        = $request->cCorreo;
         $cContrasena    = Hash::make($request->cContrasena);
@@ -71,16 +77,21 @@ class UsersController extends Controller
         $cEscuela       = ($cEscuela == NULL) ? ($cEscuela = '') : $cEscuela;
         $oFotografia    = ($oFotografia == NULL) ? ($oFotografia = NULL) : $oFotografia;
 
-        $rpta = DB::select('call sp_Usuario_setRegistrarUsuario (?, ?, ?, ?, ?, ?)',
-                                                                [
-                                                                    $cNombre,
-                                                                    $cApellido,
-                                                                    $cCorreo,
-                                                                    $cContrasena,
-                                                                    $cEscuela,
-                                                                    $oFotografia
-                                                                ]);
-        return $rpta[0]->nIdUsuario;
+        $chekMail = User::where('email', $cCorreo)->count();
+        if ($chekMail) {
+            return 0;
+        }
+
+        $newUser = User::create([
+            'nombres' => $cNombre,
+            'apellidos' => $cApellido,
+            'email' => $cCorreo,
+            'password' => $cContrasena,
+            'id_escuela' => $cEscuela,
+            'rut' => $cRut
+        ]);
+
+        return $newUser->id_user;
     }
     //     EDITAR USUARIOS
     public function setEditarUsuario(Request $request){
@@ -186,11 +197,14 @@ class UsersController extends Controller
         $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
         $nIdRol     = ($nIdRol == NULL) ? ($nIdRol = '') : $nIdRol;
 
-        $rpta = DB::select('call sp_Usuario_setEditarRolByUsuario (?, ?)',
-                                                                [
-                                                                    $nIdUsuario,
-                                                                    $nIdRol
-                                                                ]);
+        Users_Roles::where('id_user', $nIdUsuario)->delete();
+
+        foreach ($nIdRol as $rol) {
+            Users_Roles::create([
+                'id_user' => $nIdUsuario,
+                'id_roles' => $rol['id']
+            ]);
+        }
     }
     public function getRolByUsuario(Request $request){
         if(!$request->ajax()) return redirect('/');
@@ -199,10 +213,11 @@ class UsersController extends Controller
 
         $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
 
-        $rpta = DB::select('call sp_Usuario_getRolByUsuario (?)',
-                                                                [
-                                                                    $nIdUsuario
-                                                                ]);
+        $rpta = DB::table('users_roles')
+                ->join('roles', 'users_roles.id_roles', 'roles.id')
+                ->select('users_roles.id_roles AS id', 'roles.name')
+                ->where('id_user', $nIdUsuario)->get();
+
         return $rpta;
     }
     public function getListarPermisosByRolAsignado(Request $request){
