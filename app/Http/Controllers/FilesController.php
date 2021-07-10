@@ -112,7 +112,12 @@ class FilesController extends Controller
             $registroFit->objetivo_especifico = $request->cObjetivoEspecifico;
             $registroFit->descripcion = $request->cDescripcion;
             $registroFit->contribucion = $request->cContribucion;
-            $registroFit->estado = 'A';
+            $registroFit->nota = $request->Nota;
+            if ($registroFit->nota >= 4) {
+                $registroFit->estado = 'A';
+            } else {
+                $registroFit->estado = 'R';
+            }
             $registroFit->aprobado_pg = 'V';
             $registroFit->save();
             foreach ($request->cUsers as $user) {
