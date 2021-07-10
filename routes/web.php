@@ -115,7 +115,7 @@ Route::group(['middleware' => ['auth']], function () {
   /*********    RUTAS MODULO DE ADMINISTRACION DE REPORTES    **********/
   Route::Post('/administracion/tesis/setGenerarDocumento', 'AlumnoController@setGenerarDocumento');
   Route::get('/administracion/reportes/getListarTesisReporte', 'Administracion\ReportesController@getListarTesisReporte');
-  Route::get('/administracion/reportes/export', 'Administracion\ReportesController@export');
+  Route::post('/administracion/reportes/export', 'Administracion\ReportesController@export');
   Route::post('/archivo/setRegistrarArchivo', 'FilesController@setRegistrarArchivo');
   Route::post('/archivo/setRegistrarArchivoPDF', 'FilesController@setRegistrarArchivoPDF');
   Route::get('/archivo/getPdfFinal', 'FilesController@getPdfFinal');

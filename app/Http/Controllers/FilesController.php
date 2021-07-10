@@ -85,6 +85,7 @@ class FilesController extends Controller
 
     public function setRegistrarTesisfinalizada(Request $request){
         if(!$request->ajax()) return redirect('/');
+        Debugbar::info($request);
         if ($request->file) {
             $file = $request->file;
             $bandera = Str::random(10);

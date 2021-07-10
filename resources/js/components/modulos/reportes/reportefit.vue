@@ -302,6 +302,7 @@
           {value: 'D', label: 'En Desarrollo'}
         ],
         listTesis: [],
+        listTesisOriginal: [],
         listFacultades: [],
         listEscuelas: [],
         listEscuelasOriginal: [],
@@ -409,13 +410,18 @@
         },
         setGenerarDocumento(){
             //this.fullscreenLoading = true;
-            var url = '/administracion/reportes/export'
-            axios.get(url, {
+            var url = '/administracion/reportes/export';
+            let postConfig = {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
                 responseType: 'blob',
-                params:{
-                    'listTesis': JSON.stringify(this.listTesis)
-                }
-            }).then(response => {
+            }
+            axios.post(url,
+            {
+                'listTesis': JSON.stringify(this.listTesisOriginal)
+            }, postConfig
+            ).then(response => {
             var oMyBlob = new Blob([response.data], {type : 'application/vnd.ms-excel'});
             var url = document.createElement('a')
             url.href = URL.createObjectURL(oMyBlob);
@@ -440,6 +446,7 @@
             }
             }).then(response => {
                 this.inicializarPaginacion();
+                this.listTesisOriginal = response.data;
                 this.listTesis = response.data;
                 const newListTesis = this.moveIndex(this.listTesis);
                 this.listTesis = newListTesis;

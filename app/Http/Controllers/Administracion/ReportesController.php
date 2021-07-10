@@ -36,39 +36,6 @@ class ReportesController extends Controller
         $dFechaInicio       = ($dFechaInicio == NULL) ? ($dFechaInicio = ''): $dFechaInicio;
         $dFechaFin          = ($dFechaFin == NULL) ?    ($dFechaFin = '')   : $dFechaFin;
 
-        // $reportdata = Fit::select('fit.id','nombre_int1', 'rut_int1', 'email_int1', 'ingreso_int1', 'bitacoras.fecha as fecha_bitacora',
-        //                             'bitacoras.comentario as comentario_bitacora','telefono_int1','fit.nombre_int2','fit.rut_int2',  DB::raw("CONCAT(profesor_guia.nombres,' ',profesor_guia.apellidos) as nombre_pt"),
-        //                             'objetivo', 'contribucion', 'fit.tipo as tipo_trabajo','titulo', 'avancestesis.created_at as fecha_avance',
-        //                             'vinculaciones.nombre AS namevinculacion', 'fit.estado','escuelas.nombre as escuela_nom','fit.created_at as fecha_inscripcion','alumno.id_user as IDalumno',
-        //                             'notaspendientes.fecha_propuesta as fecha_notap','notaspendientes.fecha_prorroga as prorroga_notap', 'notaspendientes.estado as estado_notap','fit.fecha_ultimoramo')
-        //                     ->leftjoin('bitacoras', function ($query) {
-        //                         $query->on('bitacoras.id_tesis','=', 'fit.id')
-        //                         ->WhereRaw('bitacoras.id IN (select MAX(a2.id) from bitacoras as a2 join fit as u2 on u2.id = a2.id_tesis group by u2.id)');
-        //                     })
-        //                     ->leftjoin('avancestesis', function ($query) {
-        //                         $query->on('avancestesis.id_tesis','=', 'fit.id')
-        //                         ->WhereRaw('avancestesis.id IN (select MAX(a2.id) from avancestesis as a2 join fit as u2 on u2.id = a2.id_tesis group by u2.id)');
-        //                     })
-        //                     ->leftjoin('vinculaciones', 'vinculaciones.id', '=','fit.id_vinculacion')
-        //                     ->leftjoin('notaspendientes', 'notaspendientes.id_tesis', '=', 'fit.id')
-        //                     ->leftjoin('users as profesor_guia', 'profesor_guia.id_user', '=', 'fit.id_profesorguia')
-        //                     ->leftjoin('users as alumno', 'alumno.id_user', '=', 'fit.id_alumno')
-        //                     ->leftjoin('escuelas', 'escuelas.id','=','alumno.id_escuela')
-
-        //                     ->where([[(function($query) use ($estado_notap){
-        //                             $query
-        //                                 ->orwhere('notaspendientes.estado', 'like', "%$estado_notap%")
-        //                                 ->orwhere('notaspendientes.estado','=', null)  ;
-        //                     })]])
-
-        //                     //
-        //                     ->Where('fit.rut_int1', 'like', "%$rut%")
-        //                     ->Where('alumno.id_escuela', 'like', "%$idescuela%")
-        //                     ->Where('profesor_guia.id_user', 'like', "%$idprofesor%")
-        //                     ->Where('fit.estado', 'like', "$estado%")
-
-        //                     ->WhereBetween('fit.fecha_ultimoramo', [$dFechaInicio, $dFechaFin])
-        //                     ->get();
         $fits = Fit ::where('estado', 'like', "$estado%")
                     ->get();
         foreach ($fits as $fit) {
@@ -107,32 +74,34 @@ class ReportesController extends Controller
             $rutFound = 0;
             $dateFound = 0;
             // revision de los usuarios
-            foreach ($fit->Fit_User as $fit_user) {
-                $user = $fit_user->User;
-                if ($rut) {
-                    if ($user->rut == $rut) {
+            if (count($fit->Fit_User) > 0) {
+                foreach ($fit->Fit_User as $fitUser) {
+                    $user = $fitUser->User;
+                    if ($rut) {
+                        if ($user->rut == $rut) {
+                            $rutFound++;
+                        }
+                    } else {
                         $rutFound++;
                     }
-                } else {
-                    $rutFound++;
-                }
-                // revision de los datos entre fechas
-                if ($dFechaInicio && $dFechaFin && $user->f_ingreso && $user->f_salida) {
-                    $iTime1 = date("Y-m-d",strtotime($dFechaInicio));
-                    $iTime2 = date("Y-m-d",strtotime($dFechaFin));
-                    $uTime1 = date("Y-m-d",strtotime($user->f_ingreso));
-                    $uTime2 = date("Y-m-d",strtotime($user->f_salida));
-                    if (($uTime1 >= $iTime1 && $uTime1 <= $iTime2) &&
-                        ($uTime2 >= $iTime1 && $uTime2 <= $iTime2))
+                    // revision de los datos entre fechas
+                    if ($dFechaInicio && $dFechaFin && $user->f_ingreso && $user->f_salida) {
+                        $iTime1 = date("Y-m-d",strtotime($dFechaInicio));
+                        $iTime2 = date("Y-m-d",strtotime($dFechaFin));
+                        $uTime1 = date("Y-m-d",strtotime($user->f_ingreso));
+                        $uTime2 = date("Y-m-d",strtotime($user->f_salida));
+                        if (($uTime1 >= $iTime1 && $uTime1 <= $iTime2) &&
+                            ($uTime2 >= $iTime1 && $uTime2 <= $iTime2))
+                            $dateFound++;
+                    } elseif (!$dFechaInicio && !$dFechaFin && !$user->f_ingreso && !$user->f_salida) {
                         $dateFound++;
-                } elseif (!$dFechaInicio && !$dFechaFin && !$user->f_ingreso && !$user->f_salida) {
-                    $dateFound++;
-                } elseif ($user->f_ingreso && $user->f_salida) {
-                    $dateFound++;
+                    } elseif ($user->f_ingreso && $user->f_salida) {
+                        $dateFound++;
+                    }
                 }
+                if ($rutFound == 0) $missing = True;
+                if ($dateFound == 0) $missing = True;
             }
-            if ($rutFound == 0) $missing = True;
-            if ($dateFound == 0) $missing = True;
             if ($missing) {
                 unset($fits[$key]);
             }
@@ -207,8 +176,8 @@ class ReportesController extends Controller
 
     public function export(Request $request){
         if(!$request->ajax()) return redirect('/');
-
         $listTesis = json_decode($request->listTesis);
+
         return (new TesisExport)->getTesis($listTesis)->download('invoices.xlsx');
         //return Excel::download(new UsersExport, 'users.xlsx');
     }
