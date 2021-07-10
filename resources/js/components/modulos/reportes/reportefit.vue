@@ -449,6 +449,7 @@
                 this.listTesisOriginal = response.data;
                 this.listTesis = response.data;
                 const newListTesis = this.moveIndex(this.listTesis);
+                this.listTesisOriginal = this.moveIndex(this.listTesisOriginal);
                 this.listTesis = newListTesis;
                 this.fullscreenLoading = false;
             })
@@ -500,8 +501,10 @@
             let newList = [];
             if (Array.isArray(listOfElements)) {
                 listOfElements.forEach(element => {
-                    newList[i]=element;
-                    i++;
+                    if (element) {
+                        newList[i]=element;
+                        i++;
+                    }
                 });
             } else {
                 const array = Object.keys(listOfElements);

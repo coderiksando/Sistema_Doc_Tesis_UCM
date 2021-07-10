@@ -103,7 +103,7 @@ class ReportesController extends Controller
                 if ($dateFound == 0) $missing = True;
             }
             if ($missing) {
-                unset($fits[$key]);
+                $fits[$key] = null;
             }
             $key++;
         }
