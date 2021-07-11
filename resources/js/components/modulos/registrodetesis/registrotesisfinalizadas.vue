@@ -160,6 +160,29 @@
                     <div class="col-md-6">
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label"
+                          >Escuela de pertenencia</label
+                        >
+                        <div class="col-md-9">
+                          <el-select
+                            v-model="fillCrearFIT.nIdEscuela"
+                            placeholder="Asignar escuela"
+                            filterable
+                            clearable
+                          >
+                            <el-option
+                              v-for="item in listEscuelas"
+                              :key="item.id"
+                              :label="item.nombre"
+                              :value="item.id"
+                            >
+                            </el-option>
+                          </el-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label"
                           >Contribución</label
                         >
                         <div class="col-md-9">
@@ -249,7 +272,7 @@
                         </div>
                       </div>
                     </div>
-
+                    <div class="col-md-6"></div>
                     <div class="col-md-6">
                       <div class="noPadNoMar col-md-12 form-group row">
                         <label class="noPadNoMar col-md-12 col-form-label">Tesis final (opcional)</label>
@@ -875,9 +898,20 @@ export default {
     this.getListarProfesores();
     this.getListarVinculacion();
     this.getListarAlumnos();
+    this.getListarEscuelas();
     this.getParametros();
   },
   methods: {
+    getListarEscuelas(){
+        this.fullscreenLoading = true;
+        var url = '/administracion/escuelas/getListarEscuelas'
+        axios.get(url, {
+        }).then(response => {
+            this.listEscuelasOriginal = response.data;
+            this.listEscuelas = response.data;
+            this.fullscreenLoading = false;
+        })
+    },
     getParametros() {
       var url = "/admin/parametros";
       axios
@@ -1032,7 +1066,9 @@ export default {
       this.tesisForm.append("file", this.tesisFile);
       this.actaForm.append("file", this.actaFile);
       this.constForm.append("file", this.constFile);
-      this.fillCrearFIT.nIdEscuela = this.listProfesores.find(profesor => profesor.id_user == this.fillCrearFIT.nIdPg).id_escuela;
+      if (this.fillCrearFIT.nIdEscuela) {
+        this.fillCrearFIT.nIdEscuela = this.listProfesores.find(profesor => profesor.id_user == this.fillCrearFIT.nIdPg).id_escuela;
+      }
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       axios.post(url, this.fillCrearFIT)
         .then((response) => {
