@@ -213,10 +213,11 @@ class UsersController extends Controller
 
         $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
 
-        $rpta = DB::select('call sp_Usuario_getRolByUsuario (?)',
-                                                                [
-                                                                    $nIdUsuario
-                                                                ]);
+        $rpta = DB::table('users_roles')
+                ->join('roles', 'users_roles.id_roles', 'roles.id')
+                ->select('users_roles.id_roles AS id', 'roles.name')
+                ->where('id_user', $nIdUsuario)->get();
+
         return $rpta;
     }
     public function getListarPermisosByRolAsignado(Request $request){

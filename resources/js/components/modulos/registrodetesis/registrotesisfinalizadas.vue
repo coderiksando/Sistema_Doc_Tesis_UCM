@@ -160,6 +160,29 @@
                     <div class="col-md-6">
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label"
+                          >Escuela de pertenencia</label
+                        >
+                        <div class="col-md-9">
+                          <el-select
+                            v-model="fillCrearFIT.nIdEscuela"
+                            placeholder="Asignar escuela"
+                            filterable
+                            clearable
+                          >
+                            <el-option
+                              v-for="item in listEscuelas"
+                              :key="item.id"
+                              :label="item.nombre"
+                              :value="item.id"
+                            >
+                            </el-option>
+                          </el-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label"
                           >Contribución</label
                         >
                         <div class="col-md-9">
@@ -249,10 +272,10 @@
                         </div>
                       </div>
                     </div>
-
+                    <div class="col-md-6"></div>
                     <div class="col-md-6">
                       <div class="noPadNoMar col-md-12 form-group row">
-                        <label class="noPadNoMar col-md-12 col-form-label">Tesis final</label>
+                        <label class="noPadNoMar col-md-12 col-form-label">Tesis final (opcional)</label>
                         <div class="noPadNoMar container-fluid">
                           <div class="input-group">
                             <div class="input-group-prepend">
@@ -269,7 +292,7 @@
                                 class="custom-file-input"
                                 id="input1"
                                 :class="{
-                                  'is-invalid': rutParams.formatError || rutParams.sizeError,
+                                  'is-invalid': tesisParams.formatError || tesisParams.sizeError,
                                 }"
                                 @change="getFileRut"
                               />
@@ -282,23 +305,23 @@
                           </div>
                           <div
                             class="custom-file invalid-feedback no-margin"
-                            v-show="rutParams.formatError"
+                            v-show="tesisParams.formatError"
                           >
                             El formato del archivo no es soportado.
                           </div>
                           <div
                             class="custom-file invalid-feedback no-margin"
-                            v-show="rutParams.sizeError"
+                            v-show="tesisParams.sizeError"
                           >
                             El tamaño del archivo no puede superar los
-                            {{ rutParams.size }} MB.
+                            {{ tesisParams.size }} MB.
                           </div>
                           <div class="container">
-                            El tamaño máximo de los archivos es: {{rutParams.size}} MB.
+                            El tamaño máximo de los archivos es: {{tesisParams.size}} MB.
                         </div>
                         <div class="container">
                             Los formatos de archivo soportados son:
-                        <span v-for="item in rutParams.types" :key="item" v-text="item +' '"></span>
+                        <span v-for="item in tesisParams.types" :key="item" v-text="item +' '"></span>
                         </div>
                         </div>
                       </div>
@@ -847,7 +870,7 @@ export default {
       },
       error: 0,
       mensajeError: [],
-      rutParams: {
+      tesisParams: {
           types: [],
           size: 0,
           formatError: false,
@@ -875,16 +898,27 @@ export default {
     this.getListarProfesores();
     this.getListarVinculacion();
     this.getListarAlumnos();
+    this.getListarEscuelas();
     this.getParametros();
   },
   methods: {
+    getListarEscuelas(){
+        this.fullscreenLoading = true;
+        var url = '/administracion/escuelas/getListarEscuelas'
+        axios.get(url, {
+        }).then(response => {
+            this.listEscuelasOriginal = response.data;
+            this.listEscuelas = response.data;
+            this.fullscreenLoading = false;
+        })
+    },
     getParametros() {
       var url = "/admin/parametros";
       axios
         .post(url, { params: ['AvancesTesisSize', 'AvancesTesisFormato', 'ActaSize', 'ActaFormato', 'ConstanciaSize', 'ConstanciaFormato'] })
         .then((response) => {
-          this.rutParams.size  = response.data[0][0];
-          this.rutParams.types   = response.data[1];
+          this.tesisParams.size  = response.data[0][0];
+          this.tesisParams.types   = response.data[1];
           this.actaParams.size = response.data[2][0];
           this.actaParams.types  = response.data[3];
           this.constParams.size = response.data[4][0];
@@ -892,19 +926,19 @@ export default {
         });
     },
     getFileRut(element) {
-      this.rutParams.formatError = false;
-      this.rutParams.sizeError = false;
+      this.tesisParams.formatError = false;
+      this.tesisParams.sizeError = false;
       this.tesisFile = element.target.files[0];
       if (!this.tesisFile) return;
       const fileName = this.tesisFile.name;
       const fileSize = this.tesisFile.size;
       var dots = fileName.split(".");
       var fileType = "." + dots[dots.length - 1];
-      if (this.rutParams.types.join(".").indexOf(fileType) == -1) {
-        this.rutParams.formatError = true;
+      if (this.tesisParams.types.join(".").indexOf(fileType) == -1) {
+        this.tesisParams.formatError = true;
       }
-      if (fileSize >= this.rutParams.size * 1000000) {
-        this.rutParams.sizeError = true;
+      if (fileSize >= this.tesisParams.size * 1000000) {
+        this.tesisParams.sizeError = true;
       }
     },
     getFileActa (element) {
@@ -988,9 +1022,6 @@ export default {
       if (!this.fillCrearFIT.Nota) {
         this.mensajeError.push("La Nota es un campo obligatorio");
       }
-      if (!this.tesisFile) {
-        this.mensajeError.push("El archivo de tesis un campo obligatorio");
-      }
       if (!this.fillCrearFIT.cObjetivoGeneral) {
         this.mensajeError.push("El objetivo general es un campo obligatorio");
       }
@@ -999,11 +1030,23 @@ export default {
           "Los objetivos especificos es un campo obligatorio"
         );
       }
-      if (this.rutParams.sizeError) {
-        this.mensajeError.push("El archivo es demasiado pesado");
+      if (this.tesisParams.sizeError) {
+        this.mensajeError.push("El archivo de tesis es demasiado pesado");
       }
-      if (this.rutParams.formatError) {
-        this.mensajeError.push("Los formatos permitidos son:" + this.rutParams.types);
+      if (this.tesisParams.formatError) {
+        this.mensajeError.push("Los formatos de tesis permitidos son:" + this.tesisParams.types);
+      }
+      if (this.actaParams.sizeError) {
+        this.mensajeError.push("El archivo de acta es demasiado pesado");
+      }
+      if (this.actaParams.formatError) {
+        this.mensajeError.push("Los formatos de acta permitidos son:" + this.tesisParams.types);
+      }
+      if (this.constParams.sizeError) {
+        this.mensajeError.push("El archivo de constancia es demasiado pesado");
+      }
+      if (this.constParams.formatError) {
+        this.mensajeError.push("Los formatos de constancia permitidos son:" + this.tesisParams.types);
       }
       if (this.mensajeError.length) {
         this.error = 1;
@@ -1015,16 +1058,7 @@ export default {
         this.modalShow = true;
         return;
       }
-      if (
-        !this.tesisFile ||
-        this.tesisFile == undefined
-      ) {
-        this.validarRegistrarTesis();
-        this.modalShow = true;
-        return;
-      } else {
         this.setGuardarTesisfinalizada();
-      }
     },
     setGuardarTesisfinalizada() {
       this.fullscreenLoading = true;
@@ -1032,7 +1066,9 @@ export default {
       this.tesisForm.append("file", this.tesisFile);
       this.actaForm.append("file", this.actaFile);
       this.constForm.append("file", this.constFile);
-      this.fillCrearFIT.nIdEscuela = this.listProfesores.find(profesor => profesor.id_user == this.fillCrearFIT.nIdPg).id_escuela;
+      if (this.fillCrearFIT.nIdEscuela) {
+        this.fillCrearFIT.nIdEscuela = this.listProfesores.find(profesor => profesor.id_user == this.fillCrearFIT.nIdPg).id_escuela;
+      }
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       axios.post(url, this.fillCrearFIT)
         .then((response) => {
@@ -1042,35 +1078,17 @@ export default {
             this.actaForm.append("type", 'acta');
             this.constForm.append("id_fit", response.data);
             this.constForm.append("type", 'constancia_t');
+            let ingreso = {
+                tesis: false,
+                acta: false,
+                const: false
+            };
             // tesis
-            axios.post(url, this.tesisForm, config)
-            .then((response) => {
-            this.fullscreenLoading = false;
-                // acta
-                axios.post(url, this.actaForm, config)
+            if (this.tesisFile && this.tesisFile != undefined) {
+                axios.post(url, this.tesisForm, config)
                 .then((response) => {
-                    this.fullscreenLoading = false;
-                    // constancia
-                    axios.post(url, this.constForm, config)
-                    .then((response) => {
-                        this.fullscreenLoading = false;
-                        this.$router.push({ name: "dashboard.index" });
-                        Swal.fire({
-                            icon: "success",
-                            title: "Documentos ingresados correctamente",
-                            showConfirmButton: false,
-                            timer: 3000,
-                        });
-                    })
-                    .catch((response) => {
-                    this.fullscreenLoading = false;
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error al ingresar documento",
-                            showConfirmButton: false,
-                            timer: 3000,
-                        });
-                    });
+                    ingreso.tesis = true;
+                    this.terminoIngreso (ingreso);
                 })
                 .catch((response) => {
                 this.fullscreenLoading = false;
@@ -1081,16 +1099,50 @@ export default {
                         timer: 3000,
                     });
                 });
-            })
-            .catch((response) => {
-            this.fullscreenLoading = false;
-                Swal.fire({
-                    icon: "error",
-                    title: "Error al ingresar documento",
-                    showConfirmButton: false,
-                    timer: 3000,
+            } else {
+                ingreso.tesis = true;
+                this.terminoIngreso (ingreso);
+            }
+            if (this.actaFile && this.actaFile != undefined) {
+                // acta
+                axios.post(url, this.actaForm, config)
+                .then((response) => {
+                    ingreso.acta = true;
+                    this.terminoIngreso (ingreso);
+                })
+                .catch((response) => {
+                this.fullscreenLoading = false;
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error al ingresar documento",
+                        showConfirmButton: false,
+                        timer: 3000,
+                    });
                 });
-            });
+            } else {
+                ingreso.acta = true;
+                this.terminoIngreso (ingreso);
+            }
+            if (this.constFile && this.constFile != undefined) {
+                // constancia
+                axios.post(url, this.constForm, config)
+                .then((response) => {
+                    ingreso.const = true;
+                    this.terminoIngreso (ingreso);
+                })
+                .catch((response) => {
+                this.fullscreenLoading = false;
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error al ingresar documento",
+                        showConfirmButton: false,
+                        timer: 3000,
+                    });
+                });
+            } else {
+                ingreso.const = true;
+                this.terminoIngreso (ingreso);
+            }
         })
         .catch((response) => {
           this.fullscreenLoading = false;
@@ -1146,7 +1198,6 @@ export default {
           if (user.rut === this.newUser.rut || user.email === this.newUser.email) {
             errorIngresoUser = true;
             this.newUser = user;
-            console.log(this.newUser)
           }
         });
         this.fillCrearFIT.cUsers.forEach((user) => {
@@ -1271,6 +1322,18 @@ export default {
             this.addUserErrorMessage.boton = true;
         } else {
             this.addUserErrorMessage.boton = false;
+        }
+    },
+    terminoIngreso(ingreso) {
+        if (ingreso.tesis && ingreso.acta && ingreso.const) {
+            this.fullscreenLoading = false;
+            this.$router.push({ name: "dashboard.index" });
+            Swal.fire({
+                icon: "success",
+                title: "Documentos ingresados correctamente",
+                showConfirmButton: false,
+                timer: 3000,
+            });
         }
     }
   }, // cierre methods

@@ -29,10 +29,14 @@ class ParametrosController extends Controller
         $actaFormato         = $request->ActaFormato;
         $constanciaFormato   = $request->ConstanciaFormato;
 
-        Parametro::where('parametro', 'MaxStudentNumber')->update(['valor' => $maxStudentNumber]);
-        Parametro::where('parametro', 'AvancesTesisSize')->update(['valor' => $avancesTesisSize]);
-        Parametro::where('parametro', 'ActaSize')->update(['valor' => $actaSize]);
-        Parametro::where('parametro', 'ConstanciaSize')->update(['valor' => $constanciaSize]);
+        Parametro::where('parametro', 'MaxStudentNumber')->delete();
+        Parametro::create(['parametro'=>'MaxStudentNumber', 'valor' => $maxStudentNumber]);
+        Parametro::where('parametro', 'AvancesTesisSize')->delete();
+        Parametro::create(['parametro'=>'AvancesTesisSize', 'valor' => $avancesTesisSize]);
+        Parametro::where('parametro', 'ActaSize')->delete();
+        Parametro::create(['parametro'=>'ActaSize', 'valor' => $actaSize]);
+        Parametro::where('parametro', 'ConstanciaSize')->delete();
+        Parametro::create(['parametro'=>'ConstanciaSize', 'valor' => $constanciaSize]);
 
         Parametro::where('parametro', 'AvancesTesisFormato')->delete();
         Parametro::where('parametro', 'ActaFormato')->delete();

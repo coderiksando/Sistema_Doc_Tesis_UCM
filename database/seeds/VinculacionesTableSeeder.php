@@ -23,12 +23,12 @@ class VinculacionesTableSeeder extends Seeder
             'nombre' => 'Sin vinculación',
             'descripcion' => 'Vinculación nula, registro por defecto'
         ]);
-        DB::table('vinculaciones')->insert([
-            'tipo' => 'Fondo Concursable',
-            'subtipo' => 'Nacional',
-            'nombre' => 'Vinculacion de prueba1',
-            'descripcion' => 'Vinculacion de prueba1 '
-        ]);
+        // DB::table('vinculaciones')->insert([
+        //     'tipo' => 'Fondo Concursable',
+        //     'subtipo' => 'Nacional',
+        //     'nombre' => 'Vinculacion de prueba1',
+        //     'descripcion' => 'Vinculacion de prueba1 '
+        // ]);
 
         // factory(Vinculaciones::class, 20)->create();
     }

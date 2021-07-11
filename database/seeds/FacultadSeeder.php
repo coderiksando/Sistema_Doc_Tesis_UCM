@@ -17,7 +17,7 @@ class FacultadSeeder extends Seeder
 
         DB::table('facultad')->insert([
             'id'=>'1',
-            'nombre'=>'Facultad de Ingenieria'
+            'nombre'=>'Facultad de Ciencias de la Ingeniería'
         ]);
     }
 }

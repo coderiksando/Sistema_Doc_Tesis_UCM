@@ -34,47 +34,47 @@
             @foreach($datatesis->fit__user as $fit_user)
             <tr>
                 @if($i==0)
-                <td>{{ $count }}</td>
-                <td>{{ $datatesis->fit__user[$i]->user->nombres.' '.$datatesis->fit__user[$i]->user->apellidos }}</td>
-                <td>{{ $datatesis->fit__user[$i]->user->rut }}</td>
-                <td>{{ $datatesis->fit__user[$i]->user->f_salida }}</td>
-                <td>{{ $datatesis->user__p__guia->nombres.' '.$datatesis->user__p__guia->apellidos }}</td>
-                <td>{{ $datatesis->tipo }}</td>
-                @if(count($datatesis->bitacoras))
-                <td>{{ $datatesis->bitacoras[count($datatesis->bitacoras)] }}</td>
-                <td>{{ $datatesis->bitacoras[count($datatesis->bitacoras)] }}</td>
+                    <td>{{ $count }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->nombres.' '.$datatesis->fit__user[$i]->user->apellidos }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->rut }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->f_salida }}</td>
+                    <td>{{ $datatesis->user__p__guia->nombres.' '.$datatesis->user__p__guia->apellidos }}</td>
+                    <td>{{ $datatesis->tipo }}</td>
+                @if($datatesis->bitacoras)
+                    <td>{{ $datatesis->bitacoras[count($datatesis->bitacoras)] }}</td>
+                    <td>{{ $datatesis->bitacoras[count($datatesis->bitacoras)] }}</td>
                 @else
-                <td></td>
-                <td></td>
+                    <td></td>
+                    <td></td>
                 @endif
-                @if(count($datatesis->avances_tesis))
-                <td>{{ $datatesis->avances_tesis[count($datatesis->avances_tesis)] }}</td>
+                @if($datatesis->avances_tesis)
+                    <td>{{ $datatesis->avances_tesis[count($datatesis->avances_tesis)] }}</td>
                 @else
-                <td></td>
+                    <td></td>
                 @endif
-                <td>{{ $datatesis->estado }}</td>
-                <td>{{ $datatesis->created_at }}</td>
+                    <td>{{ $datatesis->estado }}</td>
+                    <td>{{ $datatesis->created_at }}</td>
                 @if($datatesis->notas_pendientes)
-                <td>{{ $datatesis->notas_pendientes->fecha_autorizada }}</td>
-                <td>{{ $datatesis->notas_pendientes->fecha_prorroga }}</td>
+                    <td>{{ $datatesis->notas_pendientes->fecha_autorizada }}</td>
+                    <td>{{ $datatesis->notas_pendientes->fecha_autorizada }}</td>
                 @else
-                <td></td>
-                <td></td>
+                    <td></td>
+                    <td></td>
                 @endif
                 @else
-                <td></td>
-                <td>{{ $datatesis->fit__user[$i]->user->nombres.' '.$datatesis->fit__user[$i]->user->apellidos }}</td>
-                <td>{{ $datatesis->fit__user[$i]->user->rut }}</td>
-                <td>{{ $datatesis->fit__user[$i]->user->f_salida }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                    <td></td>
+                    <td>{{ $datatesis->fit__user[$i]->user->nombres.' '.$datatesis->fit__user[$i]->user->apellidos }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->rut }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->f_salida }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 @endif
                 @php($i++)
             </tr>

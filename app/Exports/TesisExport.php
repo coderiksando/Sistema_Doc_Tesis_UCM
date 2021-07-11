@@ -15,7 +15,7 @@ class TesisExport implements FromView,ShouldAutoSize{
     public function getTesis($listTesis)
     {
         $this->listTesis = $listTesis;
-        
+
         return $this;
     }
     public function view(): View

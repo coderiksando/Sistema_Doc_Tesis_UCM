@@ -57,7 +57,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item, index) in listTesis" :key="index">
+                      <tr v-for="(item, index) in listarTesisPaginated" :key="index">
                         <td> <!-- itera mostrando la cantidad total de estudiantes -->
                             <div v-for="(itemUser, index) in item.listUsers" :key="index">
                                 <p v-text="itemUser.nombres + ' ' + itemUser.apellidos"></p>

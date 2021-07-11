@@ -71,19 +71,23 @@
             <tr>
                 <td width="50"><b>A  :  </b></td>
                 <td>
+                @if($datosmemo->Comisiones)
                 <b>{{$datosmemo->Comisiones->UserP1->nombres.' '. $datosmemo->Comisiones->UserP1->apellidos}} <br> 
                     @if($datosmemo->Comisiones->UserP2)
                     {{$datosmemo->Comisiones->UserP2->nombres.' '.$datosmemo->Comisiones->UserP2->apellidos}}</b>
                     @endif
+                @endif
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    @if($datosmemo->Comisiones->p_externo)
-                        <b >{{$datosmemo->Comisiones->p_externo}}</b><br>
-                    @endif
+                    @if($datosmemo->Comisiones)
+                        @if($datosmemo->Comisiones->p_externo)
+                            <b >{{$datosmemo->Comisiones->p_externo}}</b><br>
+                        @endif
                     Profesores de comisión
+                    @endif
                 </td>
             </tr>
             <tr>
@@ -169,7 +173,7 @@
                     <td style="text-align: center;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="text-align: left;">A la espera de una favorable recepcion y respuesta, saluda atentamente a usted,</td>
+                    <td style="text-align: left;">A la espera de una favorable recepción y respuesta, saluda atentamente a usted,</td>
                 </tr>
             </table>
             <table width="100%" cellspacing="0" cellspacing="1" align="center">
