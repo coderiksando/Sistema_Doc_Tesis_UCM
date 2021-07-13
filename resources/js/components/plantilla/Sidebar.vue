@@ -167,7 +167,7 @@
 
           </template>
           <!-- VISTA PARA ADMINISTRACION DE REPORTES -->
-          <template  v-if="listPermisos.includes('reportes.reportefit')">
+          <template  v-if="listPermisos.includes('reportes.reportefit') && rolActivo == 'Coordinador'">
             <li class="nav-header">REPORTES</li>
             <li class="nav-item">
               <template v-if="listPermisos.includes('reportes.reportefit')">
