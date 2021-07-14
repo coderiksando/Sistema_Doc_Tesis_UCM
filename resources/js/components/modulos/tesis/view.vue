@@ -280,18 +280,19 @@ export default {
       })
     },
     getUsuarioVer(data){
-          this.fillVerFIT.cTitulo = data.titulo;
-          this.fillVerFIT.cProfesorguia = data.user__p__guia.nombres + ' ' + data.user__p__guia.apellidos;
-          if (data.user__p__coguia) {
-              this.fillVerFIT.cProfesorCoGuia = data.user__p__coguia.nombres + ' ' + data.user__p__coguia.apellidos;
-          }
-          this.fillVerFIT.nIdVinculacion = data.vinculaciones.nombre;
-          this.fillVerFIT.cTipo = data.tipo;
-          this.fillVerFIT.cObjetivoGeneral = data.objetivo_general;
-          this.fillVerFIT.cObjetivoEspecifico = data.objetivo_especifico;
-          this.fillVerFIT.cContribucion = data.contribucion;
-          this.fillVerFIT.cDescripcion = data.descripcion;
-          this.fillVerFIT.users = data.fit__user;
+        console.log(data);
+        this.fillVerFIT.cTitulo = data.titulo;
+        this.fillVerFIT.cProfesorguia = data.user__p__guia.nombres + ' ' + data.user__p__guia.apellidos;
+        if (data.user__p__coguia) {
+            this.fillVerFIT.cProfesorCoGuia = data.user__p__coguia.nombres + ' ' + data.user__p__coguia.apellidos;
+        }
+        this.fillVerFIT.nIdVinculacion = data.vinculaciones.nombre;
+        this.fillVerFIT.cTipo = data.tipo;
+        this.fillVerFIT.cObjetivoGeneral = data.objetivo_general;
+        this.fillVerFIT.cObjetivoEspecifico = data.objetivo_especifico;
+        this.fillVerFIT.cContribucion = data.contribucion;
+        this.fillVerFIT.cDescripcion = data.descripcion;
+        this.fillVerFIT.users = data.fit__user;
     },
 
   }// cierre methods

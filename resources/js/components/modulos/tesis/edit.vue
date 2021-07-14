@@ -148,7 +148,7 @@
                           <el-input
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 5 }"
-                            maxlength="140"
+                            maxlength="200"
                             placeholder="Título"
                             show-word-limit
                             v-model="fillEditarFIT.cTitulo"

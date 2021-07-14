@@ -148,7 +148,7 @@
                           <el-input
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 5 }"
-                            maxlength="140"
+                            maxlength="200"
                             placeholder="Título de la tesis"
                             show-word-limit
                             v-model="fillCrearFIT.cTitulo"
@@ -1066,9 +1066,7 @@ export default {
       this.tesisForm.append("file", this.tesisFile);
       this.actaForm.append("file", this.actaFile);
       this.constForm.append("file", this.constFile);
-      if (this.fillCrearFIT.nIdEscuela) {
-        this.fillCrearFIT.nIdEscuela = this.listProfesores.find(profesor => profesor.id_user == this.fillCrearFIT.nIdPg).id_escuela;
-      }
+      this.corroboracionDatoOpcional();
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       axios.post(url, this.fillCrearFIT)
         .then((response) => {
@@ -1259,19 +1257,19 @@ export default {
         this.mostrarModalBusquedaEstudiante();
     },
     eliminarEstudiante(estudianteEliminado) {
-      let i = 0;
-      let eliminado = 0;
-      let condicionEliminacion = false;
-      this.fillCrearFIT.cUsers.forEach((user) => {
-        if (user.rut === estudianteEliminado.rut) {
-          eliminado = i;
-          condicionEliminacion = true;
+        let i = 0;
+        let eliminado = 0;
+        let condicionEliminacion = false;
+        this.fillCrearFIT.cUsers.forEach((user) => {
+            if (user.rut === estudianteEliminado.rut) {
+            eliminado = i;
+            condicionEliminacion = true;
+            }
+            i++;
+        });
+        if (condicionEliminacion) {
+            this.fillCrearFIT.cUsers.splice(eliminado, 1);
         }
-        i++;
-      });
-      if (condicionEliminacion) {
-        this.fillCrearFIT.cUsers.splice(eliminado, 1);
-      }
     },
     mostrarModalAyuda() {
       this.modalAyuda = !this.modalAyuda;
@@ -1285,13 +1283,13 @@ export default {
         this.validarErrores();
     },
     validarIngresoUsuarioRut(e){
-      if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test( e )) {
-			  this.addUserErrorMessage.rut = true;
-      }
-      var tmp 	= e.split('-');
-      var digv	= tmp[1];
-      var rut 	= tmp[0];
-		  if ( digv == 'K' ) digv = 'k' ;
+        if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test( e )) {
+                this.addUserErrorMessage.rut = true;
+        }
+        var tmp 	= e.split('-');
+        var digv	= tmp[1];
+        var rut 	= tmp[0];
+        if ( digv == 'K' ) digv = 'k' ;
         if (this.digitoVerificador(rut) == digv) {
             this.addUserErrorMessage.rut = 0;
         } else {
@@ -1334,6 +1332,14 @@ export default {
                 showConfirmButton: false,
                 timer: 3000,
             });
+        }
+    },
+    corroboracionDatoOpcional () {
+        if (!this.fillCrearFIT.nIdEscuela) {
+            this.fillCrearFIT.nIdEscuela = this.listProfesores.find(profesor => profesor.id_user == this.fillCrearFIT.nIdPg).id_escuela;
+        }
+        if (!this.fillCrearFIT.nIdVinculacion) {
+            this.fillCrearFIT.nIdVinculacion = 1;
         }
     }
   }, // cierre methods
