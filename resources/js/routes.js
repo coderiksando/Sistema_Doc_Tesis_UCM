@@ -202,6 +202,14 @@ export const rutas = [
         },
         props : true
     },
+    {
+        path: '/escuelas/crearfacultad',
+        name: 'escuelas.crearfacultad',
+        component: require('./components/modulos/escuelas/crearfacultad').default,
+        beforeEnter: (to, from, next) => {
+            verificarAcceso(to, from, next);
+        }
+    },
 /******** RUTAS MODULO DE ADMINISTRACION DE  AREAS DE TESIS ********/
     {
         path: '/areatesis',

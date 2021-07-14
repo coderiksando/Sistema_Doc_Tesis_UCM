@@ -71,7 +71,7 @@
                         <div class="col-md-9">
                             <el-select v-model="fillBsqVinculacion.cEstado"
                             placeholder="Seleccione un estado"
-                            clearable>
+                            >
                               <el-option
                                 v-for="item in listEstados"
                                 :key="item.value"
@@ -193,7 +193,8 @@ export default {
       fillBsqVinculacion:{
         cNombre: '',
         cTipo: '',
-        cDescripcion:''
+        cDescripcion:'',
+        cEstado: 'T'
       },
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       listTipo: [
@@ -208,7 +209,7 @@ export default {
       listEstados: [
         {value: 'A', label: 'Activo'},
         {value: 'I', label: 'Inactivo'},
-        {valye: 'T', label: 'Todos'}
+        {value: 'T', label: 'Todos'}
       ]
 
     }

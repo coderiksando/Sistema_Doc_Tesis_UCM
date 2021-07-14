@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Editar escuela</h1>
+            <h1 class="m-0 text-dark">Crear Facultad</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -24,35 +24,18 @@
           <div class="container-fluid">
             <div class="card card-info">
                 <div class="card-header">
-                    <h3 class="card-title">Formulario de edición de escuelas</h3>
+                    <h3 class="card-title">Formulario de registro de facultades</h3>
                 </div>
                     <div class="card-body">
                         <form role="form">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group row">
                                         <label class="col-md-3 col-form-label">Nombre</label>
                                         <div class="col-md-9">
-                                            <input type="text" maxlength="40"  class="form-control" v-model="fillEditarEscuela.cNombre" @keyup.enter="setEditarEscuelas">
+                                            <input type="text" maxlength="40"  class="form-control" v-model="fillCrearFacultad.cNombre" @keyup.enter="setRegistrarEscuelas">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                  <div class="form-group row">
-                                    <label class="col-md-3 col-form-label">Facultad</label>
-                                    <div class="col-md-9">
-                                        <el-select filterable v-model="fillEditarEscuela.nIdFacultad"
-                                        placeholder="Asignar Facultad"
-                                        >
-                                        <el-option
-                                            v-for="item in listFacultades"
-                                            :key="item.id"
-                                            :label="item.nombre"
-                                            :value="item.id">
-                                        </el-option>
-                                        </el-select>
-                                    </div>
-                                  </div>
                                 </div>
                             </div>
                         </form>
@@ -60,19 +43,17 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-md-4 offset-4">
-                                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarEscuelas" v-loading.fullscreen.lock="fullscreenLoading"
-                            >Editar</button>
+                                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarFacultad" v-loading.fullscreen.lock="fullscreenLoading"
+                            >Registrar</button>
                             <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
                             </div>
                         </div>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-
 
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
@@ -98,11 +79,10 @@
 export default {
   data(){
     return{
-      fillEditarEscuela:{
-        nIdEscuela: this.$attrs.id,
-        cNombre: '',
-        nIdFacultad: ''
+      fillCrearFacultad:{
+        cNombre: ''
       },
+      listFacultades: [],
       fullscreenLoading: false,
       modalShow: false,
       mostrarModal: {
@@ -113,57 +93,47 @@ export default {
         display: 'none',
       },
       error: 0,
-      mensajeError:[],
-      listFacultades:[]
+      mensajeError:[]
 
     }
   },
-  computed: {
-  },
   mounted(){
-      this.getListarEscuelas();
-      this.getListarFacultades();
+    this.getListarFacultades();
   },
   methods:{
     limpiarCriterios(){
-      this.fillEditarEscuela.cNombre = '';
-      this.fillEditarEscuela.nIdFacultad = 1;
+      this.fillCrearFacultad.cNombre = '';
     },
     abrirModal(){
       this.modalShow = !this.modalShow;
     },
 
-    validarEditarEscuela(){
+    validarRegistrarFacultad(){
       this.error = 0;
       this.mensajeError = [];
-        if(!this.fillEditarEscuela.cNombre){
+        if(!this.fillCrearFacultad.cNombre){
           this.mensajeError.push("El nombre es un campo obligatorio")
+        }
+        if (this.listFacultades.find(facultad => facultad.nombre == this.fillCrearFacultad.cNombre)) {
+          this.mensajeError.push("La facultad que intenta crear ya existe.")
         }
         if(this.mensajeError.length){
           this.error = 1;
         }
         return this.error;
     },
-    setEditarEscuelas(){
-      if(this.validarEditarEscuela()){
+    setRegistrarFacultad(){
+      if(this.validarRegistrarFacultad()){
         this.modalShow = true;
         return;
       }
       this.fullscreenLoading = true;
-      var url = '/administracion/escuelas/setEditarEscuelas'
+      var url = '/administracion/escuelas/setRegistrarFacultad'
       axios.post(url, {
-        'nIdEscuela'     : this.fillEditarEscuela.nIdEscuela,
-        'cNombre'        : this.fillEditarEscuela.cNombre,
-        'nIdFacultad'    : this.fillEditarEscuela.nIdFacultad
-
+        'cNombre'            : this.fillCrearFacultad.cNombre
       }).then(response => {
         this.fullscreenLoading = false;
-        Swal.fire({
-        icon: 'success',
-        title: 'Escuela Editado Correctamente',
-        showConfirmButton: false,
-        timer: 1500
-      })
+        this.$router.push('/escuelas');
       })
     },
     nextPage(){
@@ -178,18 +148,6 @@ export default {
     inicializarPaginacion(){
       this.pageNumber = 0;
     },
-    getListarEscuelas(){
-      var url = '/administracion/escuelas/getListarEscuelas'
-      axios.get(url, {
-        params: {
-          'nIdEscuela' : this.fillEditarEscuela.nIdEscuela,
-        }
-      }).then(response => {
-          //this.inicializarPaginacion();
-          this.fillEditarEscuela.cNombre = response.data[0].nombre;
-          this.fillEditarEscuela.nIdFacultad = response.data[0].id_facultad;
-      })
-    },
     getListarFacultades(){
       this.fullscreenLoading = true;
       var url = '/administracion/escuelas/getListarFacultades'
@@ -198,7 +156,7 @@ export default {
           this.listFacultades = response.data;
           this.fullscreenLoading = false;
       })
-    }
+    },
 
   }// cierre methods
 }
