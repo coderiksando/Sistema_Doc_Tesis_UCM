@@ -65,6 +65,23 @@
                         </div>
                       </div>
                     </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Estado</label>
+                        <div class="col-md-9">
+                            <el-select v-model="fillBsqVinculacion.cEstado"
+                            placeholder="Seleccione un estado"
+                            >
+                              <el-option
+                                v-for="item in listEstados"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                              </el-option>
+                            </el-select>
+                        </div>
+                      </div>
+                    </div>
 
                   </div>
                 </form>
@@ -176,7 +193,8 @@ export default {
       fillBsqVinculacion:{
         cNombre: '',
         cTipo: '',
-        cDescripcion:''
+        cDescripcion:'',
+        cEstado: 'T'
       },
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       listTipo: [
@@ -188,6 +206,11 @@ export default {
       fullscreenLoading: false,
       pageNumber: 0,
       perPage: 5,
+      listEstados: [
+        {value: 'A', label: 'Activo'},
+        {value: 'I', label: 'Inactivo'},
+        {value: 'T', label: 'Todos'}
+      ]
 
     }
   },
@@ -224,6 +247,7 @@ export default {
       this.fillBsqVinculacion.cNombre = '';
       this.fillBsqVinculacion.cTipo = '';
       this.fillBsqVinculacion.cDescripcion = '';
+      this.fillBsqVinculacion.cEstado = '';
     },
     limpiarBandejaUsuarios(){
       this.listVinculacion = [];
@@ -233,9 +257,10 @@ export default {
       var url = '/administracion/vinculacion/getListarVinculacion'
       axios.get(url, {
         params: {
-          'cNombre' : this.fillBsqVinculacion.cNombre,
-          'cTipo' : this.fillBsqVinculacion.cTipo,
-          'cDescripcion' : this.fillBsqVinculacion.cDescripcion,
+          'cNombre'       : this.fillBsqVinculacion.cNombre,
+          'cTipo'         : this.fillBsqVinculacion.cTipo,
+          'cDescripcion'  : this.fillBsqVinculacion.cDescripcion,
+          'cEstado'       : this.fillBsqVinculacion.cEstado
         }
       }).then(response => {
           this.inicializarPaginacion();

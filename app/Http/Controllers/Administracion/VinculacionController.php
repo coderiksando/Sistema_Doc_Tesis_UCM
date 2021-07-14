@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Administracion;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Vinculaciones;
 
 class VinculacionController extends Controller
 {
@@ -14,23 +15,23 @@ class VinculacionController extends Controller
 
         $nIdVinculacion     =   $request->nIdVinculacion;
         $cNombre            =   $request->cNombre;
-        $cTipo             =   $request->cTipo;
+        $cTipo              =   $request->cTipo;
         $cDescripcion       =   $request->cDescripcion;
+        $cEstado            =   $request->cEstado;
 
-        $nIdVinculacion     = ($nIdVinculacion == NULL) ? ($nIdVinculacion = 0) : $nIdVinculacion;
-        $cNombre            = ($cNombre == NULL) ? ($cNombre = '') : $cNombre;
-        $cTipo             = ($cTipo == NULL) ? ($cTipo = '') : $cTipo;
-        $cDescripcion       = ($cDescripcion == NULL) ? ($cDescripcion = '') : $cDescripcion;
+        $nIdVinculacion     = ($nIdVinculacion == NULL) ? ($nIdVinculacion = '') : $nIdVinculacion;
+        $cNombre            = ($cNombre == NULL)        ? ($cNombre = '')       : $cNombre;
+        $cTipo              = ($cTipo == NULL)          ? ($cTipo = '')         : $cTipo;
+        $cDescripcion       = ($cDescripcion == NULL)   ? ($cDescripcion = '')  : $cDescripcion;
+        $cEstado            = ($cEstado == NULL)        ? ($cEstado = 'A')      : $cEstado;
+        $cEstado            = ($cEstado == 'T')        ? ($cEstado = '')      : $cEstado;
 
-        $rpta = DB::select('call sp_Vinculacion_getListarVinculacion (?, ?, ?, ?)',
-                                                                [
-                                                                    $nIdVinculacion,
-                                                                    $cNombre,
-                                                                    $cTipo,
-                                                                    $cDescripcion
-                                                                ]);
-        $rpta = collect($rpta)->where('estado','A');
-        // $rpta->where('estado', 'A')->get();
+        $rpta = DB::table('vinculaciones')->where('nombre', 'like', "%$cNombre%")
+                                          ->where('tipo', 'like', "%$cTipo%")
+                                          ->where('descripcion', 'like', "%$cDescripcion%")
+                                          ->where('id', 'like', "%$nIdVinculacion%")
+                                          ->where('estado', 'like', "%$cEstado%")
+                                          ->get();
         return $rpta;
     }
 

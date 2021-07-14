@@ -16,6 +16,9 @@
             <router-link class="btn btn-info bnt-sm" :to="'/escuelas/crear'">
               <i class="fas fa-plus-square"></i> Nueva Escuela
             </router-link>
+            <router-link class="btn btn-success bnt-sm" :to="'/escuelas/crearfacultad'">
+              <i class="fas fa-plus-square"></i> Nueva Facultad
+            </router-link>
           </div>
         </div>
         <div class="card-body">
@@ -32,6 +35,23 @@
                         <label class="col-md-3 col-form-label">Nombre escuela</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" v-model="fillBsqEscuela.cNombre" @keyup.enter="getListarEscuelas">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Facultad</label>
+                        <div class="col-md-9">
+                            <el-select filterable v-model="fillBsqEscuela.nIdFacultad"
+                            placeholder="Asignar Facultad"
+                            clearable>
+                            <el-option
+                                v-for="item in listFacultades"
+                                :key="item.id"
+                                :label="item.nombre"
+                                :value="item.id">
+                            </el-option>
+                            </el-select>
                         </div>
                       </div>
                     </div>
@@ -108,9 +128,11 @@ export default {
   data(){
     return{
       fillBsqEscuela:{
-        cNombre: ''
+        cNombre: '',
+        nIdFacultad: ''
       },
       listEscuelas:[],
+      listFacultades:[],
       fullscreenLoading: false,
       pageNumber: 0,
       perPage: 5,
@@ -143,10 +165,14 @@ export default {
       return pagesArray;
     }
   },
+  mounted(){
+    this.getListarFacultades();
+  },
   methods:{
 
     limpiarCriteriosBsq(){
       this.fillBsqEscuela.cNombre = '';
+      this.fillBsqEscuela.nIdFacultad = '';
     },
     limpiarBandejaUsuarios(){
       this.listEscuelas = [];
@@ -156,7 +182,8 @@ export default {
       var url = '/administracion/escuelas/getListarEscuelas'
       axios.get(url, {
         params: {
-          'cNombre' : this.fillBsqEscuela.cNombre,
+          'cNombre'     : this.fillBsqEscuela.cNombre,
+          'nIdFacultad'  : this.fillBsqEscuela.nIdFacultad
         }
       }).then(response => {
           this.inicializarPaginacion();
@@ -175,6 +202,15 @@ export default {
     },
     inicializarPaginacion(){
       this.pageNumber = 0;
+    },
+    getListarFacultades(){
+      this.fullscreenLoading = true;
+      var url = '/administracion/escuelas/getListarFacultades'
+      axios.get(url, {
+      }).then(response => {
+          this.listFacultades = response.data;
+          this.fullscreenLoading = false;
+      })
     },
     getListarEscuelasByRol(id){
         var ruta = '/administracion/roles/getListarEscuelasByRol'

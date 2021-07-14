@@ -77,30 +77,6 @@ class AlumnoController extends Controller
         $nIdTesis    = $request->nIdTesis;
         $rol = $request->session()->get('rol');
 
-        //$nIdUsuario  = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
-        //$nIdTesis    = ($nIdTesis == NULL) ? ($nIdTesis = 0) : $nIdTesis;
-        /*
-        $rpta = DB::select('call sp_alumno_getListarTesis (?, ?)',
-                                                                [
-                                                                    $nIdUsuario,
-                                                                    $nIdTesis
-                                                                ]);*/
-        // $rpta = DB::table('fit')
-        //         ->join('users', 'users.id_user', '=', 'fit.id_profesorguia')
-        //         ->leftjoin('vinculaciones', 'vinculaciones.id', '=', 'fit.id_vinculacion')
-        //         ->select(   'fit.id', 'fit.id_profesorguia', 'fit.titulo',
-        //                     'users.nombres AS pname', 'vinculaciones.nombre AS vname',
-        //                     'fit.tipo', 'fit.objetivo', 'fit.contribucion',
-        //                     'nombre_int1', 'rut_int1', 'telefono_int1', 'ingreso_int1',
-        //                     'email_int1', 'nombre_int2', 'rut_int2', 'email_int2',
-        //                     'ingreso_int2', 'telefono_int2', 'fit.estado', 'fit.descripcion',
-        //                     'fit.fecha_ultimoramo', 'fit.aprobado_pg',
-        //                     'fit.id_alumno AS idAlumno', 'fit.id_vinculacion')
-        //         ->where('fit.id', '=', $nIdTesis)
-        //         ->orWhere('fit.id_alumno', '=', $nIdUsuario)
-        //         ->orWhere('fit.id_profesorguia', '=', $nIdUsuario)
-        //         ->get();
-
         if ($rol == 'Alumno'){
             $fitUser = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
             $fits = Fit::whereIn('id', $fitUser)->get()->all();

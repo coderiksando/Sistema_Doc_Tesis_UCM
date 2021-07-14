@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   /*********    RUTAS MODULO DE ADMINISTRACION DE ESCUELAS     **********/
   Route::post('/administracion/escuelas/setRegistrarEscuelas', 'Administracion\EscuelasController@setRegistrarEscuelas');
+  Route::post('/administracion/escuelas/setRegistrarFacultad', 'Administracion\EscuelasController@setRegistrarFacultad');
   Route::post('/administracion/escuelas/setEditarEscuelas', 'Administracion\EscuelasController@setEditarEscuelas');
 
   /*********    RUTAS MODULO DE ADMINISTRACION DE AREAS DE TESIS     **********/
