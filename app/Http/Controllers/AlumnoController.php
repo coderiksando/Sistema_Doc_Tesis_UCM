@@ -106,21 +106,6 @@ class AlumnoController extends Controller
 
         //$nIdUsuario  = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
         //$nIdTesis    = ($nIdTesis == NULL) ? ($nIdTesis = 0) : $nIdTesis;
-       /*
-        $rpta = DB::select('call sp_alumno_getListarTesis (?, ?)',
-                                                                [
-                                                                    $nIdUsuario,
-                                                                    $nIdTesis
-                                                                ]);*/
-        // $rpta = DB::table('fit')
-        //             ->join('users', 'users.id_user', '=', 'fit.id_profesorguia')
-        //             ->leftjoin('vinculaciones', 'vinculaciones.id', '=', 'fit.id_vinculacion')
-        //             ->select('fit.id','fit.id_profesorguia','fit.titulo', 'users.nombres AS pname', 'vinculaciones.nombre AS vname', 'fit.tipo', 'fit.objetivo',
-        //                         'fit.contribucion', 'nombre_int1', 'rut_int1', 'telefono_int1', 'ingreso_int1', 'email_int1', 'nombre_int2',
-        //                         'rut_int2', 'email_int2', 'ingreso_int2', 'telefono_int2', 'fit.estado','fit.descripcion','fit.fecha_ultimoramo',
-        //                         'fit.aprobado_pg', 'fit.id_alumno AS idAlumno', 'fit.id_vinculacion')
-        //             ->where('fit.id_profesorguia', '<>', $nIdUsuario)
-        //             ->get();
 
         $fits = Fit::all();
         foreach($fits as $fit) {
@@ -133,26 +118,18 @@ class AlumnoController extends Controller
     }
     public function getListarTesisView(Request $request){
         if(!$request->ajax()) return redirect('/');
+        Debugbar::info($request);
 
-        $nIdTesis    =$request->nIdTesis;
-
-
-        // $rpta = DB::table('fit')
-        //             ->join('users', 'users.id_user', '=', 'fit.id_profesorguia')
-        //             ->leftjoin('vinculaciones', 'vinculaciones.id', '=', 'fit.id_vinculacion')
-        //             ->select('fit.id','fit.id_profesorguia','fit.titulo', 'users.nombres AS pname', 'vinculaciones.nombre AS vname', 'fit.tipo', 'fit.objetivo',
-        //                         'fit.contribucion', 'nombre_int1', 'rut_int1', 'telefono_int1', 'ingreso_int1', 'email_int1', 'nombre_int2',
-        //                         'rut_int2', 'email_int2', 'ingreso_int2', 'telefono_int2', 'fit.estado','fit.descripcion','fit.fecha_ultimoramo',
-        //                         'fit.aprobado_pg', 'fit.id_alumno AS idAlumno', 'fit.id_vinculacion')
-        //             ->where('fit.id', '=', $nIdTesis)
-        //             ->get();
+        $nIdTesis = $request->nIdTesis;
 
         $fit = Fit::where('id', $nIdTesis)->first();
         $fit->Vinculaciones;
         $fit->User_P_Guia;
         $fit->User_P_Coguia;
-        foreach($fit->Fit_User->all() as $fit_user) {
-            $fit_user->User->first();
+        if ($fit->Fit_User) {
+            foreach($fit->Fit_User->all() as $fit_user) {
+                $fit_user->User->first();
+            }
         }
         return $fit;
     }
@@ -165,12 +142,7 @@ class AlumnoController extends Controller
 
         $nIdUsuario  = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
         $nIdTesis    = ($nIdTesis == NULL) ? ($nIdTesis = 0) : $nIdTesis;
-       /*
-        $rpta = DB::select('call sp_alumno_getListarTesis (?, ?)',
-                                                                [
-                                                                    $nIdUsuario,
-                                                                    $nIdTesis
-                                                                ]);*/
+
         $rpta = DB::table('fit')
                     ->join('users', 'users.id_user', '=', 'fit.id_profesorguia')
                     ->leftjoin('vinculaciones', 'vinculaciones.id', '=', 'fit.id_vinculacion')
@@ -182,6 +154,60 @@ class AlumnoController extends Controller
                     ->orWhere('fit.id_alumno', '=', $nIdUsuario)
                     ->get();
         return $rpta;
+    }
+    public function getListarTesisTerminadas(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
+        $cAlumno        = ($request->cAlumno   == NULL)   ? ($cAlumno = '')     : $request->cAlumno;
+        $cProfesor      = ($request->cProfesor == NULL)   ? ($cProfesor = '')   : $request->cProfesor;
+        $nIdEscuela     = ($request->nIdEscuela  == NULL) ? ($nIdEscuela = '')  : $request->nIdEscuela;
+        $cTitulo        = ($request->cTitulo     == NULL) ? ($cTitulo = '')     : $request->cTitulo;
+        $cEstadoTesis   = ($request->cEstadoTesis== NULL) ? ($cEstadoTesis = ''): $request->cEstadoTesis;
+        $dFechaInicio   = ($request->dFechaInicio== NULL) ? ($dFechaInicio = '1000-01-01'): $request->dFechaInicio;
+        $dFechaFin      = ($request->dFechaFin   == NULL) ? ($dFechaFin = '3000-01-01')   : $request->dFechaFin;
+
+        // modulo de reparacion de fits que no tengan escuela o no tengan vinculación, se ejecuta solo 1 vez (por lo general)
+        $repair = Fit::whereNull('id_escuela')->get();
+        if ($repair) {
+            foreach ($repair as $fit) {
+                $fit->id_escuela = 1;
+                $fit->save();
+            }
+        }
+        $repair = Fit::whereNull('id_vinculacion')->get();
+        if ($repair) {
+            foreach ($repair as $fit) {
+                $fit->id_vinculacion = 1;
+                $fit->save();
+            }
+        }
+
+        $fits=DB::table('fit')
+                ->leftjoin('fit_user', 'fit.id', '=', 'fit_user.id_fit')
+                ->leftjoin('users as pGuia','pGuia.id_user', '=', 'fit.id_p_guia')
+                ->leftjoin('users as alumno','alumno.id_user', '=', 'fit_user.id_user')
+                ->select('fit.id')
+                ->where(DB::raw("CONCAT(alumno.nombres,' ',alumno.apellidos)"), 'like', "%$cAlumno%")
+                ->where(DB::raw("CONCAT(pGuia.nombres,' ',pGuia.apellidos)"), 'like', "%$cProfesor%")
+                ->where('fit.titulo','like',"%$cTitulo%")
+                ->where('fit.id_escuela','like',"%$nIdEscuela%")
+                ->where('fit.estado','like',"%$cEstadoTesis%")
+                ->where('fit.estado','<>',"D")
+                ->whereBetween('fit.updated_at', [$dFechaInicio,$dFechaFin])
+                ->get()
+                ->pluck('id');
+
+        $fitsDetails = Fit::findMany($fits);
+        foreach ($fitsDetails as $fit) {
+            $fit->User_P_Guia;
+            $fit->Escuela;
+            if ($fit->Fit_User) {
+                $fit->getAlumnos();
+            }
+            $fit->ArchivoPdf;
+        }
+
+        return $fitsDetails;
     }
 
     public function setRegistrarTesis(Request $request){

@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         // // $this->call(ArchivoPdfSeeder::class);
         // // $this->call(AvancesTesisSeeder::class);
         // $this->call(ParametrosSeeder::class);
-        
+
         DB::table('permissions')->insert([                  //56
             'name' => 'CrearFacultad',
             'slug' => 'escuelas.crearfacultad'
@@ -39,6 +39,23 @@ class DatabaseSeeder extends Seeder
         DB::table('roles_permissions')->insert([
             'id_role' => 1,
             'id_permission' => 56
+        ]);
+
+        DB::table('permissions')->insert([                  //57
+            'name' => 'Index de tesis finalizadas',
+            'slug' => 'index.tesisfinal'
+        ]);
+        DB::table('permissions')->insert([                  //58
+            'name' => 'Edición de tesis finalizadas',
+            'slug' => 'editar.tesisfinal'
+        ]);
+        DB::table('roles_permissions')->insert([
+            'id_role' => 1,
+            'id_permission' => 57
+        ]);
+        DB::table('roles_permissions')->insert([
+            'id_role' => 1,
+            'id_permission' => 58
         ]);
     }
 }

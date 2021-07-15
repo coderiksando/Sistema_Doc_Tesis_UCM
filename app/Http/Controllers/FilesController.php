@@ -82,7 +82,6 @@ class FilesController extends Controller
         // Debugbar::info(last(explode('/', $archivoPDF->path)));
         return $archivoPDF;
     }
-
     public function setRegistrarTesisfinalizada(Request $request){
         if(!$request->ajax()) return redirect('/');
         Debugbar::info($request);
@@ -120,6 +119,84 @@ class FilesController extends Controller
             }
             $registroFit->aprobado_pg = 'V';
             $registroFit->save();
+            foreach ($request->cUsers as $user) {
+                $user = (object) $user;
+                if (property_exists($user, 'id_user')) {
+                    $newFitUser = new Fit_User;
+                    $newFitUser->id_user = $user->id_user;
+                    $newFitUser->id_fit = $registroFit->id;
+                    $newFitUser->save();
+                } else {
+                    $newUser = new User;
+                    $newUser->rut = $user->rut;
+                    $newUser->email = $user->email;
+                    $newUser->nombres = $user->nombres;
+                    $newUser->apellidos = $user->apellidos;
+                    $newUser->password = Hash::make('12345');
+                    $newUser->id_escuela = $registroFit->id_escuela;
+                    $newUser->save();
+                    $newFitUser = new Fit_User;
+                    $newFitUser->id_user = $newUser->id_user;
+                    $newFitUser->id_fit = $registroFit->id;
+                    $newFitUser->save();
+                    $newUserRol = new Users_Roles;
+                    // se establece el usuario como alumno (2)
+                    $newUserRol->id_user = $newUser->id_user;
+                    $newUserRol->id_roles = 2;
+                    $newUserRol->save();
+                }
+            }
+            return $registroFit->id;
+        }
+        return response()->json(['ok' => 'ok'], 200);
+    }
+    public function setEditarTesisfinalizada(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        if ($request->file) {
+            $archivoFit = ArchivoPdf::where('id_fit', $request->id_fit)
+                                    ->where('tipo_pdf', $request->type)
+                                    ->first();
+            if ($archivoFit) {
+                $oldFileName = last(explode('/', $archivoFit->path));
+                Storage::delete('public/users/'.$oldFileName);
+                $archivoFit->delete();
+            }
+
+            $file = $request->file;
+            $bandera = Str::random(10);
+            $filename = $file->getClientOriginalName();
+            $fileserver = $bandera .'_'. $filename;
+            $guardado = Storage::putFileAs('public/users', $file, $fileserver);
+            if ($guardado) {
+                $rpta = new ArchivoPdf;
+                $rpta->path = asset('storage/users/'.$fileserver);
+                $rpta->filename = $filename;
+                $rpta->id_fit = $request->id_fit;
+                $rpta->tipo_pdf = $request->type;
+                $rpta->save();
+            }
+        } else {
+            $registroFit = Fit::find($request->nIdTesis);
+            $registroFit->id_p_guia = $request->nIdPg;
+            $registroFit->id_p_co_guia = $request->nIdCoPg;
+            $registroFit->id_vinculacion = $request->nIdVinculacion;
+            $registroFit->id_escuela = $request->nIdEscuela;
+            $registroFit->titulo = $request->cTitulo;
+            $registroFit->tipo = $request->cTipo;
+            $registroFit->objetivo_general = $request->cObjetivoGeneral;
+            $registroFit->objetivo_especifico = $request->cObjetivoEspecifico;
+            $registroFit->descripcion = $request->cDescripcion;
+            $registroFit->contribucion = $request->cContribucion;
+            $registroFit->nota = $request->Nota;
+            if ($registroFit->nota >= 4) {
+                $registroFit->estado = 'A';
+            } else {
+                $registroFit->estado = 'R';
+            }
+            $registroFit->aprobado_pg = 'V';
+            $registroFit->save();
+
+            $rows_fit_user = Fit_User::where('id_fit', $registroFit->id)->delete();
             foreach ($request->cUsers as $user) {
                 $user = (object) $user;
                 if (property_exists($user, 'id_user')) {
