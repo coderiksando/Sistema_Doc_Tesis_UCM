@@ -19,6 +19,11 @@
                   <i class="fas fa-plus-square"></i> Nuevo Usuario
               </router-link>
             </template>
+            <template v-if="listRolPermisosByUsuario.includes('usuarios.importar')">
+               <router-link class="btn btn-success bnt-sm" :to="{name: 'usuarios.importar'}">
+                  <i class="fas fa-plus-square"></i> Importar
+              </router-link>
+            </template>
           </div>
         </div>
         <div class="card-body">

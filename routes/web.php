@@ -39,7 +39,8 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/administracion/usuario/getListarPermisosByUsuario', 'Administracion\UsersController@getListarPermisosByUsuario');
   Route::post('/administracion/usuario/setRegistrarPermisosByUsuario', 'Administracion\UsersController@setRegistrarPermisosByUsuario');
   Route::get('/administracion/usuario/getListarRolPermisosByUsuario', 'Administracion\UsersController@getListarRolPermisosByUsuario');
-
+  Route::post('/administracion/usuario/setImportUsers', 'Administracion\UsersController@importExcel');
+  
   /*********    RUTAS MODULO DE ADMINISTRACION DE ROLES      **********/
   Route::get('/administracion/roles/getListarRoles', 'Administracion\RolesController@getListarRoles');
   Route::get('/administracion/roles/getListarPermisosByRol', 'Administracion\RolesController@getListarPermisosByRol');

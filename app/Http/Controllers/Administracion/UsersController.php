@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Administracion;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Users_Roles;
+use App\Imports\UsersImport;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Debugbar;
 
 class UsersController extends Controller
@@ -295,4 +297,14 @@ class UsersController extends Controller
                                                                 ]);
         return $rpta;
     }
+
+    public function importExcel(Request $request) {
+
+        $import = new UsersImport();
+        $import->import($request->file);
+        Debugbar::info($import);
+        return $import->errors()->count();
+    }
+
+
 }

@@ -124,6 +124,15 @@ export const rutas = [
         },
         props: true
     },
+    {
+        path: '/usuarios/importar',
+        name: 'usuarios.importar',
+        component: require('./components/modulos/usuarios/import').default,
+        beforeEnter: (to, from, next) => {
+            verificarAcceso(to, from, next);
+        },
+        props: true
+    },
 /*********    RUTAS MODULO DE ADMINISTRACION DE ROLES      **********/
     {
         path: '/roles',
