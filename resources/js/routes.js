@@ -527,6 +527,23 @@ export const rutas = [
         verificarAcceso(to, from, next);
     }
  },
+ {
+    path: '/indextesisfinalizada',
+    name: 'index.tesisfinal',
+    component: require('./components/modulos/registrodetesis/indextesisfinalizadas').default,
+    beforeEnter: (to, from, next) => {
+        verificarAcceso(to, from, next);
+    }
+ },
+ {
+    path: '/ediciondetesis/:id',
+    name: 'editar.tesisfinal',
+    component: require('./components/modulos/registrodetesis/ediciontesisfinalizadas').default,
+    beforeEnter: (to, from, next) => {
+        verificarAcceso(to, from, next);
+    },
+    props: true
+ },
 ];//cierre concentracion de rutas
 
 export default new Router({

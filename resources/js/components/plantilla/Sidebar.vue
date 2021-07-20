@@ -91,19 +91,21 @@
               </template>
             </li>
             <li class="nav-item">
-              <!-- <template v-if="listPermisos.includes('permisos.index')">
-                <router-link class="nav-link" :to="'/permisos'">
-                  <i class="nav-icon fas fa-key"></i>
-                  <p>
-                    Permisos
-                  </p>
-                </router-link>
-              </template> -->
               <template v-if="listPermisos.includes('registrar.tesis')">
                 <router-link class="nav-link" :to="'/registrodetesis'">
                     <i class="nav-icon fas fa-user-graduate"></i>
                     <p>
                     Registrar tesis finalizadas
+                    </p>
+                </router-link>
+            </template>
+            </li>
+            <li class="nav-item">
+              <template v-if="listPermisos.includes('index.tesisfinal')">
+                <router-link class="nav-link" :to="'/indextesisfinalizada'">
+                    <i class="nav-icon fas fa-pencil-alt"></i>
+                    <p>
+                    Edición de tesis final
                     </p>
                 </router-link>
             </template>

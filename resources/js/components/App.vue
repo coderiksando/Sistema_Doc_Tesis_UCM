@@ -58,16 +58,20 @@ export default {
 
 
     .sidebar{
-      overflow-x: hidden !important;
-      overflow-y: auto !important;
-      min-height: 85vh;
-      max-height: 85vh;
-      position: fixed !important;
+        /* overflow-x: hidden !important; */
+        min-height: 85vh;
+        max-height: 85vh;
+        padding-left: 0rem;
+        padding-right: 0rem;
+        position: fixed !important;
     }
     .sidebar::-webkit-scrollbar {
-      width: 0 !important;
+        width: 1em;
     }
-
+    .sidebar::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+        outline: 1px solid slategrey;
+    }
     .navbar{
       position: fixed;
       width: 100%;

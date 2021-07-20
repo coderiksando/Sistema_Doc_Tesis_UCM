@@ -10,6 +10,7 @@ class Fit_User extends Model
     protected $fillable = [
         'id_user', 'id_fit', 'created_at', 'updated_at'
     ];
+    // protected $primaryKey = ['id_user','id_fit'];
 
     public function User(){
         return $this->belongsTo(User::class, 'id_user', 'id_user');
