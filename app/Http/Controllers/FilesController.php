@@ -8,6 +8,7 @@ use App\Fit;
 use App\User;
 use App\Users_Roles;
 use App\File;
+use App\Comisiones;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -84,7 +85,6 @@ class FilesController extends Controller
     }
     public function setRegistrarTesisfinalizada(Request $request){
         if(!$request->ajax()) return redirect('/');
-        Debugbar::info($request);
         if ($request->file) {
             $file = $request->file;
             $bandera = Str::random(10);
@@ -145,6 +145,18 @@ class FilesController extends Controller
                     $newUserRol->id_roles = 2;
                     $newUserRol->save();
                 }
+            }
+            if (count($request->aComision) > 0 || $request->oProfExterno['fullname']) {
+                $comision = new Comisiones;
+                $comision->id_tesis = $registroFit->id;
+                if (array_key_exists(0, $request->aComision))
+                    $comision->id_profesor1 = $request->aComision[0]['id_user'];
+                if (array_key_exists(1, $request->aComision))
+                    $comision->id_profesor2 = $request->aComision[1]['id_user'];
+                $comision->p_externo = $request->oProfExterno['fullname'];
+                $comision->correo_p_externo = $request->oProfExterno['correo'];
+                $comision->institucion_p_externo = $request->oProfExterno['institucion'];
+                $comision->save();
             }
             return $registroFit->id;
         }

@@ -23,4 +23,10 @@ class Comisiones extends Model
     public function Fit(){
         return $this->belongsTo(Fit::class, 'id_tesis', 'id');
     }
+    public function Revision_Comision_P1(){
+        return $this->hasOne(Revision_Comision::class, 'id_user', 'id_profesor1');
+    }
+    public function Revision_Comision_P2(){
+        return $this->hasOne(Revision_Comision::class, 'id_user', 'id_profesor2');
+    }
 }

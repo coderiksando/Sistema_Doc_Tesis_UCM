@@ -52,4 +52,7 @@ class Fit extends Model
             return $item->User;
         });
     }
+    public function Revision_Comision(){
+        return $this->hasOne(Revision_Comision::class, 'id_fit', 'id');
+    }
 }

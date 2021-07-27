@@ -126,6 +126,10 @@ class AlumnoController extends Controller
         $fit->Vinculaciones;
         $fit->User_P_Guia;
         $fit->User_P_Coguia;
+        if ($fit->Comisiones) {
+            $fit->Comisiones->UserP1;
+            $fit->Comisiones->UserP2;
+        }
         if ($fit->Fit_User) {
             foreach($fit->Fit_User->all() as $fit_user) {
                 $fit_user->User->first();
