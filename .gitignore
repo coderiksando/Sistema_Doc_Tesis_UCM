@@ -1,8 +1,6 @@
 /node_modules
 /public/hot
 /public/storage
-/public/js/*
-/public/css/plantilla.css
 /storage/*.key
 /storage/app/public
 /vendor
@@ -13,3 +11,5 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+public/css/plantilla.css
+public/js/*
