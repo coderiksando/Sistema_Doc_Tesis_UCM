@@ -364,6 +364,7 @@ export default {
           }
         }).then(response => {
             this.listProfesores = response.data;
+            this.fullscreenLoading = false;
         })
     },
     limpiarCriteriosBsq(){

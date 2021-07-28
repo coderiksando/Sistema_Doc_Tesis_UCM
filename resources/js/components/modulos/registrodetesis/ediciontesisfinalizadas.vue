@@ -1528,7 +1528,9 @@ export default {
 <style>
 .modal.show .modal-dialog {
     height: 90%;
-    overflow-y: scroll;
+}
+.modal-content {
+    overflow-y: auto;
 }
 .scrollTable {
     max-height: 100% !important;
