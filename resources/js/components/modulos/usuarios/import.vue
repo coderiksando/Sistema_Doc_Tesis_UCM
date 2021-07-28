@@ -29,7 +29,7 @@
               <div class="card-body">
                 <form role="form" id="form-import1">
                   <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                       <div class="form-group row">
                         <label class="col-md-2 offset-md-1 col-form-label">Archivo</label>
                         <div class="col-md-9">
@@ -50,6 +50,23 @@
                         </div>
                       </div>
                     </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-2 offset-md-1 col-form-label">Carrera</label>
+                        <div class="col-md-9">
+                            <el-select filterable v-model="fillImportUsers.cEscuela"
+                            placeholder="Asignar Carrera"
+                            clearable>
+                            <el-option
+                                v-for="item in listEscuelas"
+                                :key="item.id"
+                                :label="item.nombre"
+                                :value="item.id">
+                            </el-option>
+                            </el-select>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </form>
                 <div class="container">
@@ -60,7 +77,7 @@
               <div class="card-footer">
                 <div class="row">
                   <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="importUsers" v-loading.fullscreen.lock="fullscreenLoading"
+                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="enviar" v-loading.fullscreen.lock="fullscreenLoading"
                       >Registrar</button>
                     <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
                   </div>
@@ -97,7 +114,7 @@ export default {
     return{
       fillImportUsers:{
         oArchivo: '',
-
+        cEscuela: ''
       },
       form : new FormData,
       fullscreenLoading: false,
@@ -114,7 +131,8 @@ export default {
       fileTypes: ['.xlsx'],
       formatError : false,
       sizeError : false,
-      fileMaxSize: 0
+      fileMaxSize: 0,
+      listEscuelas: []
     }
   },
   computed: {
@@ -122,6 +140,7 @@ export default {
   },
   mounted(){
     //this.getParametros();
+    this.getListarEscuelas();
   },
 
   methods:{
@@ -140,11 +159,19 @@ export default {
     },
     limpiarCriterios(){
       this.fillImportUsers.oArchivo = '';
+      this.fillImportUsers.cEscuela = '';
       document.getElementById("form-import1").reset();
       this.getFile();
     },
     abrirModal(){
       this.modalShow = !this.modalShow;
+    },
+    enviar(){
+      if (this.validarImportUsers()){
+          this.modalShow = true;
+          return;
+      }
+        this.importUsers();
     },
     validarImportUsers(){
       this.error = 0;
@@ -152,7 +179,9 @@ export default {
         if(!this.fillImportUsers.oArchivo){
           this.mensajeError.push("El archivo es un campo obligatorio")
         }
-
+        if(!this.fillImportUsers.cEscuela){
+          this.mensajeError.push("La carrera es un campo obligatorio")
+        }
         if(this.formatError){
           this.mensajeError.push("Los formatos permitidos son:" +this.fileTypes);
         }
@@ -165,6 +194,7 @@ export default {
     importUsers(){
       this.fullscreenLoading = true;
       this.form.append('file', this.fillImportUsers.oArchivo);
+      this.form.append('escuela', this.fillImportUsers.cEscuela);
       const config = { headers: {'Content-Type': 'multipart/form-data'}}
       var url = '/administracion/usuario/setImportUsers'
       axios.post(url, this.form, config)
@@ -184,6 +214,14 @@ export default {
           title: 'Error al importar',
           showConfirmButton: true,
         })
+      })
+    },
+    getListarEscuelas(){
+      this.fullscreenLoading = true;
+      var url = '/administracion/escuelas/getListarEscuelas'
+      axios.get(url).then(response => {
+          this.listEscuelas = response.data;
+          this.fullscreenLoading = false;
       })
     },
     // getParametros(){
