@@ -114,6 +114,7 @@ class ComisionesController extends Controller
         if ($Comisiones->ComisionesP2) {
             foreach ($Comisiones->ComisionesP2 as $comision) {
                 $comision->Fit;
+                $comision->Fit->User_P_Guia;
                 $comision->UserP1;
                 $comision->UserP2;
                 $comision->Fit->Fit_User;

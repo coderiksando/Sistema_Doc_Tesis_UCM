@@ -103,7 +103,6 @@
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listarComisionesPaginated2.length">
-
                   <table class ="table table-hover table-head-fixed text-nowrap ">
                     <thead>
                       <tr>
@@ -123,7 +122,7 @@
                             </div>
                         </td>
                         <td>
-                            <template v-if="item.fit.id_p_guia">
+                            <template v-if="item.fit.user__p__guia">
                                 <p>{{item.fit.user__p__guia.nombres+' '+item.fit.user__p__guia.apellidos}}</p>
                             </template>
                         </td>
@@ -166,7 +165,7 @@
                     <a href="#" class="page-link" @click.prevent="nextPage2">Post</a>
                     </li>
                 </ul>
-                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -233,15 +232,17 @@ export default {
       return pagesArray;
     },
      pageCount2(){
-      //obtener el numero de paginas
-      let a = this.listComisiones.length,
-          b = this.perPage;
+        //obtener el numero de paginas
+        let a = this.listComisiones.length,
+            b = this.perPage;
       return Math.ceil(a / b);
     },
     listarComisionesPaginated2(){
-      let inicio = this.pageNumber2 * this.perPage,
+        let inicio = this.pageNumber2 * this.perPage,
         fin = inicio + this.perPage;
-      return this.listComisiones.slice(inicio, fin);
+        // console.log('pre-slice',this.listComisiones);
+        // console.log('slice',this.listComisiones.slice(inicio, fin));
+        return this.listComisiones.slice(inicio, fin);
     },
     pagesList2(){
       let a = this.listComisiones.length,
@@ -280,6 +281,7 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listMisComisiones = response.data;
+        //   console.log('guia',this.listMisComisiones)
           this.fullscreenLoading = false;
       })
     },
@@ -291,6 +293,7 @@ export default {
       }).then(response => {
           this.inicializarPaginacion2();
           this.listComisiones = response.data;
+        //   console.log('pertenezco',this.listComisiones)
           this.fullscreenLoading = false;
       })
     },

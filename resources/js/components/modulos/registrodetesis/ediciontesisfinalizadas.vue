@@ -1022,7 +1022,7 @@ export default {
 
   },
   mounted() {
-      this.getListarVinculacion();
+    this.getListarVinculacion();
     this.getListarAlumnos();
     this.getListarEscuelas();
     this.getParametros();
@@ -1030,7 +1030,6 @@ export default {
   },
   methods: {
     getTesisById() {
-      this.fullscreenLoading = true;
       var url = "/alumno/getListarTesisView";
       axios.get(url, {
           params: {
@@ -1127,6 +1126,7 @@ export default {
       });
     },
     getListarProfesores() {
+      this.fullscreenLoading = true;
       var url = "/alumno/getListarProfesores";
       axios.get(url, {}).then((response) => {
         this.listProfesores = response.data;
