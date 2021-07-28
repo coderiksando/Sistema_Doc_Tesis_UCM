@@ -1,6 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
+/public/js/*
+/public/css/plantilla.css
 /storage/*.key
 /storage/app/public
 /vendor
