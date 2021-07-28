@@ -8,6 +8,7 @@ use App\Fit;
 use App\User;
 use App\Users_Roles;
 use App\File;
+use App\Comisiones;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -84,7 +85,6 @@ class FilesController extends Controller
     }
     public function setRegistrarTesisfinalizada(Request $request){
         if(!$request->ajax()) return redirect('/');
-        Debugbar::info($request);
         if ($request->file) {
             $file = $request->file;
             $bandera = Str::random(10);
@@ -146,6 +146,18 @@ class FilesController extends Controller
                     $newUserRol->save();
                 }
             }
+            if (count($request->aComision) > 0 || $request->oProfExterno['fullname']) {
+                $comision = new Comisiones;
+                $comision->id_tesis = $registroFit->id;
+                if (array_key_exists(0, $request->aComision))
+                    $comision->id_profesor1 = $request->aComision[0]['id_user'];
+                if (array_key_exists(1, $request->aComision))
+                    $comision->id_profesor2 = $request->aComision[1]['id_user'];
+                $comision->p_externo = $request->oProfExterno['fullname'];
+                $comision->correo_p_externo = $request->oProfExterno['correo'];
+                $comision->institucion_p_externo = $request->oProfExterno['institucion'];
+                $comision->save();
+            }
             return $registroFit->id;
         }
         return response()->json(['ok' => 'ok'], 200);
@@ -195,7 +207,7 @@ class FilesController extends Controller
             }
             $registroFit->aprobado_pg = 'V';
             $registroFit->save();
-
+            // zona de insercion de usuarios
             $rows_fit_user = Fit_User::where('id_fit', $registroFit->id)->delete();
             foreach ($request->cUsers as $user) {
                 $user = (object) $user;
@@ -224,6 +236,29 @@ class FilesController extends Controller
                     $newUserRol->save();
                 }
             }
+            // zona de insercion de comision
+            $oldRegComision = Comisiones::where('id_tesis', $registroFit->id)->first();
+            if ($oldRegComision) $oldRegComision->delete();
+            $regComision = new Comisiones;
+            $regComision->id_tesis = $registroFit->id;
+            if ($request->aComision) {
+                $contComision = 0;
+                foreach ($request->aComision as $comision) {
+                    $contComision++;
+                    if ($contComision = 1) $regComision->id_profesor1 = $comision['id_user'];
+                    if ($contComision = 2) $regComision->id_profesor2 = $comision['id_user'];
+                }
+            }
+            if (array_key_exists('p_externo', $request->oProfExterno)) {
+                $regComision->p_externo             =   $request->oProfExterno['p_externo'];
+            }
+            if (array_key_exists('correo_p_externo', $request->oProfExterno)) {
+                $regComision->correo_p_externo      =   $request->oProfExterno['correo_p_externo'];
+            }
+            if (array_key_exists('institucion_p_externo', $request->oProfExterno)) {
+                $regComision->institucion_p_externo =   $request->oProfExterno['institucion_p_externo'];
+            }
+            $regComision->save();
             return $registroFit->id;
         }
         return response()->json(['ok' => 'ok'], 200);

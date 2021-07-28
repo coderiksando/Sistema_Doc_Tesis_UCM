@@ -272,7 +272,21 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Comisión evaluadora</label>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" @click.prevent="mostrarModalComision">
+                                <i class="fas fa-users"></i>
+                            </button>
+                        </div>
+                        <div v-if="fillEditarFIT.aComision.length > 0" class="col-md-7">
+                            <div v-if="fillEditarFIT.aComision[0]" class="noPadNoMar"><b>P1: </b>{{fillEditarFIT.aComision[0].fullname}}</div>
+                            <div v-if="fillEditarFIT.aComision[1]" class="noPadNoMar"><b>P2: </b>{{fillEditarFIT.aComision[1].fullname}}</div>
+                            <div v-if="fillEditarFIT.oProfExterno.p_externo" class="noPadNoMar"><b>Pe: </b>{{fillEditarFIT.oProfExterno.p_externo}}</div>
+                        </div>
+                      </div>
+                    </div>
                     <div class="col-md-6">
                       <div class="noPadNoMar col-md-12 form-group row">
                         <label class="noPadNoMar col-md-12 col-form-label">Tesis final (opcional)</label>
@@ -804,11 +818,111 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" :class="{ show: modalComision }"
+      :style="modalComision ? mostrarModal : ocultarModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Selección de comisión evaluadora</h5>
+            <button class="close" @click="mostrarModalComision"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Escuela</label>
+                    <div class="col-md-9">
+                        <multiselect
+                            v-model="profesorByEscuelaBuscada"
+                            label='nombre'
+                            track-by="id"
+                            :options="listEscuelas"
+                            :searchable="true"
+                            :close-on-select="true"
+                            :show-labels="false"
+                            placeholder="Selecciona escuela de profesor"
+                            selectLabel="Seleccionar"
+                            selectedLabel="Seleccionado"
+                            deselectLabel="Presiona enter para remover"
+                            @close="getListarProfesoresByEscuela">
+                            <span slot="noOptions">No existen escuelas.</span>
+                            <span slot="noResult">No existen escuelas.</span>
+                        </multiselect>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Profesor revisor</label>
+                    <div class="col-md-9">
+                        <multiselect
+                            v-if="fillEditarFIT.aComision && listProfesoresBuscado"
+                            v-model="fillEditarFIT.aComision"
+                            :options="listProfesoresBuscado"
+                            mode="tags"
+                            label="fullname"
+                            track-by="id_user"
+                            :multiple="true"
+                            :close-on-select="false"
+                            :clear-on-select="false"
+                            :preserve-search="true"
+                            placeholder="Seleccionar profesor"
+                            :preselect-first="false"
+                            :max="2"
+                            selectLabel="Seleccionar"
+                            selectedLabel="Seleccionado"
+                            deselectLabel="Presiona enter para remover">
+                            <span slot="maxElements">Límite de profesores internos alcanzado.</span>
+                            <span slot="noOptions">No existen profesores en escuela.</span>
+                            <span slot="noResult">El nombre no coincide.</span>
+                        </multiselect>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Profesor(es) externo(s)</label>
+                    <div class="col-md-9">
+                        <el-input
+                        type="textarea"
+                        :autosize="{ minRows: 1, maxRows: 5 }"
+                        placeholder="Nombre de profesor"
+                        v-model="fillEditarFIT.oProfExterno.p_externo">
+                        </el-input>
+                        <el-input
+                        type="textarea"
+                        :autosize="{ minRows: 1, maxRows: 5 }"
+                        placeholder="Correo de profesor"
+                        v-model="fillEditarFIT.oProfExterno.correo_p_externo">
+                        </el-input>
+                        <el-input
+                        type="textarea"
+                        :autosize="{ minRows: 1, maxRows: 5 }"
+                        placeholder="Institución de profesor"
+                        v-model="fillEditarFIT.oProfExterno.institucion_p_externo">
+                        </el-input>
+                    </div>
+                    </div>
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" @click="mostrarModalComision">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect';
 export default {
+  components: { Multiselect },
   data() {
     return {
       fillEditarFIT: {
@@ -826,6 +940,12 @@ export default {
         cDescripcion: "",
         cContribucion: "",
         cUsers: [],
+        aComision: [],
+        oProfExterno: {
+            fullname: '',
+            correo: '',
+            institucion: ''
+        }
       },
       tesisForm: new FormData(),
       actaForm: new FormData(),
@@ -858,10 +978,12 @@ export default {
       listVinculacion: [],
       listAllUser: [],
       listAlumnosBuscados: [],
+      listComision: [{'s':'a'}],
       fullscreenLoading: false,
       modalShow: false,
       modalSearchUser: false,
       modalAyuda: false,
+      modalComision: false,
       mostrarModal: {
         display: "block",
         background: "#0000006b",
@@ -892,16 +1014,19 @@ export default {
       tesisFile: '',
       actaFile: '',
       constFile: '',
+      profesorByEscuelaBuscada: '',
+      listProfesoresBuscado: []
     };
   },
-  computed: {},
+  computed: {
+
+  },
   mounted() {
-    this.getListarProfesores();
-    this.getListarVinculacion();
+      this.getListarVinculacion();
     this.getListarAlumnos();
     this.getListarEscuelas();
     this.getParametros();
-    this.getTesisById();
+    this.getListarProfesores();
   },
   methods: {
     getTesisById() {
@@ -913,6 +1038,7 @@ export default {
           },
         })
         .then((response) => {
+            // console.log('dato backend', response);
           this.getUsuarioVer(response.data);
           this.fullscreenLoading = false;
         });
@@ -1005,6 +1131,8 @@ export default {
       axios.get(url, {}).then((response) => {
         this.listProfesores = response.data;
         this.listProfesores = _.orderBy(this.listProfesores, "fullname", "asc");
+        this.listProfesoresBuscado = this.listProfesores;
+        this.getTesisById();
       });
     },
     limpiarCriterios() {
@@ -1281,6 +1409,9 @@ export default {
     mostrarModalAyuda() {
       this.modalAyuda = !this.modalAyuda;
     },
+    mostrarModalComision() {
+      this.modalComision = !this.modalComision;
+    },
     validarIngresoUsuarioNombre(){
         if (this.newUser.nombres === '' || this.newUser.apellidos === '') {
             this.addUserErrorMessage.nombre = 1;
@@ -1365,13 +1496,39 @@ export default {
       });
       this.fillEditarFIT.Nota = data.nota;
       this.fillEditarFIT.nIdEscuela = data.id_escuela;
+      if (data.comisiones) {
+        if (data.comisiones.user_p1) {
+            this.fillEditarFIT.aComision.push(this.listProfesoresBuscado.find(x => x.id_user === data.comisiones.user_p1.id_user));
+        }
+        if (data.comisiones.user_p2) {
+            this.fillEditarFIT.aComision.push(this.listProfesoresBuscado.find(x => x.id_user === data.comisiones.user_p2.id_user));
+        }
+        this.fillEditarFIT.oProfExterno = data.comisiones;
+      }
     },
+    getListarProfesoresByEscuela() {
+        this.fullscreenLoading = true;
+        let id = null;
+        if (this.profesorByEscuelaBuscada) {
+          id = this.profesorByEscuelaBuscada.id;
+        }
+        var url = '/reportes/getListarProfesorByEscuela';
+        axios.get(url, {
+          params: {
+            'nIdEscuela' : id
+          }
+        }).then(response => {
+            this.listProfesoresBuscado = response.data;
+            this.fullscreenLoading = false;
+        })
+    }
   }, // cierre methods
 };
 </script>
 <style>
 .modal.show .modal-dialog {
     height: 90%;
+    overflow-y: scroll;
 }
 .scrollTable {
     max-height: 100% !important;

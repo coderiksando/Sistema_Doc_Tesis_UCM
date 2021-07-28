@@ -19,4 +19,7 @@ class ArchivoPdf extends Model
     public function AvancesTesis(){
         return $this->hasMany(AvancesTesis::class, 'id_archivo', 'id');
     }
+    public function Revision_Comision(){
+        return $this->hasOne(Revision_Comision::class, 'id_archivo', 'id');
+    }
 }
