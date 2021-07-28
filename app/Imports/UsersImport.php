@@ -23,18 +23,17 @@ class UsersImport implements ToModel, WithHeadingRow, SkipsOnError
     */
     public function model(array $row)
     {
-        Debugbar::info($row['ingreso']);
         return new User([
             'rut'           => $row['rut'],
-            'nombres'       => $row['nombres'],
-            'apellidos'     => $row['apellidos'],
-            'email'         => $row['email'],
+            'nombres'       => $row['nombre'],
+            'apellidos'     => $row['apellido'],
+            'email'         => $row['direccion_de_correo_electronico'],
+            'telefono'      => $row['fono'],
             'password'      => Hash::make('12345'),
             'state'         => 'A',
-            // 'telefono'      => $row['telefono'],
             // 'direccion'     => $row['direccion'],
-            'f_ingreso'     => Carbon::parse($row['ingreso']),
-            'f_salida'      => Carbon::parse($row['salida'])
+            // 'f_ingreso'     => Carbon::parse($row['ingreso']),
+            // 'f_salida'      => Carbon::parse($row['salida'])
          ]);
     }
 }
