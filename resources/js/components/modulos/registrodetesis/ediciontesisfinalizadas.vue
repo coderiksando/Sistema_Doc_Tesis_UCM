@@ -857,9 +857,9 @@
                     <label class="col-md-3 col-form-label">Profesor revisor</label>
                     <div class="col-md-9">
                         <multiselect
-                            v-if="fillEditarFIT.aComision && fillEditarFIT.listProfesoresBuscado"
+                            v-if="fillEditarFIT.aComision && listProfesoresBuscado"
                             v-model="fillEditarFIT.aComision"
-                            :options="fillEditarFIT.listProfesoresBuscado"
+                            :options="listProfesoresBuscado"
                             mode="tags"
                             label="fullname"
                             track-by="id_user"
@@ -869,7 +869,7 @@
                             :preserve-search="true"
                             placeholder="Seleccionar profesor"
                             :preselect-first="false"
-                            :max="5"
+                            :max="2"
                             selectLabel="Seleccionar"
                             selectedLabel="Seleccionado"
                             deselectLabel="Presiona enter para remover">
@@ -877,8 +877,6 @@
                             <span slot="noOptions">No existen profesores en escuela.</span>
                             <span slot="noResult">El nombre no coincide.</span>
                         </multiselect>
-                        <pre class="language-json"><code>{{ fillEditarFIT.aComision  }}</code></pre>
-                        <pre class="language-json"><code>{{ fillEditarFIT.listProfesoresBuscado }}</code></pre>
                     </div>
                     </div>
                 </div>
@@ -947,8 +945,7 @@ export default {
             fullname: '',
             correo: '',
             institucion: ''
-        },
-        listProfesoresBuscado: []
+        }
       },
       tesisForm: new FormData(),
       actaForm: new FormData(),
@@ -1017,17 +1014,19 @@ export default {
       tesisFile: '',
       actaFile: '',
       constFile: '',
-      profesorByEscuelaBuscada: ''
+      profesorByEscuelaBuscada: '',
+      listProfesoresBuscado: []
     };
   },
-  computed: {},
+  computed: {
+
+  },
   mounted() {
-    this.getListarProfesores();
-    this.getListarVinculacion();
+      this.getListarVinculacion();
     this.getListarAlumnos();
     this.getListarEscuelas();
     this.getParametros();
-    this.getTesisById();
+    this.getListarProfesores();
   },
   methods: {
     getTesisById() {
@@ -1039,7 +1038,7 @@ export default {
           },
         })
         .then((response) => {
-            // console.log(response);
+            // console.log('dato backend', response);
           this.getUsuarioVer(response.data);
           this.fullscreenLoading = false;
         });
@@ -1132,8 +1131,8 @@ export default {
       axios.get(url, {}).then((response) => {
         this.listProfesores = response.data;
         this.listProfesores = _.orderBy(this.listProfesores, "fullname", "asc");
-        this.fillEditarFIT.listProfesoresBuscado = this.listProfesores;
-        console.log('listaProfesor',this.fillEditarFIT.listProfesoresBuscado);
+        this.listProfesoresBuscado = this.listProfesores;
+        this.getTesisById();
       });
     },
     limpiarCriterios() {
@@ -1497,22 +1496,15 @@ export default {
       });
       this.fillEditarFIT.Nota = data.nota;
       this.fillEditarFIT.nIdEscuela = data.id_escuela;
-      if (data.comisiones.user_p1) {
-        this.fillEditarFIT.aComision[0] = {
-            'id_user': data.comisiones.user_p1.id_user,
-            'fullname': data.comisiones.user_p1.nombres+' '+data.comisiones.user_p1.apellidos,
-            'id_escuela': data.comisiones.user_p1.id_escuela
-        };
+      if (data.comisiones) {
+        if (data.comisiones.user_p1) {
+            this.fillEditarFIT.aComision.push(this.listProfesoresBuscado.find(x => x.id_user === data.comisiones.user_p1.id_user));
+        }
+        if (data.comisiones.user_p2) {
+            this.fillEditarFIT.aComision.push(this.listProfesoresBuscado.find(x => x.id_user === data.comisiones.user_p2.id_user));
+        }
+        this.fillEditarFIT.oProfExterno = data.comisiones;
       }
-      if (data.comisiones.user_p2) {
-        this.fillEditarFIT.aComision[1] = {
-            'id_user': data.comisiones.user_p2.id_user,
-            'fullname': data.comisiones.user_p2.nombres+' '+data.comisiones.user_p2.apellidos,
-            'id_escuela': data.comisiones.user_p2.id_escuela
-        };
-      }
-      this.fillEditarFIT.oProfExterno = data.comisiones;
-      console.log('modelo',this.fillEditarFIT);
     },
     getListarProfesoresByEscuela() {
         this.fullscreenLoading = true;
@@ -1526,7 +1518,7 @@ export default {
             'nIdEscuela' : id
           }
         }).then(response => {
-            this.fillEditarFIT.listProfesoresBuscado = response.data;
+            this.listProfesoresBuscado = response.data;
             this.fullscreenLoading = false;
         })
     }
