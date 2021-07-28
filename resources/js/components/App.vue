@@ -66,11 +66,14 @@ export default {
         position: fixed !important;
     }
     .sidebar::-webkit-scrollbar {
-        width: 1em;
+        width: 15px;
     }
     .sidebar::-webkit-scrollbar-thumb {
         background-color: darkgrey;
         outline: 1px solid slategrey;
+    }
+    .nav-item-sidebar {
+        width: 235px;
     }
     .navbar{
       position: fixed;

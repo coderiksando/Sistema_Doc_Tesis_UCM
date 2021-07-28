@@ -58,7 +58,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
           <!-- PESTAÑAS ADMINISTRACION -->
-          <li class="nav-item has-treeview">
+          <li class="nav-item-sidebar has-treeview">
             <template v-if="listPermisos.includes('dashboard.index')">
               <router-link class="nav-link" :to="'/dashboard'">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -71,7 +71,7 @@
           <template  v-if="listPermisos.includes('usuarios.index', 'roles.index', 'permisos.index')">
             <li class="nav-header">CONTROL DE USUARIOS</li>
               <template v-if="listPermisos.includes('usuarios.index')">
-                <li class="nav-item">
+                <li class="nav-item-sidebar">
                   <router-link class="nav-link" :to="'/usuarios'">
                     <i class="nav-icon fas fa-users"></i>
                     <p>
@@ -80,7 +80,7 @@
                   </router-link>
                 </li>
               </template>
-            <li class="nav-item">
+            <li class="nav-item-sidebar">
               <template v-if="listPermisos.includes('roles.index')">
                 <router-link class="nav-link" :to="'/roles'">
                   <i class="nav-icon fas fa-user-tag"></i>
@@ -90,7 +90,7 @@
                 </router-link>
               </template>
             </li>
-            <li class="nav-item">
+            <li class="nav-item-sidebar">
               <template v-if="listPermisos.includes('registrar.tesis')">
                 <router-link class="nav-link" :to="'/registrodetesis'">
                     <i class="nav-icon fas fa-user-graduate"></i>
@@ -100,7 +100,7 @@
                 </router-link>
             </template>
             </li>
-            <li class="nav-item">
+            <li class="nav-item-sidebar">
               <template v-if="listPermisos.includes('index.tesisfinal')">
                 <router-link class="nav-link" :to="'/indextesisfinalizada'">
                     <i class="nav-icon fas fa-pencil-alt"></i>
@@ -113,7 +113,7 @@
           </template>
           <template  v-if="listPermisos.includes('escuelas.index', 'areatesis.index')">
             <li class="nav-header">CONTROL DE ESCUELAS</li>
-            <li class="nav-item">
+            <li class="nav-item-sidebar">
               <template v-if="listPermisos.includes('escuelas.index')">
                 <router-link class="nav-link" :to="'/escuelas'">
                   <i class="nav-icon fas fa-school"></i>
@@ -123,7 +123,7 @@
                 </router-link>
               </template>
             </li>
-            <li class="nav-item">
+            <li class="nav-item-sidebar">
               <template v-if="listPermisos.includes('areatesis.index')">
                 <router-link class="nav-link" :to="'/areatesis'">
                   <i class="nav-icon fas fa-microscope"></i>
@@ -133,7 +133,7 @@
                 </router-link>
               </template>
             </li>
-            <li class="nav-item">
+            <li class="nav-item-sidebar">
               <template v-if="listPermisos.includes('vinculacion.index')">
                 <router-link class="nav-link" :to="'/vinculacion'">
                   <i class="nav-icon fas fa-hands-helping"></i>
@@ -146,7 +146,7 @@
           </template>
           <template  v-if="listPermisos.includes('parametros.index')">
             <li class="nav-header">CONTROL DE SISTEMA</li>
-            <li class="nav-item">
+            <li class="nav-item-sidebar">
               <template v-if="listPermisos.includes('parametros.index')">
                 <router-link class="nav-link" :to="'/parametros'">
                   <i class="nav-icon fas fa-cog"></i>
@@ -156,7 +156,7 @@
                 </router-link>
               </template>
             </li>
-            <li class="nav-item">
+            <li class="nav-item-sidebar">
               <template v-if="listPermisos.includes('reportes.logs')">
                 <router-link class="nav-link" :to="'/reportes/logs'">
                   <i class="nav-icon fas fa-database"></i>
@@ -171,7 +171,7 @@
           <!-- VISTA PARA ADMINISTRACION DE REPORTES -->
           <template  v-if="listPermisos.includes('reportes.reportefit') && rolActivo == 'Coordinador'">
             <li class="nav-header">REPORTES</li>
-            <li class="nav-item">
+            <li class="nav-item-sidebar">
               <template v-if="listPermisos.includes('reportes.reportefit')">
                 <router-link class="nav-link" :to="'/reportes'">
                   <i class="nav-icon fas fa-database"></i>
@@ -185,7 +185,7 @@
           <!-- VISTA PARA ADMINISTRACION DE DOCUMENTOS -->
           <template  v-if="listPermisos.includes('actadefensa.index') && (rolActivo == 'Director' || rolActivo == 'Secretaria' )">
             <li class="nav-header">CONTROL DE DOCUMENTOS</li>
-            <li class="nav-item">
+            <li class="nav-item-sidebar">
               <template v-if="listPermisos.includes('actadefensa.index')">
                 <router-link class="nav-link" :to="'/actadefensa'">
                   <i class="nav-icon fas fa-user-check"></i>
@@ -198,7 +198,7 @@
           </template>
           <template  v-if="listPermisos.includes('documentos.index')">
 
-            <li class="nav-item">
+            <li class="nav-item-sidebar">
               <template v-if="listPermisos.includes('documentos.index') && (rolActivo == 'Director' || rolActivo == 'Secretaria' )">
                 <router-link class="nav-link" :to="'/documentos'">
                   <i class="nav-icon far fa-id-card"></i>
@@ -212,7 +212,7 @@
           <!-- PESTAÑAS PARA EL ALUMNO -->
           <template  v-if="listPermisos.includes('tesis.fit')">
             <li class="nav-header">SEGUIMIENTO DE TESIS</li>
-              <li class="nav-item">
+              <li class="nav-item-sidebar">
                 <template v-if="listPermisos.includes('tesis.fit')">
                   <router-link class="nav-link" :to="'/tesis'">
                     <i class="nav-icon far fa-edit"></i>
@@ -222,7 +222,7 @@
                   </router-link>
                 </template>
               </li>
-              <li class="nav-item">
+              <li class="nav-item-sidebar">
                 <template v-if="listPermisos.includes('avances.index')">
                   <router-link class="nav-link" :to="'/avances'">
                     <i class="nav-icon fas fa-file-upload"></i>
@@ -232,7 +232,7 @@
                   </router-link>
                 </template>
               </li>
-              <li class="nav-item">
+              <li class="nav-item-sidebar">
                 <template v-if="listPermisos.includes('bitacoras.index')">
                   <router-link class="nav-link" :to="'/bitacoras'">
                     <i class="nav-icon fas fa-clipboard-check"></i>
@@ -242,7 +242,7 @@
                   </router-link>
                 </template>
               </li>
-              <li class="nav-item">
+              <li class="nav-item-sidebar">
                 <template v-if="listPermisos.includes('comisiones.index')">
                   <router-link class="nav-link" :to="'/comisiones'">
                     <i class="nav-icon fas fa-users"></i>
@@ -252,7 +252,7 @@
                   </router-link>
                 </template>
               </li>
-              <li class="nav-item">
+              <li class="nav-item-sidebar">
                 <template v-if="listPermisos.includes('vinculacion.index')">
                   <router-link class="nav-link" :to="'/vinculacion'">
                     <i class="nav-icon fas fa-hands-helping"></i>
@@ -266,7 +266,7 @@
 
           <template  v-if="listPermisos.includes('notaspendientes.index')">
             <li class="nav-header">SOLICITUD NOTA PENDIENTE</li>
-              <li class="nav-item">
+              <li class="nav-item-sidebar">
                 <template v-if="listPermisos.includes('notaspendientes.index')">
                   <router-link class="nav-link" :to="'/notaspendientes'">
                     <i class="nav-icon fas fa-calendar-day"></i>
@@ -280,13 +280,13 @@
 
           <template  v-if="listPermisos.includes('sitios.interes')">
             <li class="nav-header">SITIOS DE INTERES</li>
-            <li class="nav-item">
+            <li class="nav-item-sidebar">
               <a href="http://www.sibib.ucm.cl/" target="_blank" class="nav-link">
                 <i class="nav-icon fas fa-book-reader"></i>
                 <p>Sibib UCM</p>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item-sidebar">
               <a href="https://scholar.google.com//" target="_blank" class="nav-link">
                 <i class="nav-icon fas fa-book-reader"></i>
                 <p>Google Scholar</p>
