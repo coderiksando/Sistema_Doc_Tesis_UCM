@@ -2,11 +2,14 @@
 
 namespace App;
 
+use App\ClavesMultiples;
 use Illuminate\Database\Eloquent\Model;
 
-class Revision_Comision extends Model
+class Revision_Comision extends ClavesMultiples
 {
     protected $table = 'revision_comision';
+    protected $primaryKey = ['id_fit', 'id_user', 'id_archivo'];
+    public $incrementing = false;
 
     protected $fillable = [
         'id_fit', 'id_user', 'id_archivo', 'tipo',

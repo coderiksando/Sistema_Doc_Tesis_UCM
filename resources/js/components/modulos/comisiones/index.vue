@@ -432,6 +432,8 @@ export default {
     },
     limpiezaInsercionDocumento() {
         this.fitDocumentoRevision.id = null;
+        this.fitDocumentoRevision.comentario = null;
+        this.tesisForm = new FormData();
         this.modalShow = !this.modalShow;
     },
     envioDocumentoRevision() {
@@ -451,7 +453,9 @@ export default {
                 showConfirmButton: false,
                 timer: 2000,
             });
+            this.limpiezaInsercionDocumento();
         }).catch((response) => {
+            console.log(response)
             this.fullscreenLoading = false;
             Swal.fire({
                 icon: "error",

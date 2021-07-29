@@ -158,32 +158,32 @@ class ComisionesController extends Controller
                 $oldArchivoPDF = ArchivoPdf::find($oldDocumentoComision->id_archivo);
                 Debugbar::info($oldDocumentoComision,$oldArchivoPDF);
                 $oldDocumentoComision->delete();
-                // if ($archivoPDF) {
-                //     $oldFileName = last(explode('/', $oldArchivoPDF->path));
-                //     Storage::delete('public/users/'.$oldFileName);
-                //     $oldArchivoPDF->delete();
-                // }
+                if ($oldArchivoPDF) {
+                    $oldFileName = last(explode('/', $oldArchivoPDF->path));
+                    Storage::delete('public/users/'.$oldFileName);
+                    $oldArchivoPDF->delete();
+                }
             }
-            // $file = $request->file;
-            // $bandera = Str::random(10);
-            // $filename = $file->getClientOriginalName();
-            // $fileserver = $bandera .'_'. $filename;
-            // $guardado = Storage::putFileAs('public/users', $file, $fileserver);
-            // if ($guardado) {
-            //     $archivoPDF = new ArchivoPdf;
-            //     $archivoPDF->path = asset('storage/users/'.$fileserver);
-            //     $archivoPDF->filename = $filename;
-            //     $archivoPDF->id_fit = $request->id_fit;
-            //     $archivoPDF->tipo_pdf = 'general';
-            //     $archivoPDF->save();
-            //     $revComision = new Revision_Comision;
-            //     $revComision->id_fit     = $request->id_fit;
-            //     $revComision->id_user    = Auth::id();
-            //     $revComision->id_archivo = $archivoPDF->id;
-            //     $revComision->tipo       = $request->tipo;
-            //     $revComision->comentario = $request->comentario;
-            //     $revComision->save();
-            // }
+            $file = $request->file;
+            $bandera = Str::random(10);
+            $filename = $file->getClientOriginalName();
+            $fileserver = $bandera .'_'. $filename;
+            $guardado = Storage::putFileAs('public/users', $file, $fileserver);
+            if ($guardado) {
+                $archivoPDF = new ArchivoPdf;
+                $archivoPDF->path = asset('storage/users/'.$fileserver);
+                $archivoPDF->filename = $filename;
+                $archivoPDF->id_fit = $request->id_fit;
+                $archivoPDF->tipo_pdf = 'general';
+                $archivoPDF->save();
+                $revComision = new Revision_Comision;
+                $revComision->id_fit     = $request->id_fit;
+                $revComision->id_user    = Auth::id();
+                $revComision->id_archivo = $archivoPDF->id;
+                $revComision->tipo       = $request->tipo;
+                $revComision->comentario = $request->comentario;
+                $revComision->save();
+            }
         }
     }
 
