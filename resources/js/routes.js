@@ -288,6 +288,14 @@ export const rutas = [
         verificarAcceso(to, from, next);
     }
 },
+{
+    path: '/tesis/revisiones',
+        name: 'comision.verRevision',
+        component: require('./components/modulos/tesis/verrevisioncomision').default,
+        beforeEnter: (to, from, next) => {
+            verificarAcceso(to, from, next);
+        }
+},
 /********** RUTAS MODULO DE AVANCES DE TESIS *********/
 {
     path: '/avances',

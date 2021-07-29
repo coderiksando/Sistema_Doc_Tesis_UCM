@@ -53,6 +53,6 @@ class Fit extends Model
         });
     }
     public function Revision_Comision(){
-        return $this->hasOne(Revision_Comision::class, 'id_fit', 'id');
+        return $this->hasMany(Revision_Comision::class, 'id_fit', 'id');
     }
 }

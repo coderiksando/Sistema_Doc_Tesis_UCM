@@ -18,12 +18,12 @@
           <div class="card-tools">
             <template v-if="listTesis.length === 0">
               <router-link class="btn btn-info bnt-sm" :to="'/tesis/crear'">
-                <i class="fas fa-plus-square"></i>Ingresar formulario de inscripción
+                <i class="fas fa-plus-square"></i> Ingresar formulario de inscripción
               </router-link>
             </template>
             <template v-else>
-              <router-link class="btn btn-info bnt-sm link-disabled" :to="''">
-              <i class="fas fa-plus-square"></i>Usted ya ingresó un formulario
+              <router-link class="btn btn-danger bnt-sm link-disabled" :to="''">
+              Usted ya ingresó un formulario
               </router-link>
             </template>
           </div>
@@ -128,6 +128,9 @@
                                   <i class="fas fa-trash"></i>
                                 </button>
                             </template>
+                            <router-link title="Ver revisiones" class="btn boton btn-primary" :to="'tesis/revisiones'">
+                            <i class="fa fa-list-alt"></i>
+                          </router-link>
                           </template>
                         </td>
                       </tr>

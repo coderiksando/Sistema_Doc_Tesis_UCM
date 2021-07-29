@@ -17,13 +17,10 @@ class Revision_Comision extends Model
         return $this->belongsTo(Fit::class, 'id_fit', 'id');
     }
     public function ArchivoPdf(){
-        return $this->belongsTo(User::class, 'id_archivo', 'id');
+        return $this->belongsTo(ArchivoPdf::class, 'id_archivo', 'id');
     }
-    public function ComisionesP1(){
-        return $this->belongsTo(Comisiones::class, 'id_user', 'id_profesor1');
-    }
-    public function ComisionesP2(){
-        return $this->belongsTo(Comisiones::class, 'id_user', 'id_profesor2');
+    public function User(){
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
 
 }

@@ -81,7 +81,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/alumno/getListarMiTesis','AlumnoController@getListarMiTesis');
   Route::get('/alumno/getAllUserRoll','AlumnoController@getAllUserRoll');
   Route::post('/alumno/getUsersAlumnosParametros','AlumnoController@getUsersAlumnosParametros');
-
+  Route::get('/alumno/getRevisionesComision','AlumnoController@getRevisionesComision');
 
   /*********    RUTAS MODULO DE ADMINISTRACION DE AVANCES DE TESIS   **********/
   Route::get('/avances/getListarAvances', 'AvancesController@getListarAvances');
