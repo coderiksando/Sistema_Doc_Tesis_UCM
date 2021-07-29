@@ -399,4 +399,18 @@ class AlumnoController extends Controller
         }
         return $alumnoBuscado;
     }
+
+    public function getRevisionesComision(Request $request){
+        $fit = $this->getFit();
+        $revisiones = $fit->Revision_Comision;
+        foreach ($revisiones as $item) {
+            if ($fit->id_p_guia != $item->id_user) {                                    // *Comentario del desarrollador* //
+                $item->nombre = $item->User->nombres.' '.$item->User->apellidos;        // Dado que el profesor externo no esta registrado como usuario 
+            }else{                                                                      // en el sistema, el encargado de registrar su revision sera el profesor guia,
+                $item->nombre = $fit->Comisiones->p_externo;                            // por lo tanto, cuando el id del profesor que ha subido la revision coindcida
+            }                                                                           // con el id del profesor guia, el algoritmo buscara los datos correspondientes
+            $item->ArchivoPdf;                                                          // al profesor externo para presentarlos, dichos datos estan almacenados unicamente en la tabla comision.
+        }                                                                               
+        return $revisiones;
+    }
 }

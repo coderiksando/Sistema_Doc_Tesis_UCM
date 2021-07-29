@@ -299,10 +299,9 @@ class UsersController extends Controller
     }
 
     public function importExcel(Request $request) {
-
-        $import = new UsersImport();
+        $import = new UsersImport($request->escuela);
+        Debugbar::info($request->escuela);
         $import->import($request->file);
-        Debugbar::info($import);
         return $import->errors()->count();
     }
 
