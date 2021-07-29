@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Comisiones;
+use App\ArchivoPdf;
 use App\User;
 use App\Fit;
+use App\Revision_Comision;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Debugbar;
 
 class ComisionesController extends Controller
 {
@@ -99,6 +104,7 @@ class ComisionesController extends Controller
             foreach ($Comisiones->ComisionesP1 as $comision) {
                 $comision->Fit;
                 $comision->Fit->User_P_Guia;
+                $comision->Fit->ArchivoPdf;
                 $comision->UserP1;
                 $comision->UserP2;
                 $comision->Fit->Fit_User;
@@ -115,6 +121,7 @@ class ComisionesController extends Controller
             foreach ($Comisiones->ComisionesP2 as $comision) {
                 $comision->Fit;
                 $comision->Fit->User_P_Guia;
+                $comision->Fit->ArchivoPdf;
                 $comision->UserP1;
                 $comision->UserP2;
                 $comision->Fit->Fit_User;
@@ -127,6 +134,57 @@ class ComisionesController extends Controller
             }
         }
         return $ComisionesTotales;
+    }
+    public function pathDocumentoComision(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        Debugbar::info($request->id);
+        $archivoPDF = ArchivoPdf::where('id_fit', $request->id)
+                                ->where(function ($tipo) {
+                                    $tipo   ->where('tipo_pdf', '=', 'final_t')
+                                            ->orWhere('tipo_pdf', '=', 'avance_t');
+                                })
+                                ->orderBy('updated_at', 'desc')
+                                ->first();
+        return $archivoPDF;
+    }
+    public function setRegistrarDocumentoComision(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        if ($request->file) {
+            // consultar si existen de estos archivos antes
+            $oldDocumentoComision = Revision_Comision   ::where('id_fit', $request->id_fit)
+                                                        ->where('id_user', Auth::id())
+                                                        ->first();
+            if ($oldDocumentoComision) {
+                $oldArchivoPDF = ArchivoPdf::find($oldDocumentoComision->id_archivo);
+                Debugbar::info($oldDocumentoComision,$oldArchivoPDF);
+                $oldDocumentoComision->delete();
+                // if ($archivoPDF) {
+                //     $oldFileName = last(explode('/', $oldArchivoPDF->path));
+                //     Storage::delete('public/users/'.$oldFileName);
+                //     $oldArchivoPDF->delete();
+                // }
+            }
+            // $file = $request->file;
+            // $bandera = Str::random(10);
+            // $filename = $file->getClientOriginalName();
+            // $fileserver = $bandera .'_'. $filename;
+            // $guardado = Storage::putFileAs('public/users', $file, $fileserver);
+            // if ($guardado) {
+            //     $archivoPDF = new ArchivoPdf;
+            //     $archivoPDF->path = asset('storage/users/'.$fileserver);
+            //     $archivoPDF->filename = $filename;
+            //     $archivoPDF->id_fit = $request->id_fit;
+            //     $archivoPDF->tipo_pdf = 'general';
+            //     $archivoPDF->save();
+            //     $revComision = new Revision_Comision;
+            //     $revComision->id_fit     = $request->id_fit;
+            //     $revComision->id_user    = Auth::id();
+            //     $revComision->id_archivo = $archivoPDF->id;
+            //     $revComision->tipo       = $request->tipo;
+            //     $revComision->comentario = $request->comentario;
+            //     $revComision->save();
+            // }
+        }
     }
 
 }

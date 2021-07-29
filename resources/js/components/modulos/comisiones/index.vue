@@ -138,9 +138,15 @@
                         </td>
                         <td><p>{{item.p_externo}}</p></td>
                         <td>
-                            <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: item.id}}">
+                            <router-link title="Ver FID" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
                               <i class="fas fa-eye"></i>
                             </router-link>
+                            <button title="Descargar documento de FID" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.fit.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                              <i class="fas fa-file-download"></i>
+                            </button>
+                            <button title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item.fit)">
+                              <i class="fas fa-file-upload"></i>
+                            </button>
                         </td>
                       </tr>
                     </tbody>
@@ -171,40 +177,115 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ingreso de documentos de revisión</h5>
+                <button class="close" @click="limpiezaInsercionDocumento"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <div class="noPadNoMar col-md-12 form-group row">
+                                <label  class="col-md-3 col-form-label">Constancia de examen</label>
+                                <div class="col-md-9 container-fluid">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-file-upload"></i>
+                                        </span>
+                                        </div>
+                                        <div class="custom-file">
+                                        <input type="file" class="custom-file-input"
+                                            :class="{
+                                                'is-invalid': tesisParams.formatError || tesisParams.sizeError,
+                                            }"
+                                            @change="getFileTesis"
+                                        />
+                                        <label class="custom-file-label" for="input1">{{
+                                            tesisFile
+                                            ? tesisFile.name
+                                            : "Seleccionar archivo"
+                                        }}</label>
+                                        </div>
+                                    </div>
+                                    <div class="custom-file invalid-feedback no-margin" v-show="tesisParams.formatError">
+                                        El formato del archivo no es soportado.
+                                    </div>
+                                    <div class="custom-file invalid-feedback no-margin" v-show="tesisParams.sizeError">
+                                        El tamaño del archivo no puede superar los
+                                        {{ tesisParams.size }} MB.
+                                    </div>
+                                    <div class="container">
+                                        El tamaño máximo de los archivos es: {{tesisParams.size}} MB.
+                                    </div>
+                                    <div class="container">
+                                        Los formatos de archivo soportados son:
+                                    <span v-for="item in tesisParams.types" :key="item" v-text="item +' '"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Comentario</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" v-model="fitDocumentoRevision.comentario"/>
+                            </div>
+                        </div>
 
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" @click="envioDocumentoRevision">Enviar</button>
+                <button class="btn btn-secondary" @click="limpiezaInsercionDocumento">Cerrar</button>
+            </div>
+        </div>
+      </div>
+    </div>
 </div>
-
 </template>
 
 <script>
 export default {
     props: ['usuario'],
-  data(){
+    data(){
     return{
-        fillBsqBitacoraByAlumno:{
-        id_user: '',
-
-      },
-      listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
-      listAlumnos:[],
-      listPermisos:[],
-      listMisComisiones:[],
-      listComisiones:[],
-      fullscreenLoading: false,
-      pageNumber: 0,
-      pageNumber2: 0,
-      perPage: 5,
-      modalShow: false,
-      modalOption: 0,
-      mostrarModal: {
-        display: 'block',
-        background: '#0000006b',
-      },
-      ocultarModal: {
-        display: 'none',
-      },
-      error: 0,
-      mensajeError:[]
+        fitDocumentoRevision: {
+            fitId: '',
+            comentario: '',
+            tipo: 'revision',
+        },
+        listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
+        listAlumnos:[],
+        listPermisos:[],
+        listMisComisiones:[],
+        listComisiones:[],
+        fullscreenLoading: false,
+        pageNumber: 0,
+        pageNumber2: 0,
+        perPage: 5,
+        modalShow: false,
+        modalOption: 0,
+        mostrarModal: {
+            display: 'block',
+            background: '#0000006b',
+        },
+        ocultarModal: {
+            display: 'none',
+        },
+        error: 0,
+        mensajeError:[],
+        tesisFile: '',
+        tesisParams: {
+            types: [],
+            size: 0,
+            formatError: false,
+            sizeError: false
+        },
+        tesisForm: new FormData(),
     }
   },
   computed: {
@@ -240,8 +321,6 @@ export default {
     listarComisionesPaginated2(){
         let inicio = this.pageNumber2 * this.perPage,
         fin = inicio + this.perPage;
-        // console.log('pre-slice',this.listComisiones);
-        // console.log('slice',this.listComisiones.slice(inicio, fin));
         return this.listComisiones.slice(inicio, fin);
     },
     pagesList2(){
@@ -261,8 +340,18 @@ export default {
     this.getListarMisComisiones();
     this.getListarComisiones();
     // this.getListarAlumnosByprofesor();
+    this.getParametros();
   },
   methods:{
+    getParametros() {
+      var url = "/admin/parametros";
+      axios
+        .post(url, { params: ['AvancesTesisSize', 'AvancesTesisFormato'] })
+        .then((response) => {
+          this.tesisParams.size  = response.data[0][0];
+          this.tesisParams.types   = response.data[1];
+        });
+    },
     getListarAlumnosByprofesor(){
       this.fullscreenLoading = true;
       var url = '/avances/getListarAlumnosByprofesor'
@@ -297,10 +386,6 @@ export default {
           this.fullscreenLoading = false;
       })
     },
-
-    limpiarCriteriosBsq(){
-      this.fillBsqBitacoraByAlumno.id_user = '';
-    },
     limpiarBandejaUsuarios(){
       this.listComisiones = [];
     },
@@ -328,10 +413,70 @@ export default {
     inicializarPaginacion2(){
       this.pageNumber2 = 0;
     },
-    abrirModal(){
-      this.modalShow = !this.modalShow;
-      this.limpiarModal();
+    descargarDocumento (id) {
+        var url = '/comisiones/pathDocumentoComision';
+        this.fullscreenLoading = true;
+        axios.get(url, {
+            params: {
+            'id' :id
+            }
+        }).then(response => {
+            this.fullscreenLoading = false;
+            location.href=response.data.path;
+        });
     },
+    modalInsercionDocumento(fit) {
+        console.log(fit);
+        this.modalShow = !this.modalShow;
+        this.fitDocumentoRevision.fitId = fit.id;
+    },
+    limpiezaInsercionDocumento() {
+        this.fitDocumentoRevision.id = null;
+        this.modalShow = !this.modalShow;
+    },
+    envioDocumentoRevision() {
+        this.fullscreenLoading = true;
+        const url = '/comisiones/setRegistrarDocumentoComision';
+        this.tesisForm.append("file", this.tesisFile);
+        this.tesisForm.append("id_fit", this.fitDocumentoRevision.fitId);
+        this.tesisForm.append("tipo", this.fitDocumentoRevision.tipo);
+        this.tesisForm.append("comentario", this.fitDocumentoRevision.comentario);
+        const config = { headers: { "Content-Type": "multipart/form-data" } };
+        axios.post(url, this.tesisForm, config)
+        .then(response => {
+            this.fullscreenLoading = false;
+            Swal.fire({
+                icon: "success",
+                title: "Documento ingresado correctamente",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        }).catch((response) => {
+            this.fullscreenLoading = false;
+            Swal.fire({
+                icon: "error",
+                title: "Error al ingresar documento",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        });
+    },
+    getFileTesis (element) {
+      this.tesisParams.formatError = false;
+      this.tesisParams.sizeError = false;
+      this.tesisFile = element.target.files[0];
+      if (!this.tesisFile) return;
+      const fileName = this.tesisFile.name;
+      const fileSize = this.tesisFile.size;
+      var dots = fileName.split(".");
+      var fileType = "." + dots[dots.length - 1];
+      if (this.tesisParams.types.join(".").indexOf(fileType) == -1) {
+        this.tesisParams.formatError = true;
+      }
+      if (fileSize >= this.tesisParams.size * 1000000) {
+        this.tesisParams.sizeError = true;
+      }
+    }
   }//cierre de methods
 }
 </script>

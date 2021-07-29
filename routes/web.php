@@ -40,7 +40,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/administracion/usuario/setRegistrarPermisosByUsuario', 'Administracion\UsersController@setRegistrarPermisosByUsuario');
   Route::get('/administracion/usuario/getListarRolPermisosByUsuario', 'Administracion\UsersController@getListarRolPermisosByUsuario');
   Route::post('/administracion/usuario/setImportUsers', 'Administracion\UsersController@importExcel');
-  
+
   /*********    RUTAS MODULO DE ADMINISTRACION DE ROLES      **********/
   Route::get('/administracion/roles/getListarRoles', 'Administracion\RolesController@getListarRoles');
   Route::get('/administracion/roles/getListarPermisosByRol', 'Administracion\RolesController@getListarPermisosByRol');
@@ -114,6 +114,8 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/comisiones/getComision', 'ComisionesController@getComision');
   Route::get('/comisiones/getListarMisComisiones', 'ComisionesController@getListarMisComisiones');
   Route::get('/comisiones/getListarComisiones', 'ComisionesController@getListarComisiones');
+  Route::get('/comisiones/pathDocumentoComision', 'ComisionesController@pathDocumentoComision');
+  Route::post('/comisiones/setRegistrarDocumentoComision', 'ComisionesController@setRegistrarDocumentoComision');
 
   /*********    RUTAS MODULO DE ADMINISTRACION DE REPORTES    **********/
   Route::Post('/administracion/tesis/setGenerarDocumento', 'AlumnoController@setGenerarDocumento');

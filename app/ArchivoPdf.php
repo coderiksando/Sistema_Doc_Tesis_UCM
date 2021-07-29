@@ -10,7 +10,7 @@ class ArchivoPdf extends Model
     protected $fillable = [
         'id', 'id_fit', 'path',
         'filename', 'tipo_pdf', 'created_at',
-        'update_at'
+        'updated_at'
     ];
 
     public function Fit(){
