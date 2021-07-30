@@ -109,6 +109,11 @@
                               <i class="fas fa-file-download"></i>
                             </a>
                           </template>
+                          <template>
+                            <router-link title="Ver revisiones" class="btn boton btn-primary" :to="'tesis/revisiones'">
+                              <i class="fa fa-list-alt"></i>
+                            </router-link>
+                          </template>
 
                           <template v-if="(item.aprobado_pg == 'A' && (rolActivo == 'Director' || rolActivo == 'Coordinador')) || item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
                             <template v-if="item.aprobado_pg == 'R'">
@@ -128,9 +133,6 @@
                                   <i class="fas fa-trash"></i>
                                 </button>
                             </template>
-                            <router-link title="Ver revisiones" class="btn boton btn-primary" :to="'tesis/revisiones'">
-                            <i class="fa fa-list-alt"></i>
-                          </router-link>
                           </template>
                         </td>
                       </tr>
