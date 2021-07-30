@@ -109,7 +109,7 @@
                               <i class="fas fa-file-download"></i>
                             </a>
                           </template>
-                          <template v-if="item.comisiones">
+                          <template v-if="item.comisiones && rolActivo == 'Alumno'">
                             <router-link title="Ver revisiones de comisión" class="btn boton btn-primary" :to="'tesis/revisiones'">
                               <i class="fa fa-list-alt"></i>
                             </router-link>
