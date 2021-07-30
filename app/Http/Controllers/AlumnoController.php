@@ -79,13 +79,13 @@ class AlumnoController extends Controller
 
         if ($rol == 'Alumno'){
             $fitUser = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
-            $fits = Fit::whereIn('id', $fitUser)->get()->all();
+            $fits = Fit::whereIn('id', $fitUser)->get()->sortByDesc('updated_at')->values()->all();
         }
         if ($rol == 'Profesor'){
-            $fits = Fit::where('id_p_guia', $nIdUsuario)->whereIn('aprobado_pg', ['P', 'A', 'V'])->get()->all();
+            $fits = Fit::where('id_p_guia', $nIdUsuario)->whereIn('aprobado_pg', ['P', 'A', 'V'])->get()->sortByDesc('updated_at')->values()->all();
         }
         if ($rol == 'Director' || $rol == 'Coordinador'){
-            $fits = Fit::whereIn('aprobado_pg', ['A', 'V'])->get()->all();
+            $fits = Fit::whereIn('aprobado_pg', ['A', 'V'])->get()->sortByDesc('updated_at')->values()->all();
         }
 
         foreach ($fits as $fit) {
@@ -93,6 +93,7 @@ class AlumnoController extends Controller
             $listUsersDetails = User::whereIn('id_user', $listUsers)->get()->all();
             $fit->constancia = ArchivoPdf::where('id_fit', $fit->id)->firstWhere('tipo_pdf', 'constancia_t');
             $fit->listUsers = $listUsersDetails;
+            $fit->Comisiones;
         }
 
         return $fits;
@@ -405,12 +406,12 @@ class AlumnoController extends Controller
         $revisiones = $fit->Revision_Comision;
         foreach ($revisiones as $item) {
             if ($fit->id_p_guia != $item->id_user) {                                    // *Comentario del desarrollador* //
-                $item->nombre = $item->User->nombres.' '.$item->User->apellidos;        // Dado que el profesor externo no esta registrado como usuario 
+                $item->nombre = $item->User->nombres.' '.$item->User->apellidos;        // Dado que el profesor externo no esta registrado como usuario
             }else{                                                                      // en el sistema, el encargado de registrar su revision sera el profesor guia,
                 $item->nombre = $fit->Comisiones->p_externo;                            // por lo tanto, cuando el id del profesor que ha subido la revision coindcida
             }                                                                           // con el id del profesor guia, el algoritmo buscara los datos correspondientes
             $item->ArchivoPdf;                                                          // al profesor externo para presentarlos, dichos datos estan almacenados unicamente en la tabla comision.
-        }                                                                               
+        }
         return $revisiones;
     }
 }

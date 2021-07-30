@@ -64,13 +64,21 @@
                         </td>
                         <td>
                             <template v-if="item.comisiones">
-                            <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
+                            <router-link class="btn boton btn-info" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
                               <i class="fas fa-pencil-alt"></i>
                             </router-link>
                             </template>
-                            <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: item.id}}">
+                            <router-link class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                               <i class="fas fa-eye"></i>
                             </router-link>
+                            <button title="Descargar documento de FID" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                              <i class="fas fa-file-download"></i>
+                            </button>
+                            <template v-if="item.comisiones">
+                                <button title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
+                                <i class="fas fa-file-upload"></i>
+                                </button>
+                            </template>
                         </td>
                       </tr>
                     </tbody>
@@ -189,7 +197,7 @@
                     <div class="col-md-12">
                         <div class="form-group row">
                             <div class="noPadNoMar col-md-12 form-group row">
-                                <label  class="col-md-3 col-form-label">Constancia de examen</label>
+                                <label  class="col-md-3 col-form-label">Documento de revisión</label>
                                 <div class="col-md-9 container-fluid">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -426,7 +434,7 @@ export default {
         });
     },
     modalInsercionDocumento(fit) {
-        console.log(fit);
+        // console.log(fit);
         this.modalShow = !this.modalShow;
         this.fitDocumentoRevision.fitId = fit.id;
     },
@@ -455,7 +463,7 @@ export default {
             });
             this.limpiezaInsercionDocumento();
         }).catch((response) => {
-            console.log(response)
+            // console.log(response)
             this.fullscreenLoading = false;
             Swal.fire({
                 icon: "error",

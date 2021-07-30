@@ -330,7 +330,7 @@ export default {
       axios.post(url, {
               'rol' : this.rolActivo
       }).then(response => {
-          console.log(response.data.rol)
+        //   console.log(response.data.rol)
           if(response.data.code == 401){
               console.log('Error')
           }

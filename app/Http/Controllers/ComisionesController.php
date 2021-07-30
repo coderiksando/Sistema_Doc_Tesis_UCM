@@ -75,7 +75,11 @@ class ComisionesController extends Controller
     public function getListarMisComisiones(Request $request){
         if(!$request->ajax()) return redirect('/');
         $IdProfesor  = Auth::id();
-        $MisComisiones = Fit::where('id_p_guia', $IdProfesor)->get()->all();
+        $MisComisiones = Fit::where('id_p_guia', $IdProfesor)
+                            ->get()
+                            ->sortByDesc('updated_at')
+                            ->values()
+                            ->all();
         if ($MisComisiones) {
             foreach ($MisComisiones as $fit) {
                 if ($fit->Comisiones) {
@@ -98,10 +102,12 @@ class ComisionesController extends Controller
         if(!$request->ajax()) return redirect('/');
         $IdProfesor  = Auth::id();
         $ComisionesTotales = [];
-        $Comisiones  = User::find($IdProfesor);
-        $Comisiones->ComisionesP1;
-        if ($Comisiones->ComisionesP1) {
-            foreach ($Comisiones->ComisionesP1 as $comision) {
+        $Comisiones  = Comisiones   ::where('id_profesor1',$IdProfesor)
+                                    ->get()
+                                    ->sortByDesc('updated_at')
+                                    ->all();
+        if ($Comisiones) {
+            foreach ($Comisiones as $comision) {
                 $comision->Fit;
                 $comision->Fit->User_P_Guia;
                 $comision->Fit->ArchivoPdf;
@@ -116,9 +122,12 @@ class ComisionesController extends Controller
                 array_push($ComisionesTotales, $comision);
             }
         }
-        $Comisiones->ComisionesP2;
-        if ($Comisiones->ComisionesP2) {
-            foreach ($Comisiones->ComisionesP2 as $comision) {
+        $Comisiones  = Comisiones   ::where('id_profesor2',$IdProfesor)
+                                    ->get()
+                                    ->sortByDesc('updated_at')
+                                    ->all();
+        if ($Comisiones) {
+            foreach ($Comisiones as $comision) {
                 $comision->Fit;
                 $comision->Fit->User_P_Guia;
                 $comision->Fit->ArchivoPdf;

@@ -109,8 +109,8 @@
                               <i class="fas fa-file-download"></i>
                             </a>
                           </template>
-                          <template>
-                            <router-link title="Ver revisiones" class="btn boton btn-primary" :to="'tesis/revisiones'">
+                          <template v-if="item.comisiones">
+                            <router-link title="Ver revisiones de comisión" class="btn boton btn-primary" :to="'tesis/revisiones'">
                               <i class="fa fa-list-alt"></i>
                             </router-link>
                           </template>
@@ -310,7 +310,7 @@ export default {
   },
   created(){
     this.getListarTesis();
-    this.getListarAllTesis();
+    // this.getListarAllTesis();
     //this.getListarMiTesis();
   },
   methods:{
@@ -329,7 +329,7 @@ export default {
       })
     },
     getListarTesis(){
-      var url = '/alumno/getListarTesis'
+      var url = '/alumno/getListarTesis';
       axios.get(url, {
       }).then(response => {
             this.inicializarPaginacion();
