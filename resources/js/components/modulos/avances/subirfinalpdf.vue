@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Subir PDF final de tesis</h1>
+            <h1 class="m-0 text-dark">Subir PDF final de documento</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -24,7 +24,7 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">PDF final de tesis</h3>
+                <h3 class="card-title">PDF final de documento</h3>
               </div>
               <div class="card-body">
                 <form role="form" id="form-final">
@@ -64,9 +64,9 @@
                   El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
                 </div>
                 <div class="container">
-                  Los formatos de archivo soportados son: 
+                  Los formatos de archivo soportados son:
                   <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
-                </div> 
+                </div>
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -87,7 +87,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Sistema de tesis UCM</h5>
+            <h5 class="modal-title">Sistema de documentos UCM</h5>
             <button class="close" @click="abrirModal"></button>
           </div>
           <div class="modal-body">
@@ -109,7 +109,7 @@ export default {
       fillCrearFinalPdf:{
         cDescripcion: '',
         oArchivo: {},
-        
+
       },
       form : new FormData,
       fullscreenLoading: false,
@@ -132,13 +132,13 @@ export default {
     }
   },
   computed: {
-    
+
   },
   mounted(){
     this.getParametros();
     this.getDocumento();
   },
-  
+
   methods:{
     getFile(element){
       this.btnDis = false;
@@ -220,11 +220,11 @@ export default {
         if(this.formatError){
           this.mensajeError.push("Los formatos permitidos son:" +this.fileTypes);
         }
-      
+
         if(this.mensajeError.length){
           this.error = 1;
         }
-        
+
         return this.error;
     },
     getParametros(){

@@ -66,18 +66,8 @@ class BitacorasController extends Controller
             $DatosEmail->titulo = $fit->titulo;
             $DatosEmail->full_name = $fit->User_P_Guia->nombres . ' ' . $fit->User_P_Guia->apellidos;
             $DatosEmail->fecha = Carbon::now();
-            Mail::to($DatosEmail->email_a)->queue(new MailBitacoras($DatosEmail));
+            // Mail::to($DatosEmail->email_a)->queue(new MailBitacoras($DatosEmail));
         }
-
-        // $DatosEmail = DB::table('fit')
-        //                     ->join('users as profesor_guia', 'profesor_guia.id_user', '=', 'fit.id_profesorguia')
-        //                     ->join('users as alumno', 'alumno.id_user', '=', 'fit.id_alumno')
-        //                     ->where('fit.id', '=', $idTesis[0]->id)
-        //                     ->select('alumno.email as email_a','fit.titulo', DB::raw("CONCAT(profesor_guia.nombres,' ',profesor_guia.apellidos) as full_name"))
-        //                     ->get();
-        // $DatosEmail[0]->fecha = Carbon::now();
-
-        // Mail::to($DatosEmail[0]->email_a)->queue(new MailBitacoras($DatosEmail[0]));
 
         $Bitacora               = new Bitacoras();
         $Bitacora->acuerdo      = $request->Acuerdo;

@@ -258,7 +258,7 @@ class AlumnoController extends Controller
         $DatosEmail[0]->titulo = $fit->cTitulo;
         $fecha = Carbon::now();
         $DatosEmail[0]->fecha = $fecha;
-        Mail::to($DatosEmail[0]->emailpg)->queue(new MailRegistroFit($DatosEmail[0]));
+        // Mail::to($DatosEmail[0]->emailpg)->queue(new MailRegistroFit($DatosEmail[0]));
     }
     public function setCambiarEstadoFIT(Request $request){
         if(!$request->ajax()) return redirect('/');
@@ -295,7 +295,7 @@ class AlumnoController extends Controller
             $datoInsertado->estado = $estadoFit;
             $datoInsertado->motivo = $request->motivo;
             array_push($datosEmail, $datoInsertado);
-            Mail::to($datosEmail[$i]->emailpg)->queue(new MailAceptacionFit($datosEmail[$i]));
+            // Mail::to($datosEmail[$i]->emailpg)->queue(new MailAceptacionFit($datosEmail[$i]));
             $i++;
         }
     }

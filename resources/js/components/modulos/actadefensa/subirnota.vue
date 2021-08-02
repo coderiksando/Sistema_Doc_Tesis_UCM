@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Ingresar nota final de tesis</h1>
+            <h1 class="m-0 text-dark">Ingresar nota final de documento</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -26,14 +26,14 @@
 
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario registro de nota tesista</h3>
+                            <h3 class="card-title">Formulario registro de nota de alumno</h3>
                         </div>
                             <div class="card-body">
                                 <form role="form">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Nota final tesis</label>
+                                                <label class="col-md-3 col-form-label">Nota final documento</label>
                                                 <div class="col-md-9">
                                                     <template>
                                                         <el-input-number v-model="fillSubirNota.Nota" size="large" :min="1" :precision="2" :step="0.1" :max="7"></el-input-number>
@@ -64,7 +64,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Sistema de tesis UCM</h5>
+            <h5 class="modal-title">Sistema de documento UCM</h5>
             <button class="close" @click="abrirModal"></button>
           </div>
           <div class="modal-body">
@@ -143,7 +143,7 @@ export default {
       Swal.fire({
         icon: 'warning',
         title: 'Importante!',
-        text: 'De acuerdo a la nota ingresada el sistema cambiara automaticamente el estado de la tesis a "aprobada" o "reprobada" segun corresponda',
+        text: 'De acuerdo a la nota ingresada el sistema cambiará automáticamente el estado del documento a "aprobado" o "reprobado" según corresponda',
       })
     },
     nextPage(){

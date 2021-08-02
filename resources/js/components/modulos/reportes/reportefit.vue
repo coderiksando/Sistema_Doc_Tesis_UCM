@@ -214,7 +214,7 @@
                         </td>
                         <td>
                           <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: fit.id}}">
-                              Fit
+                              FID
                           </router-link>
                           <router-link v-if="fit.avances_tesis.length > 0" class="btn btn-flat btn-success btn-sm" :to="{name:'reportes.detallesavances', params:{id: fit.fit__user[0].id_user}}">
                              Avances

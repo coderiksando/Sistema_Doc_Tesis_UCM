@@ -44,7 +44,7 @@
                         <div class="form-group">
                             <label>3. Ingresa tu nueva contraseña</label>
                             <input
-                            type="text"
+                            type="password"
                             class="form-control"
                             v-model="newPassword"
                             v-bind:class="{ 'is-invalid': errorNewPassword}"

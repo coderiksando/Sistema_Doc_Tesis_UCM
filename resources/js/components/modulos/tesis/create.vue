@@ -262,7 +262,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content scrollTable">
           <div class="modal-header">
-            <h5 class="modal-title">Sistema de tesis UCM</h5>
+            <h5 class="modal-title">Sistema de documentos UCM</h5>
             <button class="close" @click="abrirModal"></button>
           </div>
           <div class="modal-body">
@@ -652,7 +652,7 @@ export default {
             this.fillCrearFIT.cUsers.push(alumno);
         } else {
             this.mensajeError = [];
-            this.mensajeError.push("Usuario seleccionado ya está enlistado en tu FIT.");
+            this.mensajeError.push("Usuario seleccionado ya está enlistado en tu FID.");
             this.abrirModal();
         }
         this.mostrarModalBusquedaEstudiante();

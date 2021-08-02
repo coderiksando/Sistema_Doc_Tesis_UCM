@@ -532,7 +532,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Sistema de tesis UCM</h5>
+            <h5 class="modal-title">Sistema de documentos UCM</h5>
             <button class="close" @click="abrirModal"></button>
           </div>
           <div class="modal-body">
@@ -561,7 +561,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content scrollTable">
           <div class="modal-header">
-            <h5 class="modal-title"><b>Búsqueda de integrante de tesis</b></h5>
+            <h5 class="modal-title"><b>Búsqueda de integrante de documento</b></h5>
             <button
               class="close"
               @click="mostrarModalBusquedaEstudiante"
@@ -804,7 +804,7 @@
                   <td><i class="fas fa-plus-square"></i></td>
                   <td>Insertar</td>
                   <td>
-                    Ingresa un estudiante partícipe ya existente o nuevo al FIT
+                    Ingresa un estudiante partícipe ya existente o nuevo al FID
                   </td>
                 </tr>
               </tbody>

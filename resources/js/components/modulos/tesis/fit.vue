@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1 class="m-0 text-dark"><b>Formulario de inscripción de tesis (FIT)</b></h1>
+            <h1 class="m-0 text-dark"><b>Formulario de inscripción de tesis (FID)</b></h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -91,7 +91,7 @@
                           </template>
                         </td>
                         <td>
-                          <router-link title="Ver FIT" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
+                          <router-link title="Ver FID" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                             <i class="fas fa-folder"></i>
                           </router-link>
                           <template v-if="(item.aprobado_pg == 'A' || item.aprobado_pg == 'V') && listRolPermisosByUsuario.includes('tesis.subirconstancia')">
@@ -120,16 +120,16 @@
                                 <button title="Ver razon de rechazo" class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
                                 <i class="fas fa-eye"></i>
                                 </button>
-                                <router-link title="Editar FIT" class="btn boton btn-info" :to="{name:'tesis.editar', params:{id: item.id}}">
+                                <router-link title="Editar FID" class="btn boton btn-info" :to="{name:'tesis.editar', params:{id: item.id}}">
                                 <i class="fas fa-pencil-alt"></i>
                                 </router-link>
                             </template>
 
                             <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
-                                <button title="Aprobar FIT" class="btn boton btn-success" @click.prevent="setCambiarEstadoFIT(1, item.id)">
+                                <button title="Aprobar FID" class="btn boton btn-success" @click.prevent="setCambiarEstadoFIT(1, item.id)">
                                   <i class="fas fa-check"></i>
                                 </button>
-                                <button title="Rechazar FIT" class="btn boton btn-danger" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
+                                <button title="Rechazar FID" class="btn boton btn-danger" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
                                   <i class="fas fa-trash"></i>
                                 </button>
                             </template>
@@ -185,12 +185,12 @@
                     <tr>
                         <td><i class="fas fa-plus-square"></i></td>
                         <td>Agregar</td>
-                        <td>Módulo de registro de datos de FIT</td>
+                        <td>Módulo de registro de datos de FID</td>
                     </tr>
                     <tr>
                         <td><i class="fas fa-folder"></i></td>
                         <td>Ver</td>
-                        <td>Visión protegida de los datos ingresados en FIT</td>
+                        <td>Visión protegida de los datos ingresados en FID</td>
                     </tr>
                     <tr>
                         <td><i class="fas fa-file-download"></i></td>
@@ -200,12 +200,12 @@
                     <tr>
                         <td><i class="fas fa-pencil-alt"></i></td>
                         <td>Edición</td>
-                        <td>Visión y cambios de datos de FIT</td>
+                        <td>Visión y cambios de datos de FID</td>
                     </tr>
                     <tr>
                         <td><i class="fas fa-eye"></i></td>
                         <td>Ver motivo</td>
-                        <td>Se muestra en pantalla el motivo de un posible rechazo de su FIT</td>
+                        <td>Se muestra en pantalla el motivo de un posible rechazo de su FID</td>
                     </tr>
                     <template v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
                         <tr>

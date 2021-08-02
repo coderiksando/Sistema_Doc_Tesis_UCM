@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col-md-10">
                             <div class="form-group row">
-                                <label class="col-md-8 col-form-label">Estudiantes máximos por tesis</label>
+                                <label class="col-md-8 col-form-label">Estudiantes máximos por documentos</label>
                                 <div class="col-md-3">
                                     <input type="number" max="100" class="form-control" v-model="maxStudentNumber">
                                 </div>
@@ -38,7 +38,7 @@
                     <div class="row">
                         <div class="col-md-10">
                             <div class="form-group row">
-                                <label class="col-md-8 col-form-label">Peso máximo avances de tesis (MB)</label>
+                                <label class="col-md-8 col-form-label">Peso máximo avances de documento (MB)</label>
                                 <div class="col-md-3">
                                     <input type="number" max="100" class="form-control" v-model="avancesTesisSize">
                                 </div>
@@ -83,7 +83,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label">Formatos de avances de tesis</label>
+                                <label class="col-md-4 col-form-label">Formatos de avances de documento</label>
                                 <div class="col-md-7">
                                     <Multiselect
                                     v-model="formatosAvance.value"
@@ -105,7 +105,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label">Formatos de actas de tesis</label>
+                                <label class="col-md-4 col-form-label">Formatos de actas de documento</label>
                                 <div class="col-md-7">
                                     <Multiselect
                                     v-model="formatosActa.value"

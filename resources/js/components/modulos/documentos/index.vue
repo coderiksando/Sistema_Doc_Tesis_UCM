@@ -89,7 +89,7 @@
                       <tr>
                         <th>Nombre</th>
                         <th>Rut</th>
-                        <th>Estado de tesis</th>
+                        <th>Estado de documento</th>
                         <th>Descargar</th>
                       </tr>
                     </thead>
@@ -118,7 +118,7 @@
                         </td>
                         <td >
                           <button class="btn btn-flat btn-primary btn-sm" @click.prevent="setGenerarDocumento(item.id)">
-                              <i class="fas fa-file-download"></i> Fit
+                              <i class="fas fa-file-download"></i> FID
                             </button>
                             <button class="btn btn-flat btn-success btn-sm" @click.prevent="setGenerarMemoRevision(item.id)">
                               <i class="fas fa-file-download"></i> Memo Revision

@@ -50,7 +50,7 @@
           <div class="container-fluid">
               <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Criterios de búsqueda de tesis</h3>
+                <h3 class="card-title">Criterios de búsqueda de documentos</h3>
               </div>
               <div class="card-body">
                 <form role="form">
