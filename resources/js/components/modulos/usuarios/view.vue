@@ -28,7 +28,7 @@
 
                 <h3 class="profile-username text-center">{{fillVerUsuarios.cNombre + ' ' + fillVerUsuarios.cApellido}}</h3>
 
-                <p class="text-muted text-center">{{fillVerUsuarios.cNombreRol}}</p>
+                <!-- <p class="text-muted text-center">{{listRoles.value}}</p> -->
 
 
               </div>
@@ -119,24 +119,34 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label">Nueva contraseña</label>
                                 <div class="col-md-9">
-                                    <div class="input-group">
-                                    <input id="pass1" type="password" class="form-control" v-model="fillEditarUsuarios.cContrasena" @blur="passwordVerification">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" @click.prevent="showPassword('pass1')"><span id="pass1" class="fa fa-eye-slash icon txtPasswordIco"></span></button>
+                                    <div v-if="addPassword" class="input-group">
+                                        <input id="pass1" type="password" class="form-control" v-model="fillEditarUsuarios.cContrasena" @blur="passwordVerification">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" @click.prevent="showPassword('pass1')"><span id="pass1" class="fa fa-eye-slash icon txtPasswordIco"></span></button>
+                                        </div>
                                     </div>
+                                    <div v-if="!addPassword" class="noPadNoMar col-md-2">
+                                        <button class="btn btn-info btnFull" @click.prevent="buttonAddPassword">
+                                            <i class="fas fa-plus-square"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <div v-if="addPassword" class="form-group row">
                                 <label class="col-md-3 col-form-label">Repetir nueva contraseña</label>
                                 <div class="col-md-9">
                                     <div class="input-group">
-                                    <input id="pass2" type="password" class="form-control" v-model="repeatedPassword" @blur="passwordVerification" autocomplete="off">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" @click.prevent="showPassword('pass2')"><span id="pass2" class="fa fa-eye-slash icon txtPasswordIco"></span></button>
-                                    </div>
+                                        <input id="pass2" type="password" class="form-control" v-model="repeatedPassword" @blur="passwordVerification" autocomplete="off">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" @click.prevent="showPassword('pass2')"><span id="pass2" class="fa fa-eye-slash icon txtPasswordIco"></span></button>
+                                        </div>
                                     </div>
                                     <div v-show="passwordError===1"><p style="color: red; margin-bottom: 0px;">Las contraseñas no coinciden</p></div>
+                                    <div v-if="addPassword" class="noPadNoMar col-md-2">
+                                        <button class="btn btn-info btnFull" @click.prevent="buttonAddPassword">
+                                            <i class="fas fa-minus-square"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -221,7 +231,8 @@
                                     </el-date-picker>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <template v-if="listRoles.value.length > 0">
+                            <div class="form-group row" v-if="listRoles.value[0].name != 'Alumno'">
                                 <label class="col-md-3 col-form-label">Roles</label>
                                 <div class="col-md-9">
                                     <multiselect
@@ -239,6 +250,7 @@
                                     </multiselect>
                                 </div>
                             </div>
+                            </template>
                           <div class="form-group row">
                             <div class=" col-sm-6">
                               <button style="margin: 2px;" :disabled="formatError || rutError || passwordError===1" class="btn btn-info btnFull" @click.prevent="setEditarUsuario">Editar</button>
@@ -264,7 +276,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Sistema de tesis UCM</h5>
+            <h5 class="modal-title">Sistema de documentos UCM</h5>
             <button class="close" @click="abrirModal"></button>
           </div>
           <div class="modal-body">
@@ -342,7 +354,8 @@ export default {
             listRoles: {
                 value: [],
                 options: ['Admin', 'otro']
-            }
+            },
+            addPassword: false
         }
     },
     mounted(){
@@ -599,6 +612,14 @@ export default {
         esAlumno(rol){
             return rol.name == 'Alumno';
         },
+        buttonAddPassword () {
+            if (this.addPassword) {
+                this.fillEditarUsuarios.cContrasena = null;
+                this.repeatedPassword = null;
+                this.passwordError = 0;
+            }
+            this.addPassword = !this.addPassword;
+        }
     }
 }
 </script>

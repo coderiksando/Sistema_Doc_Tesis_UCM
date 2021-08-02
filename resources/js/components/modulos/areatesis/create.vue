@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Crear area de tesis</h1>
+            <h1 class="m-0 text-dark">Crear area de documento</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -24,7 +24,7 @@
           <div class="container-fluid">
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario de registro de area de tesis</h3>
+                            <h3 class="card-title">Formulario de registro de area de documento</h3>
                         </div>
                             <div class="card-body">
                                 <form role="form">
@@ -79,7 +79,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Sistema de tesis UCM</h5>
+            <h5 class="modal-title">Sistema de documento UCM</h5>
             <button class="close" @click="abrirModal"></button>
           </div>
           <div class="modal-body">
@@ -170,7 +170,7 @@ export default {
         this.$router.push('/areatesis');
         Swal.fire({
         icon: 'success',
-        title: 'Area de tesis creada correctamente',
+        title: 'Area de documento creada correctamente',
         showConfirmButton: false,
         timer: 1500
       })
@@ -178,7 +178,7 @@ export default {
         this.fullscreenLoading = false;
         Swal.fire({
         icon: 'error',
-        title: 'Area de tesis ya existe',
+        title: 'Area de documento ya existe',
         showConfirmButton: false,
         timer: 1500
       })

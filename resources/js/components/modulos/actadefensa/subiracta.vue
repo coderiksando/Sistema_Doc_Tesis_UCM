@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Acta de defensa de tesis</h1>
+            <h1 class="m-0 text-dark">Acta de defensa de documento</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -50,7 +50,7 @@
                       <div class="custom-file invalid-feedback" v-show="sizeError">
                         El tamaño del archivo no puede superar los {{fileMaxSize}} MB.
                       </div>
-                    </div> 
+                    </div>
                   </div>
                 </form>
               </div>
@@ -73,7 +73,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Sistema de tesis UCM</h5>
+            <h5 class="modal-title">Sistema de documento UCM</h5>
             <button class="close" @click="abrirModal"></button>
           </div>
           <div class="modal-body">
@@ -95,7 +95,7 @@ export default {
       fillSubirActa:{
         IdTesis: this.$attrs.id,
         oArchivo: '',
-        
+
       },
       form : new FormData,
       fullscreenLoading: false,
@@ -116,12 +116,12 @@ export default {
     }
   },
   computed: {
-    
+
   },
   mounted(){
     this.getParametros();
   },
-  
+
   methods:{
     getFile(element){
       this.formatError = false
@@ -202,7 +202,7 @@ export default {
         if(this.mensajeError.length){
           this.error = 1;
         }
-        
+
         return this.error;
     },
     setRegistrarActa(){

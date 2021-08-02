@@ -47,15 +47,7 @@ class NotasPendientesController extends Controller
         $fechaSistema = Carbon::now();
         $DatosEmail->fecha = $fechaSistema;
 
-        // $DatosEmail = DB::table('fit')
-        //             ->join('users as profesor_guia', 'profesor_guia.id_user', '=', 'fit.id_p_guia')
-        //             ->join('users as alumno', 'alumno.id_user', '=', 'fit.id_alumno')
-        //             ->where('fit.id', '=', $idTesis[0]->id)
-        //             ->select('fit.rut_int1','profesor_guia.email as emailpg','fit.titulo', DB::raw("CONCAT(alumno.nombres,' ',alumno.apellidos) as full_name"))
-        //             ->get();
-        
-        
-        Mail::to([$DatosEmail->emailpg,$Coordinador->email])->queue(new MailNotaPendiente($DatosEmail));
+        // Mail::to([$DatosEmail->emailpg,$Coordinador->email])->queue(new MailNotaPendiente($DatosEmail));
         return $NotaP;
     }
     public function setAsignarNotaP(Request $request){
@@ -89,7 +81,7 @@ class NotasPendientesController extends Controller
                 $NotaP->alumnos = $alumnos;
             }
         }
-        
+
         return ($NotaP) ? [$NotaP] : [];
     }
     public function getListarNotasPendientes(Request $request){
@@ -121,7 +113,7 @@ class NotasPendientesController extends Controller
                         }
 
         return $NotasP;
-    }  
+    }
     public function getListarNotasPendientesByAlumno(Request $request){
         if(!$request->ajax()) return redirect('/');
 
@@ -142,8 +134,8 @@ class NotasPendientesController extends Controller
                         ->select('notaspendientes.id','fecha_presentacion', 'fecha_propuesta', 'fecha_prorroga', 'notaspendientes.estado')
                         ->get();
         return $NotasP;
-    }  
-    public function setEditarNotaP(Request $request){   
+    }
+    public function setEditarNotaP(Request $request){
         if(!$request->ajax()) return redirect('/');
 
         $id                 = $request->nIdNotaP;
@@ -158,5 +150,5 @@ class NotasPendientesController extends Controller
         $fecha_prorroga = $request->fecha_prorroga;
 
         NotasPendientes::find($id)->update(['fecha_prorroga'=>$fecha_prorroga]);
-    }      
-}           
+    }
+}

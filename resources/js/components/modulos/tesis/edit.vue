@@ -31,7 +31,7 @@
               <div class="card-header">
                 <div class="row">
                   <div class="col-md-6">
-                    <h3 class="card-title">Formulario de edición de FIT</h3>
+                    <h3 class="card-title">Formulario de edición de FID</h3>
                   </div>
                   <div class="col-md-6" style="text-align: right">
                     <button
@@ -341,7 +341,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Sistema de tesis UCM</h5>
+            <h5 class="modal-title">Sistema de documentos UCM</h5>
             <button class="close" @click="abrirModal"></button>
           </div>
           <div class="modal-body">
@@ -817,7 +817,7 @@ export default {
       } else {
         this.mensajeError = [];
         this.mensajeError.push(
-          "Usuario seleccionado ya está enlistado en tu FIT."
+          "Usuario seleccionado ya está enlistado en tu FID."
         );
         this.abrirModal();
       }

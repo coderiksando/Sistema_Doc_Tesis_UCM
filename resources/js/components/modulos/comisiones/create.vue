@@ -32,10 +32,10 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Título de tesis</label>
+                                                <label class="col-md-3 col-form-label">Título de documentos</label>
                                                 <div class="col-md-9">
                                                     <el-select v-model="fillCrearComision.idTesis"
-                                                    placeholder="Asignar título de tesis"
+                                                    placeholder="Asignar título de documento"
                                                     filterable
                                                     clearable>
                                                     <el-option
@@ -125,7 +125,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Sistema de tesis UCM</h5>
+            <h5 class="modal-title">Sistema de documentos UCM</h5>
             <button class="close" @click="abrirModal"></button>
           </div>
           <div class="modal-body">
@@ -220,7 +220,7 @@ export default {
       this.error = 0;
       this.mensajeError = [];
         if(!this.fillCrearComision.idTesis){
-          this.mensajeError.push("La selección de tesis es obligatoria");
+          this.mensajeError.push("La selección de documento es obligatoria");
         }
         if(!this.fillCrearComision.Profesor1){
           this.mensajeError.push("La selección del primer profesor es obligatoria");

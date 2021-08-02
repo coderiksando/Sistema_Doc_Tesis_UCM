@@ -23,14 +23,14 @@ class AvancesController extends Controller
 
         $idUser    = Auth::id();
         $nIdAvance = $request->nIdAvance;
-        
+
         $idUser    = ($idUser == NULL) ? ($idUser = 0) : $idUser;
         $nIdAvance = ($nIdAvance == NULL) ? ($nIdAvance = 0) : $nIdAvance;
         $FitUser     = Fit_User::Firstwhere('id_user', $idUser);
         $AvancesTesis = [];
         if($FitUser){
             $Fit = $FitUser->Fit;
-            $AvancesTesis = $Fit->AvancesTesis->sortByDesc('updated_at')->values()->all();      
+            $AvancesTesis = $Fit->AvancesTesis->sortByDesc('updated_at')->values()->all();
             foreach($AvancesTesis as $avance){
                 $avance->ArchivoPdf;
             }
@@ -45,7 +45,7 @@ class AvancesController extends Controller
         $AvancesTesis = [];
         if($FitUser){
             $Fit = $FitUser->Fit;
-            $AvancesTesis = $Fit->AvancesTesis->sortByDesc('updated_at')->values()->all();      
+            $AvancesTesis = $Fit->AvancesTesis->sortByDesc('updated_at')->values()->all();
             foreach($AvancesTesis as $avance){
                 $avance->ArchivoPdf;
             }
@@ -59,7 +59,7 @@ class AvancesController extends Controller
         $rol = $request->session()->get('rol');
         $nIdAvance  = $request->nIdAvance;
         $estado = $request->estado;
-        
+
         $idUser     = ($idUser == NULL) ? ($idUser = 0) : $idUser;
         $nIdAvance  = ($nIdAvance == NULL) ? ($nIdAvance = 0) : $nIdAvance;
         $estado     = ($estado == NULL) ? ($estado = 'D') : $estado;
@@ -79,7 +79,7 @@ class AvancesController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         $nIdAvance = $request->nIdAvance;
-        
+
         $nIdAvance = ($nIdAvance == NULL) ? ($nIdAvance = 0) : $nIdAvance;
 
         $avances = AvancesTesis::find($nIdAvance);
@@ -89,7 +89,7 @@ class AvancesController extends Controller
     }
     public function setRegistrarAvance(Request $request){
         if(!$request->ajax()) return redirect('/');
-        
+
         $idUser = Auth::user()->id_user;
         $user = User::find($idUser);
         $fit  = Fit_User::Firstwhere('id_user', $idUser)->Fit;
@@ -100,16 +100,16 @@ class AvancesController extends Controller
         $DatosEmail->full_name = $user->nombres . ' ' . $user->apellidos;
         $DatosEmail->fecha = Carbon::now();
 
-        Mail::to($DatosEmail->email_pg)->queue(new MailAvances($DatosEmail));
-   
+        // Mail::to($DatosEmail->email_pg)->queue(new MailAvances($DatosEmail));
+
         $rpta               = new AvancesTesis();
         $rpta->descripcion  = $request->descripcion;
         $rpta->id_archivo   = $request->id_archivo;
         $rpta->id_tesis     = $fit->id;
         $rpta->created_at   = Carbon::now();
         $rpta->updated_at   = Carbon::now();
-        $rpta->save(); 
-        
+        $rpta->save();
+
         $this->reg('Registrar avance', $rpta->id, 'Alumno');
         return $rpta;
     }
@@ -126,7 +126,7 @@ class AvancesController extends Controller
     }
     public function setEditarAvance(Request $request){
         if(!$request->ajax()) return redirect('/');
-        
+
         $id             = $request->id;
         $descripcion    = $request->descripcion;
         $id_archivo     = $request->id_archivo;
@@ -134,7 +134,7 @@ class AvancesController extends Controller
 
         if($id_archivo == 0){
             AvancesTesis::find($id)->update(['descripcion'=>$descripcion, 'created_at' =>$fecha]);
-            
+
         }else{
             $archivo = AvancesTesis::find($id)->ArchivoPdf;
             $name = last(explode('/', $archivo->path));

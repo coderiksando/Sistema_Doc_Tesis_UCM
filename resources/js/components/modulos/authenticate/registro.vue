@@ -2,7 +2,7 @@
 <div class="login-page">
     <div style="max-height: 100%;" class="register-box">
         <div class="register-logo">
-            <a href="/"><b>Sistema de seguimiento de tesis </b><p>Facultad de Ingenieria UCM</p></a>
+            <a href="/"><b>Sistema de seguimiento de documentos </b><p>Facultad de Ingenieria UCM</p></a>
         </div>
 
         <div class="card">
@@ -72,7 +72,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Sistema de tesis UCM</h5>
+                    <h5 class="modal-title">Sistema de documentos UCM</h5>
                     <button class="close" @click="abrirModal"></button>
                 </div>
                 <div class="modal-body">

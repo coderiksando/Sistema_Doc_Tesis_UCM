@@ -48,7 +48,7 @@ class SecretariaController extends Controller
             $item->alumnos = $item->getAlumnos();
             return collect($item)->merge($acta);
         });
-    
+
         return $actas;
     }
     public function setGenerarMemoRevision(Request $request){
@@ -80,8 +80,8 @@ class SecretariaController extends Controller
 
 
 
-        $fechainicial = Carbon::now();            
-        $datosmemo->fechainicial = $fechainicial->toFormattedDateString();  
+        $fechainicial = Carbon::now();
+        $datosmemo->fechainicial = $fechainicial->toFormattedDateString();
         $fechafinal   = Carbon::now();
         $fechafinal   = $fechafinal->addDay(21);
         $datosmemo->fechafinal = $fechafinal->format('d-m-Y');
@@ -93,7 +93,7 @@ class SecretariaController extends Controller
     }
     public function setSubirActa(Request $request){
         //if(!$request->ajax()) return redirect('/');
-        
+
         $id = $request->id_tesis;
         $file = $request->file;
         $bandera = Str::random(10);
@@ -107,7 +107,7 @@ class SecretariaController extends Controller
         $rpta->filename = $filename;
         $rpta->id_fit = $id;
         $rpta->tipo_pdf = 'acta';
-        $rpta->save(); 
+        $rpta->save();
         $this->reg('Subir Acta', $rpta->path,  $request->session()->get('rol'));
 
         return $rpta;
@@ -140,8 +140,8 @@ class SecretariaController extends Controller
         }
         foreach($alumnos as $alumno){
             $DatosEmail->email = $alumno->email;
-            $DatosEmail->full_name = $alumno->nombres . ' ' . $alumno->apellidos; 
-            Mail::to([$DatosEmail->email, $DatosEmail->emailpg])->queue(new MailNotafinal($DatosEmail));
+            $DatosEmail->full_name = $alumno->nombres . ' ' . $alumno->apellidos;
+            // Mail::to([$DatosEmail->email, $DatosEmail->emailpg])->queue(new MailNotafinal($DatosEmail));
         }
 
         Fit::find($id)->update(['nota'=>$nota,'estado'=>$estado]);

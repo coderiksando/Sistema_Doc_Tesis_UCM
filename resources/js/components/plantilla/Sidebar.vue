@@ -217,7 +217,7 @@
                   <router-link class="nav-link" :to="'/tesis'">
                     <i class="nav-icon far fa-edit"></i>
                     <p>
-                      Inscribir/Revisa FIT
+                      Inscribir/Revisa FID
                     </p>
                   </router-link>
                 </template>
