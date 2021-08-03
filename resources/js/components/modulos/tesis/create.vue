@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1 class="m-0 text-dark"><b>Ingresar formulario de inscripción de tesis</b></h1>
+            <h1 class="m-0 text-dark"><b>Ingresar formulario de inscripción de documento</b></h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -26,7 +26,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h3 class="card-title">Formulario de inscripción de tesis</h3>
+                                    <h3 class="card-title">Formulario de inscripción de documento</h3>
                                 </div>
                                 <div class="col-md-6" style="text-align: right;">
                                     <button class="btn btn-secondary" @click.prevent="mostrarModalAyuda">Ayuda
@@ -120,7 +120,7 @@
                                                       type="textarea"
                                                       :autosize="{ minRows: 2, maxRows: 5}"
                                                       maxlength="200"
-                                                      placeholder="Título de la tesis"
+                                                      placeholder="Título del documento"
                                                       show-word-limit
                                                       v-model="fillCrearFIT.cTitulo">
                                                     </el-input>
@@ -151,7 +151,7 @@
                                                       type="textarea"
                                                       :autosize="{ minRows: 2, maxRows: 10}"
                                                       maxlength="2000"
-                                                      placeholder="Objetivo general de la tesis"
+                                                      placeholder="Objetivo general del documento"
                                                       show-word-limit
                                                       v-model="fillCrearFIT.cObjetivoGeneral">
                                                     </el-input>
@@ -166,7 +166,7 @@
                                                       type="textarea"
                                                       :autosize="{ minRows: 2, maxRows: 10}"
                                                       maxlength="2000"
-                                                      placeholder="Objetivos específicos de la tesis"
+                                                      placeholder="Objetivos específicos del documento"
                                                       show-word-limit
                                                       v-model="fillCrearFIT.cObjetivoEspecifico">
                                                     </el-input>
@@ -283,7 +283,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content scrollTable">
           <div class="modal-header">
-            <h5 class="modal-title"><b>Búsqueda de integrante de tesis</b></h5>
+            <h5 class="modal-title"><b>Búsqueda de integrante de documento</b></h5>
             <button
               class="close"
               @click="mostrarModalBusquedaEstudiante"
@@ -444,7 +444,7 @@
                     <tr>
                         <td><i class="fas fa-user-plus"></i></td>
                         <td>Agregar</td>
-                        <td>Inserta nuevos usuarios para integrar un formulario de ingreso de tesis</td>
+                        <td>Inserta nuevos usuarios para integrar un formulario de ingreso de documento</td>
                     </tr>
                 </tbody>
                 </table>
@@ -593,7 +593,7 @@ export default {
             this.fillCrearFIT.nIdVinculacion = 1;
         }
         if(this.fillCrearFIT.cUsers.length === 0) {
-            this.mensajeError.push("No existen alumnos agregados al formulario de tesis")
+            this.mensajeError.push("No existen alumnos agregados al formulario de documento")
         }
         if (this.fillCrearFIT.cUsers.length > this.maxStudentNumber) {
             this.mensajeError.push("Límite de estudiantes ingresado excedido")

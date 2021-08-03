@@ -149,7 +149,7 @@
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 5 }"
                             maxlength="200"
-                            placeholder="Título de la tesis"
+                            placeholder="Título del documento" d
                             show-word-limit
                             v-model="fillEditarFIT.cTitulo"
                           >
@@ -226,7 +226,7 @@
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 10 }"
                             maxlength="2000"
-                            placeholder="Objetivos específicos de la tesis"
+                            placeholder="Objetivos específicos del documento"
                             show-word-limit
                             v-model="fillEditarFIT.cObjetivoEspecifico"
                           >
@@ -255,7 +255,7 @@
                     <div class="col-md-6">
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label"
-                          >Nota Final Tesis</label
+                          >Nota final de documento</label
                         >
                         <div class="col-md-9">
                           <template>
@@ -289,7 +289,7 @@
                     </div>
                     <div class="col-md-6">
                       <div class="noPadNoMar col-md-12 form-group row">
-                        <label class="noPadNoMar col-md-12 col-form-label">Tesis final (opcional)</label>
+                        <label class="noPadNoMar col-md-12 col-form-label">Documento final (opcional)</label>
                         <div class="noPadNoMar container-fluid">
                           <div class="input-group">
                             <div class="input-group-prepend">
@@ -343,7 +343,7 @@
 
                     <div class="col-md-6">
                       <div class="noPadNoMar col-md-12 form-group row">
-                        <label class="noPadNoMar col-md-12 col-form-label">Acta de defensa de tesis (opcional)</label>
+                        <label class="noPadNoMar col-md-12 col-form-label">Acta de defensa de documento (opcional)</label>
                         <div class="noPadNoMar container-fluid">
                           <div class="input-group">
                             <div class="input-group-prepend">
@@ -797,7 +797,7 @@
                   <td>Agregar</td>
                   <td>
                     Inserta nuevos usuarios para integrar un formulario de
-                    ingreso de tesis
+                    ingreso de documento
                   </td>
                 </tr>
                 <tr>
@@ -1166,10 +1166,10 @@ export default {
         );
       }
       if (this.tesisParams.sizeError) {
-        this.mensajeError.push("El archivo de tesis es demasiado pesado");
+        this.mensajeError.push("El archivo del documento es demasiado pesado");
       }
       if (this.tesisParams.formatError) {
-        this.mensajeError.push("Los formatos de tesis permitidos son:" + this.tesisParams.types);
+        this.mensajeError.push("Los formatos de los documentos permitidos son:" + this.tesisParams.types);
       }
       if (this.actaParams.sizeError) {
         this.mensajeError.push("El archivo de acta es demasiado pesado");
