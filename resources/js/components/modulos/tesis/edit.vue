@@ -6,7 +6,7 @@
         <div class="row mb-2">
           <div class="col-sm-12">
             <h1 class="m-0 text-dark">
-              <b>Editar formulario de inscripción de tesis</b>
+              <b>Editar formulario de inscripción de documento</b>
             </h1>
           </div>
           <!-- /.col -->
@@ -203,7 +203,7 @@
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 10 }"
                             maxlength="2000"
-                            placeholder="Objetivos específicos de la tesis"
+                            placeholder="Objetivos específicos del documento"
                             show-word-limit
                             v-model="fillEditarFIT.cObjetivoEspecifico"
                           >
@@ -370,7 +370,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content scrollTable">
           <div class="modal-header">
-            <h5 class="modal-title"><b>Búsqueda de integrante de tesis</b></h5>
+            <h5 class="modal-title"><b>Búsqueda de integrante de documento</b></h5>
             <button
               class="close"
               @click="mostrarModalBusquedaEstudiante"
@@ -539,7 +539,7 @@
                   <td>Agregar</td>
                   <td>
                     Inserta nuevos usuarios para integrar un formulario de
-                    ingreso de tesis
+                    ingreso de documento
                   </td>
                 </tr>
               </tbody>
@@ -674,7 +674,7 @@ export default {
       }
       if (this.fillEditarFIT.cUsers.length === 0) {
         this.mensajeError.push(
-          "No existen alumnos agregados al formulario de tesis"
+          "No existen alumnos agregados al formulario de documento"
         );
       }
       if (this.fillEditarFIT.cUsers.length > this.maxStudentNumber) {

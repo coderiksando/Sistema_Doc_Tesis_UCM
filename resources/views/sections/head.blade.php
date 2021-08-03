@@ -2,6 +2,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Sistema de documentos UCM</title>
+  <link rel="shortcut icon" type="image/png" href="{{ asset('img\ucm1.jpg') }}">
+  <link rel="shortcut icon" sizes="192x192" href="{{ asset('img\ucm1.jpg') }}">
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">

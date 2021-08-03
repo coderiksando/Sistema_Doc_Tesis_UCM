@@ -95,7 +95,7 @@
                 <router-link class="nav-link" :to="'/registrodetesis'">
                     <i class="nav-icon fas fa-user-graduate"></i>
                     <p>
-                    Registrar tesis finalizadas
+                    Registrar documento finalizado
                     </p>
                 </router-link>
             </template>
@@ -105,7 +105,7 @@
                 <router-link class="nav-link" :to="'/indextesisfinalizada'">
                     <i class="nav-icon fas fa-pencil-alt"></i>
                     <p>
-                    Edición de tesis final
+                    Edición de documento final
                     </p>
                 </router-link>
             </template>
@@ -128,7 +128,7 @@
                 <router-link class="nav-link" :to="'/areatesis'">
                   <i class="nav-icon fas fa-microscope"></i>
                   <p>
-                    Areas de tesis
+                    Areas de documentos
                   </p>
                 </router-link>
               </template>
@@ -176,7 +176,7 @@
                 <router-link class="nav-link" :to="'/reportes'">
                   <i class="nav-icon fas fa-database"></i>
                   <p>
-                    Reportes Tesis
+                    Reportes de documentos
                   </p>
                 </router-link>
               </template>
@@ -211,7 +211,7 @@
           </template>
           <!-- PESTAÑAS PARA EL ALUMNO -->
           <template  v-if="listPermisos.includes('tesis.fit')">
-            <li class="nav-header">SEGUIMIENTO DE TESIS</li>
+            <li class="nav-header">SEGUIMIENTO DE DOCUMENTOS</li>
               <li class="nav-item-sidebar">
                 <template v-if="listPermisos.includes('tesis.fit')">
                   <router-link class="nav-link" :to="'/tesis'">
@@ -227,7 +227,7 @@
                   <router-link class="nav-link" :to="'/avances'">
                     <i class="nav-icon fas fa-file-upload"></i>
                     <p>
-                      Avances de tesis
+                      Avances de documento
                     </p>
                   </router-link>
                 </template>

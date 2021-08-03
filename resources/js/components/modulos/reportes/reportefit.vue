@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Reportes de tesistas</h1>
+            <h1 class="m-0 text-dark">Reportes de alumnos</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -99,7 +99,7 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Estado de tesis</label>
+                        <label class="col-md-3 col-form-label">Estado del documento</label>
                         <div class="col-md-9">
                             <el-select v-model="fillBsqTesisReporte.cEstadoTesis"
                             placeholder="Seleccione un estado"
@@ -179,8 +179,8 @@
                         <th>Rut</th>
                         <th>Escuela</th>
                         <th>Profesor Guia</th>
-                        <th>Estado Tesis</th>
-                        <th>Detalles Tesis</th>
+                        <th>Estado de documento</th>
+                        <th>Detalles del documento</th>
                       </tr>
                     </thead>
                     <tbody>
