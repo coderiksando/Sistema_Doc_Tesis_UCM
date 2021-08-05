@@ -169,19 +169,19 @@ export default {
         this.fullscreenLoading = false;
         this.$router.push('/areatesis');
         Swal.fire({
-        icon: 'success',
-        title: 'Area de documento creada correctamente',
-        showConfirmButton: false,
-        timer: 1500
-      })
+          icon: 'success',
+          title: 'Area de documento creada correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }).catch(response=>{
         this.fullscreenLoading = false;
         Swal.fire({
-        icon: 'error',
-        title: 'Area de documento ya existe',
-        showConfirmButton: false,
-        timer: 1500
-      })
+          icon: 'error',
+          title: 'Area de documento ya existe',
+          showConfirmButton: false,
+          timer: 1500
+        })
       })
     },
     nextPage(){

@@ -85,7 +85,9 @@ class AlumnoController extends Controller
             $fits = Fit::where('id_p_guia', $nIdUsuario)->whereIn('aprobado_pg', ['P', 'A', 'V'])->get()->sortByDesc('updated_at')->values()->all();
         }
         if ($rol == 'Director' || $rol == 'Coordinador'){
-            $fits = Fit::whereIn('aprobado_pg', ['A', 'V'])->get()->sortByDesc('updated_at')->values()->all();
+            $fits = Fit::whereIn('aprobado_pg', ['A', 'V'])
+            ->where('id_escuela', Auth::user()->id_escuela)
+            ->get()->sortByDesc('updated_at')->values()->all();
         }
 
         foreach ($fits as $fit) {

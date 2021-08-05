@@ -306,8 +306,8 @@ export default {
   data(){
     return{
       listRolByUser: JSON.parse(localStorage.getItem('rolUser')),
-      fullscreenLoading: false,
-      rolActivo : JSON.parse(localStorage.getItem('rolActivo'))
+      rolActivo : JSON.parse(localStorage.getItem('rolActivo')),
+      fullscreenLoading: false
     }
   },
   methods:{

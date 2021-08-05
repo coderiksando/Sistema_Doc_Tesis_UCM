@@ -19,10 +19,10 @@ use Illuminate\Http\Request;
 class SecretariaController extends Controller
 {
     public function getListarAlumnos(Request $request){
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
-        $idUser     = Auth::id();
-        //$IdEscuela  = User::select('id_escuela')->where('id_user', $idUser)->get();
+        $user     = Auth::user();
+        $IdEscuela  = $user->id_escuela;
 
         $rut        = $request->nRut;
         $nombre     = $request->cNombre;
