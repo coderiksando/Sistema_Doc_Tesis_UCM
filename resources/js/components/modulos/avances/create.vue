@@ -48,7 +48,7 @@
                               </span>
                             </div>
                             <div class="custom-file">
-                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError}" @change="getFile">
+                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError, 'is-valid' : hover}" @change="getFile" @mouseover="hover = true" @mouseleave="hover = false">
                               <label class="custom-file-label" for="input1">{{fillCrearAvances.oArchivo ? fillCrearAvances.oArchivo.name : 'Seleccionar archivo'}}</label>
                             </div>
                           </div>
@@ -129,7 +129,8 @@ export default {
       fileTypes: [],
       formatError : false,
       sizeError : false,
-      fileMaxSize: 0
+      fileMaxSize: 0,
+      hover: false
     }
   },
   computed: {

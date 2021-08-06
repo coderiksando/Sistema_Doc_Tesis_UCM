@@ -48,23 +48,6 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Escuelas</label>
-                        <div class="col-md-9">
-                            <el-select v-model="fillBsqAlumno.nIdEscuela"
-                            placeholder="Asignar Escuela"
-                            clearable>
-                            <el-option
-                                v-for="item in listEscuelas"
-                                :key="item.id"
-                                :label="item.nombre"
-                                :value="item.id">
-                            </el-option>
-                            </el-select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
                         <label class="col-md-3 col-form-label">Estado</label>
                         <div class="col-md-9">
                             <el-select v-model="fillBsqAlumno.nEstadoAlumno"
@@ -182,7 +165,6 @@ export default {
       fillBsqAlumno:{
         cNombre: '',
         nRut: '',
-        nIdEscuela:'',
         nEstadoAlumno:''
       },
       fullscreenLoading: false,
@@ -297,9 +279,8 @@ export default {
       var url = '/secretaria/getListarAlumnos'
       axios.get(url, {
         params: {
-          'cNombre'    : this.fillBsqAlumno.cNombre,
-          'nRut'       : this.fillBsqAlumno.nRut,
-          'nIdEscuela' : this.fillBsqAlumno.nIdEscuela,
+          'cNombre'       : this.fillBsqAlumno.cNombre,
+          'nRut'          : this.fillBsqAlumno.nRut,
           'nEstadoAlumno' : this.fillBsqAlumno.nEstadoAlumno
         }
       }).then(response => {

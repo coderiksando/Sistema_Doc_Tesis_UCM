@@ -80,15 +80,17 @@
                     <thead>
                       <tr>
                         <th>Nombre</th>
+                        <th>Facultad</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in listarEscuelasPaginated" :key="index">
                         <td v-text="item.nombre"></td>
+                        <td v-text="item.facultad.nombre"></td>
                         <td>
-                            <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'escuelas.editar', params:{id: item.id}}">
-                              <i class="fas fa-pencil-alt"></i> Editar
+                            <router-link title="Editar" class="btn btn-info btn-sm" :to="{name:'escuelas.editar', params:{id: item.id}}">
+                              <i class="fas fa-pencil-alt"></i>
                             </router-link>
                         </td>
                       </tr>

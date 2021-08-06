@@ -40,7 +40,7 @@
                               </span>
                             </div>
                             <div class="custom-file">
-                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError}" @change="getFile">
+                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError, 'is-valid' : hover}" @change="getFile" @mouseover="hover = true" @mouseleave="hover = false">
                               <label class="custom-file-label" for="input1">{{fillCrearFinalPdf.oArchivo ? fillCrearFinalPdf.oArchivo.name : 'Seleccionar archivo'}}</label>
                             </div>
                           </div>
@@ -128,7 +128,8 @@ export default {
       sizeError : false,
       fileMaxSize: 0,
       lastFile: {},
-      btnDis: true
+      btnDis: true,
+      hover: false
     }
   },
   computed: {
@@ -256,5 +257,8 @@ export default {
 .no-margin{
   height: 0% !important;
 }
-
+.input-focus{
+  border-color: #80bdff !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+}
 </style>

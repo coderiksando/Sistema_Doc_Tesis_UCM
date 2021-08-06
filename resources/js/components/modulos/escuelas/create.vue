@@ -148,12 +148,28 @@ export default {
         this.modalShow = true;
         return;
       }
+      this.fullscreenLoading = true;
       var url = '/administracion/escuelas/setRegistrarEscuelas'
       axios.post(url, {
         'cNombre'            : this.fillCrearEscuela.cNombre,
         'nIdFacultad'        : this.fillCrearEscuela.nIdFacultad
       }).then(response => {
+        this.fullscreenLoading = false;
         this.$router.push('/escuelas');
+        Swal.fire({
+          icon: 'success',
+          title: 'Escuela creada correctamente',
+          showConfirmButton: false,
+          timer: 2500
+        })
+      }).catch(response=>{
+        this.fullscreenLoading = false;
+          Swal.fire({
+          icon: 'error',
+          title: 'La escuela que intenta registrar ya existe.',
+          showConfirmButton: false,
+          timer: 2500
+        })
       })
     },
     nextPage(){

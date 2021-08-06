@@ -309,8 +309,11 @@
                                         <input type="file" class="custom-file-input"
                                             :class="{
                                                 'is-invalid': tesisParams.formatError || tesisParams.sizeError,
+                                                'is-valid' : hover
                                             }"
                                             @change="getFileTesis"
+                                            @mouseover="hover = true"
+                                            @mouseleave="hover = false"
                                         />
                                         <label class="custom-file-label" for="input1">{{
                                             tesisFile
@@ -398,7 +401,8 @@ export default {
             sizeError: false
         },
         tesisForm: new FormData(),
-        rolActivo: JSON.parse(localStorage.getItem('rolActivo'))
+        rolActivo: JSON.parse(localStorage.getItem('rolActivo')),
+        hover: false
     }
   },
   computed: {

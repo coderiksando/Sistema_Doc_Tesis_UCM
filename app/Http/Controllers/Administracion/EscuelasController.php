@@ -55,10 +55,16 @@ class EscuelasController extends Controller
         $cNombre     = ($cNombre == NULL)       ? ($cNombre = '')     : $cNombre;
         $nIdFacultad = ($nIdFacultad == NULL)   ? ($nIdFacultad = '') : $nIdFacultad;
 
-        Escuelas::create([
-            'nombre' => $cNombre,
-            'id_facultad' => $nIdFacultad
-        ]);
+        $testEscuela = DB::table('escuelas')->where('nombre', $cNombre)->where('id_facultad', $nIdFacultad)->exists();
+        
+        if ($testEscuela){
+            return response(['error' => 'Elemento ya existe'], 409);
+        }else{
+            Escuelas::create([
+                'nombre' => $cNombre,
+                'id_facultad' => $nIdFacultad
+            ]);
+        }  
     }
     public function setEditarEscuelas(Request $request){
 
@@ -72,11 +78,16 @@ class EscuelasController extends Controller
         $cNombre        = ($cNombre == NULL)     ? ($cNombre = '')      : $cNombre;
         $nIdFacultad    = ($nIdFacultad == NULL) ? ($nIdFacultad = '1')  : $nIdFacultad;
 
-        $escuela = Escuelas::find($nIdEscuela);
-        $escuela->nombre = $cNombre;
-        $escuela->id_facultad = $nIdFacultad;
-        $escuela->save();
+        $testEscuela = DB::table('escuelas')->where('nombre', $cNombre)->where('id_facultad', $nIdFacultad)->exists();
 
+        if ($testEscuela){
+            return response(['error' => 'Elemento ya existe'], 409);
+        }else{
+            $escuela = Escuelas::find($nIdEscuela);
+            $escuela->nombre = $cNombre;
+            $escuela->id_facultad = $nIdFacultad;
+            $escuela->save();
+        }
     }
 
 }

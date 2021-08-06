@@ -307,8 +307,11 @@
                                 id="input1"
                                 :class="{
                                   'is-invalid': tesisParams.formatError || tesisParams.sizeError,
+                                  'is-valid' : hover1
                                 }"
                                 @change="getFileRut"
+                                @mouseover="hover1 = true"
+                                @mouseleave="hover1 = false"
                               />
                               <label class="custom-file-label" for="input1">{{
                                 tesisFile
@@ -359,8 +362,11 @@
                                 class="custom-file-input"
                                 :class="{
                                   'is-invalid': actaParams.formatError || actaParams.sizeError,
+                                  'is-valid' : hover2
                                 }"
                                 @change="getFileActa"
+                                @mouseover="hover2 = true"
+                                @mouseleave="hover2 = false"
                               />
                               <label class="custom-file-label" for="input1">{{
                                 actaFile
@@ -411,8 +417,11 @@
                                 class="custom-file-input"
                                 :class="{
                                   'is-invalid': constParams.formatError || constParams.sizeError,
+                                  'is-valid'  : hover3
                                 }"
                                 @change="getFileConst"
+                                @mouseover="hover3 = true"
+                                @mouseleave="hover3 = false"
                               />
                               <label class="custom-file-label" for="input1">{{
                                 constFile
@@ -1009,7 +1018,10 @@ export default {
       actaFile: '',
       constFile: '',
       profesorByEscuelaBuscada: '',
-      listProfesoresBuscado: []
+      listProfesoresBuscado: [],
+      hover1: false,
+      hover2: false,
+      hover3: false
     };
   },
   computed: {},
