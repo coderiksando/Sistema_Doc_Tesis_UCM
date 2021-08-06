@@ -114,6 +114,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/comisiones/getComision', 'ComisionesController@getComision');
   Route::get('/comisiones/getListarMisComisiones', 'ComisionesController@getListarMisComisiones');
   Route::get('/comisiones/getListarComisiones', 'ComisionesController@getListarComisiones');
+  Route::get('/comisiones/getListarTodasComisiones', 'ComisionesController@getListarTodasComisiones');
   Route::get('/comisiones/pathDocumentoComision', 'ComisionesController@pathDocumentoComision');
   Route::post('/comisiones/setRegistrarDocumentoComision', 'ComisionesController@setRegistrarDocumentoComision');
 

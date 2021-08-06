@@ -144,6 +144,24 @@ class ComisionesController extends Controller
         }
         return $ComisionesTotales;
     }
+    public function getListarTodasComisiones(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $comisiones = Comisiones::get()->pluck('id_tesis');
+        $fitWithComision= Fit::whereIn('id', $comisiones)
+                            ->get()
+                            ->all();
+        foreach ($fitWithComision as $fit) {
+            $fit->Comisiones;
+            $fit->Comisiones->UserP1;
+            $fit->Comisiones->UserP2;
+            $fit->User_P_Guia;
+            $fit->Escuela;
+            $fit->getAlumnos();
+            $fit->Revision_Comision;
+            $fit->ArchivoPdf;
+        }
+        return $fitWithComision;
+    }
     public function pathDocumentoComision(Request $request){
         if(!$request->ajax()) return redirect('/');
         Debugbar::info($request->id);

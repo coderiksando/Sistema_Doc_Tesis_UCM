@@ -15,9 +15,9 @@
         <template  v-if="listRolPermisosByUsuario.includes('reportes.reportefit')">
           <div class="card-header">
             <div class="card-tools">
-                <router-link class="btn btn-info bnt-sm" :to="'/reportes'">
-                    <i class="fas fa-arrow-left"></i> Volver a reportes
-                </router-link>
+                <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
+                    <i class="fas fa-arrow-left"></i> Regresar
+                </a>
             </div>
           </div>
         </template>

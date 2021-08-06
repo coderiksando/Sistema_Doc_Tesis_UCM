@@ -14,11 +14,14 @@
       <div class="card">
         <div class="card-header">
           <div class="card-tools">
-            <router-link class="btn btn-info bnt-sm" :to="'/comisiones/crear'">
-              <i class="fas fa-plus-square"></i> Registrar nueva comisión
-            </router-link>
+            <template v-if="rolActivo == 'Profesor'">
+                <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
+                    <i class="fas fa-arrow-left"></i> Regresar
+                </a>
+            </template>
           </div>
         </div>
+        <template v-if="rolActivo == 'Profesor'">
         <div class="card-body">
           <div class="container-fluid">
             <div class="card card-info">
@@ -183,6 +186,103 @@
             </div>
           </div>
         </div>
+        </template>
+        <template v-if="rolActivo != 'Profesor'">
+        <div class="card-body">
+          <div class="container-fluid">
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">Comisiones establecidas</h3>
+              </div>
+              <div class="card-body table table-responsive">
+                <template v-if="listarComisionesTotalesPaginated.length">
+                  <table class ="table table-hover table-head-fixed text-nowrap ">
+                    <thead>
+                      <tr>
+                        <th>Alumno</th>
+                        <th>Escuela</th>
+                        <th>Profesor guía</th>
+                        <th>Profesor 1</th>
+                        <th>Profesor 2</th>
+                        <th>Profesor Ext.</th>
+                        <th>Acciones </th>
+                        <th>Fecha de creación</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(item, index) in listarComisionesTotalesPaginated" :key="index">
+                        <td>
+                            <div v-for="(fitUser, index2) in item.fit__user" :key="index2">
+                                <p>{{fitUser.user.nombres+' '+fitUser.user.apellidos}}</p>
+                            </div>
+                        </td>
+                        <td>
+                            <p>{{item.escuela.nombre}}</p>
+                        </td>
+                        <td>
+                            <template v-if="item.user__p__guia">
+                                <p>{{item.user__p__guia.nombres+' '+item.user__p__guia.apellidos}}</p>
+                            </template>
+                        </td>
+                        <td>
+                            <template v-if="item.comisiones.user_p1">
+                                <p>{{item.comisiones.user_p1.nombres+' '+item.comisiones.user_p1.apellidos}}</p>
+                            </template>
+                        </td>
+                        <td>
+                            <template v-if="item.comisiones.user_p2">
+                                <p>{{item.comisiones.user_p2.nombres+' '+item.comisiones.user_p2.apellidos}}</p>
+                            </template>
+                        </td>
+                        <td><p>{{item.comisiones.p_externo}}</p></td>
+                        <td>
+                            <router-link title="Ver FID" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
+                              <i class="fas fa-eye"></i>
+                            </router-link>
+                            <button title="Descargar documento de FID" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                              <i class="fas fa-file-download"></i>
+                            </button>
+                            <button title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
+                              <i class="fas fa-file-upload"></i>
+                            </button>
+                            <!-- <router-link title="Ver revisiones de comisión" class="btn boton btn-info" :to="'tesis/revisiones'">
+                              <i class="fa fa-list-alt"></i>
+                            </router-link> -->
+                            <router-link title="Editar comisión" class="btn boton btn-danger" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
+                              <i class="fas fa-pencil-alt"></i>
+                            </router-link>
+                        </td>
+                        <td>
+                            <p>{{moment(item.comisiones.updated_at).format("DD-MM-YYYY")}}</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </template>
+                <template v-else>
+                  <div class="callout callout-info">
+                    <h5> No se han encontrado resultados...</h5>
+                  </div>
+                </template>
+              </div>
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                    <li class="page-item" v-if="totalPageNumber > 0">
+                    <a href="#" class="page-link" @click.prevent="totalPrevPage">Ant</a>
+                    </li>
+                    <li class="page-item" v-for="(page, index) in totalPagesList" :key="index"
+                    :class="[page == totalPageNumber ? 'active' : '']">
+                    <a href="#" class=page-link @click.prevent="selectPage2(page)"> {{page+1}}</a>
+                    </li>
+                    <li class="page-item" v-if="totalPageNumber < totalPageCount -1">
+                    <a href="#" class="page-link" @click.prevent="totalNextPage">Post</a>
+                    </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        </template>
       </div>
     </div>
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
@@ -257,10 +357,12 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
     props: ['usuario'],
     data(){
     return{
+        moment: moment,
         fitDocumentoRevision: {
             fitId: '',
             comentario: '',
@@ -271,9 +373,11 @@ export default {
         listPermisos:[],
         listMisComisiones:[],
         listComisiones:[],
+        listAllComisiones:[],
         fullscreenLoading: false,
         pageNumber: 0,
         pageNumber2: 0,
+        totalPageNumber:0,
         perPage: 5,
         modalShow: false,
         modalOption: 0,
@@ -294,6 +398,7 @@ export default {
             sizeError: false
         },
         tesisForm: new FormData(),
+        rolActivo: JSON.parse(localStorage.getItem('rolActivo'))
     }
   },
   computed: {
@@ -342,18 +447,47 @@ export default {
         count++;
       }
       return pagesArray;
-    }
+    },
+    totalPageCount(){
+        //obtener el numero de paginas
+        let a = this.listAllComisiones.length,
+            b = this.perPage;
+        return Math.ceil(a / b);
+    },
+    listarComisionesTotalesPaginated() {
+        let inicio = this.totalPageNumber * this.perPage,
+        fin = inicio + this.perPage;
+        return this.listAllComisiones.slice(inicio, fin);
+    },
+    totalPagesList(){
+        let a = this.listAllComisiones.length,
+            b = this.perPage;
+        let pageCount = Math.ceil(a / b);
+        let count = 0,
+            pagesArray = [];
+        while (count < pageCount){
+            pagesArray.push(count);
+            count++;
+        }
+        return pagesArray;
+    },
   },
   mounted(){
-    this.getListarMisComisiones();
-    this.getListarComisiones();
-    // this.getListarAlumnosByprofesor();
+    this.comisionesByRol();
     this.getParametros();
   },
   methods:{
+    comisionesByRol() {
+        if (this.rolActivo == 'Profesor') {
+            this.getListarMisComisiones();
+            this.getListarComisiones();
+        } else {
+            this.getListarTodasComisiones();
+        }
+    },
     getParametros() {
-      var url = "/admin/parametros";
-      axios
+        var url = "/admin/parametros";
+        axios
         .post(url, { params: ['AvancesTesisSize', 'AvancesTesisFormato'] })
         .then((response) => {
           this.tesisParams.size  = response.data[0][0];
@@ -394,6 +528,16 @@ export default {
           this.fullscreenLoading = false;
       })
     },
+    getListarTodasComisiones() {
+      this.fullscreenLoading = true;
+      var url = '/comisiones/getListarTodasComisiones'
+      axios.get(url, {
+      }).then(response => {
+          this.inicializarPaginacionTotal();
+          this.listAllComisiones = response.data;
+          this.fullscreenLoading = false;
+      })
+    },
     limpiarBandejaUsuarios(){
       this.listComisiones = [];
     },
@@ -419,6 +563,18 @@ export default {
       this.pageNumber2 = page;
     },
     inicializarPaginacion2(){
+      this.pageNumber2 = 0;
+    },
+    totalNextPage(){
+      this.pageNumber2++;
+    },
+    totalPrevPage(){
+      this.pageNumber2--;
+    },
+    totalSelectPage(page){
+      this.pageNumber2 = page;
+    },
+    inicializarPaginacionTotal(){
       this.pageNumber2 = 0;
     },
     descargarDocumento (id) {

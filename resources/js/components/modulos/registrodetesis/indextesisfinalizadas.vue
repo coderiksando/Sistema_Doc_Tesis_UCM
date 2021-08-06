@@ -187,17 +187,17 @@
                              <template v-for="(fileItem, fileIndex) in item.archivo_pdf">
                                  <template v-if="fileItem.tipo_pdf == 'final_t'">
                                     <a :key="'arch'+fileIndex" title="Descargar archivo" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <p class="text-justify"><b>Ar</b></p>
+                                        <b>Ar</b>
                                     </a>
                                  </template>
                                  <template v-if="fileItem.tipo_pdf == 'acta'">
                                     <a :key="'acta'+fileIndex" title="Descargar acta" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <p class="text-justify"><b>Ac</b></p>
+                                        <b>Ac</b>
                                     </a>
                                  </template>
                                  <template v-if="fileItem.tipo_pdf == 'constancia_t'">
                                     <a :key="'const'+fileIndex" title="Descargar constancia" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <p class="text-justify"><b>C</b></p>
+                                        <b>C</b>
                                     </a>
                                  </template>
                                  <template></template>

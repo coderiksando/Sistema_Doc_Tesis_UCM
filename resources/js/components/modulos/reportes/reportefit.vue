@@ -179,8 +179,9 @@
                         <th>Rut</th>
                         <th>Escuela</th>
                         <th>Profesor Guia</th>
-                        <th>Estado de documento</th>
-                        <th>Detalles del documento</th>
+                        <th>Estado documento</th>
+                        <th>Detalle</th>
+                        <th>Descarga de documentos</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -199,7 +200,7 @@
                             </div>
                         </template>
                         </td>
-                        <td v-text="fit.user__p__guia.escuelas.nombre"></td>
+                        <td v-text="fit.escuela.nombre"></td>
                         <td>{{fit.user__p__guia.nombres+' '+fit.user__p__guia.apellidos}}</td>
                         <td>
                           <template v-if="fit.estado == 'D'">
@@ -213,17 +214,34 @@
                           </template>
                         </td>
                         <td>
-                          <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'tesis.ver', params:{id: fit.id}}">
-                              FID
+                          <router-link title="Vista completa de FID" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: fit.id}}">
+                            <b>FID</b>
                           </router-link>
-                          <router-link v-if="fit.avances_tesis.length > 0" class="btn btn-flat btn-success btn-sm" :to="{name:'reportes.detallesavances', params:{id: fit.fit__user[0].id_user}}">
-                             Avances
+                          <router-link title="Sección de avances" v-if="fit.avances_tesis.length > 0" class="btn boton btn-success" :to="{name:'reportes.detallesavances', params:{id: fit.fit__user[0].id_user}}">
+                             <b>Av</b>
                           </router-link>
-                          <div v-if="fit.avances_tesis.length === 0" class="btn btn-flat btn-success btn-sm disabled">Avances</div>
-                          <router-link v-if="fit.bitacoras.length > 0" class="btn btn-flat btn-secondary btn-sm" :to="{name:'reportes.detallesbitacoras', params:{id: fit.fit__user[0].id_user}}">
-                             Bitacoras
+                          <!-- <div v-if="fit.avances_tesis.length === 0" class="btn btn-flat btn-success btn-sm disabled">Avances</div> -->
+                          <router-link title="Sección de bitácoras" v-if="fit.bitacoras.length > 0" class="btn boton btn-secondary" :to="{name:'reportes.detallesbitacoras', params:{id: fit.fit__user[0].id_user}}">
+                             <b>Bit</b>
                           </router-link>
-                          <div v-if="fit.bitacoras.length === 0" class="btn btn-flat btn-secondary btn-sm disabled">Bitacoras</div>
+                          <!-- <div v-if="fit.bitacoras.length === 0" class="btn btn-flat btn-secondary btn-sm disabled">Bitacoras</div> -->
+                        </td>
+                        <td>
+                          <template v-if="fit.ultimoDoc">
+                            <a :key="'arch'+index1" title="Descargar archivo" class="btn boton btn-success" :href="fit.ultimoDoc.path" target="_blank">
+                                <b>Ar</b>
+                            </a>
+                          </template>
+                          <template v-if="fit.acta">
+                            <a :key="'acta'+index1" title="Descargar acta de defensa" class="btn boton btn-warning" :href="fit.acta.path" target="_blank">
+                                <b>Ac</b>
+                            </a>
+                          </template>
+                          <template v-if="fit.constancia">
+                            <a :key="'constancia'+index1" title="Descargar constancia" class="btn boton btn-info" :href="fit.constancia.path" target="_blank">
+                                <b>C</b>
+                            </a>
+                          </template>
                         </td>
                       </tr>
                     </tbody>
@@ -451,6 +469,7 @@
                 const newListTesis = this.moveIndex(this.listTesis);
                 this.listTesisOriginal = this.moveIndex(this.listTesisOriginal);
                 this.listTesis = newListTesis;
+                console.log(this.listTesis);
                 this.fullscreenLoading = false;
             })
         },

@@ -47,6 +47,19 @@ class ReportesController extends Controller
             $fit->User_P_Guia;
             $fit->User_P_Guia->Escuelas;
             $fit->User_P_Coguia;
+            $fit->Escuela;
+            $fit->ultimoDoc = $fit->ArchivoPdf()
+                ->where(function ($var) {
+                    $var->where('tipo_pdf', '=', 'final_t')
+                        ->orWhere('tipo_pdf', '=', 'avance_t');
+                })
+                ->get()->sortByDesc('updated_at')->values()->first();
+            $fit->acta = $fit->ArchivoPdf()
+                ->where('tipo_pdf', '=', 'acta')
+                ->get()->first();
+            $fit->constancia = $fit->ArchivoPdf()
+                ->where('tipo_pdf', '=', 'constancia_t')
+                ->get()->first();
             $fit->getAlumnos();
         }
         $key=0;

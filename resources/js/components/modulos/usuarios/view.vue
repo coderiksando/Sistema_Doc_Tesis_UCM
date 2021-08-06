@@ -231,8 +231,8 @@
                                     </el-date-picker>
                                 </div>
                             </div>
-                            <template v-if="listRoles.value.length > 0">
-                            <div class="form-group row" v-if="listRoles.value[0].name != 'Alumno'">
+                            <template>
+                            <div class="form-group row" v-if="rolActivo == 'Administrador'">
                                 <label class="col-md-3 col-form-label">Roles</label>
                                 <div class="col-md-9">
                                     <multiselect
@@ -355,7 +355,8 @@ export default {
                 value: [],
                 options: ['Admin', 'otro']
             },
-            addPassword: false
+            addPassword: false,
+            rolActivo: JSON.parse(localStorage.getItem('rolActivo'))
         }
     },
     mounted(){

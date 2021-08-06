@@ -106,10 +106,10 @@
                             </div>
                         </td>
                         <td>
-                          <template v-if="item.estado_tesis == 'D'">
+                          <template v-if="item.estado == 'D'">
                             <span class="badge badge-warning" >En desarrollo</span>
                           </template>
-                          <template v-else-if="item.estado_tesis == 'A'">
+                          <template v-else-if="item.estado == 'A'">
                             <span class="badge badge-success" >Aprobada</span>
                           </template>
                           <template v-else>
@@ -271,6 +271,7 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listAlumnos = response.data;
+          console.log(this.listAlumnos)
           this.fullscreenLoading = false;
       })
     },

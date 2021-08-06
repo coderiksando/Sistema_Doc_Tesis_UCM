@@ -15,9 +15,9 @@
       <div class="card">
         <div class="card-header">
           <div class="card-tools">
-            <router-link class="btn btn-info bnt-sm" :to="'/areatesis'">
+            <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
               <i class="fas fa-arrow-left"></i> Regresar
-            </router-link>
+            </a>
           </div>
         </div>
         <div class="card-body">
