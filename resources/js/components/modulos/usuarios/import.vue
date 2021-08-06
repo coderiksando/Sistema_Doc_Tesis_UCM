@@ -40,7 +40,7 @@
                               </span>
                             </div>
                             <div class="custom-file">
-                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError}" @change="getFile">
+                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError, 'is-valid' : hover}" @change="getFile" @mouseover="hover = true" @mouseleave="hover = false">
                               <label class="custom-file-label" for="input1">{{fillImportUsers.oArchivo ? fillImportUsers.oArchivo.name : 'Seleccionar archivo'}}</label>
                             </div>
                           </div>
@@ -52,10 +52,10 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-2 offset-md-1 col-form-label">Carrera</label>
+                        <label class="col-md-2 offset-md-1 col-form-label">Escuela</label>
                         <div class="col-md-9">
                             <el-select filterable v-model="fillImportUsers.cEscuela"
-                            placeholder="Asignar Carrera"
+                            placeholder="Asignar escuela"
                             clearable>
                             <el-option
                                 v-for="item in listEscuelas"
@@ -132,7 +132,8 @@ export default {
       formatError : false,
       sizeError : false,
       fileMaxSize: 0,
-      listEscuelas: []
+      listEscuelas: [],
+      hover: false
     }
   },
   computed: {
@@ -180,7 +181,7 @@ export default {
           this.mensajeError.push("El archivo es un campo obligatorio")
         }
         if(!this.fillImportUsers.cEscuela){
-          this.mensajeError.push("La carrera es un campo obligatorio")
+          this.mensajeError.push("La escuela es un campo obligatorio")
         }
         if(this.formatError){
           this.mensajeError.push("Los formatos permitidos son:" +this.fileTypes);

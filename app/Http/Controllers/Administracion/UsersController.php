@@ -218,7 +218,7 @@ class UsersController extends Controller
         $rpta = DB::table('users_roles')
                 ->join('roles', 'users_roles.id_roles', 'roles.id')
                 ->select('users_roles.id_roles AS id', 'roles.name')
-                ->where('id_user', $nIdUsuario)->get();
+                ->where('id_user', $nIdUsuario)->get()->sortByDesc('id')->values()->all();;
 
         return $rpta;
     }

@@ -29,30 +29,39 @@
               <div class="card-body">
                 <form role="form" id="form-acta1">
                   <div class="row">
-                    <div class="col-md-9">
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text" id="inputGroupFileAddon01">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-arrow-up" viewBox="0 0 16 16" data-darkreader-inline-fill="" style="--darkreader-inline-fill:currentColor;">
-                          <path d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707V11.5z"></path>
-                          <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"></path>
-                          </svg>
-                          </span>
+                    <div class="col-md-10">
+                      <div class="form-group row">
+                        <label class="col-md-2 offset-md-1 col-form-label">Archivo</label>
+                        <div class="col-md-8">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroupFileAddon01">
+                              <i class="fas fa-file-upload"></i>
+                              </span>
+                            </div>
+                            <div class="custom-file">
+                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError, 'is-valid' : hover}" @change="getFile" @mouseover="hover = true" @mouseleave="hover = false">
+                              <label class="custom-file-label" for="input1">{{nombreArchivo ? nombreArchivo : 'Seleccionar archivo'}}</label>
+                            </div>
+                          </div>
+                          <div class="custom-file invalid-feedback no-margin" v-show="formatError">
+                            El formato del archivo no es soportado.
+                          </div>
+                          <div class="custom-file invalid-feedback" v-show="sizeError">
+                            El tamaño del archivo no puede superar los {{fileMaxSize}} MB.
+                          </div>
                         </div>
-                        <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError}" @change="getFile" lang="es">
-                          <label class="custom-file-label" for="input1">{{fillSubirActa.oArchivo ? fillSubirActa.oArchivo.name : 'Seleccionar archivo'}}</label>
-                        </div>
-                      </div>
-                      <div class="custom-file invalid-feedback" v-show="formatError">
-                        El formato del archivo no es soportado.
-                      </div>
-                      <div class="custom-file invalid-feedback" v-show="sizeError">
-                        El tamaño del archivo no puede superar los {{fileMaxSize}} MB.
                       </div>
                     </div>
                   </div>
                 </form>
+                <div class="container">
+                  El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
+                </div>
+                <div class="container">
+                  Los formatos de archivo soportados son:
+                  <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
+                </div>
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -97,6 +106,7 @@ export default {
         oArchivo: '',
 
       },
+      nombreArchivo: '',
       form : new FormData,
       fullscreenLoading: false,
       modalShow: false,
@@ -112,7 +122,8 @@ export default {
       fileTypes: [],
       formatError : false,
       sizeError : false,
-      fileMaxSize: 0
+      fileMaxSize: 0,
+      hover: false
     }
   },
   computed: {
@@ -128,6 +139,7 @@ export default {
       this.sizeError = false
       if (!element) return;
       this.fillSubirActa.oArchivo = element.target.files[0];
+      (this.fillSubirActa.oArchivo) ? this.nombreArchivo = this.fillSubirActa.oArchivo.name : this.nombreArchivo = '';
       if (!this.fillSubirActa.oArchivo) return;
       const fileName = this.fillSubirActa.oArchivo.name;
       const fileSize = this.fillSubirActa.oArchivo.size;
@@ -143,6 +155,7 @@ export default {
     limpiarCriterios(){
       this.fillSubirActa.cDescripcion = '';
       this.fillSubirActa.oArchivo = '';
+      this.nombreArchivo = '';
       document.getElementById("form-acta1").reset();
       this.getFile();
     },

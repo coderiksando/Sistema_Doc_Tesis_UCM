@@ -158,12 +158,21 @@ export default {
 
       }).then(response => {
         this.fullscreenLoading = false;
+        this.$router.push('/escuelas');
         Swal.fire({
-        icon: 'success',
-        title: 'Escuela Editado Correctamente',
-        showConfirmButton: false,
-        timer: 1500
-      })
+          icon: 'success',
+          title: 'Escuela editada correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }).catch(response=>{
+        this.fullscreenLoading = false;
+          Swal.fire({
+          icon: 'error',
+          title: 'La escuela que intenta registrar ya existe.',
+          showConfirmButton: false,
+          timer: 2500
+        })
       })
     },
     nextPage(){

@@ -40,7 +40,7 @@
                               </span>
                             </div>
                             <div class="custom-file">
-                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError}" @change="getFile">
+                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError, 'is-valid' : hover}" @change="getFile" @mouseover="hover = true" @mouseleave="hover = false">
                               <label class="custom-file-label" for="input1">{{nombreArchivo ? nombreArchivo : 'Seleccionar archivo'}}</label>
                             </div>
                           </div>
@@ -125,7 +125,8 @@ export default {
       sizeError : false,
       fileMaxSize: 0,
       lastFile: {},
-      btnDis: true
+      btnDis: true,
+      hover: false
     }
   },
   computed: {
@@ -144,7 +145,6 @@ export default {
       if (!element) return;
       this.Archivo = element.target.files[0];
       (this.Archivo) ? this.nombreArchivo = this.Archivo.name : this.nombreArchivo = '';
-      console.log(this.Archivo);
       if (!this.Archivo) return;
       const fileName = this.Archivo.name;
       const fileSize = this.Archivo.size;
