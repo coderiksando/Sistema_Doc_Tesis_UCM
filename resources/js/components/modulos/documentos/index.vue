@@ -46,23 +46,6 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Escuelas</label>
-                        <div class="col-md-9">
-                            <el-select v-model="fillBsqAlumno.nIdEscuela"
-                            placeholder="Asignar Escuela"
-                            clearable>
-                            <el-option
-                                v-for="item in listEscuelas"
-                                :key="item.id"
-                                :label="item.nombre"
-                                :value="item.id">
-                            </el-option>
-                            </el-select>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </form>
               </div>
@@ -205,19 +188,7 @@ export default {
       return pagesArray;
     }
   },
-   mounted(){
-      this.getListarEscuelas();
-    },
   methods:{
-    getListarEscuelas(){
-        this.fullscreenLoading = true;
-        var url = '/administracion/escuelas/getListarEscuelas'
-        axios.get(url, {
-        }).then(response => {
-            this.listEscuelas = response.data;
-            this.fullscreenLoading = false;
-        })
-      },
     setGenerarDocumento(id_tesis){
       //this.fullscreenLoading = true;
 
@@ -265,8 +236,7 @@ export default {
       axios.get(url, {
         params: {
           'cNombre' : this.fillBsqAlumno.cNombre,
-          'nRut' : this.fillBsqAlumno.nRut,
-          'nIdEscuela' : this.fillBsqAlumno.nIdEscuela,
+          'nRut' : this.fillBsqAlumno.nRut
         }
       }).then(response => {
           this.inicializarPaginacion();
