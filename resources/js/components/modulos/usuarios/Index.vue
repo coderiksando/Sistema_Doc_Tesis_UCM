@@ -105,6 +105,7 @@
                         <th>Nombres</th>
                         <th>Apellidos</th>
                         <th>Correo</th>
+                        <th>Escuela</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                       </tr>
@@ -126,6 +127,7 @@
                         <td v-text="item.nombres"></td>
                         <td v-text="item.apellidos"></td>
                         <td v-text="item.email"></td>
+                        <td v-text="item.nombreEscuela"></td>
                         <td>
                           <template v-if="item.state == 'A'">
                             <span class="badge badge-success">Activo</span>
