@@ -123,7 +123,7 @@
                       <div class="form-group row">
                         <label class="col-md-4 col-form-label">Rut</label>
                         <div class="col-md-8">
-                            <input type="text" placeholder="12345678-9" class="form-control" :class="{ 'is-invalid' : rutError}" v-model="fillCrearUsuarios.cRut" @keyup.enter="setRegistrarUsuario" @change="validarIngresoUsuarioRut($event.target.value)">
+                            <input type="text" placeholder="12345678-9" class="form-control" :class="{ 'is-invalid' : rutError}" v-model="fillCrearUsuarios.cRut" @keyup.enter="setRegistrarUsuario">
                             <div class="custom-file invalid-feedback no-margin" v-show="rutError">
                                 Formato de RUT invalido.
                             </div>

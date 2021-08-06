@@ -66,10 +66,10 @@ class ReportesController extends Controller
         foreach ($fits as $fit) {
             $missing = False;
             if ($idescuela) {
-                if ($fit->User_P_Guia->Escuelas->id != $idescuela) $missing = True;
+                if ($fit->Escuela->id != $idescuela) $missing = True;
             }
             if ($idFacultad) {
-                if ($fit->User_P_Guia->Escuelas->Facultad->id != $idFacultad) $missing = True;
+                if ($fit->Facultad->id != $idFacultad) $missing = True;
             }
             if ($estado_notap) {
                 if ($fit->NotasPendientes) {
