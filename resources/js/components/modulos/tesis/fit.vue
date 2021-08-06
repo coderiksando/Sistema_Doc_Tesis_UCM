@@ -51,8 +51,8 @@
                     <thead>
                       <tr>
                         <th>Alumno(s)</th>
-                        <th>Estado</th>
-                        <th>Estado de documento</th>
+                        <th>Estado de inscripción</th>
+                        <th>Estado de aprobación</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>

@@ -206,7 +206,7 @@
                                 <label class="col-md-3 col-form-label">Fotografía (opcional)</label>
                                 <div class="col-md-9">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" :class="{ 'is-invalid' : formatError || sizeError, 'is-valid' : hover}" @change="getFile" @mouseover="hover = true" @mouseleave="hover = false">
+                                        <input type="file" class="custom-file-input" :class="{ 'is-invalid' : formatError , 'is-valid' : hover}" @change="getFile" @mouseover="hover = true" @mouseleave="hover = false">
                                         <label class="custom-file-label" for="input1">{{fillEditarUsuarios.oFotografia ? fillEditarUsuarios.oFotografia.name : 'Seleccionar archivo'}}</label>
                                     </div>
                                     <div v-show="!formatError && !fillEditarUsuarios.oFotografia" class="custom-file">

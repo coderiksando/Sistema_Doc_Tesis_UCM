@@ -72,7 +72,7 @@
                       <tr>
                         <th>Nombre</th>
                         <th>Rut</th>
-                        <th>Estado de documento</th>
+                        <th>Estado de aprobación</th>
                         <th>Descargar</th>
                       </tr>
                     </thead>

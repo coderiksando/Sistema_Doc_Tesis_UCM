@@ -140,6 +140,7 @@
                         <th>Alumno(s)</th>
                         <th>Profesor</th>
                         <th>Título</th>
+                        <th>Escuela</th>
                         <th>Estado aprobación</th>
                         <th>Fecha de creación</th>
                         <th>Acciones</th>
@@ -159,6 +160,9 @@
                         </td>
                         <td>
                             <p v-text="item.titulo"></p>
+                        </td>
+                        <td>
+                            <p v-text="item.escuela.nombre"></p>
                         </td>
                         <td>
                           <template v-if="item.estado == 'D'">

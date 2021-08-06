@@ -89,7 +89,7 @@
                       <tr>
                         <th>Nombre</th>
                         <th>Rut</th>
-                        <th>Estado</th>
+                        <th>Estado de aprobación</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
