@@ -121,6 +121,7 @@ export default {
         }
     },
     mounted(){
+        this.getParametros();
     },
     methods:{
         abrirModal(){
@@ -229,6 +230,17 @@ export default {
                 S=(S+T%10*(9-M++%6))%11;
             return S?S-1:'k';
         },
+        getParametros(){
+            this.fullscreenLoading = true;
+            var url = '/admin/parametros';
+            axios.post(url,{'params': ['HabilitarRegistro']}).then(response => {
+                let enableReg = parseInt(response.data[0][0]);
+                if (!enableReg) {
+                    this.$router.push('/login');
+                }
+                this.fullscreenLoading = false;
+            })
+        }
     },
 }
 </script>

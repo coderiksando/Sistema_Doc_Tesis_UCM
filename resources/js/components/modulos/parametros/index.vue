@@ -23,6 +23,19 @@
                     <div class="row">
                         <div class="col-md-10">
                             <div class="form-group row">
+                                <label class="col-md-8 col-form-label">Permitir registro de estudiantes</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="switch">
+                                <input v-model="enableReg" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="form-group row">
                                 <label class="col-md-8 col-form-label">Estudiantes máximos por documentos</label>
                                 <div class="col-md-3">
                                     <input type="number" max="100" class="form-control" v-model="maxStudentNumber">
@@ -189,7 +202,8 @@
         defAvancesTesisSize: 0,
         defActaSize: 0,
         defConstanciaSize: 0,
-        fullscreenLoading: false
+        fullscreenLoading: false,
+        enableReg: 0
       }
     },
     mounted(){
@@ -211,7 +225,7 @@
         },
         getParametros(){
             var url = '/admin/parametros';
-            axios.post(url,{'params': ['MaxStudentNumber', 'AvancesTesisSize', 'ActaSize', 'ConstanciaSize', 'AvancesTesisFormato', 'ActaFormato', 'ConstanciaFormato']}).then(response => {
+            axios.post(url,{'params': ['MaxStudentNumber', 'AvancesTesisSize', 'ActaSize', 'ConstanciaSize', 'AvancesTesisFormato', 'ActaFormato', 'ConstanciaFormato', 'HabilitarRegistro']}).then(response => {
                 this.maxStudentNumber = this.defMaxStudentNumber = parseInt(response.data[0][0]);
                 this.avancesTesisSize = this.defAvancesTesisSize = parseInt(response.data[1][0]);
                 this.actaSize = this.defActaSize = parseInt(response.data[2][0]);
@@ -219,6 +233,7 @@
                 this.formatosAvance.value = response.data[4];
                 this.formatosActa.value = response.data[5];
                 this.formatosConstancia.value = response.data[6];
+                this.enableReg = parseInt(response.data[7][0])
                 console.log(response)
             })
         },
@@ -232,7 +247,8 @@
                 'ConstanciaSize' : this.constanciaSize,
                 'AvancesTesisFormato' : this.formatosAvance.value,
                 'ActaFormato' : this.formatosActa.value,
-                'ConstanciaFormato' : this.formatosConstancia.value
+                'ConstanciaFormato' : this.formatosConstancia.value,
+                'HabilitarRegistro' : this.enableReg
                 }).then(response => {
                     console.log(response.data);
                     this.fullscreenLoading = false;
@@ -261,6 +277,69 @@
 }
 </script>
 
-<style
-src="vue-multiselect/dist/vue-multiselect.min.css">
+<style>
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50%;
+  height: 65%;
+  max-width: 70px;
+  min-height: 34px;
+  min-width: 30px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 80%;
+  width: 45%;
+  left: 5%;
+  bottom: 10%;
+  background-color: #ffffff;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: rgb(65, 184, 131);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px rgb(65, 184, 131);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(100%);
+  -ms-transform: translateX(100%);
+  transform: translateX(100%);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
 </style>

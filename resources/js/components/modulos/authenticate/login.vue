@@ -66,11 +66,13 @@
                         Iniciar sesión
                         </button>
                     </div>
-                    <p class="mb-0">
-                        <router-link :to="{name:'registro'}">
-                            <b>Registrarme como alumno</b>
-                        </router-link>
-                    </p>
+                    <template v-if="enableReg">
+                        <p class="mb-0">
+                            <router-link :to="{name:'registro'}">
+                                <b>Registrarme como alumno</b>
+                            </router-link>
+                        </p>
+                    </template>
                     <p class="mb-0">
                         <router-link :to="{name:'passrecovery'}">
                             <b>Recuperar contraseña</b>
@@ -108,8 +110,12 @@ export default {
             RolByUser:[],
             fullscreenLoading: false,
             error : 0,
-            mensajeError:[]
+            mensajeError:[],
+            enableReg: 0
         }
+    },
+    mounted(){
+        this.getParametros();
     },
     methods: {
         login(){
@@ -194,6 +200,13 @@ export default {
             localStorage.setItem('rolActivo', JSON.stringify(me.RolByUser[0].name));
             this.loginSuccess();
         },
+        getParametros(){
+            var url = '/admin/parametros';
+            axios.post(url,{'params': ['HabilitarRegistro']}).then(response => {
+                this.enableReg = parseInt(response.data[0][0]);
+                console.log(this.enableReg);
+            })
+        }
     },
 
 }
