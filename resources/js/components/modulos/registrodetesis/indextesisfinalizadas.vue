@@ -179,11 +179,11 @@
                             <p>{{moment(item.updated_at).format("DD-MM-YYYY")}}</p>
                         </td>
                         <td>
-                          <router-link title="Editar FID" class="btn boton btn-primary" :to="{name:'editar.tesisfinal', params:{id: item.id}}">
+                          <router-link :title="'Editar '+terminoTitulo" class="btn boton btn-primary" :to="{name:'editar.tesisfinal', params:{id: item.id}}">
                             <i class="fas fa-folder"></i>
                           </router-link>
                           <template>
-                            <button title="Generar documento FID" class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
+                            <button :title="'Generar documento '+terminoTitulo" class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
                               <i class="fas fa-file-download"></i>
                             </button>
                           </template>
@@ -263,6 +263,7 @@ export default {
             // {id: 'D', detalle:'Desarrollo'}
         ],
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
+        terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
         listTesis: 1,
         fullscreenLoading: false,
         pageNumber: 0,

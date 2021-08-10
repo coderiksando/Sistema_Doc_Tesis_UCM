@@ -74,7 +74,7 @@
                             <router-link class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                               <i class="fas fa-eye"></i>
                             </router-link>
-                            <button title="Descargar documento de FID" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                            <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
                               <i class="fas fa-file-download"></i>
                             </button>
                             <template v-if="item.comisiones">
@@ -149,10 +149,10 @@
                         </td>
                         <td><p>{{item.p_externo}}</p></td>
                         <td>
-                            <router-link title="Ver FID" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
+                            <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
                               <i class="fas fa-eye"></i>
                             </router-link>
-                            <button title="Descargar documento de FID" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.fit.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                            <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.fit.id)" v-loading.fullscreen.lock="fullscreenLoading">
                               <i class="fas fa-file-download"></i>
                             </button>
                             <button title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item.fit)">
@@ -236,10 +236,10 @@
                         </td>
                         <td><p>{{item.comisiones.p_externo}}</p></td>
                         <td>
-                            <router-link title="Ver FID" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
+                            <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                               <i class="fas fa-eye"></i>
                             </router-link>
-                            <button title="Descargar documento de FID" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                            <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
                               <i class="fas fa-file-download"></i>
                             </button>
                             <button title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
@@ -372,6 +372,7 @@ export default {
             tipo: 'revision',
         },
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
+        terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
         listAlumnos:[],
         listPermisos:[],
         listMisComisiones:[],

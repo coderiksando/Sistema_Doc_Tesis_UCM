@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1 class="m-0 text-dark"><b>Formulario de inscripción de documento</b></h1>
+            <h1 class="m-0 text-dark"><b>{{terminoTituloExtendido}}</b></h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -24,7 +24,7 @@
           <div class="container-fluid">
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario de inscripción de documento</h3>
+                            <h3 class="card-title">{{terminoTituloExtendido}}</h3>
                         </div>
                             <div class="card-body">
                                 <div class="row">
@@ -214,7 +214,7 @@ export default {
         {value: 'Tesis', label: 'Tesis'},
         {value: 'Memoria', label: 'Memoria'}
       ],
-
+      terminoTituloExtendido: JSON.parse(localStorage.getItem('TerminoDeTituloExtendido')),
       listEscuelas:[],
       listVinculacion:[],
       fullscreenLoading: false,

@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1 class="m-0 text-dark"><b>Ingresar formulario de inscripción de documento</b></h1>
+            <h1 class="m-0 text-dark"><b>Ingresar {{terminoTituloExtendido}}</b></h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -26,7 +26,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h3 class="card-title">Formulario de inscripción de documento</h3>
+                                    <h3 class="card-title">{{terminoTituloExtendido}}</h3>
                                 </div>
                                 <div class="col-md-6" style="text-align: right;">
                                     <button class="btn btn-secondary" @click.prevent="mostrarModalAyuda">Ayuda
@@ -491,6 +491,8 @@ export default {
         listVinculacion:[],
         listAlumnosBuscados: [],
         myOwnUser: {},
+        terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
+        terminoTituloExtendido: JSON.parse(localStorage.getItem('TerminoDeTituloExtendido')),
         fullscreenLoading: false,
         modalShow: false,
         modalSearchUser: false,
@@ -652,7 +654,7 @@ export default {
             this.fillCrearFIT.cUsers.push(alumno);
         } else {
             this.mensajeError = [];
-            this.mensajeError.push("Usuario seleccionado ya está enlistado en tu FID.");
+            this.mensajeError.push("Usuario seleccionado ya está enlistado en tu "+this.terminoTitulo+".");
             this.abrirModal();
         }
         this.mostrarModalBusquedaEstudiante();

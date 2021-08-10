@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>fit del alumno {{$datosfit->Fit_User[0]->User->nombres}} {{$datosfit->Fit_User[0]->User->apellidos}} </title>
+    <title>FID del alumno {{$datosfit->Fit_User[0]->User->nombres}} {{$datosfit->Fit_User[0]->User->apellidos}} </title>
     <style>
         @page{
             margin: 1.3rem;

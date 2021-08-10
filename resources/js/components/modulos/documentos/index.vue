@@ -101,7 +101,7 @@
                         </td>
                         <td >
                           <button class="btn btn-flat btn-primary btn-sm" @click.prevent="setGenerarDocumento(item.id)">
-                              <i class="fas fa-file-download"></i> FID
+                              <i class="fas fa-file-download"></i> {{terminoTitulo}}
                             </button>
                             <button class="btn btn-flat btn-success btn-sm" @click.prevent="setGenerarMemoRevision(item.id)">
                               <i class="fas fa-file-download"></i> Memo Revision
@@ -151,6 +151,7 @@ export default {
         nIdEscuela:''
       },
       fullscreenLoading: false,
+      terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       listEscuelas:[],
       listAlumnos:[],
       listEstados: [

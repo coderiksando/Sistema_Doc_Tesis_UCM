@@ -96,6 +96,36 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Término de título abreviado</label>
+                                <div class="col-md-6">
+                                    <input type="text" max="20" class="form-control" v-model="terminoAbreviado">
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-info btn-block" @click.prevent="resetTerminoAbreviado">
+                                        <i class="fa fa-redo"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Término de título extendido</label>
+                                <div class="col-md-6">
+                                    <input type="text" max="200" class="form-control" v-model="terminoExtendido">
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-info btn-block" @click.prevent="resetTerminoExtendido">
+                                        <i class="fa fa-redo"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
                                 <label class="col-md-4 col-form-label">Formatos de avances de documento</label>
                                 <div class="col-md-7">
                                     <Multiselect
@@ -203,7 +233,11 @@
         defActaSize: 0,
         defConstanciaSize: 0,
         fullscreenLoading: false,
-        enableReg: 0
+        enableReg: 0,
+        terminoAbreviado: '',
+        terminoExtendido: '',
+        defTerminoAbreviado: '',
+        defTerminoExtendido: '',
       }
     },
     mounted(){
@@ -225,7 +259,7 @@
         },
         getParametros(){
             var url = '/admin/parametros';
-            axios.post(url,{'params': ['MaxStudentNumber', 'AvancesTesisSize', 'ActaSize', 'ConstanciaSize', 'AvancesTesisFormato', 'ActaFormato', 'ConstanciaFormato', 'HabilitarRegistro']}).then(response => {
+            axios.post(url,{'params': ['MaxStudentNumber', 'AvancesTesisSize', 'ActaSize', 'ConstanciaSize', 'AvancesTesisFormato', 'ActaFormato', 'ConstanciaFormato', 'HabilitarRegistro', 'TerminoDeTitulo', 'TerminoDeTituloExtendido']}).then(response => {
                 this.maxStudentNumber = this.defMaxStudentNumber = parseInt(response.data[0][0]);
                 this.avancesTesisSize = this.defAvancesTesisSize = parseInt(response.data[1][0]);
                 this.actaSize = this.defActaSize = parseInt(response.data[2][0]);
@@ -233,32 +267,37 @@
                 this.formatosAvance.value = response.data[4];
                 this.formatosActa.value = response.data[5];
                 this.formatosConstancia.value = response.data[6];
-                this.enableReg = parseInt(response.data[7][0])
-                console.log(response)
+                this.enableReg = parseInt(response.data[7][0]);
+                this.terminoAbreviado = this.defTerminoAbreviado = response.data[8][0];
+                this.terminoExtendido = this.defTerminoExtendido = response.data[9][0];
             })
         },
         guardarParametros(){
             var url = '/admin/setParametros';
             this.fullscreenLoading = true;
             axios.post(url,{
-                'MaxStudentNumber' : this.maxStudentNumber,
-                'AvancesTesisSize': this.avancesTesisSize,
-                'ActaSize' : this.actaSize,
-                'ConstanciaSize' : this.constanciaSize,
-                'AvancesTesisFormato' : this.formatosAvance.value,
-                'ActaFormato' : this.formatosActa.value,
-                'ConstanciaFormato' : this.formatosConstancia.value,
-                'HabilitarRegistro' : this.enableReg
+                'MaxStudentNumber'      : this.maxStudentNumber,
+                'AvancesTesisSize'      : this.avancesTesisSize,
+                'ActaSize'              : this.actaSize,
+                'ConstanciaSize'        : this.constanciaSize,
+                'AvancesTesisFormato'   : this.formatosAvance.value,
+                'ActaFormato'           : this.formatosActa.value,
+                'ConstanciaFormato'     : this.formatosConstancia.value,
+                'HabilitarRegistro'     : this.enableReg,
+                'TerminoAbreviado'      : this.terminoAbreviado,
+                'TerminoExtendido'      : this.terminoExtendido,
                 }).then(response => {
-                    console.log(response.data);
                     this.fullscreenLoading = false;
-                    // this.$router.push('/parametros');
                     Swal.fire({
-                    icon: 'success',
-                    title: 'Parámetros guardados correctamente',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+                        icon: 'success',
+                        title: 'Parámetros guardados correctamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    if (response.data == 200) {
+                        localStorage.setItem('TerminoDeTitulo', JSON.stringify(this.terminoAbreviado));
+                        localStorage.setItem('TerminoDeTituloExtendido', JSON.stringify(this.terminoExtendido));
+                    }
             })
         },
         resetEstudiantes(){
@@ -272,7 +311,13 @@
         },
         resetConstanciaSize () {
             this.constanciaSize = this.defConstanciaSize;
-        }
+        },
+        resetTerminoAbreviado () {
+            this.terminoAbreviado = this.defTerminoAbreviado;
+        },
+        resetTerminoExtendido () {
+            this.terminoExtendido = this.defTerminoExtendido;
+        },
     }
 }
 </script>
@@ -323,7 +368,7 @@ input:checked + .slider {
   background-color: rgb(65, 184, 131);
 }
 
-input:focus + .slider {
+input:hover + .slider {
   box-shadow: 0 0 1px rgb(65, 184, 131);
 }
 

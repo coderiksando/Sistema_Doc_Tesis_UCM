@@ -214,8 +214,8 @@
                           </template>
                         </td>
                         <td>
-                          <router-link title="Vista completa de FID" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: fit.id}}">
-                            <b>FID</b>
+                          <router-link :title="'Vista completa de '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: fit.id}}">
+                            <b>{{terminoTitulo}}</b>
                           </router-link>
                           <router-link title="Sección de avances" v-if="fit.avances_tesis.length > 0" class="btn boton btn-success" :to="{name:'reportes.detallesavances', params:{id: fit.fit__user[0].id_user}}">
                              <b>Av</b>
@@ -295,6 +295,7 @@
           cEstadoTesis: ''
         },
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
+        terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
         listFechaUR: [
           {value: '1', label: 'hace 1 año'},
           {value: '2', label: 'hace 2 años'},

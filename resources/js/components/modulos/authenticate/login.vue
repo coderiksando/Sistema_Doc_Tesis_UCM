@@ -110,6 +110,8 @@ export default {
             RolByUser:[],
             fullscreenLoading: false,
             error : 0,
+            terminoDeTitulo: '',
+            terminoDeTituloExtendido: '',
             mensajeError:[],
             enableReg: 0
         }
@@ -202,9 +204,12 @@ export default {
         },
         getParametros(){
             var url = '/admin/parametros';
-            axios.post(url,{'params': ['HabilitarRegistro']}).then(response => {
+            axios.post(url,{'params': ['HabilitarRegistro', 'TerminoDeTitulo', 'TerminoDeTituloExtendido']}).then(response => {
                 this.enableReg = parseInt(response.data[0][0]);
-                console.log(this.enableReg);
+                this.terminoDeTitulo = response.data[1][0];
+                this.terminoDeTituloExtendido = response.data[2][0];
+                localStorage.setItem('TerminoDeTitulo', JSON.stringify(this.terminoDeTitulo));
+                localStorage.setItem('TerminoDeTituloExtendido', JSON.stringify(this.terminoDeTituloExtendido));
             })
         }
     },
