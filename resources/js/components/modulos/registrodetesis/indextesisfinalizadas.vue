@@ -174,18 +174,18 @@
                           <template v-if="item.archivo_pdf.length">
                              <template v-for="(fileItem, fileIndex) in item.archivo_pdf">
                                  <template v-if="fileItem.tipo_pdf == 'final_t'">
-                                    <a :key="'arch'+fileIndex" title="Descargar archivo" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <b>Ar</b>
+                                    <a :key="'arch'+fileIndex" title="Descargar documento final" class="btn boton btn-success" :href="fileItem.path" target="_blank">
+                                        <b>Doc</b>
                                     </a>
                                  </template>
                                  <template v-if="fileItem.tipo_pdf == 'acta'">
                                     <a :key="'acta'+fileIndex" title="Descargar acta" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <b>Ac</b>
+                                        <b>Act</b>
                                     </a>
                                  </template>
                                  <template v-if="fileItem.tipo_pdf == 'constancia_t'">
                                     <a :key="'const'+fileIndex" title="Descargar constancia" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <b>C</b>
+                                        <b>Con</b>
                                     </a>
                                  </template>
                                  <template></template>
