@@ -217,7 +217,7 @@
                   <router-link class="nav-link" :to="'/tesis'">
                     <i class="nav-icon far fa-edit"></i>
                     <p>
-                      Inscribir/Revisa FID
+                      Inscribir/Revisa {{terminoTitulo}}
                     </p>
                   </router-link>
                 </template>
@@ -307,6 +307,7 @@ export default {
     return{
       listRolByUser: JSON.parse(localStorage.getItem('rolUser')),
       rolActivo : JSON.parse(localStorage.getItem('rolActivo')),
+      terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       fullscreenLoading: false
     }
   },

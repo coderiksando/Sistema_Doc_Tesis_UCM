@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Parametro;
+use Debugbar;
 
 class ParametrosController extends Controller
 {
@@ -29,6 +30,8 @@ class ParametrosController extends Controller
         $actaFormato         = $request->ActaFormato;
         $constanciaFormato   = $request->ConstanciaFormato;
         $habilitarRegistro   = $request->HabilitarRegistro;
+        $terminoAbreviado    = $request->TerminoAbreviado;
+        $terminoExtendido    = $request->TerminoExtendido;
 
         Parametro::where('parametro', 'MaxStudentNumber')->delete();
         Parametro::create(['parametro'=>'MaxStudentNumber', 'valor' => $maxStudentNumber]);
@@ -40,6 +43,10 @@ class ParametrosController extends Controller
         Parametro::create(['parametro'=>'ConstanciaSize', 'valor' => $constanciaSize]);
         Parametro::where('parametro', 'HabilitarRegistro')->delete();
         Parametro::create(['parametro'=>'HabilitarRegistro', 'valor' => $habilitarRegistro]);
+        Parametro::where('parametro', 'TerminoDeTitulo')->delete();
+        Parametro::create(['parametro'=>'TerminoDeTitulo', 'valor' => $terminoAbreviado]);
+        Parametro::where('parametro', 'TerminoDeTituloExtendido')->delete();
+        Parametro::create(['parametro'=>'TerminoDeTituloExtendido', 'valor' => $terminoExtendido]);
         Parametro::where('parametro', 'AvancesTesisFormato')->delete();
         Parametro::where('parametro', 'ActaFormato')->delete();
         Parametro::where('parametro', 'ConstanciaFormato')->delete();

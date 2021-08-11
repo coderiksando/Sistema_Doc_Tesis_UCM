@@ -813,7 +813,7 @@
                   <td><i class="fas fa-plus-square"></i></td>
                   <td>Insertar</td>
                   <td>
-                    Ingresa un estudiante partícipe ya existente o nuevo al FID
+                    Ingresa un estudiante partícipe ya existente o nuevo al {{terminoTitulo}}
                   </td>
                 </tr>
               </tbody>
@@ -988,6 +988,7 @@ export default {
       listAllUser: [],
       listAlumnosBuscados: [],
       listComision: [{'s':'a'}],
+      terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       fullscreenLoading: false,
       modalShow: false,
       modalSearchUser: false,
@@ -1376,7 +1377,7 @@ export default {
                 }
             } else {
                 this.mensajeError.push(
-                    "Usuario seleccionado ya está enlistado en tu FIT."
+                    "Usuario seleccionado ya está enlistado en tu "+terminoTitulo+"."
                 );
             }
             this.abrirModal();
@@ -1397,7 +1398,7 @@ export default {
         } else {
             this.mensajeError = [];
             this.mensajeError.push(
-            "Usuario seleccionado ya está enlistado en tu FIT."
+            "Usuario seleccionado ya está enlistado en tu "+terminoTitulo+"."
             );
             this.abrirModal();
         }

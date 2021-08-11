@@ -17,7 +17,6 @@ Route::post('/passrecovery/sendToken','Auth\LoginController@sendToken');
 Route::post('/passrecovery/validateToken','Auth\LoginController@validateToken');
 Route::post('/passrecovery/resetPassword','Auth\LoginController@resetPassword');
 Route::get('/authenticate/getMyOwnUser', 'Auth\LoginController@getMyOwnUser');
-Route::post('/admin/parametros', 'ParametrosController@getParametros');
 /*********      RUTAS QUE REQUIEREN AUTENTICACION        *********/
 Route::group(['middleware' => ['auth']], function () {
 
@@ -134,12 +133,13 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/secretaria/setSubirActa', 'SecretariaController@setSubirActa');
   Route::post('/secretaria/setRegistrarNota', 'SecretariaController@setRegistrarNota');
 
-  /*********    RUTAS MODULO DE ADMINISTRACION DE PARAMETROS     **********/
-  Route::post('/admin/setParametros', 'ParametrosController@setParametros');
-
   /*********    RUTAS MODULO DE SELECCION DE ROL   **********/
   Route::post('/perfil/setRol', 'Auth\LoginController@changeRol');
+
+  /*********    RUTAS MODULO DE ADMINISTRACION DE PARAMETROS     **********/
+  Route::post('/admin/setParametros', 'ParametrosController@setParametros');
 });//cierre de rutas que requieren autenticacion
+Route::post('/admin/parametros', 'ParametrosController@getParametros');
 
 
 /********** RUTA BASE **********/

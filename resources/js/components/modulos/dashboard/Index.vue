@@ -21,7 +21,7 @@
             <template v-if="listRolPermisosByUsuario.includes('tesis.crear') ">
               <div class="card card-success">
                 <div class="card-header d-flex justify-content-center">
-                  <h1 class="card-title">Ingreso de formulario de inscripción de tesis</h1>
+                  <h1 class="card-title">{{terminoTituloExtendido}}</h1>
                 </div>
                 <div class="card-body d-flex justify-content-center border border-success">
                     <div class="row text-justify">
@@ -32,13 +32,13 @@
                         <img src="/img/ingresarFIT.png" class="img-fluid" alt="Responsive image">
                         <br>
                         <br>
-                        <h5 class="card-text">Una vez que completes tu FIT podras revisar su estado en espera de la aprobacion de tu profesor guía,
+                        <h5 class="card-text">Una vez que completes tu {{terminoTitulo}} podras revisar su estado en espera de la aprobacion de tu profesor guía,
                           mientras este en estado "pendiente" podras seguir editandolo, ademas podras darte cuenta que el sistema no te permitira ingresar
                           un nuevo formulario </h5>
                         <img src="/img/EsperaFit.png" class="img-fluid" alt="Responsive image">
                         <br>
                         <br>
-                        <h5 class="card-text">Finalmente, cuando tu FIT es aprobado por el profesor guía el sistema te permitira descargar una copia de este en formato PDF. </h5>
+                        <h5 class="card-text">Finalmente, cuando tu {{terminoTitulo}} es aprobado por el profesor guía el sistema te permitira descargar una copia de este en formato PDF. </h5>
                         <img src="/img/DescargarFIT.png" class="img-fluid" alt="Responsive image">
                       </div>
                     </div>
@@ -127,7 +127,7 @@
             <template v-if="listRolPermisosByUsuario.includes('tesis.aprobar') ">
               <div class="card card-success">
                 <div class="card-header card-header d-flex justify-content-center">
-                  <h3 class="card-title">Aprobar formulario de inscripción de tesis</h3>
+                  <h3 class="card-title">Aprobar {{terminoTituloExtendido}}</h3>
                 </div>
                 <div class="card-body d-flex justify-content-center border border-success">
                     <div class="row text-justify">
@@ -137,7 +137,7 @@
                         <img src="/img/AprobarFit.png" class="img-fluid" alt="Responsive image" >
                         <br>
                         <br>
-                        <h5 class="card-text">Cuando el FIT es aprobado el sistema te permitira descargar una copia de este en formato PDF. </h5>
+                        <h5 class="card-text">Cuando el {{terminoTitulo}} es aprobado el sistema te permitira descargar una copia de este en formato PDF. </h5>
                         <img src="/img/DescargarFIT.png" class="img-fluid" alt="Responsive image">
                       </div>
                     </div>
@@ -242,7 +242,7 @@
                       <div class="col-md-12">
                         <h5 class="card-text">En el apartado de documentos del alumno los usuarios de tipo secretaria o director podran buscar y seleccionar alumnos
                           registrados en el sistema con el objetivo de descargar los documentos referentes al proceso de tesis que tengas asociados tales como
-                          formulario de inscripción de tesis(FIT) y acta de defensa ademas, de generar un memo de revision de tesis el cual calculara los
+                          {{terminoTituloExtendido}}({{terminoTitulo}}) y acta de defensa ademas, de generar un memo de revision de tesis el cual calculara los
                           dias habiles de revision a partir del momento en el que es generado.</h5>
                         <img src="/img/DocumentosIndex.png" class="img-fluid" alt="Responsive image" >
                       </div>
@@ -375,6 +375,8 @@ props: ['usuario'],
             listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
             listRolByUser: JSON.parse(localStorage.getItem('rolUser')),
             myOwnUser: JSON.parse(localStorage.getItem('authUser')),
+            terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
+            terminoTituloExtendido: JSON.parse(localStorage.getItem('TerminoDeTituloExtendido')),
             detailsUser: {
                 idEscuela: '',
                 direccion: '',
