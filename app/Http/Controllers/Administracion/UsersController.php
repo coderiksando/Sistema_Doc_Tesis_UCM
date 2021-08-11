@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Administracion;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Users_Roles;
+use App\Users_Permissions;
+use App\File;
 use App\Imports\UsersImport;
 use Exception;
 use Illuminate\Http\Request;
@@ -12,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 use Debugbar;
 
 class UsersController extends Controller
@@ -188,6 +191,46 @@ class UsersController extends Controller
                                                                     $nIdUsuario,
                                                                     $cEstado
                                                                 ]);
+    }
+    public function setEliminarUsuario(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $idUser = $request->idUser;
+        // se debe registrar si es profesor guia, coguia, si aparece dentro de comision
+        $user = User::where('id_user',$idUser)
+                    ->get()
+                    ->first();
+        if (count($user->Fit_User) > 0) return response()->json([
+            'mensaje' => 'El usuario posee registros, no puede ser eliminado.',
+            'estado' => 'rejected'
+        ]);
+        if (count($user->P_G_Fit) > 0) return response()->json([
+            'mensaje' => 'El usuario es profesor guía de un documento, no puede ser eliminado.',
+            'estado' => 'rejected'
+        ]);
+        if (count($user->P_C_G_Fit) > 0) return response()->json([
+            'mensaje' => 'El usuario es profesor co-guía de un documento, no puede ser eliminado.',
+            'estado' => 'rejected'
+        ]);
+        if (count($user->ComisionesP1) > 0 || count($user->ComisionesP2) > 0) return response()->json([
+            'mensaje' => 'El usuario es participe de una comisión, no puede ser eliminado.',
+            'estado' => 'rejected'
+        ]);
+        // busqueda de datos de usuario a eliminar
+        if (count($user->Users_Roles) > 0) {
+            $userRoles = Users_Roles::where('id_user', $user->id_user)->delete();
+        }
+        if (count($user->Users_Permissions) > 0) {
+            $userPermissions = Users_Permissions::where('id_user', $user->id_user)->delete();
+        }
+        $idFile = $user->id_files;
+        User::where('id_user', $user->id_user)->delete();
+        if ($idFile) {
+            $oldFile = File::where('id',$idFile)->get()->first();
+            $oldFileName = last(explode('/', $oldFile->path));
+            Storage::delete('public/users/'.$oldFileName);
+            File::find($idFile)->delete();
+        }
+        return response()->json(['mensaje' => 'El usuario ha sido eliminado.', 'estado' => 'Ok'], 200);
     }
     public function setEditarRolByUsuario(Request $request){
         if(!$request->ajax()) return redirect('/');
