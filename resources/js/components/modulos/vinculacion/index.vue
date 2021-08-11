@@ -133,20 +133,18 @@
                         </td>
                         <td>
                          <template  v-if="listRolPermisosByUsuario.includes('vinculacion.editar')">
+                          <router-link title="Editar" class="btn btn-info boton" :to="{name:'vinculacion.editar', params:{id: item.id}}">
+                            <i class="fas fa-pencil-alt"></i>
+                          </router-link>
                           <template v-if="item.estado == 'A'">
-
-                              <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'vinculacion.editar', params:{id: item.id}}">
-                              <i class="fas fa-pencil-alt"></i> Editar
-                            </router-link>
-
-                            <button class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarVinculacion(1, item.id)">
-                              <i class="fas fa-trash"></i>Desactivar
+                            <button title="Desactivar" class="btn btn-danger boton" @click.prevent="setCambiarVinculacion(1, item.id)">
+                              <i class="fas fa-ban"></i>
                             </button>
 
                           </template>
                           <template v-else>
-                            <button class="btn btn-flat btn-success btn-sm" @click.prevent="setCambiarVinculacion(2, item.id)">
-                              <i class="fas fa-trash"></i>Activar
+                            <button title="Activar" class="btn btn-success boton" @click.prevent="setCambiarVinculacion(2, item.id)">
+                              <i class="fas fa-check"></i>
                             </button>
                           </template>
                         </template>
