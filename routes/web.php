@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/administracion/usuario/setRegistrarUsuario', 'Administracion\UsersController@setRegistrarUsuario');
   Route::post('/administracion/usuario/setEditarUsuario', 'Administracion\UsersController@setEditarUsuario');
   Route::post('/administracion/usuario/setEditarUsuarioView', 'Administracion\UsersController@setEditarUsuarioView');
+  Route::post('/administracion/usuario/setEliminarUsuario', 'Administracion\UsersController@setEliminarUsuario');
   Route::post('/administracion/usuario/setEditarDetalleAlumno', 'Administracion\UsersController@setEditarDetalleAlumno');
   Route::post('/administracion/usuario/setCambiarEstadoUsuario', 'Administracion\UsersController@setCambiarEstadoUsuario');
   Route::post('/administracion/usuario/setEditarRolByUsuario', 'Administracion\UsersController@setEditarRolByUsuario');

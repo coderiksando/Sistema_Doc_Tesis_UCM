@@ -140,10 +140,10 @@
                         <th>Alumno(s)</th>
                         <th>Profesor</th>
                         <th>Título</th>
+                        <th>Acciones</th>
+                        <th>Fecha de creación</th>
                         <th>Escuela</th>
                         <th>Estado aprobación</th>
-                        <th>Fecha de creación</th>
-                        <th>Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -158,29 +158,13 @@
                         <td>
                             <p v-text="item.user__p__guia.nombres + ' ' + item.user__p__guia.apellidos"></p>
                         </td>
-                        <td>
-                            <p v-text="item.titulo"></p>
-                        </td>
-                        <td>
-                            <p v-text="item.escuela.nombre"></p>
-                        </td>
-                        <td>
-                          <template v-if="item.estado == 'D'">
-                            <span class="badge badge-warning" >En desarrollo</span>
-                          </template>
-                          <template v-else-if="item.estado == 'A'">
-                            <span class="badge badge-success" >Aprobada</span>
-                          </template>
-                          <template v-else>
-                            <span class="badge badge-danger" >Reprobada</span>
-                          </template>
-                        </td>
-                        <td>
-                            <p>{{moment(item.updated_at).format("DD-MM-YYYY")}}</p>
+                        <td style="min-width: 200px">
+                            <textarea v-bind:id='"text-" + index' readonly v-model="item.titulo" rows="1" @click="resizeTextarea" @keyup="resizeTextarea">
+                            </textarea>
                         </td>
                         <td>
                           <router-link :title="'Editar '+terminoTitulo" class="btn boton btn-primary" :to="{name:'editar.tesisfinal', params:{id: item.id}}">
-                            <i class="fas fa-folder"></i>
+                            <i class="fas fa-edit"></i>
                           </router-link>
                           <template>
                             <button :title="'Generar documento '+terminoTitulo" class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
@@ -206,6 +190,23 @@
                                  </template>
                                  <template></template>
                             </template>
+                          </template>
+                        </td>
+                        <td>
+                            <p>{{moment(item.updated_at).format("DD-MM-YYYY")}}</p>
+                        </td>
+                        <td>
+                            <p v-text="item.escuela.nombre"></p>
+                        </td>
+                        <td>
+                          <template v-if="item.estado == 'D'">
+                            <span class="badge badge-warning" >En desarrollo</span>
+                          </template>
+                          <template v-else-if="item.estado == 'A'">
+                            <span class="badge badge-success" >Aprobada</span>
+                          </template>
+                          <template v-else>
+                            <span class="badge badge-danger" >Reprobada</span>
                           </template>
                         </td>
                       </tr>
@@ -403,6 +404,14 @@ export default {
                 return time.getTime() < Date.parse(this.fillBsqTesis.dFechaInicio) || time.getTime() > Date.now();
             }
         };
+    },
+    resizeTextarea(e) {
+      let area = e.target;
+      if(area.style.height != area.scrollHeight + 'px'){
+        area.style.height = area.scrollHeight + 'px'
+      }else{
+        area.style.height = null;
+      }
     },
 
   }//cierre de methods
