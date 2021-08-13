@@ -140,10 +140,10 @@
                         <th>Alumno(s)</th>
                         <th>Profesor</th>
                         <th>Título</th>
+                        <th>Acciones</th>
+                        <th>Fecha de creación</th>
                         <th>Escuela</th>
                         <th>Estado aprobación</th>
-                        <th>Fecha de creación</th>
-                        <th>Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -158,8 +158,42 @@
                         <td>
                             <p v-text="item.user__p__guia.nombres + ' ' + item.user__p__guia.apellidos"></p>
                         </td>
+                        <td style="min-width: 200px">
+                            <textarea v-bind:id='"text-" + index' readonly v-model="item.titulo" rows="1" @click="resizeTextarea" @keyup="resizeTextarea">
+                            </textarea>
+                        </td>
                         <td>
-                            <p v-text="item.titulo"></p>
+                          <router-link :title="'Editar '+terminoTitulo" class="btn boton btn-primary" :to="{name:'editar.tesisfinal', params:{id: item.id}}">
+                            <i class="fas fa-edit"></i>
+                          </router-link>
+                          <template>
+                            <button :title="'Generar documento '+terminoTitulo" class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
+                              <i class="fas fa-file-download"></i>
+                            </button>
+                          </template>
+                          <template v-if="item.archivo_pdf.length">
+                             <template v-for="(fileItem, fileIndex) in item.archivo_pdf">
+                                 <template v-if="fileItem.tipo_pdf == 'final_t'">
+                                    <a :key="'arch'+fileIndex" title="Descargar documento final" class="btn boton btn-success" :href="fileItem.path" target="_blank">
+                                        <b>Doc</b>
+                                    </a>
+                                 </template>
+                                 <template v-if="fileItem.tipo_pdf == 'acta'">
+                                    <a :key="'acta'+fileIndex" title="Descargar acta" class="btn boton btn-success" :href="fileItem.path" target="_blank">
+                                        <b>Act</b>
+                                    </a>
+                                 </template>
+                                 <template v-if="fileItem.tipo_pdf == 'constancia_t'">
+                                    <a :key="'const'+fileIndex" title="Descargar constancia" class="btn boton btn-success" :href="fileItem.path" target="_blank">
+                                        <b>Con</b>
+                                    </a>
+                                 </template>
+                                 <template></template>
+                            </template>
+                          </template>
+                        </td>
+                        <td>
+                            <p>{{moment(item.updated_at).format("DD-MM-YYYY")}}</p>
                         </td>
                         <td>
                             <p v-text="item.escuela.nombre"></p>
@@ -173,39 +207,6 @@
                           </template>
                           <template v-else>
                             <span class="badge badge-danger" >Reprobada</span>
-                          </template>
-                        </td>
-                        <td>
-                            <p>{{moment(item.updated_at).format("DD-MM-YYYY")}}</p>
-                        </td>
-                        <td>
-                          <router-link :title="'Editar '+terminoTitulo" class="btn boton btn-primary" :to="{name:'editar.tesisfinal', params:{id: item.id}}">
-                            <i class="fas fa-folder"></i>
-                          </router-link>
-                          <template>
-                            <button :title="'Generar documento '+terminoTitulo" class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
-                              <i class="fas fa-file-download"></i>
-                            </button>
-                          </template>
-                          <template v-if="item.archivo_pdf.length">
-                             <template v-for="(fileItem, fileIndex) in item.archivo_pdf">
-                                 <template v-if="fileItem.tipo_pdf == 'final_t'">
-                                    <a :key="'arch'+fileIndex" title="Descargar archivo" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <b>Ar</b>
-                                    </a>
-                                 </template>
-                                 <template v-if="fileItem.tipo_pdf == 'acta'">
-                                    <a :key="'acta'+fileIndex" title="Descargar acta" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <b>Ac</b>
-                                    </a>
-                                 </template>
-                                 <template v-if="fileItem.tipo_pdf == 'constancia_t'">
-                                    <a :key="'const'+fileIndex" title="Descargar constancia" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <b>C</b>
-                                    </a>
-                                 </template>
-                                 <template></template>
-                            </template>
                           </template>
                         </td>
                       </tr>
@@ -403,6 +404,14 @@ export default {
                 return time.getTime() < Date.parse(this.fillBsqTesis.dFechaInicio) || time.getTime() > Date.now();
             }
         };
+    },
+    resizeTextarea(e) {
+      let area = e.target;
+      if(area.style.height != area.scrollHeight + 'px'){
+        area.style.height = area.scrollHeight + 'px'
+      }else{
+        area.style.height = null;
+      }
     },
 
   }//cierre de methods

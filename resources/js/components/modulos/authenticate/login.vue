@@ -208,8 +208,17 @@ export default {
                 this.enableReg = parseInt(response.data[0][0]);
                 this.terminoDeTitulo = response.data[1][0];
                 this.terminoDeTituloExtendido = response.data[2][0];
-                localStorage.setItem('TerminoDeTitulo', JSON.stringify(this.terminoDeTitulo));
-                localStorage.setItem('TerminoDeTituloExtendido', JSON.stringify(this.terminoDeTituloExtendido));
+                if (this.terminoDeTitulo) {
+                    localStorage.setItem('TerminoDeTitulo', JSON.stringify(this.terminoDeTitulo));
+                } else {
+                    localStorage.setItem('TerminoDeTitulo', JSON.stringify('Fit'));
+
+                }
+                if (this.terminoDeTitulo) {
+                    localStorage.setItem('TerminoDeTituloExtendido', JSON.stringify(this.terminoDeTituloExtendido));
+                } else {
+                    localStorage.setItem('TerminoDeTituloExtendido', JSON.stringify('Formulario de ingreso de tesis'));
+                }
             })
         }
     },

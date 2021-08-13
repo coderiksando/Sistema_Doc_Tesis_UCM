@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Users_Permissions extends Model
 {
-    protected $table = 'user_permissions';
+    protected $table = 'users_permissions';
     protected $fillable = [
         'id_user','id_permission'
     ];

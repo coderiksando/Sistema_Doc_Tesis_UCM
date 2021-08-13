@@ -54,10 +54,10 @@ class User extends Authenticatable
         return $this->hasMany(Comisiones::class, 'id_profesor2', 'id_user');
     }
     public function P_G_Fit(){
-        return $this->hasOne(Fit::class, 'id_p_guia', 'id_user');
+        return $this->hasMany(Fit::class, 'id_p_guia', 'id_user');
     }
     public function P_C_G_Fit(){
-        return $this->hasOne(Fit::class, 'id_p_co_guia', 'id_user');
+        return $this->hasMany(Fit::class, 'id_p_co_guia', 'id_user');
     }
 
 

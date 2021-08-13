@@ -137,26 +137,26 @@
                           </template>
                         </td>
                         <td>
-                          <router-link class="btn btn-flat btn-primary btn-sm" :to="{name:'usuarios.ver', params:{id_user: item.id_user}}">
+                          <router-link class="btn boton btn-primary" :to="{name:'usuarios.ver', params:{id_user: item.id_user}}">
                             <i title="Ver y Editar" class="fas fa-eye"></i>
                           </router-link>
                           <template v-if="item.state == 'A'">
-                            <!-- <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'usuarios.editar', params:{id_user: item.id_user}}">
-                              <i class="fas fa-pencil-alt"></i> Editar
-                            </router-link> -->
-                            <router-link class="btn btn-flat btn-success btn-sm" :to="{name:'usuarios.permisos', params:{id_user: item.id_user}}">
+                            <router-link class="btn boton btn-success" :to="{name:'usuarios.permisos', params:{id_user: item.id_user}}">
                               <i title="Permisos" class="fas fa-key"></i>
                             </router-link>
-                            <button class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarEstadoUsuario(1, item.id_user)">
+                            <button class="btn boton btn-danger" @click.prevent="setCambiarEstadoUsuario(1, item.id_user)">
                               <i title="Desactivar usuario" class="fas fa-ban"></i>
                             </button>
 
                           </template>
                           <template v-else>
-                            <button class="btn btn-flat btn-success btn-sm" @click.prevent="setCambiarEstadoUsuario(2, item.id_user)">
+                            <button class="btn boton btn-success" @click.prevent="setCambiarEstadoUsuario(2, item.id_user)">
                               <i title="Activar usuario" class="fas fa-check-circle"></i>
                             </button>
                           </template>
+                            <button class="btn boton btn-danger" @click.prevent="eliminarUsuario(item.id_user)">
+                              <i title="Eliminar usuario" class="fas fa-trash-alt"></i>
+                            </button>
                         </td>
                       </tr>
                     </tbody>
@@ -282,31 +282,74 @@ export default {
       this.pageNumber = 0;
     },
     setCambiarEstadoUsuario(op, id_user){
-      Swal.fire({
-      title: '¿Está seguro de que desea ' + ((op == 1) ? 'desactivar ' : 'activar ') + ' el usuario?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: ((op == 1) ? 'Si, desactivar ' : 'Si, activar ')
-    }).then((result) => {
-      if (result.value) {
-        this.fullscreenLoading = true;
-        var url = '/administracion/usuario/setCambiarEstadoUsuario'
-        axios.post(url, {
-          'nIdUsuario' : id_user,
-          'cEstado'    : (op == 1) ? 'I' : 'A'
-        }).then(response => {
-            Swal.fire({
-            icon: 'success',
-            title: 'Se ' + ((op == 1) ? 'desactivo ' : 'activo ') +'el usuario',
-            showConfirmButton: false,
-            timer: 1500
-            })
-            this.getListarUsuarios();
+        Swal.fire({
+            title: '¿Está seguro de que desea ' + ((op == 1) ? 'desactivar ' : 'activar ') + ' el usuario?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: ((op == 1) ? 'Si, desactivar ' : 'Si, activar ')
+            }).then((result) => {
+            if (result.value) {
+                this.fullscreenLoading = true;
+                var url = '/administracion/usuario/setCambiarEstadoUsuario'
+                axios.post(url, {
+                'nIdUsuario' : id_user,
+                'cEstado'    : (op == 1) ? 'I' : 'A'
+                }).then(response => {
+                    Swal.fire({
+                    icon: 'success',
+                    title: 'Se ' + ((op == 1) ? 'desactivo ' : 'activo ') +'el usuario',
+                    showConfirmButton: false,
+                    timer: 1500
+                    })
+                    this.getListarUsuarios();
+                })
+            }
         })
-      }
-    })
+    },
+    eliminarUsuario(id_user) {
+        Swal.fire({
+            title: '¿Está seguro de que desea eliminar definitivamente a éste usuario? (será eliminado de forma permanente)',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText:'Si, eliminar para siempre'
+            }).then((result) => {
+                this.fullscreenLoading = true;
+                var url = '/administracion/usuario/setEliminarUsuario';
+                axios.post(url, {
+                    'idUser' : id_user
+                }).then(response => {
+                    console.log(response.data);
+                    this.fullscreenLoading = false;
+                    if (response.data.estado == 'Ok') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: response.data.mensaje,
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: response.data.mensaje,
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    }
+                    this.getListarUsuarios();
+                }).catch(response => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error en eliminación inesperada.',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                });
+            }
+        );
     }
 
   }//cierre de methods
