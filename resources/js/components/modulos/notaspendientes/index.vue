@@ -18,14 +18,14 @@
             <template v-if="listRolPermisosByUsuario.includes('EsAlumno') && listNotasPendientes.length > 0">
               <div>
               <router-link class="btn btn-info bnt-sm link-disabled" :to="''">
-                <i class="fas fa-plus-square"></i>Usted ya ingreso una nota pendiente
+                <i class="fas fa-plus-square"></i> Usted ya ingreso una nota pendiente
               </router-link>
               </div>
             </template>
             <template v-if="listRolPermisosByUsuario.includes('notaspendientes.crear')">
               <template v-if="listNotasPendientes.length == 0 && fillEstadoTesis.cEstado  == 'D'">
                 <router-link class="btn btn-info bnt-sm" :to="'/notaspendientes/crear'">
-                  <i class="fas fa-plus-square"></i>Solicitar nota pendiente
+                  <i class="fas fa-plus-square"></i> Solicitar nota pendiente
                 </router-link>
               </template>
             </template>
@@ -55,21 +55,25 @@
                       <tr v-for="(item, index) in listarNotasPendientesPaginated" :key="index">
                         <td> <!-- itera mostrando la cantidad total de estudiantes -->
                             <div v-for="(itemUser, index) in item.alumnos" :key="index">
-                                <p v-text="itemUser.nombres + ' ' + itemUser.apellidos"></p>
+                                <div v-text="itemUser.nombres + ' ' + itemUser.apellidos"></div>
                             </div>
                         </td>
-                        <td v-text="item.fecha_presentacion"></td>
-                        <td v-text="item.fecha_propuesta"></td>
-                        <td v-text="item.fecha_prorroga"></td>
+                        <td> {{ item.fecha_presentacion | moment }}</td>
+                        <td> {{ item.fecha_propuesta | moment }}</td>
+                        <td>
+                           <template v-if="item.fecha_prorroga">
+                             {{ item.fecha_prorroga | moment }}
+                           </template>
+                          </td>
                         <td>
                             <template  v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
-                              <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'notaspendientes.editar', params:{id: item.id}}">
-                                <i class="fas fa-pencil-alt"></i> Editar
+                              <router-link title="Editar" class="btn btn-info boton" :to="{name:'notaspendientes.editar', params:{id: item.id}}">
+                                <i class="fas fa-pencil-alt"></i>
                               </router-link>
                             </template>
                             <template v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
-                              <router-link class="btn btn-flat btn-success btn-sm" :to="{name:'notaspendientes.prorroga', params:{id: item.id}}">
-                                <i class="fas fa-calendar-check"></i> Solicitar prórroga
+                              <router-link title="Solicitar prórroga" class="btn btn-success boton" :to="{name:'notaspendientes.prorroga', params:{id: item.id}}">
+                                <i class="fas fa-calendar-check"></i>
                               </router-link>
                             </template>
                         </td>
@@ -106,6 +110,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
   props: ['usuario'],
   data(){
@@ -162,6 +167,12 @@ export default {
     }
     else{
       this.getListarNotasPendientes();
+    }
+  },
+  filters:{
+    moment: function (date) {
+      moment.locale('es');
+      return moment(date).format('DD/MM/YYYY');
     }
   },
   methods:{

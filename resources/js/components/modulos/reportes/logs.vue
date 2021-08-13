@@ -124,22 +124,22 @@
                         <td>{{item.fecha | moment }}</td>
                         <td>
                           <template v-if="item.actividad == 'Registrar avance' || item.actividad == 'Editar avance'">
-                            <router-link class="btn btn-flat btn-primary btn-sm" target="_blank" :to="{name:'avances.editar', params:{id: item.target}}"><i class="fa fa-eye"></i></router-link>
+                            <router-link class="btn btn-primary boton" target="_blank" :to="{name:'avances.editar', params:{id: item.target}}"><i class="fa fa-eye"></i></router-link>
                           </template>
                           <template v-if="item.actividad == 'login'">
-                            <button disabled='true' class="btn btn-flat btn-primary btn-sm"><i class="fa fa-eye-slash"></i></button>
+                            <button disabled='true' class="btn btn-primary boton"><i class="fa fa-eye-slash"></i></button>
                           </template>
                           <template v-if="item.actividad == 'Registrar Bitácora' || item.actividad == 'Editar Bitácora'">
-                            <router-link class="btn btn-flat btn-primary btn-sm" target="_blank" :to="{name:'bitacoras.editar', params:{id: item.target}}"><i class="fa fa-eye"></i></router-link>
+                            <router-link class="btn btn-primary boton" target="_blank" :to="{name:'bitacoras.editar', params:{id: item.target}}"><i class="fa fa-eye"></i></router-link>
                           </template>
                           <template v-if="item.actividad == 'Editar Comisión' || item.actividad == 'Registrar Comisión' ">
-                            <router-link class="btn btn-flat btn-primary btn-sm" target="_blank" :to="{name:'comisiones.editar', params:{id: item.target}}"><i class="fas fa-eye"></i></router-link>
+                            <router-link class="btn btn-primary boton" target="_blank" :to="{name:'comisiones.editar', params:{id: item.target}}"><i class="fas fa-eye"></i></router-link>
                           </template>
                           <template v-if="item.actividad == 'Subir Acta'">
-                            <a class="btn btn-flat btn-primary btn-sm" target="_blank" :href="item.target"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-primary boton" target="_blank" :href="item.target"><i class="fas fa-eye"></i></a>
                           </template>
                           <template v-if="item.actividad == 'Subir nota'">
-                            <router-link class="btn btn-flat btn-primary btn-sm" target="_blank" :to="{name:'tesis.ver', params:{id: item.target}}"><i class="fas fa-eye"></i></router-link>
+                            <router-link class="btn btn-primary boton" target="_blank" :to="{name:'tesis.ver', params:{id: item.target}}"><i class="fas fa-eye"></i></router-link>
                           </template>
                         </td>
 

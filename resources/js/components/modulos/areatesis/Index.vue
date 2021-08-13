@@ -91,8 +91,8 @@
                         </td>
 
                         <td>
-                            <router-link class="btn btn-flat btn-info btn-sm" :to="{name:'areatesis.editar', params:{id: item.id}}">
-                              <i class="fas fa-pencil-alt"></i> Editar
+                            <router-link title="Editar" class="btn btn-info boton" :to="{name:'areatesis.editar', params:{id: item.id}}">
+                              <i class="fas fa-pencil-alt"></i>
                             </router-link>
                         </td>
                       </tr>
