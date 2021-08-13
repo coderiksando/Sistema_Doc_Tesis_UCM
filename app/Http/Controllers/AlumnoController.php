@@ -199,7 +199,7 @@ class AlumnoController extends Controller
                 ->where('fit.titulo','like',"%$cTitulo%")
                 ->where('fit.id_escuela','like',"%$nIdEscuela%")
                 ->where('fit.estado','like',"%$cEstadoTesis%")
-                ->where('fit.estado','<>',"D")
+                ->where('fit.aprobado_pg',"V")
                 ->whereBetween('fit.updated_at', [$dFechaInicio,$dFechaFin])
                 ->get()
                 ->pluck('id');

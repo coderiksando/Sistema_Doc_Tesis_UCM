@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1 class="m-0 text-dark">Registro de documentos finalizados</h1>
+            <h1 class="m-0 text-dark font-weight-bold">Registro de documentos finalizados</h1>
           </div>
           <!-- /.col -->
         </div>
@@ -254,21 +254,24 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label"
-                          >Nota final de documento</label
-                        >
+                        <label class="col-md-3 col-form-label">
+                        <template> Nota final de documento </template>
+                        <!-- <template v-if="!fillCrearFIT.fidFinalizada"> Estado final </template> -->
+                        </label>
                         <div class="col-md-9">
-                          <template>
+                          <div class="input-group">
                             <el-input-number
-                              style="width: 100%;"
-                              v-model="fillCrearFIT.Nota"
-                              size="large"
-                              :min="1"
-                              :precision="1"
-                              :step="0.1"
-                              :max="7"
+                                v-if="fillCrearFIT.fidFinalizada"
+                                style="width: 75%;"
+                                v-model="fillCrearFIT.Nota"
+                                size="large"
+                                :min="1"
+                                :precision="1"
+                                :step="0.1"
+                                :max="7"
                             ></el-input-number>
-                          </template>
+                            <input style="width: 40px; height: 40px; margin-left: auto; margin-right: 0;" type="checkbox" v-model="fillCrearFIT.fidFinalizada">
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -289,7 +292,8 @@
                     </div>
                     <div class="col-md-6">
                       <div class="noPadNoMar col-md-12 form-group row">
-                        <label class="noPadNoMar col-md-12 col-form-label">Documento final (opcional)</label>
+                        <label v-if="fillCrearFIT.fidFinalizada" class="noPadNoMar col-md-12 col-form-label">Documento final (opcional)</label>
+                        <label v-if="!fillCrearFIT.fidFinalizada" class="noPadNoMar col-md-12 col-form-label">Último documento (opcional)</label>
                         <div class="noPadNoMar container-fluid">
                           <div class="input-group">
                             <div class="input-group-prepend">
@@ -505,9 +509,6 @@
                         <i class="fas fa-user-plus"></i>
                       </button>
                     </div>
-
-
-
                   </div>
                 </form>
               </div>
@@ -948,7 +949,8 @@ export default {
             fullname: '',
             correo: '',
             institucion: ''
-        }
+        },
+        fidFinalizada: true
       },
       tesisForm: new FormData(),
       actaForm: new FormData(),
@@ -1022,7 +1024,7 @@ export default {
       listProfesoresBuscado: [],
       hover1: false,
       hover2: false,
-      hover3: false
+      hover3: false,
     };
   },
   computed: {},

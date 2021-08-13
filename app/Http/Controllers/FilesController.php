@@ -111,11 +111,15 @@ class FilesController extends Controller
             $registroFit->objetivo_especifico = $request->cObjetivoEspecifico;
             $registroFit->descripcion = $request->cDescripcion;
             $registroFit->contribucion = $request->cContribucion;
-            $registroFit->nota = $request->Nota;
-            if ($registroFit->nota >= 4) {
-                $registroFit->estado = 'A';
+            if ($request->fidFinalizada) {
+                $registroFit->nota = $request->Nota;
+                if ($registroFit->nota >= 4) {
+                    $registroFit->estado = 'A';
+                } else {
+                    $registroFit->estado = 'R';
+                }
             } else {
-                $registroFit->estado = 'R';
+                $registroFit->estado = 'D';
             }
             $registroFit->aprobado_pg = 'V';
             $registroFit->save();
@@ -199,11 +203,15 @@ class FilesController extends Controller
             $registroFit->objetivo_especifico = $request->cObjetivoEspecifico;
             $registroFit->descripcion = $request->cDescripcion;
             $registroFit->contribucion = $request->cContribucion;
-            $registroFit->nota = $request->Nota;
-            if ($registroFit->nota >= 4) {
-                $registroFit->estado = 'A';
+            if ($request->fidFinalizada) {
+                $registroFit->nota = $request->Nota;
+                if ($registroFit->nota >= 4) {
+                    $registroFit->estado = 'A';
+                } else {
+                    $registroFit->estado = 'R';
+                }
             } else {
-                $registroFit->estado = 'R';
+                $registroFit->estado = 'D';
             }
             $registroFit->aprobado_pg = 'V';
             $registroFit->save();
