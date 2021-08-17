@@ -145,7 +145,7 @@ class ReportesController extends Controller
         //             ->merge(['escuela'=>$item->Fit->User_P_Guia->Escuelas->nombre]);
         // });
 
-       $archivosPdf =  ArchivoPdf::select('fit.titulo', 'path', 'users.nombres', 'users.apellidos', 'escuelas.nombre', 'escuelas.id', 'users.id_user')
+       $archivosPdf =  ArchivoPdf::select('fit.titulo', 'fit.descripcion', 'fit.updated_at', 'path', 'users.nombres', 'users.apellidos', 'escuelas.nombre', 'escuelas.id', 'users.id_user')
                                 ->join('fit', 'id_fit', '=', 'fit.id')
                                 ->join('users', 'fit.id_p_guia', '=', 'users.id_user')
                                 ->join('escuelas', 'users.id_escuela', '=', 'escuelas.id')
