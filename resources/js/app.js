@@ -12,6 +12,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import locale from 'element-ui/lib/locale/lang/es';
 
+
 Vue.use(ElementUI, { locale }) // plantillas con vuejs
 window.Vue.use(ElementUI);
 
@@ -31,7 +32,8 @@ Vue.component('App', require('./components/App.vue').default);
 Vue.component('Auth', require('./components/Auth.vue').default);
 Vue.component('Home', require('./components/Home.vue').default);
 
-
+import CKEditor from 'ckeditor4-vue';
+Vue.use(CKEditor);
 
 import router from './routes';
 

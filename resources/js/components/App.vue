@@ -1,12 +1,12 @@
 <template>
 
   <div>
+    <!-- Main Sidebar Container -->
+    <Sidebar id="sidebar" class="sidebar" :ruta="ruta" :usuario="authUser" :listPermisos="listRolPermisosByUsuario"> </Sidebar>
     <!-- navbar -->
     <Navbar class="navbar" :ruta="ruta"> </Navbar>
-    <!-- Main Sidebar Container -->
-      <Sidebar id="sidebar" class="sidebar" :ruta="ruta" :usuario="authUser" :listPermisos="listRolPermisosByUsuario"> </Sidebar>
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" >
+    <div style="padding-top:50px;" class="content-wrapper" >
       <transition name="slide-fade" mode="out-in" >
         <router-view :usuario="authUser"></router-view>
       </transition>

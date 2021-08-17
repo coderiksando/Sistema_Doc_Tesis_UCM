@@ -53,7 +53,10 @@
                                                 <label class="col-md-2 offset-1 col-form-label">Acuerdo</label>
                                                 <div class="col-md-8">
                                                     <!-- <input type="text" maxlength="150" class="form-control" v-model="fillCrearBitacora.Acuerdo" @keyup.enter="setRegistrarBitacora"> -->
-                                                    <textarea class="form-control" rows="3" v-model="fillCrearBitacora.Acuerdo" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
+                                                    <!-- <textarea class="form-control" rows="3" v-model="fillCrearBitacora.Acuerdo" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea> -->
+                                                    <div id="app">
+                                                        <ckeditor :editor="editor" v-model="fillCrearBitacora.Acuerdo" :config="editorConfig"></ckeditor>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

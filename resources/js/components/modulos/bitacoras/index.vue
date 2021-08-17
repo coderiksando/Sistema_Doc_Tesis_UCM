@@ -83,7 +83,7 @@
 
                     <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
                       <div class="card-body">
-                        <div v-text="item.acuerdo" style="white-space: pre-wrap"></div>
+                        <div v-html="item.acuerdo"></div>
                       </div>
                     </div>
                   </div>

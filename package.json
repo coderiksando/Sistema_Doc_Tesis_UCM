@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.14"
     },
     "dependencies": {
+        "ckeditor4-vue": "^1.3.2",
         "element-ui": "^2.15.3",
         "moment": "^2.29.1",
         "startbootstrap-business-frontpage": "^4.3.0",
