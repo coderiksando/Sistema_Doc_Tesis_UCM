@@ -24,23 +24,29 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Formulario de registo de avance</h3>
+                <h3 class="card-title">Formulario de registro de avance</h3>
               </div>
               <div class="card-body">
                 <form role="form" id="form-avance1">
                   <div class="row">
-                    <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Descripción</label>
                         <div class="col-md-9">
                             <input type="text" maxlength="60" class="form-control" v-model="fillCrearAvances.cDescripcion" @keyup.enter="setRegistrarAvance">
                         </div>
                       </div>
-                    </div>
-                    <div class="col-md-6">
+                    </div> -->
+                    <div class="col-md-12">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Archivo</label>
-                        <div class="col-md-9">
+                        <label class="col-md-2 offset-1 col-form-label">Descripción</label>
+                        <div class="col-md-8">
+                            <textarea maxlength="255" class="form-control" rows="3" v-model="fillCrearAvances.cDescripcion"></textarea>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-2 offset-1 col-form-label">Archivo</label>
+                        <div class="col-md-8">
                           <div class="input-group">
                             <div class="input-group-prepend">
                               <span class="input-group-text" id="inputGroupFileAddon01">
@@ -63,10 +69,10 @@
                     </div>
                   </div>
                 </form>
-                <div class="container">
+                <div class="container offset-1">
                   El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
                 </div>
-                <div class="container">
+                <div class="container offset-1">
                   Los formatos de archivo soportados son:
                   <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
                 </div>

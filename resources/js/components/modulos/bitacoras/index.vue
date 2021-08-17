@@ -44,6 +44,7 @@
                                 selectLabel="Presiona enter para seleccionar"
                                 selectedLabel="Seleccionado"
                                 deselectLabel="Presiona enter para remover"
+                                @input="getListarBitacorasByAlumno"
                                 >
                               <template slot="noResult">No hay resultados</template>
                               <template slot="noOptions">Lista vacía</template>
@@ -53,63 +54,46 @@
                     </div>
                   </div>
                 </form>
-              </div> <!-- Filtro de busqueda de avances -->
-
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarBitacorasByAlumno" v-loading.fullscreen.lock="fullscreenLoading"
-                      >Buscar</button>
-                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
-                  </div>
-                </div>
-              </div>
-              </div>
+              </div> <!-- Filtro de busqueda de avances -->           
+            </div>
             </template>
 
             <div class="card card-info">
               <div class="card-header">
                 <h3 class="card-title">Bandeja de resultados</h3>
               </div>
-              <div class="card-body table table-responsive">
-                <template v-if="listBitacoras.length">
-
-                  <table class ="table table-hover text-nowrap projects">
-                    <thead>
-                      <tr>
-                        <th>Fecha</th>
-                        <th>Acuerdo</th>
-                        <th>
-                          <template  v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
-                            <span>Acciones</span>
-                          </template>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(item, index) in listBitacoras" :key="index" ref="cont">
-                        <td>{{item.fecha | moment }}</td>
-                        <td style="min-width: 400px">
-                          <textarea v-bind:id='"text-" + index' readonly v-model="item.acuerdo" rows="1" @click="resizeTextarea" @keyup="resizeTextarea">
-                          </textarea>
-                        </td>
-                        <td>
+              <template v-if="listBitacoras.length">
+                <div id="accordion">
+                  <div class="card-white" v-for="(item, index) in listBitacoras" :key="index">
+                    <div class="card-header" v-bind:id="'heading'+index">
+                      <h5 class="mb-0">
+                        <a class="btn btn-outline-primary" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        </a>
+                        <button class="btn btn-link" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
+                          {{item.fecha | moment}}
+                        </button>
                         <template  v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
-                          <router-link class="btn btn-info boton" :to="{name:'bitacoras.editar', params:{id: item.id}}">
+                          <router-link class="btn btn-info boton btn-r" :to="{name:'bitacoras.editar', params:{id: item.id}}">
                               <i class="fas fa-pencil-alt"></i>
                             </router-link>
                         </template>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </template>
-                <template v-else>
-                  <div class="callout callout-info">
-                    <h5>No se han encontrado resultados...</h5>
+                      </h5>
+                    </div>
+
+                    <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
+                      <div class="card-body">
+                        <div v-text="item.acuerdo" style="white-space: pre-wrap"></div>
+                      </div>
+                    </div>
                   </div>
-                </template>
-              </div>
+                </div>
+              </template>
+              <template v-else>
+                <div class="callout callout-info">
+                  <h5> No se han encontrado resultados...</h5>
+                </div>
+              </template>
               <div class="card-footer clearfix">
                 <ul class="pagination pagination-sm m-0 float-right">
                   <li class="page-item" v-if="pageNumber > 0">
@@ -279,11 +263,6 @@ export default {
     max-height: 350px !important;
     overflow: auto !important;
   }
-  .boton{
-    border:0px !important;
-    width: 38px !important;
-    height:38px !important;
-   }
   textarea{
     text-overflow: ellipsis;
     width:100%;

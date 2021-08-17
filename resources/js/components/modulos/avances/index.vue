@@ -45,9 +45,9 @@
               <div class="card-body">
                 <form role="form">
                   <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                       <div class="form-group row">
-                          <label class="col-md-3 col-form-label">Seleccionar estado</label>
+                          <label class="col-md-3 col-form-label">Estado</label>
                           <div class="col-md-9">
                               <Multiselect
                                 v-model="selectedEstado"
@@ -65,18 +65,21 @@
                               </Multiselect>
                           </div>
                       </div>
+                    </div>
+                    <div class="col-md-6">
                       <div class="form-group row">
-                          <label class="col-md-3 col-form-label">Seleccionar alumno</label>
+                          <label class="col-md-3 col-form-label">Alumno</label>
                           <div class="col-md-9">
                               <Multiselect
                                 v-model="selectedAlumno"
                                 placeholder="Seleccionar estudiante"
                                 :options="listAlumnos"
                                 label = "nombres"
-                                selectLabel="Presiona enter para seleccionar"
+                                selectLabel="Seleccionar"
                                 selectedLabel="Seleccionado"
-                                deselectLabel="No puedes remover este valor"
+                                deselectLabel="Cancelar"
                                 :allow-empty="false"
+                                @input="getListarAvancesByAlumno"
                                 >
                               <template slot="noResult">No hay resultados</template>
                               <template slot="noOptions">Lista vacía</template>
@@ -87,15 +90,6 @@
                   </div>
                 </form>
               </div> <!-- Filtro de busqueda de avances -->
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarAvancesByAlumno" v-loading.fullscreen.lock="fullscreenLoading"
-                      >Buscar</button>
-                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
-                  </div>
-                </div>
-              </div>
             </div>
           </template>
 
@@ -103,43 +97,36 @@
               <div class="card-header">
                 <h3 class="card-title">Bandeja de resultados</h3>
               </div>
-              <div class="card-body table table-responsive">
-                <template v-if="listarAvancesPaginated.length">
-
-                  <table class ="table table-hover table-head-fixed text-nowrap projects">
-                    <thead>
-                      <tr>
-                        <th>Fecha</th>
-                        <th>Descripción</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(item, index) in listarAvancesPaginated" :key="index">
-                        <td>{{ item.created_at | moment }}</td>
-                        <td>
-                          <textarea readonly v-model="item.descripcion" oninput='this.style.height = this.scrollHeight + "px"'></textarea>
-                        </td>
-                        <td>
-                          <a class="btn btn-warning boton" :href="item.archivo_pdf.path" target="_blank">
+              <template v-if="listarAvancesPaginated.length">
+                <div id="accordion">
+                  <div class="card-white" v-for="(item, index) in listarAvancesPaginated" :key="index">
+                    <div class="card-header" v-bind:id="'heading'+index">
+                      <h5 class="mb-0">
+                        <a class="btn btn-outline-primary" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        </a>
+                        <button class="btn btn-link" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
+                          {{item.created_at | moment}}
+                        </button>
+                          <a title="Ver documento" class="btn btn-warning boton btn-r" :href="item.archivo_pdf.path" target="_blank">
                             <i class="fas fa-file-download"> </i>
                           </a>
-                          <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">
-                            <router-link class="btn btn-info boton" :to="{name:'avances.editar', params:{id: item.id}}">
-                                <i class="fas fa-pencil-alt"></i>
-                            </router-link>
-                          </template>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </template>
-                <template v-else>
-                  <div class="callout callout-info">
-                    <h5> No se han encontrado resultados...</h5>
+                      </h5>
+                    </div>
+
+                    <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
+                      <div class="card-body">
+                        <div v-text="item.descripcion" style="white-space: pre-wrap"></div>
+                      </div>
+                    </div>
                   </div>
-                </template>
-              </div>
+                </div>
+              </template>
+              <template v-else>
+                <div class="callout callout-info">
+                  <h5> No se han encontrado resultados...</h5>
+                </div>
+              </template>
               <div class="card-footer clearfix">
                 <ul class="pagination pagination-sm m-0 float-right">
                   <li class="page-item" v-if="pageNumber > 0">
@@ -187,7 +174,7 @@ export default {
       listPermisos:[],
       fullscreenLoading: false,
       pageNumber: 0,
-      perPage: 5,
+      perPage: 10,
       modalShow: false,
       modalOption: 0,
       mostrarModal: {
@@ -279,8 +266,8 @@ export default {
           'estado'    : this.selectedEstado.valor
         }
         }).then(response => {
-          this.inicializarPaginacion();
           this.listAlumnos = response.data;
+          console.log(this.listAlumnos);
           this.fullscreenLoading = false;
       })
     },
@@ -325,6 +312,11 @@ export default {
     width: 38px !important;
     height:38px !important;
    }
+   .btn-r{
+     position: absolute; 
+     right: 5%;
+     color: white !important;
+   }
    .bt-fh{
     height: 28px !important;
    }
@@ -332,4 +324,12 @@ export default {
     table-layout: fixed;
     word-wrap: break-word;
   }
+
+  .card-white .card-header{
+    background-color: white !important;
+    display: flex;
+  }
+.fa-plus-circle{
+  top: 50vh !important;
+}
 </style>

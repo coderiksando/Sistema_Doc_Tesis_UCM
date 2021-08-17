@@ -33,8 +33,8 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="col-md-3 col-form-label">Seleccionar alumno</label>
-                                                    <div class="col-md-9">
+                                                    <label class="col-md-2 offset-1 col-form-label">Seleccionar alumno</label>
+                                                    <div class="col-md-8">
                                                         <Multiselect
                                                           v-model="selectedAlumno"
                                                           placeholder="Seleccionar estudiante"
@@ -50,8 +50,8 @@
                                                     </div>
                                                 </div>
                                             <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Acuerdo</label>
-                                                <div class="col-md-9">
+                                                <label class="col-md-2 offset-1 col-form-label">Acuerdo</label>
+                                                <div class="col-md-8">
                                                     <!-- <input type="text" maxlength="150" class="form-control" v-model="fillCrearBitacora.Acuerdo" @keyup.enter="setRegistrarBitacora"> -->
                                                     <textarea class="form-control" rows="3" v-model="fillCrearBitacora.Acuerdo" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
                                                 </div>
