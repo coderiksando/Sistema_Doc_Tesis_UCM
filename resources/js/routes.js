@@ -30,6 +30,19 @@ function verificarAcceso(to, from, next) {
 export const rutas = [
     {
         path: '/',
+        name: 'login',
+        component: require('./components/modulos/authenticate/login').default,
+        beforeEnter: (to, from, next) => {
+            let authUser = JSON.parse(localStorage.getItem('authUser'));
+            if (authUser) {
+                next({ name: 'dashboard.index' }); // o tambien puede ser next(false)
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: '/busqueda',
         name: 'home',
         component: require('./components/modulos/home/index').default,
         beforeEnter: (to, from, next) => {
@@ -46,19 +59,6 @@ export const rutas = [
         name: 'registro',
         component: require('./components/modulos/authenticate/registro').default,
         beforeEnter: (to, from, next) => {  //agregado para PSE-3
-            let authUser = JSON.parse(localStorage.getItem('authUser'));
-            if (authUser) {
-                next({ name: 'dashboard.index' }); // o tambien puede ser next(false)
-            } else {
-                next();
-            }
-        }
-    },
-    {
-        path: '/login',
-        name: 'login',
-        component: require('./components/modulos/authenticate/login').default,
-        beforeEnter: (to, from, next) => {
             let authUser = JSON.parse(localStorage.getItem('authUser'));
             if (authUser) {
                 next({ name: 'dashboard.index' }); // o tambien puede ser next(false)

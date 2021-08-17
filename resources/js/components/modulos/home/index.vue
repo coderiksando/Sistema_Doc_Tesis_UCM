@@ -15,7 +15,7 @@
                 <a class="nav-link">Home</a>
               </li>
             </router-link>
-            <router-link  :to="'/login'">
+            <router-link  :to="'/'">
               <li class="nav-item">
                 <a class="nav-link">Ingresar</a>
               </li>
@@ -30,12 +30,12 @@
         <div class="container h-150">
         <div class="row h-150 align-items-center">
             <div class="col-md-12 mt-4">
-              <td class="col-md-3">
+              <tr class="col-md-12">
                 <img class="mt-3" src="/img/logoucm.png" >
-              </td>
-              <td class="col-md-9">
+              </tr>
+              <tr class="col-md-12">
                   <h1 class="display-5 text-white mb-2" style="text-align:justify">Repositorio académico de la Facultad de Ciencias de la Ingeniería Universidad Católica del Maule</h1>
-              </td>
+              </tr>
               <p class="lead mb-5 text-white-50" ></p>
             </div>
         </div>
@@ -53,70 +53,125 @@
                 <h3 class="card-title">Criterios de búsqueda de documentos</h3>
               </div>
               <div class="card-body">
-                <form role="form">
+                <div>
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Título</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="fillBsqTesis.cTitulo">
+                            <label class="noPadNoMar col-md-12 col-form-label">Título de documento</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" v-model="fillBsqTesis.cTitulo" v-on:keyup.enter="getListarTesisHome" placeholder="Inserte el título del documento" >
+                                <button v-if="!mostrarMas" title="Mostrar más opciones" class="btn boton btn-info float-right" @click.prevent="setEstadoMostrar">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button v-if="mostrarMas" title="Mostrar menos" class="btn boton btn-info float-right" @click.prevent="setEstadoMostrar">
+                                    <i class="fas fa-minus"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Escuelas</label>
-                        <div class="col-md-9">
-                            <el-select filterable v-model="fillBsqTesis.nIdEscuela" @change="getListarProfesorByEscuela"
-                            placeholder="Asignar Escuela"
-                            clearable>
-                            <el-option
-                                v-for="item in listEscuelas"
-                                :key="item.id"
-                                :label="item.nombre"
-                                :value="item.id">
-                            </el-option>
-                            </el-select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Profesor</label>
-                        <div class="col-md-9">
-                                <el-select filterable v-model="fillBsqTesis.nIdProfesor"
-                                placeholder="Asignar Profesor"
+                    <template v-if="mostrarMas">
+                    <div class="noPadNoMar col-md-12">
+                        <div class="form-group row">
+                        <div class="col-md-5">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Escuelas</label>
+                            <div class="col-md-9">
+                                <el-select filterable v-model="fillBsqTesis.nIdEscuela" @change="getListarProfesorByEscuela"
+                                placeholder="Asignar Escuela"
                                 clearable>
                                 <el-option
-                                    v-for="item in listProfesores"
+                                    v-for="item in listEscuelas"
                                     :key="item.id"
-                                    :label="item.fullname"
-                                    :value="item.id_user">
+                                    :label="item.nombre"
+                                    :value="item.id">
                                 </el-option>
                                 </el-select>
                             </div>
-                      </div>
+                        </div>
+                        </div>
+                        <div class="col-md-5">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Profesor</label>
+                            <div class="col-md-9">
+                                    <el-select filterable v-model="fillBsqTesis.nIdProfesor"
+                                    placeholder="Asignar Profesor"
+                                    clearable>
+                                    <el-option
+                                        v-for="item in listProfesores"
+                                        :key="item.id"
+                                        :label="item.fullname"
+                                        :value="item.id_user">
+                                    </el-option>
+                                    </el-select>
+                                </div>
+                        </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button title="Buscar documento" class="btn boton btn-info float-right" @click.prevent="getListarTesisHome">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </div>
-                  </div>
-                </form>
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-primary btnWidth" @click.prevent="getListarTesisHome" v-loading.fullscreen.lock="fullscreenLoading"
-                      >Buscar</button>
-                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
+                    </div>
+                    </template>
                   </div>
                 </div>
               </div>
+
+            <div id="accordion">
+                <template v-if="listTesis.length">
+                    <template v-for="(item, index) in listTesis">
+                        <div class="card" :key="index">
+                            <div class="card-body" :id="'heading'+index">
+                            <h3 class="mb-0">
+                                <button class="btn btn-link col-md-12 noPadNoMar d-flex" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index">
+                                    <div class="col-md-1"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
+                                    <div class="col-md-8 noPadNoMar"><p class="float-left">{{item.titulo.slice(0, 40)}}</p></div>
+                                    <div class="col-md-3 noPadNoMar">
+                                        <a class="float-right btn btn-warning" :href="item.path" target="_blank"><i class="fas fa-file-download"></i></a>
+                                    </div>
+
+                                </button>
+                            </h3>
+                            </div>
+
+                            <div :id="'collapse'+index" class="collapse" :aria-labelledby="'heading'+index" data-parent="#accordion">
+                            <div class="card-footer">
+                                <ul class="list-unstyled">
+                                    <ul>
+                                        <li>Fecha: {{moment(item.updated_at).format("DD-MM-YYYY")}}</li>
+                                        <li>Titulo: {{item.titulo}}</li>
+                                        <li>Descripción: {{item.descripcion}}</li>
+                                        <li>Prof. Guía: {{item.nombres + ' ' + item.apellidos}}</li>
+                                    </ul>
+                                </ul>
+                            </div>
+                            </div>
+                        </div>
+                    </template>
+                    <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                      <li class="page-item" v-if="pageNumber > 0">
+                        <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+                      </li>
+                      <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                        :class="[page == pageNumber ? 'active' : '']">
+                        <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+                      </li>
+                      <li class="page-item" v-if="pageNumber < pageCount -1">
+                        <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+                      </li>
+                    </ul>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="callout callout-primary">
+                    <h5> No se han encontrado resultados...</h5>
+                  </div>
+                </template>
             </div>
 
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">
-                  Bandeja de resultados</h3>
-              </div>
-              <div class="card-body table table-responsive">
+              <!-- <div class="card-body table table-responsive">
                 <template v-if="listTesis.length">
 
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
@@ -129,15 +184,13 @@
                       </tr>
                     </thead>
                     <tbody>
-
                       <tr v-for="(item, index) in listTesis" :key="index">
                         <td>
                           <a class="btn btn-flat btn-warning btn-sm" :href="item.path" target="_blank"><i class="fas fa-file-download"> </i> PDF</a>
                         </td>
-                        <td v-text="item.titulo"></td>
+                        <td>{{item.titulo.slice(0, 40)}}</td>
                         <td v-text="item.nombres + ' ' + item.apellidos"></td>
                         <td v-text="item.nombre"></td>
-
                       </tr>
                     </tbody>
                   </table>
@@ -161,7 +214,7 @@
                     <h5> No se han encontrado resultados...</h5>
                   </div>
                 </template>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -186,9 +239,11 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
     data(){
       return{
+        moment: moment,
         fillBsqTesis:{
           cTitulo: '',
           cAutor: '',
@@ -214,7 +269,8 @@ export default {
           display: 'none',
         },
         error: 0,
-        mensajeError:[]
+        mensajeError:[],
+        mostrarMas: false
       }
     },
     computed: {
@@ -304,6 +360,7 @@ export default {
         }).then(response => {
             this.inicializarPaginacion();
             this.listTesis = response.data;
+            console.log(this.listTesis)
             this.fullscreenLoading = false;
         })
       },
@@ -343,7 +400,13 @@ export default {
         this.listPermisos = [];
         this.modalOption = 0;
       },
-
+      setEstadoMostrar() {
+          if (this.mostrarMas) {
+              this.fillBsqTesis.nIdEscuela  = null;
+              this.fillBsqTesis.nIdProfesor = null;
+          }
+          this.mostrarMas = !this.mostrarMas;
+      }
     }
 }
 </script>

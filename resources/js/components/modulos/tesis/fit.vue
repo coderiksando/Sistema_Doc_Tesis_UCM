@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1 class="m-0 text-dark"><b>{{terminoTituloExtendido}} ({{terminoTitulo}})</b></h1>
+            <h1 class="m-0 text-dark font-weight-bold">{{terminoTituloExtendido}} ({{terminoTitulo}})</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->

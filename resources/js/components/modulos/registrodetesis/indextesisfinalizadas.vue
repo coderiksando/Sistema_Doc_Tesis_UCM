@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="content-header">
+    <div class="content-header relative">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1 class="m-0 text-dark"><b>Documentos finalizados</b></h1>
+            <h1 class="m-0 text-dark font-weight-bold">Documentos finalizados</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -261,7 +261,7 @@ export default {
         listEstado:[
             {id: 'A', detalle:'Aprobado'},
             {id: 'R', detalle:'Reprobado'},
-            // {id: 'D', detalle:'Desarrollo'}
+            {id: 'D', detalle:'Desarrollo'}
         ],
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
         terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),

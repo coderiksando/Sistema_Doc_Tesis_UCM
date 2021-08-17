@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1 class="m-0 text-dark">
+            <h1 class="m-0 text-dark font-weight-bold">
               <b>Editar {{terminoTituloExtendido}}</b>
             </h1>
           </div>
