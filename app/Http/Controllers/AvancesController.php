@@ -37,44 +37,69 @@ class AvancesController extends Controller
         }
         return $AvancesTesis;
     }
-    public function getListarAvancesByAlumno(Request $request){
+    public function getListarAvancesByFit(Request $request){
         if(!$request->ajax()) return redirect('/');
 
-        $idAlumno = $request->id_user;
-        $FitUser  = Fit_User::Firstwhere('id_user', $idAlumno);
-        $AvancesTesis = [];
-        if($FitUser){
-            $Fit = $FitUser->Fit;
-            $AvancesTesis = $Fit->AvancesTesis->sortByDesc('updated_at')->values()->all();
-            foreach($AvancesTesis as $avance){
-                $avance->ArchivoPdf;
-            }
+        $Fit = Fit::find($request->Fit);
+        $AvancesTesis = $Fit->AvancesTesis->sortByDesc('updated_at')->values()->all();
+        foreach($AvancesTesis as $avance){
+            $avance->ArchivoPdf;
         }
+
         return $AvancesTesis;
     }
-    public function getListarAlumnosByprofesor(Request $request){
+    // public function getListarAlumnosByprofesor(Request $request){
+    //     if(!$request->ajax()) return redirect('/');
+
+    //     $idUser     = Auth::id();
+    //     $rol = $request->session()->get('rol');
+    //     $nIdAvance  = $request->nIdAvance;
+    //     $estado = $request->estado;
+
+    //     $idUser     = ($idUser == NULL) ? ($idUser = 0) : $idUser;
+    //     $nIdAvance  = ($nIdAvance == NULL) ? ($nIdAvance = 0) : $nIdAvance;
+    //     $estado     = ($estado == NULL) ? ($estado = 'D') : $estado;
+    //     $Users = [];
+
+    //     if ($rol == 'Profesor') {
+    //         $fits = Fit::where('id_p_guia', $idUser)->where('estado', $estado)->get()->pluck('id');
+    //     }else {
+    //         $fits = Fit::where('estado', $estado)->get()->pluck('id');
+    //     }
+    //     $fitUsers = Fit_User::whereIn('id_fit', $fits)->get()->pluck('id_user');;
+    //     $users = User::whereIn('id_user', $fitUsers)->get()->sortBy('nombres')->values()->all();
+
+    //     return $users;
+    // }
+
+    public function getListarFitsByprofesor(Request $request){
         if(!$request->ajax()) return redirect('/');
 
-        $idUser     = Auth::id();
+        $user     = Auth::user();
         $rol = $request->session()->get('rol');
-        $nIdAvance  = $request->nIdAvance;
         $estado = $request->estado;
 
-        $idUser     = ($idUser == NULL) ? ($idUser = 0) : $idUser;
-        $nIdAvance  = ($nIdAvance == NULL) ? ($nIdAvance = 0) : $nIdAvance;
         $estado     = ($estado == NULL) ? ($estado = 'D') : $estado;
-        $Users = [];
 
         if ($rol == 'Profesor') {
-            $fits = Fit::where('id_p_guia', $idUser)->where('estado', $estado)->get()->pluck('id');
+            $fits = Fit::where('id_p_guia', $user->id_user)->where('estado', $estado)->get();
         }else {
-            $fits = Fit::where('estado', $estado)->get()->pluck('id');
+            $fits = Fit::where('estado', $estado)->where('id_escuela', $user->id_escuela)->get();
         }
-        $fitUsers = Fit_User::whereIn('id_fit', $fits)->get()->pluck('id_user');;
-        $users = User::whereIn('id_user', $fitUsers)->get()->sortBy('nombres')->values()->all();
+        
+        foreach ($fits as $fit) {
+            $alumnos = $fit->getAlumnos();
+            $fit->nombres = $alumnos->first()->nombres.' '.$alumnos->first()->apellidos;
+            if ($alumnos->count() > 1) {
+                foreach ($alumnos->skip(1) as $alumno) {
+                    $fit->nombres = $fit->nombres.', '.$alumno->nombres.' '.$alumno->apellidos;
+                }
+            }
+        }
 
-        return $users;
+        return $fits;
     }
+
     public function getSeleccionarAvance(Request $request){
         if(!$request->ajax()) return redirect('/');
 

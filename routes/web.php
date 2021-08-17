@@ -88,8 +88,9 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/avances/getSeleccionarAvance', 'AvancesController@getSeleccionarAvance');
   Route::post('/avances/setRegistrarAvance', 'AvancesController@setRegistrarAvance');
   Route::post('/avances/setEditarAvance', 'AvancesController@setEditarAvance');
-  Route::get('/avances/getListarAvancesByAlumno', 'AvancesController@getListarAvancesByAlumno');
+  Route::get('/avances/getListarAvancesByFit', 'AvancesController@getListarAvancesByFit');
   Route::get('/avances/getListarAlumnosByprofesor', 'AvancesController@getListarAlumnosByprofesor');
+  Route::get('/avances/getListarFitsByprofesor', 'AvancesController@getListarFitsByprofesor');
   Route::get('/avances/getEstadoTesis', 'AvancesController@getEstadoTesis');
   Route::post('/avances/setRegistrarFinalPdf', 'AvancesController@setRegistrarFinalPdf');
 

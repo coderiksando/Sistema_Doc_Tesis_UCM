@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use App\User;
 use App\PassRecovery;
 use App\Users_Roles;
+use App\Roles;
 use Debugbar;
 
 
@@ -25,7 +26,9 @@ class LoginController extends Controller
         $rpta = Auth::attempt(['email' => $cEmail, 'password' => $cContrasena, 'state' => 'A']);
         if ($rpta) {
             $this->reg('login');
-            session(['rol' => Users_Roles::firstWhere('id_user', Auth::id())->Roles->name]);
+            $maxIdRol = Users_Roles::where('id_user', Auth::id())->max('id_roles');
+            $rol = Roles::find($maxIdRol);
+            session(['rol' => $rol->name]);
             return response()->json([
                 'authUser'  =>  Auth::user(),
                 'code'      =>  200

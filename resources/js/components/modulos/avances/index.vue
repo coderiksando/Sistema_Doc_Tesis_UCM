@@ -58,7 +58,7 @@
                                 selectedLabel="Seleccionado"
                                 deselectLabel="No puedes remover este valor"
                                 :allow-empty="false"
-                                @input="getListarAlumnosByprofesor"
+                                @input="getListarFitsByprofesor"
                                 >
                               <template slot="noResult">No hay resultados</template>
                               <template slot="noOptions">Lista vacía</template>
@@ -71,15 +71,15 @@
                           <label class="col-md-3 col-form-label">Alumno</label>
                           <div class="col-md-9">
                               <Multiselect
-                                v-model="selectedAlumno"
+                                v-model="selectedFit"
                                 placeholder="Seleccionar estudiante"
-                                :options="listAlumnos"
+                                :options="listFits"
                                 label = "nombres"
                                 selectLabel="Seleccionar"
                                 selectedLabel="Seleccionado"
                                 deselectLabel="Cancelar"
                                 :allow-empty="false"
-                                @input="getListarAvancesByAlumno"
+                                @input="getListarAvancesByFit"
                                 >
                               <template slot="noResult">No hay resultados</template>
                               <template slot="noOptions">Lista vacía</template>
@@ -164,12 +164,12 @@ export default {
       },
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       listAvances:[],
-      listAlumnos:[],
+      listFits:[],
       listEstados: [
         {nombre: 'En desarrollo', valor: 'D'},
         {nombre: 'Aprobada', valor: 'A'},
         {nombre: 'Reprobada', valor: 'R'}],
-      selectedAlumno:{},
+      selectedFit:{},
       selectedEstado: {nombre: 'En desarrollo', valor: 'D'},
       listPermisos:[],
       fullscreenLoading: false,
@@ -219,7 +219,7 @@ export default {
   mounted(){
     this.getEstadoTesis();
     this.getListarAvances();
-    this.getListarAlumnosByprofesor();
+    this.getListarFitsByprofesor();
   },
   filters:{
     moment: function (date) {
@@ -229,7 +229,7 @@ export default {
   },
   methods:{
     limpiarCriteriosBsq(){
-      this.selectedAlumno = {};
+      this.selectedFit = {};
       this.selectedEstado = {};
     },
     limpiarBandejaUsuarios(){
@@ -244,12 +244,12 @@ export default {
           }
       })
     },
-    getListarAvancesByAlumno(){
+    getListarAvancesByFit(){
       this.fullscreenLoading = true;
-      var url = '/avances/getListarAvancesByAlumno'
+      var url = '/avances/getListarAvancesByFit'
       axios.get(url, {
         params: {
-          'id_user' : this.selectedAlumno.id_user,
+          'Fit' : this.selectedFit.id,
         }
       }).then(response => {
           this.inicializarPaginacion();
@@ -257,17 +257,31 @@ export default {
           this.fullscreenLoading = false;
       })
     },
-    getListarAlumnosByprofesor(){
+    // getListarAlumnosByprofesor(){
+    //   this.fullscreenLoading = true;
+    //   this.selectedAlumno = {};
+    //   var url = '/avances/getListarAlumnosByprofesor';
+    //   axios.get(url, {
+    //     params: {
+    //       'estado'    : this.selectedEstado.valor
+    //     }
+    //     }).then(response => {
+    //       this.listAlumnos = response.data;
+    //       console.log(this.listAlumnos);
+    //       this.fullscreenLoading = false;
+    //   })
+    // },
+    getListarFitsByprofesor(){
       this.fullscreenLoading = true;
-      this.selectedAlumno = {};
-      var url = '/avances/getListarAlumnosByprofesor';
+      this.selectedFit = {};
+      var url = '/avances/getListarFitsByprofesor';
       axios.get(url, {
         params: {
           'estado'    : this.selectedEstado.valor
         }
         }).then(response => {
-          this.listAlumnos = response.data;
-          console.log(this.listAlumnos);
+          this.listFits = response.data;
+          console.log(this.listFits);
           this.fullscreenLoading = false;
       })
     },
