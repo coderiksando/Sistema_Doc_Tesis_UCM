@@ -330,13 +330,13 @@ export default {
       })
     },
     cambiarRol(redirect){
-      this.fullscreenLoading = true;
+      // this.fullscreenLoading = true;
       localStorage.setItem('rolActivo', JSON.stringify(this.rolActivo));
       var url = '/perfil/setRol'
       axios.post(url, {
               'rol' : this.rolActivo
       }).then(response => {
-          this.fullscreenLoading = false;
+          // this.fullscreenLoading = false;
           localStorage.setItem('listRolPermisosByUsuario', JSON.stringify(response.data.permisos));
           this.permisos = response.data.permisos;
           if(response.data.code == 401){

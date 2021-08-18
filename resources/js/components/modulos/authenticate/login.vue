@@ -166,8 +166,10 @@ export default {
             return this.error;
         },
         loginSuccess(){
-            this.$router.push({name: 'dashboard.index'})
-                location.reload();
+            window.location.href = '/dashboard';
+            // location.reload();
+            // this.$router.push({name: 'dashboard.index'})
+                
         },
         getListarRolPermisosByUsuario(authUser){
             var ruta = '/administracion/usuario/getListarRolPermisosByUsuario'
