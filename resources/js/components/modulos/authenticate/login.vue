@@ -137,7 +137,6 @@ export default {
                     this.getListarRolPermisosByUsuario(response.data.authUser);
                     //this.loginSuccess();
                 }
-                this.fullscreenLoading = false;
             })
         },
         validarLogin(){
@@ -167,6 +166,7 @@ export default {
         },
         loginSuccess(){
             window.location.href = '/dashboard';
+            this.fullscreenLoading = false;
             // location.reload();
             // this.$router.push({name: 'dashboard.index'})
                 
