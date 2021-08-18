@@ -98,6 +98,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('bitacoras/getListarMisBitacoras', 'BitacorasController@getListarMisBitacoras');
   Route::post('/bitacoras/setRegistrarBitacora', 'BitacorasController@setRegistrarBitacora');
   Route::get('/bitacoras/getListarBitacorasByAlumno', 'BitacorasController@getListarBitacorasByAlumno');
+  Route::get('/bitacoras/getListarBitacorasByFit', 'BitacorasController@getListarBitacorasByFit');
   Route::post('/bitacoras/setEditarBitacora', 'BitacorasController@setEditarBitacora');
 
   /*********    RUTAS MODULO DE ADMINISTRACION DE NOTAS PENDIENTES    **********/

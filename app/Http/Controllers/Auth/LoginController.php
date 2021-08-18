@@ -11,6 +11,9 @@ use Illuminate\Support\Str;
 use App\User;
 use App\PassRecovery;
 use App\Users_Roles;
+use App\Users_Permissions;
+use App\Permission;
+use App\Roles_Permissions;
 use App\Roles;
 use Debugbar;
 
@@ -104,8 +107,22 @@ class LoginController extends Controller
 
     public function changeRol(Request $request){
         session(['rol' => $request->rol]);
+        $rolName = $request->rol;
+        $rol = Roles::firstWhere('name', $rolName);
+
+        $nIdUsuario = Auth::id();
+        $permisosUserIds = Users_Permissions::where('id_user', $nIdUsuario)->get()->pluck('id_permission');
+        $permisosUser = Permission::whereIn('id', $permisosUserIds)->get();
+
+        $permisosRolUserId = Roles_Permissions::where('id_role', $rol->id)->get()->pluck('id_permission');
+        $permisosRolUser = Permission::whereIn('id', $permisosRolUserId)->get();
+
+        $permisos = $permisosUser->union($permisosRolUser);
+
+
         return ['rol' => $request->rol,
-                'code' => 200
+                'code' => 200,
+                'permisos' => $permisos->pluck('slug')
                 ];
     }
 }

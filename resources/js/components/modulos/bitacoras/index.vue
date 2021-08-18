@@ -34,17 +34,17 @@
                   <div class="row">
                     <div class="col-md-9">
                       <div class="form-group row">
-                          <label class="col-md-3 col-form-label">Seleccionar alumno</label>
+                          <label class="col-md-3 col-form-label">Seleccionar alumno/s</label>
                           <div class="col-md-9">
                               <Multiselect
-                                v-model="selectedAlumno"
+                                v-model="selectedFit"
                                 placeholder="Seleccionar estudiante"
-                                :options="listAlumnos"
+                                :options="listFits"
                                 label = "nombres"
-                                selectLabel="Presiona enter para seleccionar"
+                                selectLabel="Seleccionar"
                                 selectedLabel="Seleccionado"
-                                deselectLabel="Presiona enter para remover"
-                                @input="getListarBitacorasByAlumno"
+                                deselectLabel="Remover"
+                                @input="getListarBitacorasByFit"
                                 >
                               <template slot="noResult">No hay resultados</template>
                               <template slot="noOptions">Lista vacía</template>
@@ -131,10 +131,10 @@ export default {
         id_user: '',
       },
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
-      listAlumnos:[],
+      listFits:[],
       listPermisos:[],
       listBitacoras:[],
-      selectedAlumno:{},
+      selectedFit:{},
       fullscreenLoading: false,
       pageNumber: 0,
       perPage: 5,
@@ -180,7 +180,7 @@ export default {
   },
   mounted(){
     this.getListarMisBitacoras();
-    this.getListarAlumnosByprofesor();
+    this.getListarFitsByprofesor();
   },
   filters:{
     moment: function (date) {
@@ -189,13 +189,16 @@ export default {
     }
   },
   methods:{
-    getListarAlumnosByprofesor(){
+    getListarFitsByprofesor(){
       this.fullscreenLoading = true;
-      var url = '/avances/getListarAlumnosByprofesor'
+      this.selectedFit = {};
+      var url = '/avances/getListarFitsByprofesor';
       axios.get(url, {
-      }).then(response => {
-          this.inicializarPaginacion();
-          this.listAlumnos = response.data;
+        params: {
+          'estado'    : 'D'
+        }
+        }).then(response => {
+          this.listFits = response.data;
           this.fullscreenLoading = false;
       })
     },
@@ -210,21 +213,25 @@ export default {
           this.fullscreenLoading = false;
       })
     },
-    getListarBitacorasByAlumno(){
-      this.fullscreenLoading = true;
-      var url = '/bitacoras/getListarBitacorasByAlumno'
-      axios.get(url, {
-        params: {
-          'id_user' : this.selectedAlumno.id_user,
-        }
-      }).then(response => {
-          this.inicializarPaginacion();
-          this.listBitacoras = response.data;
-          this.fullscreenLoading = false;
-      })
+    getListarBitacorasByFit(){
+      if (!this.selectedFit) {
+        this.limpiarBandejaUsuarios();
+      }else{
+        this.fullscreenLoading = true;
+        var url = '/bitacoras/getListarBitacorasByFit'
+        axios.get(url, {
+          params: {
+            'fit' : this.selectedFit.id,
+          }
+        }).then(response => {
+            this.inicializarPaginacion();
+            this.listBitacoras = response.data;
+            this.fullscreenLoading = false;
+        })
+      }
     },
     limpiarCriteriosBsq(){
-      this.selectedAlumno = {};
+      this.selectedFit = {};
     },
     limpiarBandejaUsuarios(){
       this.listBitacoras = [];

@@ -36,13 +36,13 @@
                                                     <label class="col-md-2 offset-1 col-form-label">Seleccionar alumno</label>
                                                     <div class="col-md-8">
                                                         <Multiselect
-                                                          v-model="selectedAlumno"
+                                                          v-model="selectedFit"
                                                           placeholder="Seleccionar estudiante"
-                                                          :options="listAlumnos"
+                                                          :options="listFits"
                                                           label = "nombres"
-                                                          selectLabel="Presiona enter para seleccionar"
+                                                          selectLabel="Seleccionar"
                                                           selectedLabel="Seleccionado"
-                                                          deselectLabel="Presiona enter para remover"
+                                                          deselectLabel="Remover"
                                                           >
                                                         <template slot="noResult">No hay resultados</template>
                                                         <template slot="noOptions">Lista vacía</template>
@@ -55,7 +55,7 @@
                                                     <!-- <input type="text" maxlength="150" class="form-control" v-model="fillCrearBitacora.Acuerdo" @keyup.enter="setRegistrarBitacora"> -->
                                                     <!-- <textarea class="form-control" rows="3" v-model="fillCrearBitacora.Acuerdo" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea> -->
                                                     <div id="app">
-                                                        <ckeditor :editor="editor" v-model="fillCrearBitacora.Acuerdo" :config="editorConfig"></ckeditor>
+                                                        <ckeditor v-model="fillCrearBitacora.Acuerdo"></ckeditor>
                                                     </div>
                                                 </div>
                                             </div>
@@ -109,8 +109,8 @@ export default {
         id_user: '',
         Acuerdo: ''
       },
-      listAlumnos:[],
-      selectedAlumno: {},
+      listFits:[],
+      selectedFit: {},
       fullscreenLoading: false,
       modalShow: false,
       mostrarModal: {
@@ -121,24 +121,27 @@ export default {
         display: 'none',
       },
       error: 0,
-      mensajeError:[]
+      mensajeError:[],
     }
   },
   computed: {
   },
   mounted(){
 
-    this.getListarAlumnosByprofesor();
+    this.getListarFitsByprofesor();
   },
   methods:{
-    getListarAlumnosByprofesor(){
-      //this.fullscreenLoading = true;
-      var url = '/avances/getListarAlumnosByprofesor'
+    getListarFitsByprofesor(){
+      this.fullscreenLoading = true;
+      this.selectedFit = {};
+      var url = '/avances/getListarFitsByprofesor';
       axios.get(url, {
-      }).then(response => {
-          //this.inicializarPaginacion();
-          this.listAlumnos = response.data;
-          //this.fullscreenLoading = false;
+        params: {
+          'estado'    : 'D'
+        }
+        }).then(response => {
+          this.listFits = response.data;
+          this.fullscreenLoading = false;
       })
     },
     limpiarCriterios(){
@@ -151,7 +154,7 @@ export default {
     validarRegistrarBitacora(){
       this.error = 0;
       this.mensajeError = [];
-        if(!this.selectedAlumno){
+        if(!this.selectedFit){
           this.mensajeError.push("El alumno es un campo obligatorio")
         }
         if(!this.fillCrearBitacora.Acuerdo){
@@ -170,11 +173,25 @@ export default {
       this.fullscreenLoading = true;
       var url = '/bitacoras/setRegistrarBitacora'
       axios.post(url, {
-        'id_user'           : this.selectedAlumno.id_user,
-        'Acuerdo'           : this.fillCrearBitacora.Acuerdo
+        'fit'           : this.selectedFit.id,
+        'Acuerdo'       : this.fillCrearBitacora.Acuerdo
       }).then(response => {
         this.fullscreenLoading = false;
         this.$router.push('/bitacoras');
+        Swal.fire({
+        icon: 'success',
+        title: 'Bitácora creada correctamente',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      }).catch(response=>{
+        this.fullscreenLoading = false;
+        Swal.fire({
+        icon: 'error',
+        title: 'Error al crear Bitácora',
+        showConfirmButton: false,
+        timer: 1500
+      })
       })
     }
 

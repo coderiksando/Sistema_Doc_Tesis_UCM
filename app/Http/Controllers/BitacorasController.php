@@ -50,15 +50,25 @@ class BitacorasController extends Controller
 
         return $Bitacoras;
     }
+    
+    public function getListarBitacorasByFit(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
+        $Bitacoras = [];
+
+        $Fit = Fit::find($request->fit);
+        $Bitacoras = $Fit->Bitacoras->sortByDesc('fecha')->values()->all();
+
+
+        return $Bitacoras;
+    }
 
     public function setRegistrarBitacora(Request $request){
         if(!$request->ajax()) return redirect('/');
 
-        $IdAlumno   = $request->id_user;
-        $DatosEmail = new stdClass();
-        $alumno     = User::find($IdAlumno);
-        $fit        = Fit_User::Firstwhere('id_user', $IdAlumno)->Fit;
+        $fit        = Fit::find($request->fit);
         $fit_users  = $fit->Fit_User;
+        $DatosEmail = new stdClass();  
         $fit->User_P_Guia;
 
         foreach($fit_users as $fit_user){

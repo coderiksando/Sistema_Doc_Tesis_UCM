@@ -7,6 +7,9 @@ use App\User;
 use App\Users_Roles;
 use App\Users_Permissions;
 use App\File;
+use App\Roles;
+use App\Permission;
+use App\Roles_Permissions;
 use App\Imports\UsersImport;
 use Exception;
 use Illuminate\Http\Request;
@@ -323,20 +326,24 @@ class UsersController extends Controller
         }
     }
     public function getListarRolPermisosByUsuario(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        // if(!$request->ajax()) return redirect('/');
 
         $nIdUsuario = $request->nIdUsuario;
+        $rolName = $request->session()->get('rol');
+        $rol = Roles::firstWhere('name', $rolName);
 
         if(!$nIdUsuario){
             $nIdUsuario = Auth::id();
         }
 
-        $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = 0) : $nIdUsuario;
+        $permisosUserIds = Users_Permissions::where('id_user', $nIdUsuario)->get()->pluck('id_permission');
+        $permisosUser = Permission::whereIn('id', $permisosUserIds)->get();
 
-        $rpta = DB::select('call sp_Usuario_getListarRolPermisosByUsuario (?)',
-                                                                [
-                                                                    $nIdUsuario
-                                                                ]);
+        $permisosRolUserId = Roles_Permissions::where('id_role', $rol->id)->get()->pluck('id_permission');
+        $permisosRolUser = Permission::whereIn('id', $permisosRolUserId)->get();
+
+        $rpta = $permisosUser->union($permisosRolUser);
+
         return $rpta;
     }
 

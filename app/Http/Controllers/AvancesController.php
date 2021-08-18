@@ -48,29 +48,29 @@ class AvancesController extends Controller
 
         return $AvancesTesis;
     }
-    // public function getListarAlumnosByprofesor(Request $request){
-    //     if(!$request->ajax()) return redirect('/');
+    public function getListarAlumnosByprofesor(Request $request){
+        if(!$request->ajax()) return redirect('/');
 
-    //     $idUser     = Auth::id();
-    //     $rol = $request->session()->get('rol');
-    //     $nIdAvance  = $request->nIdAvance;
-    //     $estado = $request->estado;
+        $idUser     = Auth::id();
+        $rol = $request->session()->get('rol');
+        $nIdAvance  = $request->nIdAvance;
+        $estado = $request->estado;
 
-    //     $idUser     = ($idUser == NULL) ? ($idUser = 0) : $idUser;
-    //     $nIdAvance  = ($nIdAvance == NULL) ? ($nIdAvance = 0) : $nIdAvance;
-    //     $estado     = ($estado == NULL) ? ($estado = 'D') : $estado;
-    //     $Users = [];
+        $idUser     = ($idUser == NULL) ? ($idUser = 0) : $idUser;
+        $nIdAvance  = ($nIdAvance == NULL) ? ($nIdAvance = 0) : $nIdAvance;
+        $estado     = ($estado == NULL) ? ($estado = 'D') : $estado;
+        $Users = [];
 
-    //     if ($rol == 'Profesor') {
-    //         $fits = Fit::where('id_p_guia', $idUser)->where('estado', $estado)->get()->pluck('id');
-    //     }else {
-    //         $fits = Fit::where('estado', $estado)->get()->pluck('id');
-    //     }
-    //     $fitUsers = Fit_User::whereIn('id_fit', $fits)->get()->pluck('id_user');;
-    //     $users = User::whereIn('id_user', $fitUsers)->get()->sortBy('nombres')->values()->all();
+        if ($rol == 'Profesor') {
+            $fits = Fit::where('id_p_guia', $idUser)->where('estado', $estado)->get()->pluck('id');
+        }else {
+            $fits = Fit::where('estado', $estado)->get()->pluck('id');
+        }
+        $fitUsers = Fit_User::whereIn('id_fit', $fits)->get()->pluck('id_user');;
+        $users = User::whereIn('id_user', $fitUsers)->get()->sortBy('nombres')->values()->all();
 
-    //     return $users;
-    // }
+        return $users;
+    }
 
     public function getListarFitsByprofesor(Request $request){
         if(!$request->ajax()) return redirect('/');
