@@ -169,7 +169,7 @@ export default {
                     'password': this.newPassword,
                     'id_user': this.id_user
                 }).then(() => {
-                    this.$router.push('/login');
+                    this.$router.push('/');
                 })
             }
         },

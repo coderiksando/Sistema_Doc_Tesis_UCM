@@ -10,9 +10,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-            <router-link  :to="'/'">
+            <router-link  :to="'/busqueda'">
               <li class="nav-item">
-                <a class="nav-link">Home</a>
+                <a class="nav-link">Búsqueda</a>
               </li>
             </router-link>
             <router-link  :to="'/'">
@@ -25,25 +25,8 @@
         </div>
     </nav>
 
-    <!-- Header -->
-    <header class="bg-primary py-5 mb-5">
-        <div class="container h-150">
-        <div class="row h-150 align-items-center">
-            <div class="col-md-12 mt-4">
-              <tr class="col-md-12">
-                <img class="mt-3" src="/img/logoucm.png" >
-              </tr>
-              <tr class="col-md-12">
-                  <h1 class="display-5 text-white mb-2" style="text-align:justify">Repositorio académico de la Facultad de Ciencias de la Ingeniería Universidad Católica del Maule</h1>
-              </tr>
-              <p class="lead mb-5 text-white-50" ></p>
-            </div>
-        </div>
-        </div>
-    </header>
-
     <!-- Page Content -->
-    <div class="container">
+    <div style="padding-top: 100px; padding-bottom: 100px;" class="container">
 
       <div class="card">
         <div class="card-body">
@@ -83,7 +66,8 @@
                                     v-for="item in listEscuelas"
                                     :key="item.id"
                                     :label="item.nombre"
-                                    :value="item.id">
+                                    :value="item.id"
+                                >
                                 </el-option>
                                 </el-select>
                             </div>
@@ -125,10 +109,10 @@
                             <div class="card-body" :id="'heading'+index">
                             <h3 class="mb-0">
                                 <button class="btn btn-link col-md-12 noPadNoMar d-flex" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index">
-                                    <div class="col-md-1"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
-                                    <div class="col-md-8 noPadNoMar"><p class="float-left">{{item.titulo.slice(0, 40)}}</p></div>
+                                    <div title="Sección expandible" class="col-md-1"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
+                                    <div title="Sección expandible" class="col-md-8 noPadNoMar"><p class="float-left">{{item.titulo.slice(0, 40)}}</p></div>
                                     <div class="col-md-3 noPadNoMar">
-                                        <a class="float-right btn btn-warning" :href="item.path" target="_blank"><i class="fas fa-file-download"></i></a>
+                                        <a title="Descargar documento"  class="float-right btn btn-warning" :href="item.path" target="_blank"><i class="fas fa-file-download"></i></a>
                                     </div>
 
                                 </button>
@@ -137,14 +121,16 @@
 
                             <div :id="'collapse'+index" class="collapse" :aria-labelledby="'heading'+index" data-parent="#accordion">
                             <div class="card-footer">
-                                <ul class="list-unstyled">
-                                    <ul>
-                                        <li>Fecha: {{moment(item.updated_at).format("DD-MM-YYYY")}}</li>
-                                        <li>Titulo: {{item.titulo}}</li>
-                                        <li>Descripción: {{item.descripcion}}</li>
-                                        <li>Prof. Guía: {{item.nombres + ' ' + item.apellidos}}</li>
-                                    </ul>
-                                </ul>
+                                <dl class="row">
+                                    <dt class="col-md-2">Fecha:</dt>
+                                    <dd class="col-md-10">{{moment(item.updated_at).format("DD-MM-YYYY")}}</dd>
+                                    <dt class="col-md-2">Título extendido:</dt>
+                                    <dd class="col-md-10">{{item.titulo}}</dd>
+                                    <dt class="col-md-2">Descripción:</dt>
+                                    <dd class="col-md-10">{{item.descripcion}}</dd>
+                                    <dt class="col-md-2">Prof. Guía:</dt>
+                                    <dd class="col-md-10">{{item.nombres + ' ' + item.apellidos}}</dd>
+                                </dl>
                             </div>
                             </div>
                         </div>
@@ -224,7 +210,7 @@
     <!-- /.container -->
 
     <!-- Footer -->
-    <footer class="py-5 bg-dark">
+    <footer style="position: fixed; bottom: 0; width: 100%;" class="py-3 bg-dark">
         <div class="container" style="text-align: center">
           <!-- Por favor por respeto a los colaboradores de este proyecto no eliminar las referencias de las personas que han participado-->
         <strong >Sistema de gestión y administración de documentos <a href="https://www.ucm.cl">UCM</a>.</strong>&nbsp; All rights
@@ -240,10 +226,12 @@
 
 <script>
 import moment from "moment";
+import globalFunctions from '../../../services/globalFunctions';
 export default {
     data(){
       return{
         moment: moment,
+        globalFunctions: new globalFunctions(),
         fillBsqTesis:{
           cTitulo: '',
           cAutor: '',
@@ -314,6 +302,7 @@ export default {
         })
       },
       getListarProfesorByEscuela(){
+        this.fillBsqTesis.nIdProfesor = null;
         this.fullscreenLoading = true;
         var url = '/reportes/getListarProfesorByEscuela'
         axios.get(url, {
@@ -360,7 +349,9 @@ export default {
         }).then(response => {
             this.inicializarPaginacion();
             this.listTesis = response.data;
-            console.log(this.listTesis)
+            this.listTesis.forEach(tesis => {
+                tesis.titulo = this.globalFunctions.capitalizeFirstLetter(tesis.titulo);
+            });
             this.fullscreenLoading = false;
         })
       },
