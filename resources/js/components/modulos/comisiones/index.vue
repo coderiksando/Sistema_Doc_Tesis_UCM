@@ -12,21 +12,13 @@
 
     <div class="container container-fluid">
       <div class="card">
-        <div class="card-header">
-          <div class="card-tools">
-            <template v-if="rolActivo == 'Profesor'">
-                <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
-                    <i class="fas fa-arrow-left"></i> Regresar
-                </a>
-            </template>
-          </div>
-        </div>
+
         <template v-if="rolActivo == 'Profesor'">
         <div class="card-body">
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Mis comisiones</h3>
+                <h3 class="card-title">Comisiones lideradas como Prof. Guía</h3>
               </div>
               <div class="card-body table table-responsive">
                 <template v-if="listarComisionesPaginated.length">
@@ -66,12 +58,17 @@
                             </template>
                         </td>
                         <td>
+                            <template v-if="!item.comisiones">
+                            <router-link title="Crear comisión" class="btn boton btn-info" :to="{name:'comisiones.crear', params:{id: item.id}}">
+                              <i class="fas fa-plus-circle"></i>
+                            </router-link>
+                            </template>
                             <template v-if="item.comisiones">
-                            <router-link class="btn boton btn-info" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
+                            <router-link title="Editar comisión" class="btn boton btn-info" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
                               <i class="fas fa-pencil-alt"></i>
                             </router-link>
                             </template>
-                            <router-link class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
+                            <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                               <i class="fas fa-eye"></i>
                             </router-link>
                             <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">

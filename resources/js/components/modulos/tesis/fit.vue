@@ -92,7 +92,7 @@
                         </td>
                         <td>
                           <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
-                            <i class="fas fa-folder"></i>
+                            <i class="fas fa-eye"></i>
                           </router-link>
                           <template v-if="(item.aprobado_pg == 'A' || item.aprobado_pg == 'V') && listRolPermisosByUsuario.includes('tesis.subirconstancia')">
                             <router-link title="Subir constancia de examen" class="btn btn-success boton" :to="{name:'tesis.subirconstancia'}">
@@ -130,7 +130,7 @@
                                   <i class="fas fa-check"></i>
                                 </button>
                                 <button :title="'Rechazar '+terminoTitulo" class="btn boton btn-danger" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
-                                  <i class="fas fa-trash"></i>
+                                  <i class="fas fa-times"></i>
                                 </button>
                             </template>
                           </template>
@@ -188,7 +188,7 @@
                         <td>Módulo de registro de datos de {{terminoTitulo}}</td>
                     </tr>
                     <tr>
-                        <td><i class="fas fa-folder"></i></td>
+                        <td><i class="fas fa-eye"></i></td>
                         <td>Ver</td>
                         <td>Visión protegida de los datos ingresados en {{terminoTitulo}}</td>
                     </tr>
@@ -214,7 +214,7 @@
                             <td>Aprobación de los datos inscritos por el alumno (envío de correo)</td>
                         </tr>
                         <tr>
-                            <td><i class="fas fa-trash"></i></td>
+                            <td><i class="fas fa-times"></i></td>
                             <td>Rechazar</td>
                             <td>Rechazo de los datos inscritos por el alumno (envío de correo)</td>
                         </tr>

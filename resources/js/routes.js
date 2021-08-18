@@ -427,7 +427,7 @@ export const rutas = [
     }
 },
 {
-    path: '/comisiones/crear',
+    path: '/comisiones/crear/:id',
     name: 'comisiones.crear',
     component: require('./components/modulos/comisiones/create').default,
     beforeEnter: (to, from, next) => {
