@@ -56,8 +56,8 @@
                                 label ="nombre"
                                 selectLabel="Presiona enter para seleccionar"
                                 selectedLabel="Seleccionado"
-                                deselectLabel="No puedes remover este valor"
                                 :allow-empty="false"
+                                deselectLabel="Cancelar"
                                 @input="getListarFitsByprofesor"
                                 >
                               <template slot="noResult">No hay resultados</template>
@@ -77,8 +77,7 @@
                                 label = "nombres"
                                 selectLabel="Seleccionar"
                                 selectedLabel="Seleccionado"
-                                deselectLabel="Cancelar"
-                                :allow-empty="false"
+                                deselectLabel="Remover"
                                 @input="getListarAvancesByFit"
                                 >
                               <template slot="noResult">No hay resultados</template>
@@ -245,17 +244,21 @@ export default {
       })
     },
     getListarAvancesByFit(){
-      this.fullscreenLoading = true;
-      var url = '/avances/getListarAvancesByFit'
-      axios.get(url, {
-        params: {
-          'Fit' : this.selectedFit.id,
-        }
-      }).then(response => {
-          this.inicializarPaginacion();
-          this.listAvances = response.data;
-          this.fullscreenLoading = false;
-      })
+      if (!this.selectedFit) {
+          this.limpiarBandejaUsuarios();
+      }else{
+        this.fullscreenLoading = true;
+        var url = '/avances/getListarAvancesByFit'
+        axios.get(url, {
+          params: {
+            'Fit' : this.selectedFit.id,
+          }
+        }).then(response => {
+            this.inicializarPaginacion();
+            this.listAvances = response.data;
+            this.fullscreenLoading = false;
+        })
+      }
     },
     // getListarAlumnosByprofesor(){
     //   this.fullscreenLoading = true;

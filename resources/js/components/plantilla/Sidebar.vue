@@ -41,7 +41,7 @@
             <a>Seleccionar rol</a>
           </div>
           <a>
-            <el-select placeholder="Elegir rol" v-model="rolActivo" @change="cambiarRol">
+            <el-select placeholder="Elegir rol" v-model="rolActivo" @change="cambiarRol(true)">
               <el-option
                   v-for="item in listRolByUser"
                   :key="item.id"
@@ -313,7 +313,7 @@ export default {
     }
   },
   mounted(){
-        this.cambiarRol();
+        this.cambiarRol(false);
     },
   methods:{
     logout(){
@@ -329,7 +329,7 @@ export default {
 
       })
     },
-    cambiarRol(){
+    cambiarRol(redirect){
       this.fullscreenLoading = true;
       localStorage.setItem('rolActivo', JSON.stringify(this.rolActivo));
       var url = '/perfil/setRol'
@@ -342,7 +342,7 @@ export default {
           if(response.data.code == 401){
               console.log('Error')
           }
-          if(response.data.code == 200){
+          if(response.data.code == 200 && redirect){
             if (this.$route.name != 'dashboard.index') {
               this.$router.push({name: 'dashboard.index'})
             }
