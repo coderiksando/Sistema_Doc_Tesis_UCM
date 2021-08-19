@@ -62,7 +62,7 @@
                                     <dt class="col-md-4">Alumnos integrantes:</dt>
                                     <template v-if="item.fit__user">
                                         <dd class="col-md-8" v-for="(fitUser, index2) in item.fit__user" :key="index2">
-                                            {{fitUser.user.nombres+' '+fitUser.user.apellidos}}
+                                            {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
                                         </dd>
                                     </template>
                                     <dt class="col-md-4">Título extendido:</dt>
@@ -71,18 +71,18 @@
                                     <dd class="col-md-8">{{item.descripcion}}</dd>
                                     <template v-if="item.user__p__coguia">
                                         <dt class="col-md-4">Prof. Co-guía:</dt>
-                                        <dd class="col-md-8">{{item.user__p__coguia.nombres + ' ' + item.user__p__coguia.apellidos}}</dd>
+                                        <dd class="col-md-8">{{item.user__p__coguia.nombres.split(' ')[0] + ' ' + item.user__p__coguia.apellidos.split(' ')[0]}}</dd>
                                     </template>
                                     <dt class="col-md-4">Comisión evaluadora:</dt>
                                     <dd class="col-md-8">
                                         <dl v-if="item.comisiones" class="row">
                                             <template v-if="item.comisiones.user_p1">
                                                 <dt class="col-md-4">1° Prof. Interno:</dt>
-                                                <dd class="col-md-8">{{item.comisiones.user_p1.nombres+' '+item.comisiones.user_p1.apellidos}}</dd>
+                                                <dd class="col-md-8">{{item.comisiones.user_p1.nombres.split(' ')[0]+' '+item.comisiones.user_p1.apellidos.split(' ')[0]}}</dd>
                                             </template>
                                             <template v-if="item.comisiones.user_p2">
                                                 <dt class="col-md-4">2° Prof. Interno:</dt>
-                                                <dd class="col-md-8">{{item.comisiones.user_p2.nombres+' '+item.comisiones.user_p2.apellidos}}</dd>
+                                                <dd class="col-md-8">{{item.comisiones.user_p2.nombres.split(' ')[0]+' '+item.comisiones.user_p2.apellidos.split(' ')[0]}}</dd>
                                             </template>
                                             <template>
                                                 <dt class="col-md-4">Prof. Externo:</dt>
@@ -157,7 +157,7 @@
                                     <dt class="col-md-4">Alumnos integrantes:</dt>
                                     <template v-if="item.fit.fit__user">
                                         <dd class="col-md-8" v-for="(fitUser, index2) in item.fit.fit__user" :key="index2">
-                                            {{fitUser.user.nombres+' '+fitUser.user.apellidos}}
+                                            {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
                                         </dd>
                                     </template>
                                     <dt class="col-md-4">Título extendido:</dt>
@@ -166,22 +166,22 @@
                                     <dd class="col-md-8">{{item.fit.descripcion}}</dd>
                                     <template v-if="item.fit.user__p__guia">
                                         <dt class="col-md-4">Prof. Guía:</dt>
-                                        <dd class="col-md-8">{{item.fit.user__p__guia.nombres + ' ' + item.fit.user__p__guia.apellidos}}</dd>
+                                        <dd class="col-md-8">{{item.fit.user__p__guia.nombres.split(' ')[0] + ' ' + item.fit.user__p__guia.apellidos.split(' ')[0]}}</dd>
                                     </template>
                                     <template v-if="item.fit.user__p__coguia">
                                         <dt class="col-md-4">Prof. Co-guía:</dt>
-                                        <dd class="col-md-8">{{item.fit.user__p__coguia.nombres + ' ' + item.fit.user__p__coguia.apellidos}}</dd>
+                                        <dd class="col-md-8">{{item.fit.user__p__coguia.nombres.split(' ')[0] + ' ' + item.fit.user__p__coguia.apellidos.split(' ')[0]}}</dd>
                                     </template>
                                     <dt class="col-md-4">Comisión evaluadora:</dt>
                                     <dd class="col-md-8">
                                         <dl v-if="item" class="row">
                                             <template v-if="item.user_p1">
                                                 <dt class="col-md-4">1° Prof. Interno:</dt>
-                                                <dd class="col-md-8">{{item.user_p1.nombres+' '+item.user_p1.apellidos}}</dd>
+                                                <dd class="col-md-8">{{item.user_p1.nombres.split(' ')[0] +' '+item.user_p1.apellidos.split(' ')[0]}}</dd>
                                             </template>
                                             <template v-if="item.user_p2">
                                                 <dt class="col-md-4">2° Prof. Interno:</dt>
-                                                <dd class="col-md-8">{{item.user_p2.nombres+' '+item.user_p2.apellidos}}</dd>
+                                                <dd class="col-md-8">{{item.user_p2.nombres.split(' ')[0] +' '+item.user_p2.apellidos.split(' ')[0]}}</dd>
                                             </template>
                                             <template>
                                                 <dt class="col-md-4">Prof. Externo:</dt>
@@ -265,7 +265,7 @@
                                     <dt class="col-md-4">Alumnos integrantes:</dt>
                                     <template v-if="item.fit__user">
                                         <dd class="col-md-8" v-for="(fitUser, index2) in item.fit__user" :key="index2">
-                                            {{fitUser.user.nombres+' '+fitUser.user.apellidos}}
+                                            {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
                                         </dd>
                                     </template>
                                     <dt class="col-md-4">Título extendido:</dt>
@@ -274,22 +274,22 @@
                                     <dd class="col-md-8">{{item.descripcion}}</dd>
                                     <template v-if="item.user__p__guia">
                                         <dt class="col-md-4">Prof. Guía:</dt>
-                                        <dd class="col-md-8">{{item.user__p__guia.nombres + ' ' + item.user__p__guia.apellidos}}</dd>
+                                        <dd class="col-md-8">{{item.user__p__guia.nombres.split(' ')[0] + ' ' + item.user__p__guia.apellidos.split(' ')[0]}}</dd>
                                     </template>
                                     <template v-if="item.user__p__coguia">
                                         <dt class="col-md-4">Prof. Co-guía:</dt>
-                                        <dd class="col-md-8">{{item.user__p__coguia.nombres + ' ' + item.user__p__coguia.apellidos}}</dd>
+                                        <dd class="col-md-8">{{item.user__p__coguia.nombres.split(' ')[0] + ' ' + item.user__p__coguia.apellidos.split(' ')[0]}}</dd>
                                     </template>
                                     <dt class="col-md-4">Comisión evaluadora:</dt>
                                     <dd class="col-md-8">
                                         <dl v-if="item.comisiones" class="row">
                                             <template v-if="item.comisiones.user_p1">
                                                 <dt class="col-md-4">1° Prof. Interno:</dt>
-                                                <dd class="col-md-8">{{item.comisiones.user_p1.nombres+' '+item.comisiones.user_p1.apellidos}}</dd>
+                                                <dd class="col-md-8">{{item.comisiones.user_p1.nombres.split(' ')[0]+' '+item.comisiones.user_p1.apellidos.split(' ')[0]}}</dd>
                                             </template>
                                             <template v-if="item.user_p2">
                                                 <dt class="col-md-4">2° Prof. Interno:</dt>
-                                                <dd class="col-md-8">{{item.comisiones.user_p2.nombres+' '+item.comisiones.user_p2.apellidos}}</dd>
+                                                <dd class="col-md-8">{{item.comisiones.user_p2.nombres.split(' ')[0]+' '+item.comisiones.user_p2.apellidos.split(' ')[0]}}</dd>
                                             </template>
                                             <template>
                                                 <dt class="col-md-4">Prof. Externo:</dt>
