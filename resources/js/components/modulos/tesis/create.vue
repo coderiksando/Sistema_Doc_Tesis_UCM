@@ -618,7 +618,7 @@ export default {
         this.fullscreenLoading = false;
         Swal.fire({
             icon: 'success',
-            title: 'Se ha registrado el '+ terminoTitulo +' exitosamente.',
+            title: 'Se ha registrado el '+ this.terminoTitulo +' exitosamente.',
             showConfirmButton: false,
             timer: 1500
         });
