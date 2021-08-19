@@ -182,6 +182,7 @@ export default {
             this.mensajeError = [];
             this.mensajeError.push('Estas credenciales no coinciden con nuestros registros');
             this.fillLogin.cContrasena = '';
+            this.fullscreenLoading = false;
             if(this.mensajeError.length){
                 this.error = 1;
             }
