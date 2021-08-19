@@ -28,9 +28,9 @@ class LoginController extends Controller
 
         $rpta = Auth::attempt(['email' => $cEmail, 'password' => $cContrasena, 'state' => 'A']);
         if ($rpta) {
-            $this->reg('login');
             $maxIdRol = Users_Roles::where('id_user', Auth::id())->max('id_roles');
             $rol = Roles::find($maxIdRol);
+            $this->reg('login', 0, $rol->name);
             session(['rol' => $rol->name]);
             return response()->json([
                 'authUser'  =>  Auth::user(),

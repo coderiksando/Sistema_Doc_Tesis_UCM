@@ -265,21 +265,14 @@ export default {
     marcarFila(index){
       this.listPermisosFilter[index].checked = !this.listPermisosFilter[index].checked;
     },
-    getListarRolPermisosByUsuario(){
-      var ruta = '/administracion/usuario/getListarRolPermisosByUsuario'
-      axios.get(ruta).then( response => {
-          this.listRolPermisosByUsuario = response.data;
-          this.filterListarRolPermisosByUsuario();
-      })
-    },
     filterListarRolPermisosByUsuario(){
-      let me = this;
-      me.listRolPermisosByUsuarioFilter = [];
-      me.listRolPermisosByUsuario.map(function(x,y){
-          me.listRolPermisosByUsuarioFilter.push(x.slug)
-      })
-      localStorage.setItem('listRolPermisosByUsuario', JSON.stringify(me.listRolPermisosByUsuarioFilter));
-      EventBus.$emit('notifyRolPermisosByUsuario', me.listRolPermisosByUsuarioFilter);
+      // let me = this;
+      // me.listRolPermisosByUsuarioFilter = [];
+      // me.listRolPermisosByUsuario.map(function(x,y){
+      //     me.listRolPermisosByUsuarioFilter.push(x.slug)
+      // })
+      // localStorage.setItem('listRolPermisosByUsuario', JSON.stringify(me.listRolPermisosByUsuarioFilter));
+      // EventBus.$emit('notifyRolPermisosByUsuario', me.listRolPermisosByUsuarioFilter);
       this.fullscreenLoading = false;
         Swal.fire({
           icon: 'success',
