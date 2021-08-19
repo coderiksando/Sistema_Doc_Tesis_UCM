@@ -615,8 +615,13 @@ export default {
       axios.post(url, {
         'data'  : this.fillCrearFIT
       }).then(response => {
-        console.log(response);
         this.fullscreenLoading = false;
+        Swal.fire({
+            icon: 'success',
+            title: 'Se ha registrado el '+ terminoTitulo +' exitosamente.',
+            showConfirmButton: false,
+            timer: 1500
+        });
         this.$router.push('/tesis');
       })
     },

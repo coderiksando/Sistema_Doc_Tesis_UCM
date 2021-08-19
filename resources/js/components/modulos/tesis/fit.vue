@@ -378,12 +378,12 @@ export default {
 
   setCambiarEstadoFIT(op, id){
         Swal.fire({
-        title: 'Estas seguro? ' + ((op == 1) ? 'Aprobar ' : 'Rechazar ') + '  El formulario de inscripcion',
+        title: '¿Está seguro que desea ' + ((op == 1) ? 'aprobar ' : 'rechazar ') + 'el formulario de inscripción?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: ((op == 1) ? 'Si, Aprobar' : 'Si, Rechazar'),
+        confirmButtonText: ((op == 1) ? 'Si, Aprobar' : 'No, Rechazar'),
         cancelButtonText: 'Cancelar',
         }).then((result) => {
         if (result.value) {
@@ -396,7 +396,7 @@ export default {
                 this.fullscreenLoading = false;
                 Swal.fire({
                 icon: 'success',
-                title: 'Se ' + ((op == 1) ? 'Aprobó ' : 'Rechazó ') +' El formulario de inscripción',
+                title: 'Se ' + ((op == 1) ? 'aprobó ' : 'rechazó ') +' el formulario de inscripción',
                 showConfirmButton: false,
                 timer: 1500
                 })
@@ -428,7 +428,7 @@ export default {
             .then(response => {
                 Swal.fire({
                 icon: 'success',
-                title: 'Se ' + ((op == 1) ? 'Aprobó ' : 'Rechazó ') +' El formulario de inscripción',
+                title: 'Se ' + ((op == 1) ? 'aprobó ' : 'rechazó ') +' el formulario de inscripción',
                 showConfirmButton: false,
                 timer: 1500
                 })
