@@ -95,7 +95,7 @@
                 <router-link class="nav-link" :to="'/registrodetesis'">
                     <i class="nav-icon fas fa-user-graduate"></i>
                     <p>
-                    Registrar documento finalizado
+                    Registrar documento final
                     </p>
                 </router-link>
             </template>

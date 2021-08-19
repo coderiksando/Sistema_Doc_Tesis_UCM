@@ -36,8 +36,7 @@
                                                 <div class="col-md-9">
                                                     <el-select v-model="fillCrearComision.idTesis"
                                                     placeholder="Asignar título de documento"
-                                                    filterable
-                                                    clearable>
+                                                    disabled>
                                                     <el-option
                                                         v-for="item in listTesis"
                                                         :key="item.id"
@@ -141,18 +140,19 @@
 </template>
 
 <script>
+import globalFunctions from '../../../services/globalFunctions';
 export default {
   data(){
     return{
+      globalFunctions: new globalFunctions(),
       fillCrearComision:{
-        idTesis: '',
+        idTesis: this.$route.params.id,
         Profesor1: '',
         Profesor2: '',
         NombrePEx: '',
         EmailPEx: '',
         InstitucionPEx: ''
       },
-      listAlumnos:[],
       listTesis: [],
       listProfesores:[],
       fullscreenLoading: false,
@@ -165,48 +165,40 @@ export default {
         display: 'none',
       },
       error: 0,
-      mensajeError:[]
+      mensajeError:[],
+      booleanFunctions: {
+          getListarProfesores: false,
+          getListarTesis: false
+      }
     }
   },
   computed: {
   },
   mounted(){
+    this.fullscreenLoading = true;
     this.getListarProfesores();
-    this.getListarAlumnosByprofesor();
     this.getListarTesis();
   },
   methods:{
     getListarTesis () {
-        this.fullscreenLoading = true;
         const url = '/alumno/getListarTesis';
         axios.get(url, {
         }).then (response => {
           this.listTesis = response.data;
-          this.fullscreenLoading = false;
+          this.booleanFunctions.getListarTesis = true;
+          this.fullscreenLoading = !this.globalFunctions.booleanElements(this.booleanFunctions);
         })
     },
-    getListarAlumnosByprofesor(){
-      this.fullscreenLoading = true;
-      var url = '/avances/getListarAlumnosByprofesor'
-      axios.get(url, {
-      }).then(response => {
-          this.inicializarPaginacion();
-          this.listAlumnos = response.data;
-          this.fullscreenLoading = false;
-      })
-    },
     getListarProfesores(){
-      this.fullscreenLoading = true;
-      var url = '/alumno/getListarProfesores'
-      axios.get(url, {
-      }).then(response => {
-          //this.inicializarPaginacion();
-          this.listProfesores = response.data;
-          this.fullscreenLoading = false;
-      })
+        var url = '/alumno/getListarProfesores';
+        axios.get(url, {
+        }).then(response => {
+            this.listProfesores = response.data;
+            this.booleanFunctions.getListarProfesores = true;
+            this.fullscreenLoading = !this.globalFunctions.booleanElements(this.booleanFunctions);
+        })
     },
     limpiarCriterios(){
-        this.fillCrearComision.idTesis = '';
         this.fillCrearComision.Profesor1 = '';
         this.fillCrearComision.Profesor2 = '';
         this.fillCrearComision.NombrePEx = '';
@@ -236,7 +228,8 @@ export default {
         return;
       }
       this.fullscreenLoading = true;
-      var url = '/comisiones/setRegistrarComision'
+      var url = '/comisiones/setRegistrarComision';
+      console.log(this.fillCrearComision);
       axios.post(url, {
         'idTesis'           : this.fillCrearComision.idTesis,
         'Profesor1'         : this.fillCrearComision.Profesor1,

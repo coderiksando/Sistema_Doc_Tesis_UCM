@@ -1,6 +1,27 @@
 <template>
 <div>
-    <div class="login-page">
+    <!-- Header -->
+    <!-- <img style="max-width: -webkit-fill-available;position: absolute; height: 91.7%;" src="https://lms.ucm.cl/pluginfile.php/1/theme_moove/sliderimage2/1628434472/EdificioUCM2020.jpg"> -->
+    <div class="row noPadNoMar">
+
+    <header style="opacity: 80%;" class="col-md-6 bg-black py-5">
+        <div class="container h-150">
+        <div class="row h-150 d-flex justify-content-center">
+            <div class="col-md-12 mt-4">
+              <tr class="col-md-12 d-flex justify-content-center">
+                <img class="mt-3 float-center" src="/img/logoucm.png" >
+              </tr>
+              <br>
+              <tr class="col-md-12 d-flex justify-content-center">
+                  <h1 class="display-5 text-white mb-2" style="text-align:justify">Repositorio académico de la Facultad de Ciencias de la Ingeniería Universidad Católica del Maule</h1>
+              </tr>
+              <p class="lead mb-5 text-white-50" ></p>
+            </div>
+        </div>
+        </div>
+    </header>
+
+    <div class="col-md-6 login-page">
     <!-- Navigation -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="container">
@@ -10,12 +31,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                <router-link  :to="'/'">
+                <router-link  :to="'/busqueda'">
                 <li class="nav-item">
-                    <a class="nav-link">Home</a>
+                    <a class="nav-link">Búsqueda</a>
                 </li>
                 </router-link>
-                <router-link  :to="'/login'">
+                <router-link  :to="'/'">
                 <li class="nav-item">
                     <a class="nav-link">Ingresar</a>
                 </li>
@@ -84,8 +105,10 @@
             </div>
         </div>
     </div>
+
+    </div>
     <!-- Footer -->
-    <footer class="py-4 text-center text-lg-start bg-dark text-muted">
+    <footer class="py-3 text-center text-lg-start bg-dark text-muted">
         <div class="container" style="text-align: center">
           <!-- Por favor por respeto a los colaboradores de este proyecto no eliminar las referencias de las personas que han participado-->
         <strong >Sistema de gestión y administración de documentos <a href="https://www.ucm.cl">UCM</a>.</strong>&nbsp; All rights reserved.
