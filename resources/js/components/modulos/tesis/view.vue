@@ -166,6 +166,16 @@
                                         </tbody>
                                     </table>
                                     </div>
+                                    <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
+                                        <div class="col-md-6 mx-auto">
+                                            <button :title="'Aprobar '+terminoTitulo" class="btn btn-flat btn-success btnWidth" @click.prevent="setCambiarEstadoFIT(1, fillVerFIT.nIdTesis)">
+                                                <i class="fas fa-check"></i> Aceptar
+                                            </button>
+                                            <button :title="'Rechazar '+terminoTitulo" class="btn btn-flat btn-danger btnWidth" @click.prevent="setCambiarEstadoFITRechazo(2, fillVerFIT.nIdTesis)">
+                                                <i class="fas fa-times"></i> Rechazar
+                                            </button>
+                                        </div>
+                                    </template>
                                 </div>
                             </div>
                         </div>
@@ -214,6 +224,8 @@ export default {
         {value: 'Tesis', label: 'Tesis'},
         {value: 'Memoria', label: 'Memoria'}
       ],
+      listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
+      terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       terminoTituloExtendido: JSON.parse(localStorage.getItem('TerminoDeTituloExtendido')),
       listEscuelas:[],
       listVinculacion:[],
@@ -294,7 +306,67 @@ export default {
         this.fillVerFIT.cDescripcion = data.descripcion;
         this.fillVerFIT.users = data.fit__user;
     },
-
+    setCambiarEstadoFIT(op, id){
+        Swal.fire({
+            title: 'Estas seguro? ' + ((op == 1) ? 'Aprobar ' : 'Rechazar ') + '  El formulario de inscripcion',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: ((op == 1) ? 'Si, Aprobar' : 'Si, Rechazar'),
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+        if (result.value) {
+            this.fullscreenLoading = true;
+            var url = '/alumno/setCambiarEstadoFIT'
+            axios.post(url, {
+            'nIdTesis' : id,
+            'cEstadoPg'    : (op == 1) ? 'A' : 'R'
+            }).then(response => {
+                this.fullscreenLoading = false;
+                Swal.fire({
+                icon: 'success',
+                title: 'Se ' + ((op == 1) ? 'Aprobó ' : 'Rechazó ') +' El formulario de inscripción',
+                showConfirmButton: false,
+                timer: 1500
+                });
+                this.$router.push('/tesis');
+            })
+        }
+        })
+    },
+    setCambiarEstadoFITRechazo (op, id) {
+        Swal.fire({
+            title: 'Escriba el motivo de su rechazo (opcional)',
+            icon: 'warning',
+            input: 'textarea',
+            inputAttributes: {autocapitalize: 'off'},
+            showCancelButton: true,
+            confirmButtonText: 'Enviar rechazo',
+            cancelButtonText: 'Cancelar rechazo',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((response) => {
+        if (response.value) {
+            this.fullscreenLoading = false;
+            var url = '/alumno/setCambiarEstadoFIT'
+            axios.post(url, {
+                'nIdTesis'  : id,
+                'cEstadoPg' : (op == 1) ? 'A' : 'R',
+                'motivo'    : response.value
+            })
+            .then(response => {
+                Swal.fire({
+                icon: 'success',
+                title: 'Se ' + ((op == 1) ? 'Aprobó ' : 'Rechazó ') +' El formulario de inscripción',
+                showConfirmButton: false,
+                timer: 1500
+                });
+                this.$router.push('/tesis');
+            })
+        }
+        })
+    }
   }// cierre methods
 }
 </script>
