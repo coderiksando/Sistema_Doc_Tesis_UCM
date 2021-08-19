@@ -167,14 +167,16 @@
                                     </table>
                                     </div>
                                     <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
-                                        <div class="col-md-6 mx-auto">
-                                            <button :title="'Aprobar '+terminoTitulo" class="btn btn-flat btn-success btnWidth" @click.prevent="setCambiarEstadoFIT(1, fillVerFIT.nIdTesis)">
-                                                <i class="fas fa-check"></i> Aceptar
-                                            </button>
-                                            <button :title="'Rechazar '+terminoTitulo" class="btn btn-flat btn-danger btnWidth" @click.prevent="setCambiarEstadoFITRechazo(2, fillVerFIT.nIdTesis)">
-                                                <i class="fas fa-times"></i> Rechazar
-                                            </button>
-                                        </div>
+                                        <template v-if="originalResponse.aprobado_pg == 'P' && rolActivo =='Profesor' || originalResponse.aprobado_pg == 'A' && rolActivo !='Profesor'">
+                                            <div class="col-md-6 mx-auto">
+                                                <button :title="'Aprobar '+terminoTitulo" class="btn btn-flat btn-success btnWidth" @click.prevent="setCambiarEstadoFIT(1, fillVerFIT.nIdTesis)">
+                                                    <i class="fas fa-check"></i> Aceptar
+                                                </button>
+                                                <button :title="'Rechazar '+terminoTitulo" class="btn btn-flat btn-danger btnWidth" @click.prevent="setCambiarEstadoFITRechazo(2, fillVerFIT.nIdTesis)">
+                                                    <i class="fas fa-times"></i> Rechazar
+                                                </button>
+                                            </div>
+                                        </template>
                                     </template>
                                 </div>
                             </div>
@@ -227,6 +229,7 @@ export default {
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       terminoTituloExtendido: JSON.parse(localStorage.getItem('TerminoDeTituloExtendido')),
+      rolActivo : JSON.parse(localStorage.getItem('rolActivo')),
       listEscuelas:[],
       listVinculacion:[],
       fullscreenLoading: false,
@@ -239,7 +242,8 @@ export default {
         display: 'none',
       },
       error: 0,
-      mensajeError:[]
+      mensajeError:[],
+      originalResponse: {}
     }
   },
   computed: {
@@ -288,6 +292,8 @@ export default {
         }
       }).then(response => {
           this.getUsuarioVer(response.data);
+          this.originalResponse = response.data;
+        //   console.log(this.originalResponse);
           this.fullscreenLoading = false;
       })
     },
@@ -308,12 +314,12 @@ export default {
     },
     setCambiarEstadoFIT(op, id){
         Swal.fire({
-            title: 'Estas seguro? ' + ((op == 1) ? 'Aprobar ' : 'Rechazar ') + '  El formulario de inscripcion',
+            title: '¿Está seguro que desea ' + ((op == 1) ? 'aprobar ' : 'rechazar ') + 'el formulario de inscripción?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: ((op == 1) ? 'Si, Aprobar' : 'Si, Rechazar'),
+            confirmButtonText: ((op == 1) ? 'Si, Aprobar' : 'No, Rechazar'),
             cancelButtonText: 'Cancelar',
         }).then((result) => {
         if (result.value) {
@@ -326,7 +332,7 @@ export default {
                 this.fullscreenLoading = false;
                 Swal.fire({
                 icon: 'success',
-                title: 'Se ' + ((op == 1) ? 'Aprobó ' : 'Rechazó ') +' El formulario de inscripción',
+                title: 'Se ' + ((op == 1) ? 'aprobó ' : 'rechazó ') +'el formulario de inscripción',
                 showConfirmButton: false,
                 timer: 1500
                 });
@@ -358,7 +364,7 @@ export default {
             .then(response => {
                 Swal.fire({
                 icon: 'success',
-                title: 'Se ' + ((op == 1) ? 'Aprobó ' : 'Rechazó ') +' El formulario de inscripción',
+                title: 'Se ' + ((op == 1) ? 'aprobó ' : 'rechazó ') +'el formulario de inscripción',
                 showConfirmButton: false,
                 timer: 1500
                 });

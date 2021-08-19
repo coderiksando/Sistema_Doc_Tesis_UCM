@@ -711,12 +711,12 @@ export default {
         })
         .then((response) => {
           this.fullscreenLoading = false;
-          Swal.fire({
-            icon: "success",
-            title: "Editado Correctamente",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+            Swal.fire({
+                icon: 'success',
+                title: 'Se ha editado el '+ terminoTitulo +' exitosamente.',
+                showConfirmButton: false,
+                timer: 1500
+            });
           this.$router.push("/tesis");
         });
     },
