@@ -12,117 +12,34 @@
 
     <div class="container container-fluid">
       <div class="card text-center">
-        <div class="card-body">
+        <div class="card-body px-0">
           <div class="container-fluid">
+            <div class="card-body px-0">
+                <div class="row text-justify">
+                  <div class="col-md-12">
+                    <div id="accordion">
+                      <div class="card-white" v-for="(item, index) in placeholder" :key="index">
+                        <div class="card-header" v-bind:id="'heading'+index">
+                          <h5 class="mb-0">
+                            <a class="btn btn-outline-primary" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
+                                <i class="fa fa-play-circle" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-link" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
+                              {{titulos[index]}}
+                            </button>
+                          </h5>
+                        </div>
 
-            <!-- Cards Alumnos -->
-            <!-- inscribir tesis card -->
-            <!-- <template v-if="listRolPermisosByUsuario.includes('tesis.crear') "> -->
-            <template>
-              <div class="card card-success">
-                <div class="card-header d-flex justify-content-center">
-                  <!-- <h1 class="card-title">{{terminoTituloExtendido}}</h1> -->
-                </div>
-                <div class="card-body d-flex justify-content-center border border-success">
-                    <div class="row text-justify">
-                      <div class="col-md-12">
-
-                        <!-- <div id="accordion">
-                            <div class="card" :key="'guia'+index">
-                                <div class="card-body" :id="'heading'+index">
-                                <h3 class="mb-0">
-                                    <button class="btn btn-link col-md-12 noPadNoMar d-flex" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index">
-                                        <div title="Sección expandible" class="col-md-1"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
-                                        <div title="Sección expandible" class="col-md-8 noPadNoMar"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + item.titulo.slice(0, 40)}}</p></div>
-                                        <div class="col-md-3 noPadNoMar">
-                                            <template v-if="!item.comisiones">
-                                                <router-link title="Crear comisión" class="btn boton btn-info" :to="{name:'comisiones.crear', params:{id: item.id}}">
-                                                    <i class="fas fa-plus-circle"></i>
-                                                </router-link>
-                                            </template>
-                                            <template v-if="item.comisiones">
-                                                <router-link title="Editar comisión" class="btn boton btn-info" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
-                                                    <i class="fas fa-pencil-alt"></i>
-                                                </router-link>
-                                            </template>
-                                            <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
-                                                <i class="fas fa-eye"></i>
-                                            </router-link>
-                                            <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
-                                                <i class="fas fa-file-download"></i>
-                                            </button>
-                                            <template v-if="item.comisiones">
-                                                <button title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
-                                                    <i class="fas fa-file-upload"></i>
-                                                </button>
-                                            </template>
-                                        </div>
-                                    </button>
-                                </h3>
-                                </div>
-
-                                <div :id="'collapse'+index" class="collapse" :aria-labelledby="'heading'+index" data-parent="#accordion">
-                                <div class="card-footer">
-                                    <dl class="row">
-                                        <dt class="col-md-4">Alumnos integrantes:</dt>
-                                        <template v-if="item.fit__user">
-                                            <dd class="col-md-8" v-for="(fitUser, index2) in item.fit__user" :key="index2">
-                                                {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
-                                            </dd>
-                                        </template>
-                                        <dt class="col-md-4">Título extendido:</dt>
-                                        <dd class="col-md-8">{{item.titulo}}</dd>
-                                        <dt class="col-md-4">Descripción:</dt>
-                                        <dd class="col-md-8">{{item.descripcion}}</dd>
-                                        <template v-if="item.user__p__coguia">
-                                            <dt class="col-md-4">Prof. Co-guía:</dt>
-                                            <dd class="col-md-8">{{item.user__p__coguia.nombres.split(' ')[0] + ' ' + item.user__p__coguia.apellidos.split(' ')[0]}}</dd>
-                                        </template>
-                                        <dt class="col-md-4">Comisión evaluadora:</dt>
-                                        <dd class="col-md-8">
-                                            <dl v-if="item.comisiones" class="row">
-                                                <template v-if="item.comisiones.user_p1">
-                                                    <dt class="col-md-4">1° Prof. Interno:</dt>
-                                                    <dd class="col-md-8">{{item.comisiones.user_p1.nombres.split(' ')[0]+' '+item.comisiones.user_p1.apellidos.split(' ')[0]}}</dd>
-                                                </template>
-                                                <template v-if="item.comisiones.user_p2">
-                                                    <dt class="col-md-4">2° Prof. Interno:</dt>
-                                                    <dd class="col-md-8">{{item.comisiones.user_p2.nombres.split(' ')[0]+' '+item.comisiones.user_p2.apellidos.split(' ')[0]}}</dd>
-                                                </template>
-                                                <template>
-                                                    <dt class="col-md-4">Prof. Externo:</dt>
-                                                    <dd class="col-md-8">{{item.comisiones.p_externo}}</dd>
-                                                </template>
-                                            </dl>
-                                        </dd>
-                                        <dt class="col-md-4">Tipo de documento:</dt>
-                                        <dd class="col-md-8">{{item.tipo}}</dd>
-                                    </dl>
-                                </div>
-                                </div>
-                            </div>
-                        </div> -->
-
-                        <!-- <h5 class="card-text">La principal función como estudiante sera completar el formulario de inscripción
-                          de tesis en donde debes definir parametros como profesor guía, título, contribución esperada y otros similares a los utilizados
-                          en el formulario tradicional de inscripción. </h5>
-                        <img src="/img/ingresarFIT.png" class="img-fluid" alt="Responsive image">
-                        <br>
-                        <br>
-                        <h5 class="card-text">Una vez que completes tu {{terminoTitulo}} podras revisar su estado en espera de la aprobacion de tu profesor guía,
-                          mientras este en estado "pendiente" podras seguir editandolo, ademas podras darte cuenta que el sistema no te permitira ingresar
-                          un nuevo formulario </h5>
-                        <img src="/img/EsperaFit.png" class="img-fluid" alt="Responsive image">
-                        <br>
-                        <br>
-                        <h5 class="card-text">Finalmente, cuando tu {{terminoTitulo}} es aprobado por el profesor guía el sistema te permitira descargar una copia de este en formato PDF. </h5>
-                        <img src="/img/DescargarFIT.png" class="img-fluid" alt="Responsive image"> -->
+                        <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
+                          <div class="card-body">
+                            <div v-text="item" style="white-space: pre-wrap"></div>
+                          </div>
+                        </div>
                       </div>
                     </div>
+                  </div>
                 </div>
-              </div>
-            </template>
-
+            </div>
           </div>
         </div>
       </div>
@@ -240,6 +157,7 @@ props: ['usuario'],
             },
             listPermisos:[],
             listEscuela: [],
+            placeholder: [1,2,3,4,5],
             modalAddDetailsUser: false,
             mostrarModal: {
                 display: 'block',
@@ -255,6 +173,13 @@ props: ['usuario'],
             },
             endOption: {
             },
+            titulos: [
+              'Tutorial inscripción de formulario.',
+              'Tutorial visualización y descarga de avances.',
+              'Tutorial creación de bitácoras.',
+              'Tutorial creación y modificación de comisiones',
+              'Tutorial visualización de notas pendientes.'
+            ]
         }
     },
     mounted(){
