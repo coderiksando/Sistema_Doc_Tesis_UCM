@@ -67,27 +67,27 @@
                         <!-- <td v-text="item.nombre_int1"></td> -->
                         <td>
                           <template v-if="item.aprobado_pg == 'P'">
-                            <span class="badge badge-warning" >Pendiente</span>
+                            Pendiente
                           </template>
                           <template v-else-if="item.aprobado_pg == 'A'">
-                            <span class="badge badge-success">Aprobado</span>
+                            Aprobado
                           </template>
                           <template v-else-if="item.aprobado_pg == 'V'">
-                            <span class="badge badge-success">Verificado</span>
+                            Verificado
                           </template>
                           <template v-else>
-                            <span class="badge badge-danger">Rechazado</span>
+                            Rechazado
                           </template>
                         </td>
                         <td>
                           <template v-if="item.estado == 'D'">
-                            <span class="badge badge-warning" >En desarrollo</span>
+                            En desarrollo
                           </template>
                           <template v-else-if="item.estado == 'A'">
-                            <span class="badge badge-success" >Aprobada</span>
+                            Aprobada
                           </template>
                           <template v-else>
-                            <span class="badge badge-danger" >Reprobada</span>
+                            Reprobada
                           </template>
                         </td>
                         <td>
