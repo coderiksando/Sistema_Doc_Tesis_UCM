@@ -110,7 +110,7 @@ export default {
         Acuerdo: ''
       },
       listFits:[],
-      selectedFit: {},
+      selectedFit: [],
       fullscreenLoading: false,
       modalShow: false,
       mostrarModal: {
@@ -133,7 +133,7 @@ export default {
   methods:{
     getListarFitsByprofesor(){
       this.fullscreenLoading = true;
-      this.selectedFit = {};
+      this.selectedFit = [];
       var url = '/avances/getListarFitsByprofesor';
       axios.get(url, {
         params: {
@@ -145,7 +145,7 @@ export default {
       })
     },
     limpiarCriterios(){
-      this.selectedAlumno = {};
+      this.selectedFit = [];
       this.fillCrearBitacora.Acuerdo = '';
     },
     abrirModal(){
@@ -154,7 +154,7 @@ export default {
     validarRegistrarBitacora(){
       this.error = 0;
       this.mensajeError = [];
-        if(!this.selectedFit){
+        if(!this.selectedFit.id){
           this.mensajeError.push("El alumno es un campo obligatorio")
         }
         if(!this.fillCrearBitacora.Acuerdo){
