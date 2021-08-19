@@ -25,7 +25,7 @@
         </div>
         <div class="info">
           <router-link class="d-block" :to="{name: 'usuarios.ver', params:{id_user: usuario.id_user}}">
-              {{usuario.nombres}}
+              {{usuario.nombres.split(' ')[0] + ' ' + usuario.apellidos.split(' ')[0]}}
           </router-link>
         </div>
       </div>
