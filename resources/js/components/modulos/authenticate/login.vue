@@ -181,6 +181,7 @@ export default {
             this.error = 0;
             this.mensajeError = [];
             this.mensajeError.push('Estas credenciales no coinciden con nuestros registros');
+            this.fullscreenLoading = false;
             this.fillLogin.cContrasena = '';
             if(this.mensajeError.length){
                 this.error = 1;
@@ -192,7 +193,7 @@ export default {
             this.fullscreenLoading = false;
             // location.reload();
             // this.$router.push({name: 'dashboard.index'})
-                
+
         },
         getListarRolPermisosByUsuario(authUser){
             var ruta = '/administracion/usuario/getListarRolPermisosByUsuario'
