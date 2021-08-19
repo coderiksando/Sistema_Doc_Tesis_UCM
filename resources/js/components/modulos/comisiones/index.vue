@@ -61,8 +61,10 @@
                                 <dl class="row">
                                     <dt class="col-md-4">Alumnos integrantes:</dt>
                                     <template v-if="item.fit__user">
-                                        <dd class="col-md-8" v-for="(fitUser, index2) in item.fit__user" :key="index2">
-                                            {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
+                                        <dd class="col-md-8">
+                                            <div v-for="(fitUser, index2) in item.fit__user" :key="index2">
+                                                {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
+                                            </div>
                                         </dd>
                                     </template>
                                     <dt class="col-md-4">Título extendido:</dt>
@@ -156,8 +158,10 @@
                                 <dl class="row">
                                     <dt class="col-md-4">Alumnos integrantes:</dt>
                                     <template v-if="item.fit.fit__user">
-                                        <dd class="col-md-8" v-for="(fitUser, index2) in item.fit.fit__user" :key="index2">
-                                            {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
+                                        <dd class="col-md-8">
+                                            <div v-for="(fitUser, index2) in item.fit.fit__user" :key="index2">
+                                                {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
+                                            </div>
                                         </dd>
                                     </template>
                                     <dt class="col-md-4">Título extendido:</dt>
@@ -264,8 +268,10 @@
                                 <dl class="row">
                                     <dt class="col-md-4">Alumnos integrantes:</dt>
                                     <template v-if="item.fit__user">
-                                        <dd class="col-md-8" v-for="(fitUser, index2) in item.fit__user" :key="index2">
-                                            {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
+                                        <dd class="col-md-8">
+                                            <div v-for="(fitUser, index2) in item.fit__user" :key="index2">
+                                                {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
+                                            </div>
                                         </dd>
                                     </template>
                                     <dt class="col-md-4">Título extendido:</dt>
