@@ -18,22 +18,129 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div id="accordion">
-                      <div class="card-white" v-for="(item, index) in placeholder" :key="index">
-                        <div class="card-header" v-bind:id="'heading'+index">
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('tesis.crear')">
+                        <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
-                            <a class="btn btn-outline-primary" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
+                            <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#collapse1' aria-expanded="false" aria-controls='collapse1'>
                                 <i class="fa fa-play-circle" aria-hidden="true"></i>
                             </a>
-                            <button class="btn btn-link" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
-                              {{titulos[index]}}
+                            <button class="btn btn-link" data-toggle="collapse" data-target='#collapse1' aria-expanded="false" aria-controls='collapse1'>
+                              Tutorial creación de FID
                             </button>
                           </h5>
                         </div>
 
-                        <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
+                        <div id='collapse1' class="collapse" aria-labelledby='heading1' data-parent="#accordion">
                           <div class="card-body">
-                            <!-- <div v-text="item" style="white-space: pre-wrap"></div> -->
-                            <LazyYoutube src="https://www.youtube.com/watch?v=FBarFchwFDY" />
+                            <LazyYoutube src="https://youtu.be/mfJrrFpUgAI" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
+                        <div class="card-header" id='heading2'>
+                          <h5 class="mb-0">
+                            <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#collapse2' aria-expanded="false" aria-controls='collapse2'>
+                                <i class="fa fa-play-circle" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-link" data-toggle="collapse" data-target='#collapse2' aria-expanded="false" aria-controls='collapse2'>
+                              Tutorial Aprobar FID
+                            </button>
+                          </h5>
+                        </div>
+
+                        <div id='collapse2' class="collapse" aria-labelledby='heading2' data-parent="#accordion">
+                          <div class="card-body">
+                            <LazyYoutube src="https://youtu.be/7yxRTxSSagc" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
+                        <div class="card-header" id='heading3'>
+                          <h5 class="mb-0">
+                            <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#collapse3' aria-expanded="false" aria-controls='collapse3'>
+                                <i class="fa fa-play-circle" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-link" data-toggle="collapse" data-target='#collapse3' aria-expanded="false" aria-controls='collapse3'>
+                              Tutorial Rechazar FID
+                            </button>
+                          </h5>
+                        </div>
+
+                        <div id='collapse3' class="collapse" aria-labelledby='heading3' data-parent="#accordion">
+                          <div class="card-body">
+                            <LazyYoutube src="https://youtu.be/uArs4AqJGnY" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('bitacoras.crear')">
+                        <div class="card-header" id='heading4'>
+                          <h5 class="mb-0">
+                            <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#collapse4' aria-expanded="false" aria-controls='collapse4'>
+                                <i class="fa fa-play-circle" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-link" data-toggle="collapse" data-target='#collapse4' aria-expanded="false" aria-controls='collapse4'>
+                              Tutorial creación de bitácoras
+                            </button>
+                          </h5>
+                        </div>
+
+                        <div id='collapse4' class="collapse" aria-labelledby='heading4' data-parent="#accordion">
+                          <div class="card-body">
+                            <LazyYoutube src="https://youtu.be/72QCDsdJjEI" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('comisiones.crear')">
+                        <div class="card-header" id='heading5'>
+                          <h5 class="mb-0">
+                            <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#collapse5' aria-expanded="false" aria-controls='collapse5'>
+                                <i class="fa fa-play-circle" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-link" data-toggle="collapse" data-target='#collapse5' aria-expanded="false" aria-controls='collapse5'>
+                              Tutorial creación de comisiones
+                            </button>
+                          </h5>
+                        </div>
+
+                        <div id='collapse5' class="collapse" aria-labelledby='heading5' data-parent="#accordion">
+                          <div class="card-body">
+                            <LazyYoutube src="https://youtu.be/CKBYoojTsAo" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('avances.crear')">
+                        <div class="card-header" id='heading6'>
+                          <h5 class="mb-0">
+                            <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#collapse6' aria-expanded="false" aria-controls='collapse6'>
+                                <i class="fa fa-play-circle" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-link" data-toggle="collapse" data-target='#collapse6' aria-expanded="false" aria-controls='collapse6'>
+                              Tutorial subir avance
+                            </button>
+                          </h5>
+                        </div>
+
+                        <div id='collapse6' class="collapse" aria-labelledby='heading6' data-parent="#accordion">
+                          <div class="card-body">
+                            <LazyYoutube src="https://youtu.be/3wUfZGGT4DI" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('tesis.subirconstancia')">
+                        <div class="card-header" id='heading7'>
+                          <h5 class="mb-0">
+                            <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#collapse7' aria-expanded="false" aria-controls='collapse7'>
+                                <i class="fa fa-play-circle" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-link" data-toggle="collapse" data-target='#collapse7' aria-expanded="false" aria-controls='collapse7'>
+                              Tutorial subir constancia de examen
+                            </button>
+                          </h5>
+                        </div>
+
+                        <div id='collapse7' class="collapse" aria-labelledby='heading7' data-parent="#accordion">
+                          <div class="card-body">
+                            <LazyYoutube src="https://youtu.be/-B_vWc5kgjY" />
                           </div>
                         </div>
                       </div>
@@ -158,7 +265,6 @@ props: ['usuario'],
             },
             listPermisos:[],
             listEscuela: [],
-            placeholder: [1,2,3,4,5],
             modalAddDetailsUser: false,
             mostrarModal: {
                 display: 'block',
@@ -174,13 +280,6 @@ props: ['usuario'],
             },
             endOption: {
             },
-            titulos: [
-              'Tutorial inscripción de formulario.',
-              'Tutorial visualización y descarga de avances.',
-              'Tutorial creación de bitácoras.',
-              'Tutorial creación y modificación de comisiones',
-              'Tutorial visualización de notas pendientes.'
-            ]
         }
     },
     mounted(){
