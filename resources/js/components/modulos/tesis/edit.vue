@@ -713,7 +713,7 @@ export default {
           this.fullscreenLoading = false;
             Swal.fire({
                 icon: 'success',
-                title: 'Se ha editado el '+ terminoTitulo +' exitosamente.',
+                title: 'Se ha editado el '+ this.terminoTitulo +' exitosamente.',
                 showConfirmButton: false,
                 timer: 1500
             });
