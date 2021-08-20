@@ -118,7 +118,7 @@
                           <template v-if="(item.aprobado_pg == 'A' && (rolActivo == 'Director' || rolActivo == 'Coordinador')) || item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
                             <template v-if="item.aprobado_pg == 'R'">
                                 <button title="Ver razon de rechazo" class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
-                                <i class="fas fa-eye"></i>
+                                <i class="fas fa-eye-slash"></i>
                                 </button>
                                 <router-link :title="'Editar '+terminoTitulo" class="btn boton btn-info" :to="{name:'tesis.editar', params:{id: item.id}}">
                                 <i class="fas fa-pencil-alt"></i>
@@ -203,7 +203,7 @@
                         <td>Visión y cambios de datos de {{terminoTitulo}}</td>
                     </tr>
                     <tr>
-                        <td><i class="fas fa-eye"></i></td>
+                        <td><i class="fas fa-eye-slash"></i></td>
                         <td>Ver motivo</td>
                         <td>Se muestra en pantalla el motivo de un posible rechazo de su {{terminoTitulo}}</td>
                     </tr>
