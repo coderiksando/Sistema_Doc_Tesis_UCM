@@ -66,7 +66,7 @@
                 <div id="accordion">
                   <div class="card-white" v-for="(item, index) in listBitacoras" :key="index">
                     <div class="card-header" v-bind:id="'heading'+index">
-                      <h5 class="mb-0">
+                      <div class="container">
                         <a class="btn btn-outline-primary" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
                         </a>
@@ -74,11 +74,11 @@
                           {{item.fecha | moment}}
                         </button>
                         <template  v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
-                          <router-link class="btn btn-info boton btn-r" :to="{name:'bitacoras.editar', params:{id: item.id}}">
+                          <router-link class="btn btn-info boton btn-w float-right" :to="{name:'bitacoras.editar', params:{id: item.id}}">
                               <i class="fas fa-pencil-alt"></i>
                             </router-link>
                         </template>
-                      </h5>
+                      </div>
                     </div>
 
                     <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
