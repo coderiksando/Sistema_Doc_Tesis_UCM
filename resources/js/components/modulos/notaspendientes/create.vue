@@ -31,21 +31,17 @@
                             <div class="card-body">
                                 <form role="form">
                                     <div class="row">
-
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                              <div class="col-md-12">
-                                                <template>
-                                                    <label class="col-md-3 col-form-label">Fecha propuesta</label>
-                                                        <el-date-picker
-                                                            v-model="fillCrearNotaP.fecha_propuesta"
-                                                            type="date"
-                                                            size="large"
-                                                            value-format="yyyy-MM-dd"
-                                                            placeholder="Selecionar fecha de nota pendiente">
-                                                        </el-date-picker>
-                                                </template>
-                                                </div>
+                                              <label class="col-md-2 offset-1 col-form-label">Fecha propuesta</label>
+                                              <el-date-picker
+                                                  class="col-md-5"
+                                                  v-model="fillCrearNotaP.fecha_propuesta"
+                                                  type="date"
+                                                  size="large"
+                                                  value-format="yyyy-MM-dd"
+                                                  placeholder="Selecionar fecha de nota pendiente">
+                                              </el-date-picker>
                                             </div>
                                         </div>
                                     </div>
@@ -150,9 +146,21 @@ export default {
         'fecha_propuesta'            : this.fillCrearNotaP.fecha_propuesta
       }).then(response => {
         this.fullscreenLoading = false;
-        //var IdNotaP = response.data.id;
-        //this.setAsignarNotaP(IdNotaP);
         this.$router.push('/notaspendientes');
+        Swal.fire({
+        icon: 'success',
+        title: 'Nota pendiente registrada correctamente',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      }).catch(response=>{
+        this.fullscreenLoading = false;
+        Swal.fire({
+        icon: 'error',
+        title: 'Error al registrar nota pendiente',
+        showConfirmButton: false,
+        timer: 1500
+      })
       })
     },
 
