@@ -15,7 +15,7 @@
         <div class="card-body px-0">
           <div class="container-fluid">
             <div class="card-body px-0">
-                <div class="row text-justify">
+                <div class="row">
                   <div class="col-md-12">
                     <div id="accordion">
                       <div class="card-white" v-for="(item, index) in placeholder" :key="index">
@@ -32,7 +32,8 @@
 
                         <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
                           <div class="card-body">
-                            <div v-text="item" style="white-space: pre-wrap"></div>
+                            <!-- <div v-text="item" style="white-space: pre-wrap"></div> -->
+                            <LazyYoutube src="https://www.youtube.com/watch?v=FBarFchwFDY" />
                           </div>
                         </div>
                       </div>

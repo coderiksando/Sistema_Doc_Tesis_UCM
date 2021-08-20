@@ -211,6 +211,7 @@ export default {
           showConfirmButton: false,
           timer: 1500
         })
+        this.$router.push('/avances');
       })
     },
     validarRegistrarAvance(){

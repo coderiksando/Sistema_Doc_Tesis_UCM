@@ -100,17 +100,22 @@
                 <div id="accordion">
                   <div class="card-white" v-for="(item, index) in listarAvancesPaginated" :key="index">
                     <div class="card-header" v-bind:id="'heading'+index">
-                      <h5 class="mb-0">
+                      <div class="container">
                         <a class="btn btn-outline-primary" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
                         </a>
                         <button class="btn btn-link" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
                           {{item.created_at | moment}}
                         </button>
-                          <a title="Ver documento" class="btn btn-warning boton btn-r" :href="item.archivo_pdf.path" target="_blank">
+                          <a title="Ver documento" class="btn btn-warning boton float-right mx-1 btn-w" :href="item.archivo_pdf.path" target="_blank">
                             <i class="fas fa-file-download"> </i>
                           </a>
-                      </h5>
+                          <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">
+                            <router-link class="btn btn-info boton float-right mx-1 btn-w" :to="{name:'avances.editar', params:{id: item.id}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </router-link>
+                          </template>
+                      </div>
                     </div>
 
                     <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
@@ -329,9 +334,7 @@ export default {
     width: 38px !important;
     height:38px !important;
    }
-   .btn-r{
-     position: absolute; 
-     right: 5%;
+   .btn-w{
      color: white !important;
    }
    .bt-fh{

@@ -31,6 +31,7 @@
         "sweetalert2": "^9.17.2",
         "vue-directive-tooltip": "^1.6.3",
         "vue-js-popover": "^1.2.1",
+        "vue-lazytube": "^1.0.2",
         "vue-multiselect": "^2.1.6",
         "vue-router": "^3.5.2"
     }

@@ -35,6 +35,9 @@ Vue.component('Home', require('./components/Home.vue').default);
 import CKEditor from 'ckeditor4-vue';
 Vue.use(CKEditor);
 
+import LazyTube from "vue-lazytube";
+Vue.use(LazyTube);
+
 import router from './routes';
 
 const app = new Vue({
