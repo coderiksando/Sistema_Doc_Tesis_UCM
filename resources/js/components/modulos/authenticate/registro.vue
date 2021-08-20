@@ -172,7 +172,7 @@ export default {
                 // console.log(response.data);
                 // this.setEditarRolAlumno(response.data);
                 this.fullscreenLoading = false;
-                this.$router.push('/login');
+                this.$router.push('/');
                 Swal.fire({
                     icon: 'success',
                     title: 'Usuario registrado con exito',
@@ -207,7 +207,7 @@ export default {
             }).then(response => {
                 //console.log("Registro Usuario exitosamente");
                 this.fullscreenLoading = false;
-                this.$router.push('/login');
+                this.$router.push('/');
             })
         },
         validarIngresoUsuarioRut(rut){
@@ -236,7 +236,7 @@ export default {
             axios.post(url,{'params': ['HabilitarRegistro']}).then(response => {
                 let enableReg = parseInt(response.data[0][0]);
                 if (!enableReg) {
-                    this.$router.push('/login');
+                    this.$router.push('/');
                 }
                 this.fullscreenLoading = false;
             })
