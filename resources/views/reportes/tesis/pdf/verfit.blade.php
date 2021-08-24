@@ -74,7 +74,7 @@
             </tr>
             <tr>
                 <td> <strong>RUT:</strong>  {{$fit_user->User->rut}}</td>
-                <td> <strong>AÑO DE INGRESO:</strong>  {{$fit_user->User->birthday}}</td>
+                <td> <strong>AÑO DE INGRESO:</strong>  {{$fit_user->User->f_ingreso}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>

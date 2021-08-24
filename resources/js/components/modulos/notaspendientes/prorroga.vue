@@ -22,41 +22,39 @@
         </div>
         <div class="card-body">
           <div class="container-fluid">
-
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Formulario de ingreso de fecha de prorroga</h3>
-                        </div>
-                            <div class="card-body">
-                                <form role="form">
-                                    <div class="row">
-                                        <div class="form-group row">
-                                              <div class="col-md-12">
-                                                <template>
-                                                    <label class="col-md-6 col-form-label">Fecha propuesta de prorroga</label>
-                                                        <el-date-picker
-                                                            v-model="fillEditarNotaP.fecha_prorroga"
-                                                            type="date"
-                                                            size="large"
-                                                            value-format="yyyy-MM-dd"
-                                                            placeholder="Selecionar fecha de prorroga">
-                                                        </el-date-picker>
-                                                </template>
-                                                </div>
-                                            </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-md-4 offset-4">
-                                        <button class="btn btn-flat btn-info btnWidth" @click.prevent="setIngresarProrroga" v-loading.fullscreen.lock="fullscreenLoading"
-                                    >Crear</button>
-                                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
-                                    </div>
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Formulario de ingreso de fecha de prorroga</h3>
+                </div>
+                    <div class="card-body">
+                        <form role="form">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-md-2 offset-1 col-form-label">Fecha de prorroga</label>
+                                    <el-date-picker
+                                        class="col-md-5"
+                                        v-model="fillEditarNotaP.fecha_prorroga"
+                                        type="date"
+                                        size="large"
+                                        value-format="yyyy-MM-dd"
+                                        placeholder="Selecionar fecha de prorroga">
+                                    </el-date-picker>
                                 </div>
+                              </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-4 offset-4">
+                                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setIngresarProrroga" v-loading.fullscreen.lock="fullscreenLoading"
+                            >Crear</button>
+                            <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
                             </div>
                         </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -166,6 +164,7 @@ export default {
 
       }).then(response => {
         this.fullscreenLoading = false;
+        this.$router.push('/notaspendientes');
         Swal.fire({
         icon: 'success',
         title: 'Prorroga ingresada Correctamente',

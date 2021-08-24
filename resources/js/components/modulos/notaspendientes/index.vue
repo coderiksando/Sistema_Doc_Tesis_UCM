@@ -16,11 +16,6 @@
             <!-- /.container-fluid -->
                             <!-- /.container-fluid -->
             <template v-if="listRolPermisosByUsuario.includes('EsAlumno') && listNotasPendientes.length > 0">
-              <div>
-              <router-link class="btn btn-info bnt-sm link-disabled" :to="''">
-                <i class="fas fa-plus-square"></i> Usted ya ingreso una nota pendiente
-              </router-link>
-              </div>
             </template>
             <template v-if="listRolPermisosByUsuario.includes('notaspendientes.crear')">
               <template v-if="listNotasPendientes.length == 0 && fillEstadoTesis.cEstado  == 'D'">
