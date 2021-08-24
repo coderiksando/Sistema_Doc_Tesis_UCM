@@ -85,7 +85,7 @@ class NotasPendientesController extends Controller
         return ($NotaP) ? [$NotaP] : [];
     }
     public function getListarNotasPendientes(Request $request){
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $IdProfesor     = Auth::id();
         $nIdNotaP       = $request->nIdNotaP;
@@ -114,6 +114,21 @@ class NotasPendientesController extends Controller
 
         return $NotasP;
     }
+    public function getListarNotasPendientesbyEscuela(Request $request){
+        //if(!$request->ajax()) return redirect('/');
+        $user = Auth::user();
+        $estado = $request->estado;
+        $idEscuela = $user->id_escuela;
+        $idFits = Fit::where('id_escuela', $idEscuela)->where('estado', 'D')->pluck('id');
+        $notasP = NotasPendientes::whereIn('id_tesis', $idFits)->get();
+
+        foreach ($notasP as $nota) {
+            $nota->alumnos = Fit::find($nota->id_tesis)->getAlumnos();
+        }
+
+        return $notasP;
+    }
+
     public function getListarNotasPendientesByAlumno(Request $request){
         if(!$request->ajax()) return redirect('/');
 

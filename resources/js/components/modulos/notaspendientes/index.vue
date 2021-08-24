@@ -165,8 +165,11 @@ export default {
       this.getMiNotaP();
       this.getEstadoTesis();
     }
+    else if(this.listRolPermisosByUsuario.includes('EsProfesor')){
+        this.getListarNotasPendientes();
+    }
     else{
-      this.getListarNotasPendientes();
+        this.getListarNotasPendientesByEscuela();
     }
   },
   filters:{
@@ -210,6 +213,19 @@ export default {
           'estado' : this.fillBsqNotasPendientes.estado,
           'dFechaInicio'  :   (!this.fillBsqNotasPendientes.dfecharango) ? '' : this.fillBsqNotasPendientes.dfecharango[0],
           'dFechaFin'     :   (!this.fillBsqNotasPendientes.dfecharango) ? '' : this.fillBsqNotasPendientes.dfecharango[1],
+        }
+      }).then(response => {
+          this.inicializarPaginacion();
+          this.listNotasPendientes = response.data;
+          this.fullscreenLoading = false;
+      })
+    },
+    getListarNotasPendientesByEscuela(){
+      this.fullscreenLoading = true;
+      var url = '/notaspendientes/getListarNotasPendientesByEscuela'
+      axios.get(url, {
+        params: {
+          'estado' : this.fillBsqNotasPendientes.estado,
         }
       }).then(response => {
           this.inicializarPaginacion();

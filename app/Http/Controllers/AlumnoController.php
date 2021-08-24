@@ -140,6 +140,12 @@ class AlumnoController extends Controller
         }
         return $fit;
     }
+    public function getTesisById(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $id = $request->id;
+        $fit = Fit::find($id);
+        return $fit;
+    }
     public function getListarMiTesis(Request $request){
 
         if(!$request->ajax()) return redirect('/');

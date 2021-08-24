@@ -31,15 +31,22 @@
                             <div class="card-body">
                                 <form role="form">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Nota final documento</label>
-                                                <div class="col-md-9">
+                                                <div class="col-md-5">
                                                     <template>
-                                                        <el-input-number v-model="fillSubirNota.Nota" size="large" :min="1" :precision="2" :step="0.1" :max="7"></el-input-number>
+                                                        <el-input-number v-bind:disabled="aprobar" v-model="fillSubirNota.Nota" size="large" v-bind:min="notaMinima" :precision="2" :step="0.1" :max="7"></el-input-number>
                                                     </template>
                                                 </div>
-                                            </div>
+                                                <label class="col-md-2 col-form-label">Aprobar sin nota</label>
+                                                <div class="col-md-2">
+                                                  <label class="switch">
+                                                      <input v-model="aprobar" type="checkbox" @change="interruptorNota">
+                                                      <span class="slider round"></span>
+                                                  </label>
+                                                </div>
+                                            </div>  
                                         </div>
                                     </div>
                                 </form>
@@ -98,13 +105,16 @@ export default {
         display: 'none',
       },
       error: 0,
-      mensajeError:[]
+      mensajeError:[],
+      aprobar: false,
+      notaMinima: 1
     }
   },
   computed: {
   },
    mounted(){
       this.alertaNota();
+      this.getTesisById();
   },
   methods:{
     limpiarCriterios(){
@@ -116,7 +126,7 @@ export default {
     validarRegistrarNota(){
       this.error = 0;
       this.mensajeError = [];
-        if(!this.fillSubirNota.Nota){
+        if(this.fillSubirNota.Nota == null){
           this.mensajeError.push("La nota es un campo obligatorio")
         }
         if(this.mensajeError.length){
@@ -157,6 +167,33 @@ export default {
     },
     inicializarPaginacion(){
       this.pageNumber = 0;
+    },
+    interruptorNota(){
+      if (this.aprobar) {
+        this.notaMinima = 0;
+        this.fillSubirNota.Nota = 0;
+      }else{
+        this.notaMinima = 1;
+        this.fillSubirNota.Nota = 1;
+      }
+    },
+    getTesisById() {
+      this.fullscreenLoading = true;
+      var url = "/alumno/getTesisById";
+      axios.get(url, {
+        params: {
+          'id' : this.fillSubirNota.IdTesis
+        }
+      }).then((response) => {
+          let fit = response.data;
+          this.fillSubirNota.Nota = fit.nota;
+          if (fit.nota == 0 && fit.estado == 'A') {
+            this.aprobar = true;
+            this.notaMinima = 0;
+            this.fillSubirNota.Nota = 0;
+          }
+          this.fullscreenLoading = false;
+        });
     },
 
   }// cierre methods
