@@ -1,10 +1,13 @@
 <template>
 
   <div>
-    <!-- Main Sidebar Container -->
-    <Sidebar id="sidebar" class="sidebar" :ruta="ruta" :usuario="authUser" :listPermisos="listRolPermisosByUsuario"> </Sidebar>
+    <!-- Sidebar -->
+    <div class="sidebar-wrapper">
+      <Sidebar id="sidebar" :ruta="ruta" :usuario="authUser" :listPermisos="listRolPermisosByUsuario"> </Sidebar>
+    </div>
     <!-- navbar -->
-    <Navbar class="navbar" :ruta="ruta"> </Navbar>
+      <Navbar id="navbar" :ruta="ruta" :usuario="authUser"> </Navbar>
+    <!-- Main Sidebar Container -->
     <!-- Content Wrapper. Contains page content -->
     <div style="padding-top:50px;" class="content-wrapper" >
       <transition name="slide-fade" mode="out-in" >
@@ -56,27 +59,11 @@ export default {
     @import '../../../public/css/tableFixed.css';
     @import '../../../public/css/botonNormal.css';
 
-
-    .sidebar{
-        /* overflow-x: hidden !important; */
-        min-height: 85vh;
-        max-height: 85vh;
-        padding-left: 0rem;
-        padding-right: 0rem;
-        position: fixed !important;
-    }
     .sidebar::-webkit-scrollbar {
         width: 15px;
     }
     .sidebar::-webkit-scrollbar-thumb {
         background-color: darkgrey;
         outline: 1px solid slategrey;
-    }
-    .nav-item-sidebar {
-        width: 235px;
-    }
-    .navbar{
-      position: fixed;
-      width: 100%;
     }
 </style>

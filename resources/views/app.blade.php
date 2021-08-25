@@ -3,7 +3,7 @@
 
 @include('sections.head')
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition layout-fixed layout-navbar-fixed">
     <div class="wrapper" id="app">
 
         @if (Auth::check()) 

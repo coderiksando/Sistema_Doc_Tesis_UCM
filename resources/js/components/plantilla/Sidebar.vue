@@ -1,6 +1,6 @@
 <template>
 
-  <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
       <a href="#" class="brand-link">
         <img :src="ruta + '/img/ucm3.png'"
@@ -12,31 +12,8 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <template v-if="!usuario.id_files">
-            <img :src="ruta + '/img/avatar.png'" class="img-circle elevation-2" :alt="usuario.fullname">
-          </template>
-
-          <template v-else>
-            <img :src="usuario.file.path" class="img-circle elevation-2" :alt="usuario.fullname" style="height:34px !important;">
-          </template>
-
-        </div>
-        <div class="info">
-          <router-link class="d-block" :to="{name: 'usuarios.ver', params:{id_user: usuario.id_user}}">
-              {{usuario.nombres.split(' ')[0] + ' ' + usuario.apellidos.split(' ')[0]}}
-          </router-link>
-        </div>
-      </div>
-
-
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex" v-if="listRolByUser.length > 1">
         <div class="container">
-          <a href="#" class="btn btn-danger btn-block" @click.prevent="logout" v-loading.fullscreen.lock="fullscreenLoading">
-            Cerrar sesión
-          </a>
-          <template v-if="listRolByUser.length > 1">
           <div style="text-align: center;">
             <a>Seleccionar rol</a>
           </div>
@@ -50,7 +27,6 @@
               </el-option>
             </el-select>
           </a>
-          </template>
         </div>
       </div>
 
