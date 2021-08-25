@@ -92,7 +92,7 @@
             </div>
           </template>
 
-            <div class="card card-info">
+            <div class="card card-info" v-loading="fullscreenLoading">
               <div class="card-header">
                 <h3 class="card-title">Bandeja de resultados</h3>
               </div>

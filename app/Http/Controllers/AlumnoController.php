@@ -71,50 +71,51 @@ class AlumnoController extends Controller
                                                                 ]);
     }
     public function getListarTesis(Request $request){
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
-        $nIdUsuario  = Auth::id();
-        $nIdTesis    = $request->nIdTesis;
+        $nIdUsuario     = Auth::id();
+        $cNombre        = $request->nombre;
+        $cApellido      = $request->apellido;
+        $cEstadoPg      = $request->estadoI;
+        $cEstado        = $request->estado;
+        $dFechaInicio   = Carbon::parse($request->fecha)->startOfYear();;
+        $dFechaFin      = Carbon::parse($request->fecha)->endOfYear();;
         $rol = $request->session()->get('rol');
 
         if ($rol == 'Alumno'){
             $fitUser = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
-            $fits = Fit::whereIn('id', $fitUser)->get()->sortByDesc('updated_at')->values()->all();
-        }
-        if ($rol == 'Profesor'){
-            $fits = Fit::where('id_p_guia', $nIdUsuario)->whereIn('aprobado_pg', ['P', 'A', 'V'])->get()->sortByDesc('updated_at')->values()->all();
-        }
-        if ($rol == 'Director' || $rol == 'Coordinador'){
+            $fits = Fit::whereIn('id', $fitUser);
+        }elseif($rol == 'Profesor'){
+            $fits = Fit::where('id_p_guia', $nIdUsuario)->whereIn('aprobado_pg', ['P', 'A', 'V']);
+        }else{
             $fits = Fit::whereIn('aprobado_pg', ['A', 'V'])
-            ->where('id_escuela', Auth::user()->id_escuela)
-            ->get()->sortByDesc('updated_at')->values()->all();
+            ->where('id_escuela', Auth::user()->id_escuela);
         }
 
+//      Filtros de busqueda
+        if ($cNombre || $cApellido) {
+            $users = User::where('nombres', 'LIKE', "%$cNombre%")
+                           ->where('apellidos', 'LIKE', "%$cApellido%")->get()->pluck('id_user');
+            $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
+            $fits->whereIn('id', $fitUser);
+        }
+        if ($cEstadoPg) {
+            $fits->where('aprobado_pg', $cEstadoPg);
+        }
+        if ($cEstado) {
+            $fits->where('estado', $cEstado);
+        }
+        if ($dFechaInicio) {
+            $fits->whereBetween('created_at', [$dFechaInicio, $dFechaFin]);
+        }
+
+        $fits = $fits->get()->sortByDesc('updated_at')->all();
         foreach ($fits as $fit) {
             $listUsers = $fit->Fit_User->pluck('id_user');
             $listUsersDetails = User::whereIn('id_user', $listUsers)->get()->all();
             $fit->constancia = ArchivoPdf::where('id_fit', $fit->id)->firstWhere('tipo_pdf', 'constancia_t');
             $fit->listUsers = $listUsersDetails;
             $fit->Comisiones;
-        }
-
-        return $fits;
-    }
-    public function getListarAllTesis(Request $request){
-
-        if(!$request->ajax()) return redirect('/');
-
-        $nIdUsuario  = Auth::id();
-        $nIdTesis    =$request->nIdTesis;
-
-        //$nIdUsuario  = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
-        //$nIdTesis    = ($nIdTesis == NULL) ? ($nIdTesis = 0) : $nIdTesis;
-
-        $fits = Fit::all();
-        foreach($fits as $fit) {
-            foreach($fit->Fit_User->all() as $fit_user) {
-                $fit_user->User->first();
-            }
         }
 
         return $fits;

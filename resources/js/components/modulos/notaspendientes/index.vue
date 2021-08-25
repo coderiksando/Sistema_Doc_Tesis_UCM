@@ -33,7 +33,7 @@
               <div class="card-header">
                 <h3 class="card-title">Bandeja de resultados</h3>
               </div>
-              <div class="card-body table-responsive">
+              <div class="card-body table-responsive" v-loading="fullscreenLoading">
                 <template v-if="listarNotasPendientesPaginated.length">
 
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
@@ -43,7 +43,7 @@
                         <th>Fecha de ingreso</th>
                         <th>Fecha propuesta</th>
                         <th>Fecha prórroga</th>
-                        <th>Acciones</th>
+                        <th v-if="listRolPermisosByUsuario.includes('notaspendientes.editar')">Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -60,17 +60,13 @@
                              {{ item.fecha_prorroga | moment }}
                            </template>
                           </td>
-                        <td>
-                            <template  v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
-                              <router-link title="Editar" class="btn btn-info boton" :to="{name:'notaspendientes.editar', params:{id: item.id}}">
-                                <i class="fas fa-pencil-alt"></i>
-                              </router-link>
-                            </template>
-                            <template v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
-                              <router-link title="Solicitar prórroga" class="btn btn-success boton" :to="{name:'notaspendientes.prorroga', params:{id: item.id}}">
-                                <i class="fas fa-calendar-check"></i>
-                              </router-link>
-                            </template>
+                        <td v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
+                          <router-link title="Editar" class="btn btn-info boton" :to="{name:'notaspendientes.editar', params:{id: item.id}}">
+                            <i class="fas fa-pencil-alt"></i>
+                          </router-link>
+                          <router-link title="Solicitar prórroga" class="btn btn-success boton" :to="{name:'notaspendientes.prorroga', params:{id: item.id}}">
+                            <i class="fas fa-calendar-check"></i>
+                          </router-link>
                         </td>
                       </tr>
                     </tbody>

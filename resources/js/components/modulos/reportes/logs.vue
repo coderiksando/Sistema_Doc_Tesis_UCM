@@ -67,20 +67,20 @@
                       </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Fecha</label>
-                            <div class="col-md-9">
-                                <el-date-picker
-                                    v-model="fillBuscarRegistros.dfecharango"
-                                    type="daterange"
-                                    range-separator="/"
-                                    start-placeholder="Fecha Inicio"
-                                    end-placeholder="Fecha Fin"
-                                    value-format="yyyy-MM-dd">
-                                </el-date-picker>
-                            </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Fecha</label>
+                        <div class="col-md-9">
+                          <el-date-picker
+                            v-model="fillBuscarRegistros.dfecharango"
+                            type="daterange"
+                            range-separator="/"
+                            start-placeholder="Fecha Inicio"
+                            end-placeholder="Fecha Fin"
+                            value-format="yyyy-MM-dd">
+                          </el-date-picker>
                         </div>
                       </div>
+                    </div>
                   </div>
                 </form>
               </div>
