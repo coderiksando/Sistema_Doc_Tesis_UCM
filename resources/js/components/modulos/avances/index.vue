@@ -92,45 +92,47 @@
             </div>
           </template>
 
-            <div class="card card-info" v-loading="fullscreenLoading">
+            <div class="card card-info">
               <div class="card-header">
                 <h3 class="card-title">Bandeja de resultados</h3>
               </div>
-              <template v-if="listarAvancesPaginated.length">
-                <div id="accordion">
-                  <div class="card-white" v-for="(item, index) in listarAvancesPaginated" :key="index">
-                    <div class="card-header" v-bind:id="'heading'+index">
-                      <div class="container">
-                        <a class="btn btn-outline-primary" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                        </a>
-                        <button class="btn btn-link" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
-                          {{item.created_at | moment}}
-                        </button>
-                          <a title="Ver documento" class="btn btn-warning boton float-right mx-1 btn-w" :href="item.archivo_pdf.path" target="_blank">
-                            <i class="fas fa-file-download"> </i>
+              <div class="card-body" v-loading="fullscreenLoading">
+                <template v-if="listarAvancesPaginated.length">
+                  <div id="accordion">
+                    <div class="card-white" v-for="(item, index) in listarAvancesPaginated" :key="index">
+                      <div class="card-header" v-bind:id="'heading'+index">
+                        <div class="container">
+                          <a class="btn btn-outline-primary" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
+                              <i class="fa fa-plus-circle" aria-hidden="true"></i>
                           </a>
-                          <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">
-                            <router-link class="btn btn-info boton float-right mx-1 btn-w" :to="{name:'avances.editar', params:{id: item.id}}">
-                                <i class="fas fa-pencil-alt"></i>
-                            </router-link>
-                          </template>
+                          <button class="btn btn-link" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
+                            {{item.created_at | moment}}
+                          </button>
+                            <a title="Ver documento" class="btn btn-warning boton float-right mx-1 btn-w" :href="item.archivo_pdf.path" target="_blank">
+                              <i class="fas fa-file-download"> </i>
+                            </a>
+                            <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">
+                              <router-link class="btn btn-info boton float-right mx-1 btn-w" :to="{name:'avances.editar', params:{id: item.id}}">
+                                  <i class="fas fa-pencil-alt"></i>
+                              </router-link>
+                            </template>
+                        </div>
                       </div>
-                    </div>
 
-                    <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
-                      <div class="card-body">
-                        <div v-text="item.descripcion" style="white-space: pre-wrap"></div>
+                      <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
+                        <div class="card-body">
+                          <div v-text="item.descripcion" style="white-space: pre-wrap"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </template>
-              <template v-else>
-                <div class="callout callout-info">
-                  <h5> No se han encontrado resultados...</h5>
-                </div>
-              </template>
+                </template>
+                <template v-else>
+                  <div class="callout callout-info">
+                    <h5> No se han encontrado resultados...</h5>
+                  </div>
+                </template>
+              </div>
               <div class="card-footer clearfix">
                 <ul class="pagination pagination-sm m-0 float-right">
                   <li class="page-item" v-if="pageNumber > 0">

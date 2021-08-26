@@ -76,7 +76,6 @@ class AlumnoController extends Controller
         $nIdUsuario     = Auth::id();
         $cNombre        = $request->nombre;
         $cApellido      = $request->apellido;
-        $cEstadoPg      = $request->estadoI;
         $cEstado        = $request->estado;
         $dFechaInicio   = Carbon::parse($request->fecha)->startOfYear();;
         $dFechaFin      = Carbon::parse($request->fecha)->endOfYear();;
@@ -87,7 +86,7 @@ class AlumnoController extends Controller
             $fits = Fit::whereIn('id', $fitUser);
         }elseif($rol == 'Profesor'){
             $fits = Fit::where('id_p_guia', $nIdUsuario)->whereIn('aprobado_pg', ['P', 'A', 'V']);
-        }else{
+        }else{ 
             $fits = Fit::whereIn('aprobado_pg', ['A', 'V'])
             ->where('id_escuela', Auth::user()->id_escuela);
         }
@@ -99,9 +98,6 @@ class AlumnoController extends Controller
             $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
             $fits->whereIn('id', $fitUser);
         }
-        if ($cEstadoPg) {
-            $fits->where('aprobado_pg', $cEstadoPg);
-        }
         if ($cEstado) {
             $fits->where('estado', $cEstado);
         }
@@ -109,7 +105,7 @@ class AlumnoController extends Controller
             $fits->whereBetween('created_at', [$dFechaInicio, $dFechaFin]);
         }
 
-        $fits = $fits->get()->sortByDesc('updated_at')->all();
+        $fits = $fits->get()->sortByDesc('updated_at')->values()->all();
         foreach ($fits as $fit) {
             $listUsers = $fit->Fit_User->pluck('id_user');
             $listUsersDetails = User::whereIn('id_user', $listUsers)->get()->all();
@@ -117,7 +113,6 @@ class AlumnoController extends Controller
             $fit->listUsers = $listUsersDetails;
             $fit->Comisiones;
         }
-
         return $fits;
     }
     public function getListarTesisView(Request $request){

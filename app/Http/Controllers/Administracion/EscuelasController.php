@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Administracion;
 
 use App\Facultad;
 use App\Escuelas;
+use App\DocumentosEscuela;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class EscuelasController extends Controller
 {
@@ -88,6 +90,24 @@ class EscuelasController extends Controller
             $escuela->id_facultad = $nIdFacultad;
             $escuela->save();
         }
+    }
+
+    public function getListarDocumentosEscuela(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
+        $user = Auth::user();
+        $nIdEscuela =  $request->nIdEscuela;
+
+        if ($nIdEscuela == -1) $nIdEscuela = $user->id_escuela;
+
+        $documentos = DocumentosEscuela::where('id_escuela', $nIdEscuela);
+        
+        if ($request->nIdEscuela == -1) {
+            $documentos->orWhere('id_escuela', 0);
+        }
+
+        return $documentos->get();
+
     }
 
 }

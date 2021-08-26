@@ -50,23 +50,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-4 col-form-label">Estado formulario</label>
-                        <div class="col-md-8">
-                            <el-select v-model="fillBsqTesis.cEstadoPg"
-                            placeholder="Seleccione un estado"
-                            clearable>
-                              <el-option
-                                v-for="item in listEstadosFIT"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                              </el-option>
-                            </el-select>
-                        </div>
-                      </div>
-                    </div>
+                    
                     <div class="col-md-6">
                       <div class="form-group row">
                         <label class="col-md-4 col-form-label">Estado de aprobación</label>
@@ -421,6 +405,7 @@ export default {
       }).then(response => {
             this.inicializarPaginacion();
             this.listTesis = response.data;
+            console.log(response.data);
             this.fullscreenLoading = false;
       })
     },

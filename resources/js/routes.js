@@ -507,10 +507,18 @@ export const rutas = [
     props : true
  },
  /******** RUTAS MODULO DE ADMINISTRACION DE DOCUMENTOS *********/
-{
+ {
     path: '/documentos',
     name: 'documentos.index',
     component: require('./components/modulos/documentos/index').default,
+    beforeEnter: (to, from, next) => {
+        verificarAcceso(to, from, next);
+    }
+ },
+ {
+    path: '/documentosEscuela',
+    name: 'escuelas.documentos.navegar',
+    component: require('./components/modulos/documentosEscuela/index').default,
     beforeEnter: (to, from, next) => {
         verificarAcceso(to, from, next);
     }

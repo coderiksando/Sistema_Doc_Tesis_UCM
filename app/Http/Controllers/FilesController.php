@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ArchivoPdf;
+use App\DocumentosEscuela;
 use App\Fit_User;
 use App\Fit;
 use App\User;
@@ -17,10 +18,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use \stdClass;
 use Debugbar;
+use Carbon\Carbon;
 
 class FilesController extends Controller
 {
     public function setRegistrarArchivo(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
         $fileOwner = User::find(Auth::user()->id_user);
         // eliminacion del archivo anterior
         if ($fileOwner->File) {
@@ -45,6 +49,7 @@ class FilesController extends Controller
         return $archivo;
     }
     public function setRegistrarArchivoPDF(Request $request){
+        if(!$request->ajax()) return redirect('/');
 
         $idUser = Auth::user()->id_user;
         $fit = Fit_User::Firstwhere('id_user', $idUser)->Fit;
@@ -73,6 +78,42 @@ class FilesController extends Controller
         $rpta->save();
         //$nIdFile = $rpta->id;
         return $rpta;
+    }
+
+    public function setRegistrarArchivoEscuela(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
+        $user = Auth::user();
+        $file = $request->file;
+        $timestamp = Carbon::now()->format('H-i-s');
+        $bandera = Str::random(5).$timestamp;
+        $filename = $file->getClientOriginalName();
+        $fileserver = $bandera .'_'. $filename;
+        $id_escuela = $request->id_escuela;
+        $descripcion = $request->descripcion;
+
+        if ($id_escuela < 0) $id_escuela = $user->id_escuela;
+
+        Debugbar::info($timestamp);
+        Storage::putFileAs('public/users', $file, $fileserver);
+
+        $rpta = new DocumentosEscuela;
+        $rpta->descripcion = $descripcion;
+        $rpta->path = asset('storage/users/'.$fileserver);
+        $rpta->filename = $filename;
+        $rpta->id_escuela = $id_escuela;
+        $rpta->save();
+        return $rpta;
+    }
+    public function setEliminarDocumentoEscuela(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
+        $id = $request->id;
+        $archivo = DocumentosEscuela::find($id);
+
+        $name = last(explode('/', $archivo->path));
+        Storage::delete('public/users/'.$name);
+        $archivo->delete();
     }
 
     public function getPdfFinal(Request $request){

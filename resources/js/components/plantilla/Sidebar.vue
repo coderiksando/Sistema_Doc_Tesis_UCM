@@ -119,6 +119,16 @@
                 </router-link>
               </template>
             </li>
+            <li class="nav-item-sidebar">
+                <template v-if="permisos.includes('escuelas.documentos.navegar')">
+                  <router-link class="nav-link" :to="'/documentosEscuela'">
+                    <i class="nav-icon fa fa-folder"></i>
+                    <p>
+                      Documentos de Escuela
+                    </p>
+                  </router-link>
+                </template>
+              </li>
           </template>
           <template  v-if="permisos.includes('parametros.index')">
             <li class="nav-header">CONTROL DE SISTEMA</li>
@@ -234,6 +244,16 @@
                     <i class="nav-icon fas fa-hands-helping"></i>
                     <p>
                         Vinculaciones
+                    </p>
+                  </router-link>
+                </template>
+              </li>
+              <li class="nav-item-sidebar">
+                <template v-if="permisos.includes('escuelas.documentos.navegar')">
+                  <router-link class="nav-link" :to="'/documentosEscuela'">
+                    <i class="nav-icon fa fa-folder"></i>
+                    <p>
+                      Documentos de Escuela
                     </p>
                   </router-link>
                 </template>

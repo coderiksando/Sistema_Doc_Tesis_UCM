@@ -9,7 +9,7 @@
       <Navbar id="navbar" :ruta="ruta" :usuario="authUser"> </Navbar>
     <!-- Main Sidebar Container -->
     <!-- Content Wrapper. Contains page content -->
-    <div style="padding-top:50px;" class="content-wrapper" >
+    <div class="content-wrapper" >
       <transition name="slide-fade" mode="out-in" >
         <router-view :usuario="authUser"></router-view>
       </transition>
