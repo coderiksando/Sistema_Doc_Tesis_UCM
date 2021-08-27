@@ -71,6 +71,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   /*********    RUTAS MODULO DE ADMINISTRACION DE TESIS (FIT)    **********/
   Route::get('/alumno/getListarTesis', 'AlumnoController@getListarTesis');
+  Route::get('/alumno/getTesisById', 'AlumnoController@getTesisById');
   Route::get('/alumno/getListarAllTesis', 'AlumnoController@getListarAllTesis'); //agrego
   Route::get('/alumno/getListarTesisView', 'AlumnoController@getListarTesisView');
   Route::get('/alumno/getListarTesisTerminadas', 'AlumnoController@getListarTesisTerminadas');
@@ -103,6 +104,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   /*********    RUTAS MODULO DE ADMINISTRACION DE NOTAS PENDIENTES    **********/
   Route::get('/notaspendientes/getListarNotasPendientes', 'NotasPendientesController@getListarNotasPendientes');
+  Route::get('/notaspendientes/getListarNotasPendientesByEscuela', 'NotasPendientesController@getListarNotasPendientesByEscuela');
   Route::get('/notaspendientes/getListarMiNotaP', 'NotasPendientesController@getListarMiNotaP');
   Route::post('/notaspendientes/setRegistrarNotaP', 'NotasPendientesController@setRegistrarNotaP');;
   Route::post('/notaspendientes/setAsignarNotaP', 'NotasPendientesController@setAsignarNotaP');

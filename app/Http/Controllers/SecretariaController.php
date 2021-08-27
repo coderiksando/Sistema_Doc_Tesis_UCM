@@ -131,7 +131,7 @@ class SecretariaController extends Controller
         $DatosEmail->titulo = $fit->titulo;
         $DatosEmail->fecha = Carbon::now();
         $DatosEmail->nota = $nota;
-        if($nota >= 4){
+        if($nota >= 4 || $nota == 0){
             $estado = 'A';
             $DatosEmail->estadonota = 'Aprobo';
         }else{

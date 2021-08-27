@@ -31,6 +31,87 @@
         </template>
         <div class="card-body">
           <div class="container-fluid">
+            
+            <div class="card card-info" v-if="!listRolPermisosByUsuario.includes('EsAlumno')">
+              <div class="card-header">
+                <h3 class="card-title">Criterios de búsqueda</h3>
+              </div>
+              <div class="card-body">
+                <form role="form">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Alumno</label>
+                        <div class="col-md-4">
+                            <input placeholder="Nombre" type="text" class="form-control" v-model="fillBsqTesis.cNombre" @keyup.enter="getListarTesis">
+                        </div>
+                        <div class="col-md-4">
+                            <input placeholder="Apellido" type="text" class="form-control" v-model="fillBsqTesis.cApellido" @keyup.enter="getListarTesis">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Estado formulario</label>
+                        <div class="col-md-8">
+                            <el-select v-model="fillBsqTesis.cEstadoPg"
+                            placeholder="Seleccione un estado"
+                            clearable>
+                              <el-option
+                                v-for="item in listEstadosFIT"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                              </el-option>
+                            </el-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Estado de aprobación</label>
+                        <div class="col-md-8">
+                            <el-select v-model="fillBsqTesis.cEstado"
+                            placeholder="Seleccione un estado">
+                              <el-option
+                                v-for="item in listEstadosTesis"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                              </el-option>
+                            </el-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Fecha</label>
+                        <div class="col-md-8">
+                          <el-date-picker
+                            v-model="fillBsqTesis.dfecha"
+                            type="year"
+                            range-separator="/"
+                            placeholder="Año"
+                            value-format="yyyy-MM-dd">
+                          </el-date-picker>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+              <div class="card-footer">
+                <div class="row">
+                  <div class="col-md-4 offset-4">
+                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarTesis"
+                      >Buscar</button>
+                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="card card-info">
               <div class="card-header">
                 <div class="row">
@@ -44,10 +125,9 @@
                     </div>
                 </div>
               </div>
-              <div class="card-body table table-responsive">
+              <div class="card-body table table-responsive" v-loading="fullscreenLoading">
                 <template v-if="listTesis.length">
-
-                  <table class ="table table-hover table-head-fixed text-nowrap projects" v-loading.fullscreen.lock="fullscreenLoading">
+                  <table class ="table table-hover table-head-fixed text-nowrap projects">
                     <thead>
                       <tr>
                         <th>Alumno(s)</th>
@@ -237,13 +317,11 @@ export default {
   data(){
     return{
       fillBsqTesis:{
-        nIdTesis: '',
-        cTitulo: '',
-        nIdPg: '',
-        cNombreI1: '',
-        cEstadoPg: '',
-        cEstadoD: '',
-        cEstadoTesis: ''
+        cNombre       : '',
+        cApellido     : '',
+        cEstadoPg     : '',
+        cEstado       : '',
+        dfecha        : ''
       },
       fillVerFIT:{
         cNombre: '',
@@ -254,6 +332,7 @@ export default {
       terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       terminoTituloExtendido: JSON.parse(localStorage.getItem('TerminoDeTituloExtendido')),
       listEstadosFIT: [
+        {value: 'V', label: 'Verificado'},
         {value: 'A', label: 'Aprobado'},
         {value: 'P', label: 'Pendiente'},
         {value: 'R', label: 'Rechazado'}
@@ -312,8 +391,6 @@ export default {
   },
   created(){
     this.getListarTesis();
-    // this.getListarAllTesis();
-    //this.getListarMiTesis();
   },
   methods:{
     setGenerarDocumento(nIdTesis){
@@ -331,11 +408,20 @@ export default {
       })
     },
     getListarTesis(){
+      this.fullscreenLoading = true;
       var url = '/alumno/getListarTesis';
       axios.get(url, {
+        params:{
+          'nombre'    :   this.fillBsqTesis.cNombre,
+          'apellido'  :   this.fillBsqTesis.cApellido,
+          'estadoI'   :   this.fillBsqTesis.cEstadoPg,
+          'estado'    :   this.fillBsqTesis.cEstado,
+          'fecha'   :    (!this.fillBsqTesis.dfecha) ? '' : this.fillBsqTesis.dfecha,
+        }
       }).then(response => {
             this.inicializarPaginacion();
             this.listTesis = response.data;
+            this.fullscreenLoading = false;
       })
     },
     getListarAllTesis(){
@@ -358,7 +444,11 @@ export default {
     },
     limpiarCriteriosBsq(){
       this.fillBsqTesis.cNombre = '';
-      this.fillBsqTesis.cSlug = '';
+      this.fillBsqTesis.cApellido = '';
+      this.fillBsqTesis.cEstado = '';
+      this.fillBsqTesis.cEstadoPg = '';
+      this.fillBsqTesis.dfecha = '';
+
     },
     limpiarBandejaUsuarios(){
       this.listTesis = [];

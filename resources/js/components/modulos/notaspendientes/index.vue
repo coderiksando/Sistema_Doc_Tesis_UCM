@@ -16,11 +16,6 @@
             <!-- /.container-fluid -->
                             <!-- /.container-fluid -->
             <template v-if="listRolPermisosByUsuario.includes('EsAlumno') && listNotasPendientes.length > 0">
-              <div>
-              <router-link class="btn btn-info bnt-sm link-disabled" :to="''">
-                <i class="fas fa-plus-square"></i> Usted ya ingreso una nota pendiente
-              </router-link>
-              </div>
             </template>
             <template v-if="listRolPermisosByUsuario.includes('notaspendientes.crear')">
               <template v-if="listNotasPendientes.length == 0 && fillEstadoTesis.cEstado  == 'D'">
@@ -38,7 +33,7 @@
               <div class="card-header">
                 <h3 class="card-title">Bandeja de resultados</h3>
               </div>
-              <div class="card-body table-responsive">
+              <div class="card-body table-responsive" v-loading="fullscreenLoading">
                 <template v-if="listarNotasPendientesPaginated.length">
 
                   <table class ="table table-hover table-head-fixed text-nowrap projects">
@@ -48,7 +43,7 @@
                         <th>Fecha de ingreso</th>
                         <th>Fecha propuesta</th>
                         <th>Fecha prórroga</th>
-                        <th>Acciones</th>
+                        <th v-if="listRolPermisosByUsuario.includes('notaspendientes.editar')">Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -65,17 +60,13 @@
                              {{ item.fecha_prorroga | moment }}
                            </template>
                           </td>
-                        <td>
-                            <template  v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
-                              <router-link title="Editar" class="btn btn-info boton" :to="{name:'notaspendientes.editar', params:{id: item.id}}">
-                                <i class="fas fa-pencil-alt"></i>
-                              </router-link>
-                            </template>
-                            <template v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
-                              <router-link title="Solicitar prórroga" class="btn btn-success boton" :to="{name:'notaspendientes.prorroga', params:{id: item.id}}">
-                                <i class="fas fa-calendar-check"></i>
-                              </router-link>
-                            </template>
+                        <td v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
+                          <router-link title="Editar" class="btn btn-info boton" :to="{name:'notaspendientes.editar', params:{id: item.id}}">
+                            <i class="fas fa-pencil-alt"></i>
+                          </router-link>
+                          <router-link title="Solicitar prórroga" class="btn btn-success boton" :to="{name:'notaspendientes.prorroga', params:{id: item.id}}">
+                            <i class="fas fa-calendar-check"></i>
+                          </router-link>
                         </td>
                       </tr>
                     </tbody>
@@ -165,8 +156,11 @@ export default {
       this.getMiNotaP();
       this.getEstadoTesis();
     }
+    else if(this.listRolPermisosByUsuario.includes('EsProfesor')){
+        this.getListarNotasPendientes();
+    }
     else{
-      this.getListarNotasPendientes();
+        this.getListarNotasPendientesByEscuela();
     }
   },
   filters:{
@@ -210,6 +204,19 @@ export default {
           'estado' : this.fillBsqNotasPendientes.estado,
           'dFechaInicio'  :   (!this.fillBsqNotasPendientes.dfecharango) ? '' : this.fillBsqNotasPendientes.dfecharango[0],
           'dFechaFin'     :   (!this.fillBsqNotasPendientes.dfecharango) ? '' : this.fillBsqNotasPendientes.dfecharango[1],
+        }
+      }).then(response => {
+          this.inicializarPaginacion();
+          this.listNotasPendientes = response.data;
+          this.fullscreenLoading = false;
+      })
+    },
+    getListarNotasPendientesByEscuela(){
+      this.fullscreenLoading = true;
+      var url = '/notaspendientes/getListarNotasPendientesByEscuela'
+      axios.get(url, {
+        params: {
+          'estado' : this.fillBsqNotasPendientes.estado,
         }
       }).then(response => {
           this.inicializarPaginacion();
