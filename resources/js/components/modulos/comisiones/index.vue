@@ -95,7 +95,7 @@
                 <template v-if="listarComisionesPaginated.length">
                     <template v-for="(item, index) in listarComisionesPaginated">
                         <div class="card mb-1" :key="'guia'+index">
-                            <div class="card-body" :id="'heading'+index">
+                            <div class="card-body py-1" :id="'heading'+index">
                             <h3 class="mb-0">
                                 <div class="btn btn-link col-md-12 noPadNoMar d-flex">
                                     <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
@@ -202,7 +202,7 @@
                 <template v-if="listarComisionesPaginated2.length">
                     <template v-for="(item, index) in listarComisionesPaginated2">
                         <div class="card mb-1" :key="'participe'+index">
-                            <div class="card-body" :id="'headingParticipe'+index">
+                            <div class="card-body py-1" :id="'headingParticipe'+index">
                             <h3 class="mb-0">
                                 <div class="btn btn-link col-md-12 noPadNoMar d-flex">
                                     <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
@@ -389,7 +389,7 @@
                 <template v-if="listarComisionesTotalesPaginated.length">
                     <template v-for="(item, index) in listarComisionesTotalesPaginated">
                         <div class="card mb-1" :key="'total'+index">
-                            <div class="card-body" :id="'headingTotal'+index">
+                            <div class="card-body py-1" :id="'headingTotal'+index">
                             <h3 class="mb-0">
                                 <div class="btn btn-link col-md-12 noPadNoMar d-flex">
                                     <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
