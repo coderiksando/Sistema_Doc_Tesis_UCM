@@ -1,10 +1,10 @@
 <template>
-  
+
     <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-dark">
     <!-- Left navbar links -->
     <ul class="navbar-nav ml-left">
-     
+
       <li class="nav-item">
         <a class="nav-link menuBtn" data-widget="pushmenu" data-slide="true" href="" role="button">
           <i class="fa fa-bars"></i>
@@ -13,12 +13,12 @@
     </ul>
 
     <!-- SEARCH FORM -->
-    
+
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Messages Dropdown Menu -->
-      
+
       <li class="nav-item dropdown">
         <a class="btn-lg btn btn-outline-light" data-toggle="dropdown" href="#">
           <i class="fa fa-user-circle"></i>
@@ -39,9 +39,12 @@
 
                 </div>
                 <div class="col-sm text-center p-1">
-                  <router-link class="block" :to="{name: 'usuarios.ver', params:{id_user: usuario.id_user}}">
+                  <router-link v-if="permisos.includes('usuarios.ver')" class="block" :to="{name: 'usuarios.ver', params:{id_user: usuario.id_user}}">
                       {{usuario.nombres.split(' ')[0] + ' ' + usuario.apellidos.split(' ')[0]}}
                   </router-link>
+                  <p style="font-size: 1rem;" v-if="!permisos.includes('usuarios.ver')" class="block">
+                      {{usuario.nombres.split(' ')[0] + ' ' + usuario.apellidos.split(' ')[0]}}
+                  </p>
                 </div>
               </div>
 
@@ -67,7 +70,8 @@ export default {
   props: ['ruta', 'usuario'],
   data(){
     return{
-      fullscreenLoading: false
+      fullscreenLoading: false,
+      permisos : JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
     }
   },
   mounted(){
