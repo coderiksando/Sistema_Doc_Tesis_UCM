@@ -66,4 +66,8 @@ export default {
         background-color: darkgrey;
         outline: 1px solid slategrey;
     }
+
+    /* .main-sidebar{
+        width: 275px;
+    } */
 </style>

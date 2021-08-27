@@ -10,7 +10,7 @@
         <span class="brand-text font-weight-light">SGYAD UCM</span>
       </a>
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar text-sm p-0">
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex" v-if="listRolByUser.length > 1">
         <div class="container">
