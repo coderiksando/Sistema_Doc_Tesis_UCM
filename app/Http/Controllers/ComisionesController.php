@@ -75,7 +75,25 @@ class ComisionesController extends Controller
     public function getListarMisComisiones(Request $request){
         if(!$request->ajax()) return redirect('/');
         $IdProfesor  = Auth::id();
-        $MisComisiones = Fit::where('id_p_guia', $IdProfesor)
+        $nomAlumno  = $request->cAlum;
+        $dateYear   = $request->nYear;
+        $tituloFid  = $request->cTitulo;
+        $bComision  = $request->bComision;
+        $fitBusq =   DB ::table('fit')
+                        ->leftJoin('fit_user', 'fit_user.id_fit', 'fit.id')
+                        ->leftJoin('users as alumno', 'alumno.id_user', 'fit_user.id_user')
+                        ->leftJoin('users as profesor', 'profesor.id_user', 'fit.id_p_guia');
+        if ($bComision == '0') $fitBusq->leftJoin('comisiones', 'comisiones.id_tesis', 'fit.id')->whereNull('comisiones.id_tesis');
+        if ($bComision == '1') $fitBusq->join('comisiones', 'comisiones.id_tesis', 'fit.id');
+        if ($bComision == '2') $fitBusq->leftJoin('comisiones', 'comisiones.id_tesis', 'fit.id');
+        $fitBusq = $fitBusq ->select('fit.id')
+                            ->where(DB::raw("CONCAT(alumno.nombres,' ',alumno.apellidos)"), 'like', "%$nomAlumno%")
+                            ->where('fit.id_p_guia', "$IdProfesor");
+        if ($dateYear) $fitBusq = $fitBusq->whereYear('fit.updated_at', "$dateYear");
+        $fitBusq = $fitBusq ->where('fit.titulo', 'like', "%$tituloFid%")
+                            ->get()
+                            ->pluck('id');
+        $MisComisiones = Fit::whereIn('id', $fitBusq)
                             ->get()
                             ->sortByDesc('updated_at')
                             ->values()
@@ -101,13 +119,34 @@ class ComisionesController extends Controller
     public function getListarComisiones(Request $request){
         if(!$request->ajax()) return redirect('/');
         $IdProfesor  = Auth::id();
-        $ComisionesTotales = [];
-        $Comisiones  = Comisiones   ::where('id_profesor1',$IdProfesor)
+        $nomAlumno  = $request->cAlum;
+        $dateYear   = $request->nYear;
+        $tituloFid  = $request->cTitulo;
+        $fitBusq =   DB ::table('fit')
+                        ->leftJoin('fit_user', 'fit_user.id_fit', 'fit.id')
+                        ->leftJoin('users as alumno', 'alumno.id_user', 'fit_user.id_user')
+                        ->leftJoin('users as profesor', 'profesor.id_user', 'fit.id_p_guia')
+                        ->join('comisiones', 'comisiones.id_tesis', 'fit.id')
+                        ->select('fit.id')
+                        ->where(DB::raw("CONCAT(alumno.nombres,' ',alumno.apellidos)"), 'like', "%$nomAlumno%")
+                        ->where(function ($revisor) use ($IdProfesor) {
+                            $revisor->where('comisiones.id_profesor1', '=', "$IdProfesor")
+                                    ->orWhere('comisiones.id_profesor2', '=', "$IdProfesor");
+                        });
+        if ($dateYear) $fitBusq = $fitBusq->whereYear('fit.updated_at', "$dateYear");
+        $fitBusq = $fitBusq ->where('fit.titulo', 'like', "%$tituloFid%")
+                            ->get()
+                            ->pluck('id');
+        $comisiones = [];
+        if (count($fitBusq) > 0) {
+            $comisiones = Comisiones::whereIn('id_tesis',$fitBusq)
                                     ->get()
                                     ->sortByDesc('updated_at')
+                                    ->values()
                                     ->all();
-        if ($Comisiones) {
-            foreach ($Comisiones as $comision) {
+        }
+        if (count($comisiones) > 0) {
+            foreach ($comisiones as $comision) {
                 $comision->Fit;
                 $comision->Fit->User_P_Guia;
                 $comision->Fit->ArchivoPdf;
@@ -119,30 +158,9 @@ class ComisionesController extends Controller
                         $comision_fit_user->User;
                     }
                 }
-                array_push($ComisionesTotales, $comision);
             }
         }
-        $Comisiones  = Comisiones   ::where('id_profesor2',$IdProfesor)
-                                    ->get()
-                                    ->sortByDesc('updated_at')
-                                    ->all();
-        if ($Comisiones) {
-            foreach ($Comisiones as $comision) {
-                $comision->Fit;
-                $comision->Fit->User_P_Guia;
-                $comision->Fit->ArchivoPdf;
-                $comision->UserP1;
-                $comision->UserP2;
-                $comision->Fit->Fit_User;
-                if ($comision->Fit->Fit_User) {
-                    foreach ($comision->Fit->Fit_User as $comision_fit_user) {
-                        $comision_fit_user->User;
-                    }
-                }
-                array_push($ComisionesTotales, $comision);
-            }
-        }
-        return $ComisionesTotales;
+        return $comisiones;
     }
     public function getListarTodasComisiones(Request $request){
         if(!$request->ajax()) return redirect('/');
@@ -154,6 +172,45 @@ class ComisionesController extends Controller
             $fit->Comisiones;
             $fit->Comisiones->UserP1;
             $fit->Comisiones->UserP2;
+            $fit->User_P_Guia;
+            $fit->Escuela;
+            $fit->getAlumnos();
+            $fit->Revision_Comision;
+            $fit->ArchivoPdf;
+        }
+        return $fitWithComision;
+    }
+    public function getListarComisionesByParametros(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $nomAlumno  = $request->cAlum;
+        $nomProfe   = $request->cProf;
+        $dateYear   = $request->nYear;
+        $tituloFid  = $request->cTitulo;
+        $bComision  = $request->bComision;
+        $fitBusq =   DB  ::table('fit')
+                        ->leftJoin('fit_user', 'fit_user.id_fit', 'fit.id')
+                        ->leftJoin('users as alumno', 'alumno.id_user', 'fit_user.id_user')
+                        ->leftJoin('users as profesor', 'profesor.id_user', 'fit.id_p_guia');
+        if ($bComision == '0') $fitBusq->leftJoin('comisiones', 'comisiones.id_tesis', 'fit.id')->whereNull('comisiones.id_tesis');
+        if ($bComision == '1') $fitBusq->join('comisiones', 'comisiones.id_tesis', 'fit.id');
+        if ($bComision == '2') $fitBusq->leftJoin('comisiones', 'comisiones.id_tesis', 'fit.id');
+        $fitBusq = $fitBusq ->select('fit.id')
+                            ->where(DB::raw("CONCAT(alumno.nombres,' ',alumno.apellidos)"), 'like', "%$nomAlumno%")
+                            ->where(DB::raw("CONCAT(profesor.nombres,' ',profesor.apellidos)"), 'like', "%$nomProfe%");
+        if ($dateYear) $fitBusq = $fitBusq->whereYear('fit.updated_at', "$dateYear");
+        $fitBusq = $fitBusq ->where('fit.titulo', 'like', "%$tituloFid%")
+                            ->get()
+                            ->pluck('id');
+
+        $fitWithComision= Fit::whereIn('id', $fitBusq)
+                            ->get()
+                            ->all();
+        foreach ($fitWithComision as $fit) {
+            $fit->Comisiones;
+            if ($fit->Comisiones) {
+                $fit->Comisiones->UserP1;
+                $fit->Comisiones->UserP2;
+            }
             $fit->User_P_Guia;
             $fit->Escuela;
             $fit->getAlumnos();

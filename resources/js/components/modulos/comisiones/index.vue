@@ -14,6 +14,77 @@
       <div class="card">
 
         <template v-if="rolActivo == 'Profesor'">
+        <div class="card-body pb-0">
+            <div class="container-fluid">
+                <div class="card card-info">
+                    <div class="card-header container btn py-1" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="card-title font-weight-bold">
+                                    <div class="btn boton btn-primary">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                    Sistema de búsqueda
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                <div class="collapse" id="busquedaTotal">
+                    <div class="card-body row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Título</label>
+                                <input :placeholder="'Título de '+terminoTitulo" class="col-md-9 form-control" type="text" v-model="busquedaComision.tituloFID" @keyup.enter="comisionesByRol">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Alumno</label>
+                                <input placeholder="Nombre de alumno completo" class="col-md-9 form-control" type="text" v-model="busquedaComision.nombreAlumno" @keyup.enter="comisionesByRol">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Comisión</label>
+                                <div class="col-md-9 px-0">
+                                    <multiselect
+                                        v-model="busquedaComision.existenciaComision"
+                                        label='valor'
+                                        track-by="id"
+                                        placeholder="Seleccionar roles"
+                                        :options="busquedaOpcion"
+                                        selectLabel="Seleccionar"
+                                        selectedLabel="Seleccionado"
+                                        deselectLabel="No puede quitar este valor"
+                                        :allow-empty="false"
+                                        @input="comisionesByRol">
+                                    </multiselect>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label class="col-form-label">Año</label>
+                                </div>
+                                <div class="col-md-9 px-0">
+                                    <el-date-picker
+                                        v-model="busquedaComision.yearSelected"
+                                        style="width: 100%;"
+                                        type="year"
+                                        placeholder="Inicio"
+                                        value-format="yyyy"
+                                        @change="comisionesByRol">
+                                    </el-date-picker>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
         <div class="card-body">
           <div class="container-fluid">
             <div class="card card-info">
@@ -23,12 +94,12 @@
               <div id="accordion">
                 <template v-if="listarComisionesPaginated.length">
                     <template v-for="(item, index) in listarComisionesPaginated">
-                        <div class="card" :key="'guia'+index">
-                            <div class="card-body" :id="'heading'+index">
+                        <div class="card mb-1" :key="'guia'+index">
+                            <div class="card-body py-1" :id="'heading'+index">
                             <h3 class="mb-0">
-                                <button class="btn btn-link col-md-12 noPadNoMar d-flex" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index">
-                                    <div title="Sección expandible" class="col-md-1"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
-                                    <div title="Sección expandible" class="col-md-8 noPadNoMar"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + item.titulo.slice(0, 40)}}</p></div>
+                                <div class="btn btn-link col-md-12 noPadNoMar d-flex">
+                                    <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
+                                    <div title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + item.titulo.slice(0, 40)}}</p></div>
                                     <div class="col-md-3 noPadNoMar">
                                         <template v-if="!item.comisiones">
                                             <router-link title="Crear comisión" class="btn boton btn-info" :to="{name:'comisiones.crear', params:{id: item.id}}">
@@ -52,7 +123,7 @@
                                             </button>
                                         </template>
                                     </div>
-                                </button>
+                                </div>
                             </h3>
                             </div>
 
@@ -130,12 +201,12 @@
               <div id="accordion2">
                 <template v-if="listarComisionesPaginated2.length">
                     <template v-for="(item, index) in listarComisionesPaginated2">
-                        <div class="card" :key="'participe'+index">
-                            <div class="card-body" :id="'headingParticipe'+index">
+                        <div class="card mb-1" :key="'participe'+index">
+                            <div class="card-body py-1" :id="'headingParticipe'+index">
                             <h3 class="mb-0">
-                                <button class="btn btn-link col-md-12 noPadNoMar d-flex" data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index">
-                                    <div title="Sección expandible" class="col-md-1"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
-                                    <div title="Sección expandible" class="col-md-8 noPadNoMar"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
+                                <div class="btn btn-link col-md-12 noPadNoMar d-flex">
+                                    <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
+                                    <div title="Sección expandible" class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
                                     <div class="col-md-3 noPadNoMar">
                                         <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
                                             <i class="fas fa-eye"></i>
@@ -149,7 +220,7 @@
                                             </button>
                                         </template>
                                     </div>
-                                </button>
+                                </div>
                             </h3>
                             </div>
 
@@ -227,39 +298,123 @@
         </div>
         </template>
         <template v-if="rolActivo != 'Profesor'">
-        <div class="card-body">
+        <div class="card-body pb-0">
+            <div class="container-fluid">
+                <div class="card card-info">
+                    <div class="card-header container btn py-1" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="card-title font-weight-bold">
+                                    <div class="btn boton btn-primary">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                    Sistema de búsqueda
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                <div class="collapse" id="busquedaTotal">
+                    <div class="card-body row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Título</label>
+                                <input :placeholder="'Título de '+terminoTitulo" class="col-md-9 form-control" type="text" v-model="busquedaComision.tituloFID" @keyup.enter="getListarComisionesByParametros">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Alumno</label>
+                                <input placeholder="Nombre de alumno completo" class="col-md-9 form-control" type="text" v-model="busquedaComision.nombreAlumno" @keyup.enter="getListarComisionesByParametros">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Prof. Guía</label>
+                                <input placeholder="Nombre de profesor completo" class="col-md-9 form-control" type="text" v-model="busquedaComision.nombreProf" @keyup.enter="getListarComisionesByParametros">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Comisión</label>
+                                <div class="col-md-9 px-0">
+                                    <multiselect
+                                        v-model="busquedaComision.existenciaComision"
+                                        label='valor'
+                                        track-by="id"
+                                        placeholder="Seleccionar roles"
+                                        :options="busquedaOpcion"
+                                        selectLabel="Seleccionar"
+                                        selectedLabel="Seleccionado"
+                                        deselectLabel="No puede quitar este valor"
+                                        :allow-empty="false"
+                                        @input="getListarComisionesByParametros">
+                                    </multiselect>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label class="col-form-label">Año</label>
+                                </div>
+                                <div class="col-md-9 px-0">
+                                    <el-date-picker
+                                        v-model="busquedaComision.yearSelected"
+                                        style="width: 100%;"
+                                        type="year"
+                                        placeholder="Inicio"
+                                        value-format="yyyy"
+                                        @change="getListarComisionesByParametros">
+                                    </el-date-picker>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-body py-0">
           <div class="container-fluid">
             <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Total de comisiones establecidas</h3>
+              <div class="card-header container">
+                <div class="row">
+                    <div class="col-md-12 mb-1">
+                        <h3 class="card-title font-weight-bold">Total de comisiones establecidas</h3>
+                    </div>
+                </div>
               </div>
-              <div id="accordion3">
+              <div id="accordion3" v-loading="fullscreenLoading">
                 <template v-if="listarComisionesTotalesPaginated.length">
                     <template v-for="(item, index) in listarComisionesTotalesPaginated">
-                        <div class="card" :key="'total'+index">
-                            <div class="card-body" :id="'headingTotal'+index">
+                        <div class="card mb-1" :key="'total'+index">
+                            <div class="card-body py-1" :id="'headingTotal'+index">
                             <h3 class="mb-0">
-                                <button class="btn btn-link col-md-12 noPadNoMar d-flex" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index">
-                                    <div title="Sección expandible" class="col-md-1"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
-                                    <div title="Sección expandible" class="col-md-8 noPadNoMar"><p class="float-left">{{moment(item.comisiones.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
+                                <div class="btn btn-link col-md-12 noPadNoMar d-flex">
+                                    <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
+                                    <div v-if="item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.comisiones.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
+                                    <div v-if="!item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
                                     <div class="col-md-3 noPadNoMar">
                                         <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                                             <i class="fas fa-eye"></i>
                                         </router-link>
-                                        <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                                        <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)">
                                             <i class="fas fa-file-download"></i>
                                         </button>
-                                        <button title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
+                                        <button v-if="item.comisiones" title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
                                             <i class="fas fa-file-upload"></i>
                                         </button>
                                         <!-- <router-link title="Ver revisiones de comisión" class="btn boton btn-info" :to="'tesis/revisiones'">
                                             <i class="fa fa-list-alt"></i>
                                         </router-link> -->
-                                        <router-link title="Editar comisión" class="btn boton btn-danger" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
-                                            <i class="fas fa-pencil-alt"></i>
-                                        </router-link>
+                                        <template v-if="item.comisiones">
+                                            <router-link title="Editar comisión" class="btn boton btn-danger" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </router-link>
+                                        </template>
                                     </div>
-                                </button>
+                                </div>
                             </h3>
                             </div>
 
@@ -415,7 +570,9 @@
 <script>
 import moment from "moment";
 import globalFunctions from '../../../services/globalFunctions';
+import Multiselect from 'vue-multiselect';
 export default {
+    components: { Multiselect },
     props: ['usuario'],
     data(){
     return{
@@ -426,6 +583,13 @@ export default {
             comentario: '',
             tipo: 'revision',
         },
+        busquedaComision: {
+            tituloFID: '',
+            nombreAlumno: '',
+            nombreProf: '',
+            existenciaComision: { "id": 2, "valor": "Todas" },
+            yearSelected: ''
+        },
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
         terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
         listAlumnos:[],
@@ -433,6 +597,11 @@ export default {
         listMisComisiones:[],
         listComisiones:[],
         listAllComisiones:[],
+        busquedaOpcion: [
+            {id:0, valor:'Faltantes'},
+            {id:1, valor:'Creadas'},
+            {id:2, valor:'Todas'}
+        ],
         fullscreenLoading: false,
         pageNumber: 0,
         pageNumber2: 0,
@@ -458,7 +627,7 @@ export default {
         },
         tesisForm: new FormData(),
         rolActivo: JSON.parse(localStorage.getItem('rolActivo')),
-        hover: false
+        hover: false,
     }
   },
   computed: {
@@ -565,38 +734,64 @@ export default {
       })
     },
     getListarMisComisiones(){
-      this.fullscreenLoading = true;
-      var url = '/comisiones/getListarMisComisiones'
-      axios.get(url, {
-
-      }).then(response => {
-          this.inicializarPaginacion();
-          this.listMisComisiones = response.data;
-          console.log('guia',this.listMisComisiones)
-          this.fullscreenLoading = false;
-      })
+        this.fullscreenLoading = true;
+        var url = '/comisiones/getListarMisComisiones'
+        axios.get(url, {
+            params: {
+                bComision: this.busquedaComision.existenciaComision.id,
+                cTitulo: this.busquedaComision.tituloFID,
+                cAlum: this.busquedaComision.nombreAlumno,
+                nYear: this.busquedaComision.yearSelected
+            }
+        }).then(response => {
+            this.inicializarPaginacion();
+            this.listMisComisiones = response.data;
+            //   console.log('guia',this.listMisComisiones)
+            this.fullscreenLoading = false;
+        })
     },
     getListarComisiones(){
-      this.fullscreenLoading = true;
-      var url = '/comisiones/getListarComisiones'
-      axios.get(url, {
-
-      }).then(response => {
-          this.inicializarPaginacion2();
-          this.listComisiones = response.data;
-          console.log('pertenezco',this.listComisiones)
-          this.fullscreenLoading = false;
-      })
+        this.fullscreenLoading = true;
+        var url = '/comisiones/getListarComisiones'
+        axios.get(url, {
+            params: {
+                cTitulo: this.busquedaComision.tituloFID,
+                cAlum: this.busquedaComision.nombreAlumno,
+                nYear: this.busquedaComision.yearSelected
+            }
+        }).then(response => {
+            this.inicializarPaginacion2();
+            this.listComisiones = response.data;
+            //   console.log('pertenezco',this.listComisiones)
+            this.fullscreenLoading = false;
+        })
     },
     getListarTodasComisiones() {
       this.fullscreenLoading = true;
-      var url = '/comisiones/getListarTodasComisiones'
+      var url = '/comisiones/getListarTodasComisiones';
       axios.get(url, {
       }).then(response => {
           this.inicializarPaginacionTotal();
           this.listAllComisiones = response.data;
           this.fullscreenLoading = false;
       })
+    },
+    getListarComisionesByParametros() {
+      this.fullscreenLoading = true;
+      var url = '/comisiones/getListarComisionesByParametros';
+      axios.get(url, {
+        params: {
+            bComision: this.busquedaComision.existenciaComision.id,
+            cTitulo: this.busquedaComision.tituloFID,
+            cProf: this.busquedaComision.nombreProf,
+            cAlum: this.busquedaComision.nombreAlumno,
+            nYear: this.busquedaComision.yearSelected
+        }
+      }).then(response => {
+          this.inicializarPaginacionTotal();
+          this.listAllComisiones = response.data;
+          this.fullscreenLoading = false;
+      });
     },
     limpiarBandejaUsuarios(){
       this.listComisiones = [];
