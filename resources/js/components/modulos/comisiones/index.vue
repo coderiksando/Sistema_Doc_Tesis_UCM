@@ -543,7 +543,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" @click="envioDocumentoRevision">Enviar</button>
+                <button class="btn btn-primary" @click="envioDocumentoRevision">{{globVar.btnSend}}</button>
                 <button class="btn btn-secondary" @click="limpiezaInsercionDocumento">{{globVar.btnClose}}</button>
             </div>
         </div>

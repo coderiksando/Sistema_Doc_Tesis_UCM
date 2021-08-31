@@ -74,8 +74,8 @@
                 <div class="row">
                   <div class="col-md-4 offset-4">
                     <button class="btn btn-flat btn-info btnWidth" @click.prevent="setGuardarArchivo"  v-loading.fullscreen.lock="fullscreenLoading"
-                      >Registrar</button>
-                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
+                      >{{globVar.btnSave}}</button>
+                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
                   </div>
                 </div>
             </div>
@@ -115,7 +115,7 @@
                 </thead>
                 <tbody>
                   <tr v-for="(item, index) in listarDocumentosPaginated" :key="index">
-                    <td> 
+                    <td>
                       <p v-text="item.descripcion"></p>
                     </td>
                     <td >

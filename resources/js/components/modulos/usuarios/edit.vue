@@ -96,8 +96,8 @@
           <div class="card-footer">
             <div class="row">
               <div class="col-md-4 offset-4">
-                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarUsuario">Editar</button>
-                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
+                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarUsuario">{{globVar.btnSave}}</button>
+                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">{{globVar.btnClear}}</button>
               </div>
             </div>
           </div>

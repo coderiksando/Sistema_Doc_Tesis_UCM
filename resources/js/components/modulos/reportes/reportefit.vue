@@ -137,9 +137,9 @@
                 <button :disabled="!!fillBsqTesisReporte.dfecharango[0] !== !!fillBsqTesisReporte.dfecharango[1]"
                 class="btn btn-flat btn-info btnWidth" @click.prevent="getListarTesisReporte"
                 v-loading.fullscreen.lock="fullscreenLoading">
-                    Buscar
+                    {{globVar.btnSearch}}
                 </button>
-                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
+                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
               </div>
             </div>
           </div>
