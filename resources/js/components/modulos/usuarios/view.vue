@@ -61,7 +61,7 @@
                   <div class="card-header p-2">
                     <ul class="nav nav-pills position-reverse">
                       <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
-                        <i class="fas fa-arrow-left"></i> Regresar
+                        <i class="fas fa-arrow-left"></i> {{globVar.btnBack}}
                       </a>
                     </ul>
                   </div><!-- /.card-header -->
