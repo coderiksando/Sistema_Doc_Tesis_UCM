@@ -1,110 +1,92 @@
 <template>
-  <div>
-
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Editar rol</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-tools">
+        <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
+          <i class="fas fa-arrow-left"></i> Regresar
+        </a>
+      </div>
     </div>
-
-    <div class="container container-fluid">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-tools">
-            <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
-              <i class="fas fa-arrow-left"></i> Regresar
-            </a>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Formulario de edición de rol</h3>
-                        </div>
-                            <div class="card-body">
-                                <form role="form">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Nombres</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" class="form-control" v-model="fillEditarRol.cNombre" @keyup.enter="setEditarRolPermisos">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Url</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" class="form-control" v-model="fillEditarRol.cSlug" @keyup.enter="setEditarRolPermisos">
-                                                </div>
+    <div class="card-body">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Formulario de edición de rol</h3>
+                    </div>
+                        <div class="card-body">
+                            <form role="form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label class="col-md-3 col-form-label">Nombres</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" v-model="fillEditarRol.cNombre" @keyup.enter="setEditarRolPermisos">
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
-                            <div class="card-footer">
-                                <div class="row">
-                                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarRolPermisos" v-loading.fullscreen.lock="fullscreenLoading"
-                                    >Editar</button>
-                                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label class="col-md-3 col-form-label">Url</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" v-model="fillEditarRol.cSlug" @keyup.enter="setEditarRolPermisos">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                            </form>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarRolPermisos" v-loading.fullscreen.lock="fullscreenLoading"
+                                >Editar</button>
+                                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-7">
-                        <div class="card card-info">
-                            <div class="card-header">
-                                <h3 class="card-title">Listar permisos</h3>
-                            </div>
-                            <div class="card-body table-resposive">
-                                  <template v-if="listPermisosFilter.length">
-                                    <div class="scrollTable">
-                                      <table class ="table table-hover table-head-fixed text-nowrap projects">
-                                        <thead>
-                                          <tr>
-                                            <th>Acción</th>
-                                            <th>Nombre</th>
-                                            <th>Url</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <tr v-for="(item, index) in listPermisosFilter" :key="index" @click.prevent="marcarFila(index)">
-
-                                            <td>
-                                              <!-- cheeekboh-->
-                                              <el-checkbox v-model="item.checked">Opción</el-checkbox>
-                                            </td>
-                                            <td v-text="item.name"></td>
-                                            <td v-text="item.slug"></td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                  </template>
-                                  <template v-else>
-                                    <div class="callout callout-info">
-                                      <h5> No se han encontrado resultados...</h5>
-                                    </div>
-                                  </template>
-                                </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Listar permisos</h3>
                         </div>
+                        <div class="card-body table-resposive">
+                              <template v-if="listPermisosFilter.length">
+                                <div class="scrollTable">
+                                  <table class ="table table-hover table-head-fixed text-nowrap projects">
+                                    <thead>
+                                      <tr>
+                                        <th>Acción</th>
+                                        <th>Nombre</th>
+                                        <th>Url</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr v-for="(item, index) in listPermisosFilter" :key="index" @click.prevent="marcarFila(index)">
+
+                                        <td>
+                                          <!-- cheeekboh-->
+                                          <el-checkbox v-model="item.checked">Opción</el-checkbox>
+                                        </td>
+                                        <td v-text="item.name"></td>
+                                        <td v-text="item.slug"></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </template>
+                              <template v-else>
+                                <div class="callout callout-info">
+                                  <h5> No se han encontrado resultados...</h5>
+                                </div>
+                              </template>
+                            </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-
-
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">

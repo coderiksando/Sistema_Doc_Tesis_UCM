@@ -1,18 +1,5 @@
 <template>
 <div>
-    <meta charset="utf-8"/>
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-12">
-            <h1 class="m-0 text-dark font-weight-bold">Parámetros del sistema</h1>
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </div>
     <div class="card-body">
         <div class="container-fluid">
             <div class="card card-info">

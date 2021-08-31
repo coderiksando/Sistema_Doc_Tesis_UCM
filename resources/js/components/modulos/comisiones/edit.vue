@@ -1,103 +1,87 @@
 <template>
-  <div>
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Editar comisión</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-tools">
+        <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
+          <i class="fas fa-arrow-left"></i> Regresar
+        </a>
+      </div>
     </div>
-    <div class="container container-fluid">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-tools">
-            <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
-              <i class="fas fa-arrow-left"></i> Regresar
-            </a>
+    <div class="card-body">
+      <div class="container-fluid">
+        <div class="card card-info">
+          <div class="card-header">
+              <h3 class="card-title">Formulario edición de comisión</h3>
+          </div>
+          <div class="card-body">
+            <form role="form">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Profesor comisión 1 (requerido)</label>
+                    <div class="col-md-9">
+                      <el-select v-model="fillEditarComision.Profesor1"
+                      placeholder="Asignar Profesor para comision"
+                      filterable
+                      clearable>
+                      <el-option
+                        v-for="item in listProfesores"
+                        :key="item.id_user"
+                        :label="item.fullname"
+                        :value="item.id_user">
+                      </el-option>
+                      </el-select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Profesor comisión 2</label>
+                    <div class="col-md-9">
+                      <el-select v-model="fillEditarComision.Profesor2"
+                      placeholder="Asignar Profesor para comision"
+                      filterable
+                      clearable>
+                      <el-option
+                        v-for="item in listProfesores"
+                        :key="item.id_user"
+                        :label="item.fullname"
+                        :value="item.id_user">
+                      </el-option>
+                      </el-select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Profesor externo</label>
+                    <div class="col-md-9">
+                      <input type="text" placeholder="Nombre profesor externo" class="form-control" v-model="fillEditarComision.NombrePEx" @keyup.enter="setEditarComision">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Email profesor externo</label>
+                    <div class="col-md-9">
+                      <input type="text" placeholder="Email profesor externo" class="form-control" v-model="fillEditarComision.EmailPEx" @keyup.enter="setEditarComision">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Institución profesor externo</label>
+                    <div class="col-md-9">
+                      <input type="text" placeholder="Institucion profesor externo" class="form-control" v-model="fillEditarComision.InstitucionPEx" @keyup.enter="setEditarComision">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col-md-4 offset-4">
+                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarComision" v-loading.fullscreen.lock="fullscreenLoading">Registrar</button>
+              <button class="btn btn-flat btn-default btnWidth" @click.prevent="getComision">Restaurar</button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="card-body">
-          <div class="container-fluid">
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Formulario edición de comisión</h3>
-                        </div>
-                            <div class="card-body">
-                                <form role="form">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Profesor comisión 1 (requerido)</label>
-                                                <div class="col-md-9">
-                                                    <el-select v-model="fillEditarComision.Profesor1"
-                                                    placeholder="Asignar Profesor para comision"
-                                                    filterable
-                                                    clearable>
-                                                    <el-option
-                                                        v-for="item in listProfesores"
-                                                        :key="item.id_user"
-                                                        :label="item.fullname"
-                                                        :value="item.id_user">
-                                                    </el-option>
-                                                    </el-select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Profesor comisión 2</label>
-                                                <div class="col-md-9">
-                                                    <el-select v-model="fillEditarComision.Profesor2"
-                                                    placeholder="Asignar Profesor para comision"
-                                                    filterable
-                                                    clearable>
-                                                    <el-option
-                                                        v-for="item in listProfesores"
-                                                        :key="item.id_user"
-                                                        :label="item.fullname"
-                                                        :value="item.id_user">
-                                                    </el-option>
-                                                    </el-select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Profesor externo</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" placeholder="Nombre profesor externo" class="form-control" v-model="fillEditarComision.NombrePEx" @keyup.enter="setEditarComision">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Email profesor externo</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" placeholder="Email profesor externo" class="form-control" v-model="fillEditarComision.EmailPEx" @keyup.enter="setEditarComision">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Institución profesor externo</label>
-                                                <div class="col-md-9">
-                                                    <input type="text" placeholder="Institucion profesor externo" class="form-control" v-model="fillEditarComision.InstitucionPEx" @keyup.enter="setEditarComision">
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-md-4 offset-4">
-                                        <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarComision" v-loading.fullscreen.lock="fullscreenLoading"
-                                    >Registrar</button>
-                                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="getComision">Restaurar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">

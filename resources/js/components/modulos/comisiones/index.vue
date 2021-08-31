@@ -1,498 +1,483 @@
 <template>
-  <div>
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Comisiones</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+    <div class="card">
+    <template v-if="rolActivo == 'Profesor'">
+    <div class="card-body pb-0">
+        <div class="container-fluid">
+            <div class="card card-info">
+                <div class="card-header container btn py-1" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="card-title font-weight-bold">
+                                <div class="btn boton btn-primary">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                Sistema de búsqueda
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            <div class="collapse" id="busquedaTotal">
+                <div class="card-body row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Título</label>
+                            <input :placeholder="'Título de '+terminoTitulo" class="col-md-9 form-control" type="text" v-model="busquedaComision.tituloFID" @keyup.enter="comisionesByRol">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Alumno</label>
+                            <input placeholder="Nombre de alumno completo" class="col-md-9 form-control" type="text" v-model="busquedaComision.nombreAlumno" @keyup.enter="comisionesByRol">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Comisión</label>
+                            <div class="col-md-9 px-0">
+                                <multiselect
+                                    v-model="busquedaComision.existenciaComision"
+                                    label='valor'
+                                    track-by="id"
+                                    placeholder="Seleccionar roles"
+                                    :options="busquedaOpcion"
+                                    selectLabel="Seleccionar"
+                                    selectedLabel="Seleccionado"
+                                    deselectLabel="No puede quitar este valor"
+                                    :allow-empty="false"
+                                    @input="comisionesByRol">
+                                </multiselect>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label class="col-form-label">Año</label>
+                            </div>
+                            <div class="col-md-9 px-0">
+                                <el-date-picker
+                                    v-model="busquedaComision.yearSelected"
+                                    style="width: 100%;"
+                                    type="year"
+                                    placeholder="Inicio"
+                                    value-format="yyyy"
+                                    @change="comisionesByRol">
+                                </el-date-picker>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </div>
     </div>
-
-    <div class="container container-fluid">
-      <div class="card">
-
-        <template v-if="rolActivo == 'Profesor'">
-        <div class="card-body pb-0">
-            <div class="container-fluid">
-                <div class="card card-info">
-                    <div class="card-header container btn py-1" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3 class="card-title font-weight-bold">
-                                    <div class="btn boton btn-primary">
-                                        <i class="fas fa-search"></i>
-                                    </div>
-                                    Sistema de búsqueda
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                <div class="collapse" id="busquedaTotal">
-                    <div class="card-body row">
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Título</label>
-                                <input :placeholder="'Título de '+terminoTitulo" class="col-md-9 form-control" type="text" v-model="busquedaComision.tituloFID" @keyup.enter="comisionesByRol">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Alumno</label>
-                                <input placeholder="Nombre de alumno completo" class="col-md-9 form-control" type="text" v-model="busquedaComision.nombreAlumno" @keyup.enter="comisionesByRol">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Comisión</label>
-                                <div class="col-md-9 px-0">
-                                    <multiselect
-                                        v-model="busquedaComision.existenciaComision"
-                                        label='valor'
-                                        track-by="id"
-                                        placeholder="Seleccionar roles"
-                                        :options="busquedaOpcion"
-                                        selectLabel="Seleccionar"
-                                        selectedLabel="Seleccionado"
-                                        deselectLabel="No puede quitar este valor"
-                                        :allow-empty="false"
-                                        @input="comisionesByRol">
-                                    </multiselect>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <div class="col-md-3">
-                                    <label class="col-form-label">Año</label>
-                                </div>
-                                <div class="col-md-9 px-0">
-                                    <el-date-picker
-                                        v-model="busquedaComision.yearSelected"
-                                        style="width: 100%;"
-                                        type="year"
-                                        placeholder="Inicio"
-                                        value-format="yyyy"
-                                        @change="comisionesByRol">
-                                    </el-date-picker>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                </div>
+    <div class="card-body">
+        <div class="container-fluid">
+        <div class="card card-info">
+            <div class="card-header">
+            <h3 class="card-title">Comisiones lideradas como Prof. Guía</h3>
             </div>
-        </div>
-        <div class="card-body">
-          <div class="container-fluid">
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Comisiones lideradas como Prof. Guía</h3>
-              </div>
-              <div id="accordion">
-                <template v-if="listarComisionesPaginated.length">
-                    <template v-for="(item, index) in listarComisionesPaginated">
-                        <div class="card mb-1" :key="'guia'+index">
-                            <div class="card-body py-1" :id="'heading'+index">
-                            <h3 class="mb-0">
-                                <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                    <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
-                                    <div title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + item.titulo.slice(0, 40)}}</p></div>
-                                    <div class="col-md-3 noPadNoMar">
-                                        <template v-if="!item.comisiones">
-                                            <router-link title="Crear comisión" class="btn boton btn-info" :to="{name:'comisiones.crear', params:{id: item.id}}">
-                                                <i class="fas fa-plus-circle"></i>
-                                            </router-link>
-                                        </template>
-                                        <template v-if="item.comisiones">
-                                            <router-link title="Editar comisión" class="btn boton btn-info" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </router-link>
-                                        </template>
-                                        <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
-                                            <i class="fas fa-eye"></i>
+            <div id="accordion">
+            <template v-if="listarComisionesPaginated.length">
+                <template v-for="(item, index) in listarComisionesPaginated">
+                    <div class="card mb-1" :key="'guia'+index">
+                        <div class="card-body py-1" :id="'heading'+index">
+                        <h3 class="mb-0">
+                            <div class="btn btn-link col-md-12 noPadNoMar d-flex">
+                                <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
+                                <div title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + item.titulo.slice(0, 40)}}</p></div>
+                                <div class="col-md-3 noPadNoMar">
+                                    <template v-if="!item.comisiones">
+                                        <router-link title="Crear comisión" class="btn boton btn-info" :to="{name:'comisiones.crear', params:{id: item.id}}">
+                                            <i class="fas fa-plus-circle"></i>
                                         </router-link>
-                                        <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
-                                            <i class="fas fa-file-download"></i>
-                                        </button>
-                                        <template v-if="item.comisiones">
-                                            <button title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
-                                                <i class="fas fa-file-upload"></i>
-                                            </button>
-                                        </template>
-                                    </div>
-                                </div>
-                            </h3>
-                            </div>
-
-                            <div :id="'collapse'+index" class="collapse" :aria-labelledby="'heading'+index" data-parent="#accordion">
-                            <div class="card-footer">
-                                <dl class="row">
-                                    <dt class="col-md-4">Alumnos integrantes:</dt>
-                                    <template v-if="item.fit__user">
-                                        <dd class="col-md-8">
-                                            <div v-for="(fitUser, index2) in item.fit__user" :key="index2">
-                                                {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
-                                            </div>
-                                        </dd>
                                     </template>
-                                    <dt class="col-md-4">Título extendido:</dt>
-                                    <dd class="col-md-8">{{item.titulo}}</dd>
-                                    <dt class="col-md-4">Descripción:</dt>
-                                    <dd class="col-md-8">{{item.descripcion}}</dd>
-                                    <template v-if="item.user__p__coguia">
-                                        <dt class="col-md-4">Prof. Co-guía:</dt>
-                                        <dd class="col-md-8">{{item.user__p__coguia.nombres.split(' ')[0] + ' ' + item.user__p__coguia.apellidos.split(' ')[0]}}</dd>
-                                    </template>
-                                    <dt class="col-md-4">Comisión evaluadora:</dt>
-                                    <dd class="col-md-8">
-                                        <dl v-if="item.comisiones" class="row">
-                                            <template v-if="item.comisiones.user_p1">
-                                                <dt class="col-md-4">1° Prof. Interno:</dt>
-                                                <dd class="col-md-8">{{item.comisiones.user_p1.nombres.split(' ')[0]+' '+item.comisiones.user_p1.apellidos.split(' ')[0]}}</dd>
-                                            </template>
-                                            <template v-if="item.comisiones.user_p2">
-                                                <dt class="col-md-4">2° Prof. Interno:</dt>
-                                                <dd class="col-md-8">{{item.comisiones.user_p2.nombres.split(' ')[0]+' '+item.comisiones.user_p2.apellidos.split(' ')[0]}}</dd>
-                                            </template>
-                                            <template>
-                                                <dt class="col-md-4">Prof. Externo:</dt>
-                                                <dd class="col-md-8">{{item.comisiones.p_externo}}</dd>
-                                            </template>
-                                        </dl>
-                                    </dd>
-                                    <dt class="col-md-4">Tipo de documento:</dt>
-                                    <dd class="col-md-8">{{item.tipo}}</dd>
-                                </dl>
-                            </div>
-                            </div>
-                        </div>
-                    </template>
-                    <div class="card-footer clearfix">
-                        <ul class="pagination pagination-sm m-0 float-right">
-                            <li class="page-item" v-if="pageNumber > 0">
-                                <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                            </li>
-                            <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                            :class="[page == pageNumber ? 'active' : '']">
-                                <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                            </li>
-                            <li class="page-item" v-if="pageNumber < pageCount -1">
-                                <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                            </li>
-                        </ul>
-                    </div>
-                </template>
-                <template v-else>
-                  <div class="callout callout-primary">
-                    <h5> No se han encontrado resultados...</h5>
-                  </div>
-                </template>
-              </div>
-
-            </div>
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Comisiones donde soy partícipe</h3>
-              </div>
-
-              <div id="accordion2">
-                <template v-if="listarComisionesPaginated2.length">
-                    <template v-for="(item, index) in listarComisionesPaginated2">
-                        <div class="card mb-1" :key="'participe'+index">
-                            <div class="card-body py-1" :id="'headingParticipe'+index">
-                            <h3 class="mb-0">
-                                <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                    <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
-                                    <div title="Sección expandible" class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
-                                    <div class="col-md-3 noPadNoMar">
-                                        <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
-                                            <i class="fas fa-eye"></i>
+                                    <template v-if="item.comisiones">
+                                        <router-link title="Editar comisión" class="btn boton btn-info" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
+                                            <i class="fas fa-pencil-alt"></i>
                                         </router-link>
-                                        <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.fit.id)" v-loading.fullscreen.lock="fullscreenLoading">
-                                            <i class="fas fa-file-download"></i>
-                                        </button>
-                                        <template v-if="item">
-                                            <button title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item.fit)">
-                                                <i class="fas fa-file-upload"></i>
-                                            </button>
-                                        </template>
-                                    </div>
-                                </div>
-                            </h3>
-                            </div>
-
-                            <div :id="'collapseParticipe'+index" class="collapse" :aria-labelledby="'headingParticipe'+index" data-parent="#accordion2">
-                            <div class="card-footer">
-                                <dl class="row">
-                                    <dt class="col-md-4">Alumnos integrantes:</dt>
-                                    <template v-if="item.fit.fit__user">
-                                        <dd class="col-md-8">
-                                            <div v-for="(fitUser, index2) in item.fit.fit__user" :key="index2">
-                                                {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
-                                            </div>
-                                        </dd>
                                     </template>
-                                    <dt class="col-md-4">Título extendido:</dt>
-                                    <dd class="col-md-8">{{globalFunctions.capitalizeFirstLetter(item.fit.titulo)}}</dd>
-                                    <dt class="col-md-4">Descripción:</dt>
-                                    <dd class="col-md-8">{{item.fit.descripcion}}</dd>
-                                    <template v-if="item.fit.user__p__guia">
-                                        <dt class="col-md-4">Prof. Guía:</dt>
-                                        <dd class="col-md-8">{{item.fit.user__p__guia.nombres.split(' ')[0] + ' ' + item.fit.user__p__guia.apellidos.split(' ')[0]}}</dd>
-                                    </template>
-                                    <template v-if="item.fit.user__p__coguia">
-                                        <dt class="col-md-4">Prof. Co-guía:</dt>
-                                        <dd class="col-md-8">{{item.fit.user__p__coguia.nombres.split(' ')[0] + ' ' + item.fit.user__p__coguia.apellidos.split(' ')[0]}}</dd>
-                                    </template>
-                                    <dt class="col-md-4">Comisión evaluadora:</dt>
-                                    <dd class="col-md-8">
-                                        <dl v-if="item" class="row">
-                                            <template v-if="item.user_p1">
-                                                <dt class="col-md-4">1° Prof. Interno:</dt>
-                                                <dd class="col-md-8">{{item.user_p1.nombres.split(' ')[0] +' '+item.user_p1.apellidos.split(' ')[0]}}</dd>
-                                            </template>
-                                            <template v-if="item.user_p2">
-                                                <dt class="col-md-4">2° Prof. Interno:</dt>
-                                                <dd class="col-md-8">{{item.user_p2.nombres.split(' ')[0] +' '+item.user_p2.apellidos.split(' ')[0]}}</dd>
-                                            </template>
-                                            <template>
-                                                <dt class="col-md-4">Prof. Externo:</dt>
-                                                <dd class="col-md-8">{{item.p_externo}}</dd>
-                                            </template>
-                                        </dl>
-                                    </dd>
-                                    <dt class="col-md-4">Tipo de documento:</dt>
-                                    <dd class="col-md-8">{{item.fit.tipo}}</dd>
-                                </dl>
-                            </div>
-                            </div>
-                        </div>
-                    </template>
-                    <div class="card-footer clearfix">
-                        <ul class="pagination pagination-sm m-0 float-right">
-                            <li class="page-item" v-if="pageNumber2 > 0">
-                            <a href="#" class="page-link" @click.prevent="prevPage2">Ant</a>
-                            </li>
-                            <li class="page-item" v-for="(page, index) in pagesList2" :key="index"
-                            :class="[page == pageNumber2 ? 'active' : '']">
-                            <a href="#" class=page-link @click.prevent="selectPage2(page)"> {{page+1}}</a>
-                            </li>
-                            <li class="page-item" v-if="pageNumber2 < pageCount2 -1">
-                            <a href="#" class="page-link" @click.prevent="nextPage2">Post</a>
-                            </li>
-                        </ul>
-                    </div>
-                    </template>
-                    <template v-else>
-                    <div class="callout callout-primary">
-                        <h5> No se han encontrado resultados...</h5>
-                    </div>
-                    </template>
-                </div>
-
-            </div>
-          </div>
-        </div>
-        </template>
-        <template v-if="rolActivo != 'Profesor'">
-        <div class="card-body pb-0">
-            <div class="container-fluid">
-                <div class="card card-info">
-                    <div class="card-header container btn py-1" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3 class="card-title font-weight-bold">
-                                    <div class="btn boton btn-primary">
-                                        <i class="fas fa-search"></i>
-                                    </div>
-                                    Sistema de búsqueda
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                <div class="collapse" id="busquedaTotal">
-                    <div class="card-body row">
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Título</label>
-                                <input :placeholder="'Título de '+terminoTitulo" class="col-md-9 form-control" type="text" v-model="busquedaComision.tituloFID" @keyup.enter="getListarComisionesByParametros">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Alumno</label>
-                                <input placeholder="Nombre de alumno completo" class="col-md-9 form-control" type="text" v-model="busquedaComision.nombreAlumno" @keyup.enter="getListarComisionesByParametros">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Prof. Guía</label>
-                                <input placeholder="Nombre de profesor completo" class="col-md-9 form-control" type="text" v-model="busquedaComision.nombreProf" @keyup.enter="getListarComisionesByParametros">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Comisión</label>
-                                <div class="col-md-9 px-0">
-                                    <multiselect
-                                        v-model="busquedaComision.existenciaComision"
-                                        label='valor'
-                                        track-by="id"
-                                        placeholder="Seleccionar roles"
-                                        :options="busquedaOpcion"
-                                        selectLabel="Seleccionar"
-                                        selectedLabel="Seleccionado"
-                                        deselectLabel="No puede quitar este valor"
-                                        :allow-empty="false"
-                                        @input="getListarComisionesByParametros">
-                                    </multiselect>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <div class="col-md-3">
-                                    <label class="col-form-label">Año</label>
-                                </div>
-                                <div class="col-md-9 px-0">
-                                    <el-date-picker
-                                        v-model="busquedaComision.yearSelected"
-                                        style="width: 100%;"
-                                        type="year"
-                                        placeholder="Inicio"
-                                        value-format="yyyy"
-                                        @change="getListarComisionesByParametros">
-                                    </el-date-picker>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="card-body py-0">
-          <div class="container-fluid">
-            <div class="card card-info">
-              <div class="card-header container">
-                <div class="row">
-                    <div class="col-md-12 mb-1">
-                        <h3 class="card-title font-weight-bold">Total de comisiones establecidas</h3>
-                    </div>
-                </div>
-              </div>
-              <div id="accordion3" v-loading="fullscreenLoading">
-                <template v-if="listarComisionesTotalesPaginated.length">
-                    <template v-for="(item, index) in listarComisionesTotalesPaginated">
-                        <div class="card mb-1" :key="'total'+index">
-                            <div class="card-body py-1" :id="'headingTotal'+index">
-                            <h3 class="mb-0">
-                                <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                    <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
-                                    <div v-if="item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.comisiones.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
-                                    <div v-if="!item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
-                                    <div class="col-md-3 noPadNoMar">
-                                        <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
-                                            <i class="fas fa-eye"></i>
-                                        </router-link>
-                                        <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)">
-                                            <i class="fas fa-file-download"></i>
-                                        </button>
-                                        <button v-if="item.comisiones" title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
+                                    <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
+                                        <i class="fas fa-eye"></i>
+                                    </router-link>
+                                    <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                                        <i class="fas fa-file-download"></i>
+                                    </button>
+                                    <template v-if="item.comisiones">
+                                        <button title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
                                             <i class="fas fa-file-upload"></i>
                                         </button>
-                                        <!-- <router-link title="Ver revisiones de comisión" class="btn boton btn-info" :to="'tesis/revisiones'">
-                                            <i class="fa fa-list-alt"></i>
-                                        </router-link> -->
-                                        <template v-if="item.comisiones">
-                                            <router-link title="Editar comisión" class="btn boton btn-danger" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </router-link>
-                                        </template>
-                                    </div>
+                                    </template>
                                 </div>
-                            </h3>
                             </div>
+                        </h3>
+                        </div>
 
-                            <div :id="'collapseTotal'+index" class="collapse" :aria-labelledby="'headingTotal'+index" data-parent="#accordion3">
-                            <div class="card-footer">
-                                <dl class="row">
-                                    <dt class="col-md-4">Alumnos integrantes:</dt>
-                                    <template v-if="item.fit__user">
-                                        <dd class="col-md-8">
-                                            <div v-for="(fitUser, index2) in item.fit__user" :key="index2">
-                                                {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
-                                            </div>
-                                        </dd>
-                                    </template>
-                                    <dt class="col-md-4">Título extendido:</dt>
-                                    <dd class="col-md-8">{{globalFunctions.capitalizeFirstLetter(item.titulo)}}</dd>
-                                    <dt class="col-md-4">Descripción:</dt>
-                                    <dd class="col-md-8">{{item.descripcion}}</dd>
-                                    <template v-if="item.user__p__guia">
-                                        <dt class="col-md-4">Prof. Guía:</dt>
-                                        <dd class="col-md-8">{{item.user__p__guia.nombres.split(' ')[0] + ' ' + item.user__p__guia.apellidos.split(' ')[0]}}</dd>
-                                    </template>
-                                    <template v-if="item.user__p__coguia">
-                                        <dt class="col-md-4">Prof. Co-guía:</dt>
-                                        <dd class="col-md-8">{{item.user__p__coguia.nombres.split(' ')[0] + ' ' + item.user__p__coguia.apellidos.split(' ')[0]}}</dd>
-                                    </template>
-                                    <dt class="col-md-4">Comisión evaluadora:</dt>
+                        <div :id="'collapse'+index" class="collapse" :aria-labelledby="'heading'+index" data-parent="#accordion">
+                        <div class="card-footer">
+                            <dl class="row">
+                                <dt class="col-md-4">Alumnos integrantes:</dt>
+                                <template v-if="item.fit__user">
                                     <dd class="col-md-8">
-                                        <dl v-if="item.comisiones" class="row">
-                                            <template v-if="item.comisiones.user_p1">
-                                                <dt class="col-md-4">1° Prof. Interno:</dt>
-                                                <dd class="col-md-8">{{item.comisiones.user_p1.nombres.split(' ')[0]+' '+item.comisiones.user_p1.apellidos.split(' ')[0]}}</dd>
-                                            </template>
-                                            <template v-if="item.user_p2">
-                                                <dt class="col-md-4">2° Prof. Interno:</dt>
-                                                <dd class="col-md-8">{{item.comisiones.user_p2.nombres.split(' ')[0]+' '+item.comisiones.user_p2.apellidos.split(' ')[0]}}</dd>
-                                            </template>
-                                            <template>
-                                                <dt class="col-md-4">Prof. Externo:</dt>
-                                                <dd class="col-md-8">{{item.comisiones.p_externo}}</dd>
-                                            </template>
-                                        </dl>
+                                        <div v-for="(fitUser, index2) in item.fit__user" :key="index2">
+                                            {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
+                                        </div>
                                     </dd>
-                                    <dt class="col-md-4">Tipo de documento:</dt>
-                                    <dd class="col-md-8">{{item.tipo}}</dd>
-                                </dl>
+                                </template>
+                                <dt class="col-md-4">Título extendido:</dt>
+                                <dd class="col-md-8">{{item.titulo}}</dd>
+                                <dt class="col-md-4">Descripción:</dt>
+                                <dd class="col-md-8">{{item.descripcion}}</dd>
+                                <template v-if="item.user__p__coguia">
+                                    <dt class="col-md-4">Prof. Co-guía:</dt>
+                                    <dd class="col-md-8">{{item.user__p__coguia.nombres.split(' ')[0] + ' ' + item.user__p__coguia.apellidos.split(' ')[0]}}</dd>
+                                </template>
+                                <dt class="col-md-4">Comisión evaluadora:</dt>
+                                <dd class="col-md-8">
+                                    <dl v-if="item.comisiones" class="row">
+                                        <template v-if="item.comisiones.user_p1">
+                                            <dt class="col-md-4">1° Prof. Interno:</dt>
+                                            <dd class="col-md-8">{{item.comisiones.user_p1.nombres.split(' ')[0]+' '+item.comisiones.user_p1.apellidos.split(' ')[0]}}</dd>
+                                        </template>
+                                        <template v-if="item.comisiones.user_p2">
+                                            <dt class="col-md-4">2° Prof. Interno:</dt>
+                                            <dd class="col-md-8">{{item.comisiones.user_p2.nombres.split(' ')[0]+' '+item.comisiones.user_p2.apellidos.split(' ')[0]}}</dd>
+                                        </template>
+                                        <template>
+                                            <dt class="col-md-4">Prof. Externo:</dt>
+                                            <dd class="col-md-8">{{item.comisiones.p_externo}}</dd>
+                                        </template>
+                                    </dl>
+                                </dd>
+                                <dt class="col-md-4">Tipo de documento:</dt>
+                                <dd class="col-md-8">{{item.tipo}}</dd>
+                            </dl>
+                        </div>
+                        </div>
+                    </div>
+                </template>
+                <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li class="page-item" v-if="pageNumber > 0">
+                            <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+                        </li>
+                        <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                        :class="[page == pageNumber ? 'active' : '']">
+                            <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+                        </li>
+                        <li class="page-item" v-if="pageNumber < pageCount -1">
+                            <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+                        </li>
+                    </ul>
+                </div>
+            </template>
+            <template v-else>
+                <div class="callout callout-primary">
+                <h5> No se han encontrado resultados...</h5>
+                </div>
+            </template>
+            </div>
+
+        </div>
+        <div class="card card-info">
+            <div class="card-header">
+            <h3 class="card-title">Comisiones donde soy partícipe</h3>
+            </div>
+
+            <div id="accordion2">
+            <template v-if="listarComisionesPaginated2.length">
+                <template v-for="(item, index) in listarComisionesPaginated2">
+                    <div class="card mb-1" :key="'participe'+index">
+                        <div class="card-body py-1" :id="'headingParticipe'+index">
+                        <h3 class="mb-0">
+                            <div class="btn btn-link col-md-12 noPadNoMar d-flex">
+                                <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
+                                <div title="Sección expandible" class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
+                                <div class="col-md-3 noPadNoMar">
+                                    <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
+                                        <i class="fas fa-eye"></i>
+                                    </router-link>
+                                    <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.fit.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                                        <i class="fas fa-file-download"></i>
+                                    </button>
+                                    <template v-if="item">
+                                        <button title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item.fit)">
+                                            <i class="fas fa-file-upload"></i>
+                                        </button>
+                                    </template>
+                                </div>
                             </div>
+                        </h3>
+                        </div>
+
+                        <div :id="'collapseParticipe'+index" class="collapse" :aria-labelledby="'headingParticipe'+index" data-parent="#accordion2">
+                        <div class="card-footer">
+                            <dl class="row">
+                                <dt class="col-md-4">Alumnos integrantes:</dt>
+                                <template v-if="item.fit.fit__user">
+                                    <dd class="col-md-8">
+                                        <div v-for="(fitUser, index2) in item.fit.fit__user" :key="index2">
+                                            {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
+                                        </div>
+                                    </dd>
+                                </template>
+                                <dt class="col-md-4">Título extendido:</dt>
+                                <dd class="col-md-8">{{globalFunctions.capitalizeFirstLetter(item.fit.titulo)}}</dd>
+                                <dt class="col-md-4">Descripción:</dt>
+                                <dd class="col-md-8">{{item.fit.descripcion}}</dd>
+                                <template v-if="item.fit.user__p__guia">
+                                    <dt class="col-md-4">Prof. Guía:</dt>
+                                    <dd class="col-md-8">{{item.fit.user__p__guia.nombres.split(' ')[0] + ' ' + item.fit.user__p__guia.apellidos.split(' ')[0]}}</dd>
+                                </template>
+                                <template v-if="item.fit.user__p__coguia">
+                                    <dt class="col-md-4">Prof. Co-guía:</dt>
+                                    <dd class="col-md-8">{{item.fit.user__p__coguia.nombres.split(' ')[0] + ' ' + item.fit.user__p__coguia.apellidos.split(' ')[0]}}</dd>
+                                </template>
+                                <dt class="col-md-4">Comisión evaluadora:</dt>
+                                <dd class="col-md-8">
+                                    <dl v-if="item" class="row">
+                                        <template v-if="item.user_p1">
+                                            <dt class="col-md-4">1° Prof. Interno:</dt>
+                                            <dd class="col-md-8">{{item.user_p1.nombres.split(' ')[0] +' '+item.user_p1.apellidos.split(' ')[0]}}</dd>
+                                        </template>
+                                        <template v-if="item.user_p2">
+                                            <dt class="col-md-4">2° Prof. Interno:</dt>
+                                            <dd class="col-md-8">{{item.user_p2.nombres.split(' ')[0] +' '+item.user_p2.apellidos.split(' ')[0]}}</dd>
+                                        </template>
+                                        <template>
+                                            <dt class="col-md-4">Prof. Externo:</dt>
+                                            <dd class="col-md-8">{{item.p_externo}}</dd>
+                                        </template>
+                                    </dl>
+                                </dd>
+                                <dt class="col-md-4">Tipo de documento:</dt>
+                                <dd class="col-md-8">{{item.fit.tipo}}</dd>
+                            </dl>
+                        </div>
+                        </div>
+                    </div>
+                </template>
+                <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li class="page-item" v-if="pageNumber2 > 0">
+                        <a href="#" class="page-link" @click.prevent="prevPage2">Ant</a>
+                        </li>
+                        <li class="page-item" v-for="(page, index) in pagesList2" :key="index"
+                        :class="[page == pageNumber2 ? 'active' : '']">
+                        <a href="#" class=page-link @click.prevent="selectPage2(page)"> {{page+1}}</a>
+                        </li>
+                        <li class="page-item" v-if="pageNumber2 < pageCount2 -1">
+                        <a href="#" class="page-link" @click.prevent="nextPage2">Post</a>
+                        </li>
+                    </ul>
+                </div>
+                </template>
+                <template v-else>
+                <div class="callout callout-primary">
+                    <h5> No se han encontrado resultados...</h5>
+                </div>
+                </template>
+            </div>
+
+        </div>
+        </div>
+    </div>
+    </template>
+    <template v-if="rolActivo != 'Profesor'">
+    <div class="card-body pb-0">
+        <div class="container-fluid">
+            <div class="card card-info">
+                <div class="card-header container btn py-1" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="card-title font-weight-bold">
+                                <div class="btn boton btn-primary">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                Sistema de búsqueda
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            <div class="collapse" id="busquedaTotal">
+                <div class="card-body row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Título</label>
+                            <input :placeholder="'Título de '+terminoTitulo" class="col-md-9 form-control" type="text" v-model="busquedaComision.tituloFID" @keyup.enter="getListarComisionesByParametros">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Alumno</label>
+                            <input placeholder="Nombre de alumno completo" class="col-md-9 form-control" type="text" v-model="busquedaComision.nombreAlumno" @keyup.enter="getListarComisionesByParametros">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Prof. Guía</label>
+                            <input placeholder="Nombre de profesor completo" class="col-md-9 form-control" type="text" v-model="busquedaComision.nombreProf" @keyup.enter="getListarComisionesByParametros">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Comisión</label>
+                            <div class="col-md-9 px-0">
+                                <multiselect
+                                    v-model="busquedaComision.existenciaComision"
+                                    label='valor'
+                                    track-by="id"
+                                    placeholder="Seleccionar roles"
+                                    :options="busquedaOpcion"
+                                    selectLabel="Seleccionar"
+                                    selectedLabel="Seleccionado"
+                                    deselectLabel="No puede quitar este valor"
+                                    :allow-empty="false"
+                                    @input="getListarComisionesByParametros">
+                                </multiselect>
                             </div>
                         </div>
-                    </template>
-                    <div class="card-footer clearfix">
-                        <ul class="pagination pagination-sm m-0 float-right">
-                            <li class="page-item" v-if="totalPageNumber > 0">
-                            <a href="#" class="page-link" @click.prevent="totalPrevPage">Ant</a>
-                            </li>
-                            <li class="page-item" v-for="(page, index) in totalPagesList" :key="index"
-                            :class="[page == totalPageNumber ? 'active' : '']">
-                            <a href="#" class=page-link @click.prevent="selectPage2(page)"> {{page+1}}</a>
-                            </li>
-                            <li class="page-item" v-if="totalPageNumber < totalPageCount -1">
-                            <a href="#" class="page-link" @click.prevent="totalNextPage">Post</a>
-                            </li>
-                        </ul>
                     </div>
-                    </template>
-                    <template v-else>
-                    <div class="callout callout-primary">
-                        <h5> No se han encontrado resultados...</h5>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label class="col-form-label">Año</label>
+                            </div>
+                            <div class="col-md-9 px-0">
+                                <el-date-picker
+                                    v-model="busquedaComision.yearSelected"
+                                    style="width: 100%;"
+                                    type="year"
+                                    placeholder="Inicio"
+                                    value-format="yyyy"
+                                    @change="getListarComisionesByParametros">
+                                </el-date-picker>
+                            </div>
+                        </div>
                     </div>
-                    </template>
                 </div>
+            </div>
 
             </div>
-          </div>
         </div>
-        </template>
-      </div>
     </div>
+    <div class="card-body py-0">
+        <div class="container-fluid">
+        <div class="card card-info">
+            <div class="card-header container">
+            <div class="row">
+                <div class="col-md-12 mb-1">
+                    <h3 class="card-title font-weight-bold">Total de comisiones establecidas</h3>
+                </div>
+            </div>
+            </div>
+            <div id="accordion3" v-loading="fullscreenLoading">
+            <template v-if="listarComisionesTotalesPaginated.length">
+                <template v-for="(item, index) in listarComisionesTotalesPaginated">
+                    <div class="card mb-1" :key="'total'+index">
+                        <div class="card-body py-1" :id="'headingTotal'+index">
+                        <h3 class="mb-0">
+                            <div class="btn btn-link col-md-12 noPadNoMar d-flex">
+                                <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
+                                <div v-if="item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.comisiones.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
+                                <div v-if="!item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
+                                <div class="col-md-3 noPadNoMar">
+                                    <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
+                                        <i class="fas fa-eye"></i>
+                                    </router-link>
+                                    <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)">
+                                        <i class="fas fa-file-download"></i>
+                                    </button>
+                                    <button v-if="item.comisiones" title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
+                                        <i class="fas fa-file-upload"></i>
+                                    </button>
+                                    <!-- <router-link title="Ver revisiones de comisión" class="btn boton btn-info" :to="'tesis/revisiones'">
+                                        <i class="fa fa-list-alt"></i>
+                                    </router-link> -->
+                                    <template v-if="item.comisiones">
+                                        <router-link title="Editar comisión" class="btn boton btn-danger" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </router-link>
+                                    </template>
+                                </div>
+                            </div>
+                        </h3>
+                        </div>
+
+                        <div :id="'collapseTotal'+index" class="collapse" :aria-labelledby="'headingTotal'+index" data-parent="#accordion3">
+                        <div class="card-footer">
+                            <dl class="row">
+                                <dt class="col-md-4">Alumnos integrantes:</dt>
+                                <template v-if="item.fit__user">
+                                    <dd class="col-md-8">
+                                        <div v-for="(fitUser, index2) in item.fit__user" :key="index2">
+                                            {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
+                                        </div>
+                                    </dd>
+                                </template>
+                                <dt class="col-md-4">Título extendido:</dt>
+                                <dd class="col-md-8">{{globalFunctions.capitalizeFirstLetter(item.titulo)}}</dd>
+                                <dt class="col-md-4">Descripción:</dt>
+                                <dd class="col-md-8">{{item.descripcion}}</dd>
+                                <template v-if="item.user__p__guia">
+                                    <dt class="col-md-4">Prof. Guía:</dt>
+                                    <dd class="col-md-8">{{item.user__p__guia.nombres.split(' ')[0] + ' ' + item.user__p__guia.apellidos.split(' ')[0]}}</dd>
+                                </template>
+                                <template v-if="item.user__p__coguia">
+                                    <dt class="col-md-4">Prof. Co-guía:</dt>
+                                    <dd class="col-md-8">{{item.user__p__coguia.nombres.split(' ')[0] + ' ' + item.user__p__coguia.apellidos.split(' ')[0]}}</dd>
+                                </template>
+                                <dt class="col-md-4">Comisión evaluadora:</dt>
+                                <dd class="col-md-8">
+                                    <dl v-if="item.comisiones" class="row">
+                                        <template v-if="item.comisiones.user_p1">
+                                            <dt class="col-md-4">1° Prof. Interno:</dt>
+                                            <dd class="col-md-8">{{item.comisiones.user_p1.nombres.split(' ')[0]+' '+item.comisiones.user_p1.apellidos.split(' ')[0]}}</dd>
+                                        </template>
+                                        <template v-if="item.user_p2">
+                                            <dt class="col-md-4">2° Prof. Interno:</dt>
+                                            <dd class="col-md-8">{{item.comisiones.user_p2.nombres.split(' ')[0]+' '+item.comisiones.user_p2.apellidos.split(' ')[0]}}</dd>
+                                        </template>
+                                        <template>
+                                            <dt class="col-md-4">Prof. Externo:</dt>
+                                            <dd class="col-md-8">{{item.comisiones.p_externo}}</dd>
+                                        </template>
+                                    </dl>
+                                </dd>
+                                <dt class="col-md-4">Tipo de documento:</dt>
+                                <dd class="col-md-8">{{item.tipo}}</dd>
+                            </dl>
+                        </div>
+                        </div>
+                    </div>
+                </template>
+                <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li class="page-item" v-if="totalPageNumber > 0">
+                        <a href="#" class="page-link" @click.prevent="totalPrevPage">Ant</a>
+                        </li>
+                        <li class="page-item" v-for="(page, index) in totalPagesList" :key="index"
+                        :class="[page == totalPageNumber ? 'active' : '']">
+                        <a href="#" class=page-link @click.prevent="selectPage2(page)"> {{page+1}}</a>
+                        </li>
+                        <li class="page-item" v-if="totalPageNumber < totalPageCount -1">
+                        <a href="#" class="page-link" @click.prevent="totalNextPage">Post</a>
+                        </li>
+                    </ul>
+                </div>
+                </template>
+                <template v-else>
+                <div class="callout callout-primary">
+                    <h5> No se han encontrado resultados...</h5>
+                </div>
+                </template>
+            </div>
+
+        </div>
+        </div>
+    </div>
+    </template>
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">

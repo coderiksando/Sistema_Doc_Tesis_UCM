@@ -1,86 +1,72 @@
 <template>
-  <div>
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Editar avance</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-tools">
+        <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
+          <i class="fas fa-arrow-left"></i> Regresar
+        </a>
+      </div>
     </div>
-    <div class="container container-fluid">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-tools">
-            <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
-              <i class="fas fa-arrow-left"></i> Regresar
-            </a>
+    <div class="card-body">
+      <div class="container-fluid">
+        <div class="card card-info">
+          <div class="card-header">
+            <h3 class="card-title">Formulario de edición de avance</h3>
           </div>
-        </div>
-        <div class="card-body">
-          <div class="container-fluid">
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Formulario de edición de avance</h3>
-              </div>
-              <div class="card-body">
-                <form role="form" id="form-avance2">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group row">
-                        <label class="col-md-2 offset-1 col-form-label">Descripción</label>
-                        <div class="col-md-8">
-                            <textarea maxlength="255" class="form-control" rows="3" v-model="fillEditarAvance.cDescripcion"></textarea>
+          <div class="card-body">
+            <form role="form" id="form-avance2">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <label class="col-md-2 offset-1 col-form-label">Descripción</label>
+                    <div class="col-md-8">
+                        <textarea maxlength="255" class="form-control" rows="3" v-model="fillEditarAvance.cDescripcion"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-2 offset-1 col-form-label">Archivo</label>
+                    <div class="col-md-8">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroupFileAddon01">
+                          <i class="fas fa-file-upload"></i>
+                          </span>
+                        </div>
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError, 'is-valid' : hover}" @change="getFile" @mouseover="hover = true" @mouseleave="hover = false">
+                          <label class="custom-file-label" for="input1">{{fillEditarAvance.oArchivo ? fillEditarAvance.oArchivo.name : 'Seleccionar archivo'}}</label>
                         </div>
                       </div>
-                      <div class="form-group row">
-                        <label class="col-md-2 offset-1 col-form-label">Archivo</label>
-                        <div class="col-md-8">
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text" id="inputGroupFileAddon01">
-                              <i class="fas fa-file-upload"></i>
-                              </span>
-                            </div>
-                            <div class="custom-file">
-                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError, 'is-valid' : hover}" @change="getFile" @mouseover="hover = true" @mouseleave="hover = false">
-                              <label class="custom-file-label" for="input1">{{fillEditarAvance.oArchivo ? fillEditarAvance.oArchivo.name : 'Seleccionar archivo'}}</label>
-                            </div>
-                          </div>
-                          <div class="custom-file invalid-feedback no-margin" v-show="formatError">
-                            El formato del archivo no es soportado.
-                          </div>
-                          <div class="custom-file invalid-feedback no-margin" v-show="sizeError">
-                            El tamaño del archivo no puede superar los {{fileMaxSize}} MB.
-                          </div>
-                        </div>
+                      <div class="custom-file invalid-feedback no-margin" v-show="formatError">
+                        El formato del archivo no es soportado.
+                      </div>
+                      <div class="custom-file invalid-feedback no-margin" v-show="sizeError">
+                        El tamaño del archivo no puede superar los {{fileMaxSize}} MB.
                       </div>
                     </div>
                   </div>
-                </form>
-                <div class="container offset-1">
-                  El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
-                </div>
-                <div class="container offset-1">
-                  Los formatos de archivo soportados son:
-                  <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
                 </div>
               </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarAvance">Editar</button>
-                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
-                  </div>
-                </div>
+            </form>
+            <div class="container offset-1">
+              El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
+            </div>
+            <div class="container offset-1">
+              Los formatos de archivo soportados son:
+              <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col-md-4 offset-4">
+                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarAvance">Editar</button>
+                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">

@@ -1,229 +1,214 @@
 <template>
-
-  <div>
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-12">
-            <h1 class="m-0 text-dark font-weight-bold">{{terminoTituloExtendido}} ({{terminoTitulo}})</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+  <div class="card">
+    <template v-if="listRolPermisosByUsuario.includes('tesis.crear')">
+    <div class="card-header">
+      <div class="card-tools">
+        <template v-if="listTesis.length === 0">
+          <router-link class="btn btn-info bnt-sm" :to="'/tesis/crear'">
+            <i class="fas fa-plus-square"></i> Ingresar formulario de inscripción
+          </router-link>
+        </template>
+        <template v-else>
+          <router-link class="btn btn-danger bnt-sm link-disabled" :to="''">
+          Usted ya ingresó un formulario
+          </router-link>
+        </template>
+      </div>
     </div>
+    </template>
+    <div class="card-body" style="min-height: 70vh !important">
+      <div class="container-fluid">
+        
+        <div class="card card-info" v-if="!listRolPermisosByUsuario.includes('EsAlumno')">
+          <div class="card-header">
+            <h3 class="card-title">Criterios de búsqueda</h3>
+          </div>
+          <div class="card-body">
+            <form role="form">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Alumno</label>
+                    <div class="col-md-4">
+                        <input placeholder="Nombre" type="text" class="form-control" v-model="fillBsqTesis.cNombre" @keyup.enter="getListarTesis">
+                    </div>
+                    <div class="col-md-4">
+                        <input placeholder="Apellido" type="text" class="form-control" v-model="fillBsqTesis.cApellido" @keyup.enter="getListarTesis">
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Estado de aprobación</label>
+                    <div class="col-md-8">
+                        <el-select v-model="fillBsqTesis.cEstado"
+                        placeholder="Seleccione un estado">
+                          <el-option
+                            v-for="item in listEstadosTesis"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Fecha</label>
+                    <div class="col-md-8">
+                      <el-date-picker
+                        v-model="fillBsqTesis.dfecha"
+                        type="year"
+                        range-separator="/"
+                        placeholder="Año"
+                        value-format="yyyy-MM-dd">
+                      </el-date-picker>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
 
-    <div class="container container-fluid">
-      <div class="card">
-        <template v-if="listRolPermisosByUsuario.includes('tesis.crear')">
-        <div class="card-header">
-          <div class="card-tools">
-            <template v-if="listTesis.length === 0">
-              <router-link class="btn btn-info bnt-sm" :to="'/tesis/crear'">
-                <i class="fas fa-plus-square"></i> Ingresar formulario de inscripción
-              </router-link>
-            </template>
-            <template v-else>
-              <router-link class="btn btn-danger bnt-sm link-disabled" :to="''">
-              Usted ya ingresó un formulario
-              </router-link>
-            </template>
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col-md-4 offset-4">
+                <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarTesis"
+                  >Buscar</button>
+                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
+              </div>
+            </div>
           </div>
         </div>
-        </template>
-        <div class="card-body">
-          <div class="container-fluid">
-            
-            <div class="card card-info" v-if="!listRolPermisosByUsuario.includes('EsAlumno')">
-              <div class="card-header">
-                <h3 class="card-title">Criterios de búsqueda</h3>
-              </div>
-              <div class="card-body">
-                <form role="form">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-4 col-form-label">Alumno</label>
-                        <div class="col-md-4">
-                            <input placeholder="Nombre" type="text" class="form-control" v-model="fillBsqTesis.cNombre" @keyup.enter="getListarTesis">
-                        </div>
-                        <div class="col-md-4">
-                            <input placeholder="Apellido" type="text" class="form-control" v-model="fillBsqTesis.cApellido" @keyup.enter="getListarTesis">
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-4 col-form-label">Estado de aprobación</label>
-                        <div class="col-md-8">
-                            <el-select v-model="fillBsqTesis.cEstado"
-                            placeholder="Seleccione un estado">
-                              <el-option
-                                v-for="item in listEstadosTesis"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                              </el-option>
-                            </el-select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-4 col-form-label">Fecha</label>
-                        <div class="col-md-8">
-                          <el-date-picker
-                            v-model="fillBsqTesis.dfecha"
-                            type="year"
-                            range-separator="/"
-                            placeholder="Año"
-                            value-format="yyyy-MM-dd">
-                          </el-date-picker>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </form>
 
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarTesis"
-                      >Buscar</button>
-                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
-                  </div>
+        <div class="card card-info">
+          <div class="card-header">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="card-title">Bandeja de resultados</h3>
                 </div>
-              </div>
+                <div class="col-md-6" style="text-align: right;">
+                    <button class="btn btn-secondary" @click.prevent="mostrarModalAyuda">Ayuda
+                        <i class="fas fa-question-circle" ></i>
+                    </button>
+                </div>
             </div>
+          </div>
+          <div class="card-body table table-responsive" v-loading="fullscreenLoading">
+            <template v-if="listTesis.length">
+              <table class ="table table-hover table-head-fixed text-nowrap projects">
+                <thead>
+                  <tr>
+                    <th>Alumno(s)</th>
+                    <th>Estado de inscripción</th>
+                    <th>Estado de aprobación</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in listarTesisPaginated" :key="index">
+                    <td> <!-- itera mostrando la cantidad total de estudiantes -->
+                        <div v-for="(itemUser, index) in item.listUsers" :key="index">
+                            <div v-text="itemUser.nombres + ' ' + itemUser.apellidos"></div>
+                        </div>
+                    </td>
 
-            <div class="card card-info">
-              <div class="card-header">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h3 class="card-title">Bandeja de resultados</h3>
-                    </div>
-                    <div class="col-md-6" style="text-align: right;">
-                        <button class="btn btn-secondary" @click.prevent="mostrarModalAyuda">Ayuda
-                            <i class="fas fa-question-circle" ></i>
+                    <!-- <td v-text="item.nombre_int1"></td> -->
+                    <td>
+                      <template v-if="item.aprobado_pg == 'P'">
+                        Pendiente
+                      </template>
+                      <template v-else-if="item.aprobado_pg == 'A'">
+                        Aprobado
+                      </template>
+                      <template v-else-if="item.aprobado_pg == 'V'">
+                        Verificado
+                      </template>
+                      <template v-else>
+                        Rechazado
+                      </template>
+                    </td>
+                    <td>
+                      <template v-if="item.estado == 'D'">
+                        En desarrollo
+                      </template>
+                      <template v-else-if="item.estado == 'A'">
+                        Aprobada
+                      </template>
+                      <template v-else>
+                        Reprobada
+                      </template>
+                    </td>
+                    <td>
+                      <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
+                        <i class="fas fa-eye"></i>
+                      </router-link>
+                      <template v-if="(item.aprobado_pg == 'A' || item.aprobado_pg == 'V') && listRolPermisosByUsuario.includes('tesis.subirconstancia')">
+                        <router-link title="Subir constancia de examen" class="btn btn-success boton" :to="{name:'tesis.subirconstancia'}">
+                          <i class="fas fa-file-upload"></i>
+                        </router-link>
+                      </template>
+                      <template v-if="item.aprobado_pg == 'A' || item.aprobado_pg == 'V'">
+                        <button title="Generar documento PDF" class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
+                          <i class="fas fa-file-download"></i>
                         </button>
-                    </div>
-                </div>
-              </div>
-              <div class="card-body table table-responsive" v-loading="fullscreenLoading">
-                <template v-if="listTesis.length">
-                  <table class ="table table-hover table-head-fixed text-nowrap projects">
-                    <thead>
-                      <tr>
-                        <th>Alumno(s)</th>
-                        <th>Estado de inscripción</th>
-                        <th>Estado de aprobación</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(item, index) in listarTesisPaginated" :key="index">
-                        <td> <!-- itera mostrando la cantidad total de estudiantes -->
-                            <div v-for="(itemUser, index) in item.listUsers" :key="index">
-                                <div v-text="itemUser.nombres + ' ' + itemUser.apellidos"></div>
-                            </div>
-                        </td>
+                      </template>
+                      <template v-if="item.constancia && rolActivo != 'Alumno'">
+                        <a title="Descargar constancia de examen" class="btn boton btn-info" :href="item.constancia.path" target="_blank">
+                          <i class="fas fa-file-download"></i>
+                        </a>
+                      </template>
+                      <template v-if="item.comisiones && rolActivo == 'Alumno'">
+                        <router-link title="Ver revisiones de comisión" class="btn boton btn-primary" :to="'tesis/revisiones'">
+                          <i class="fa fa-list-alt"></i>
+                        </router-link>
+                      </template>
 
-                        <!-- <td v-text="item.nombre_int1"></td> -->
-                        <td>
-                          <template v-if="item.aprobado_pg == 'P'">
-                            Pendiente
-                          </template>
-                          <template v-else-if="item.aprobado_pg == 'A'">
-                            Aprobado
-                          </template>
-                          <template v-else-if="item.aprobado_pg == 'V'">
-                            Verificado
-                          </template>
-                          <template v-else>
-                            Rechazado
-                          </template>
-                        </td>
-                        <td>
-                          <template v-if="item.estado == 'D'">
-                            En desarrollo
-                          </template>
-                          <template v-else-if="item.estado == 'A'">
-                            Aprobada
-                          </template>
-                          <template v-else>
-                            Reprobada
-                          </template>
-                        </td>
-                        <td>
-                          <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
-                            <i class="fas fa-eye"></i>
-                          </router-link>
-                          <template v-if="(item.aprobado_pg == 'A' || item.aprobado_pg == 'V') && listRolPermisosByUsuario.includes('tesis.subirconstancia')">
-                            <router-link title="Subir constancia de examen" class="btn btn-success boton" :to="{name:'tesis.subirconstancia'}">
-                              <i class="fas fa-file-upload"></i>
-                            </router-link>
-                          </template>
-                          <template v-if="item.aprobado_pg == 'A' || item.aprobado_pg == 'V'">
-                            <button title="Generar documento PDF" class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
-                              <i class="fas fa-file-download"></i>
+                      <template v-if="(item.aprobado_pg == 'A' && (rolActivo == 'Director' || rolActivo == 'Coordinador')) || item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
+                        <template v-if="item.aprobado_pg == 'R'">
+                            <button title="Ver razon de rechazo" class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
+                            <i class="fas fa-exclamation-circle"></i>
                             </button>
-                          </template>
-                          <template v-if="item.constancia && rolActivo != 'Alumno'">
-                            <a title="Descargar constancia de examen" class="btn boton btn-info" :href="item.constancia.path" target="_blank">
-                              <i class="fas fa-file-download"></i>
-                            </a>
-                          </template>
-                          <template v-if="item.comisiones && rolActivo == 'Alumno'">
-                            <router-link title="Ver revisiones de comisión" class="btn boton btn-primary" :to="'tesis/revisiones'">
-                              <i class="fa fa-list-alt"></i>
+                            <router-link :title="'Editar '+terminoTitulo" class="btn boton btn-info" :to="{name:'tesis.editar', params:{id: item.id}}">
+                            <i class="fas fa-pencil-alt"></i>
                             </router-link>
-                          </template>
+                        </template>
 
-                          <template v-if="(item.aprobado_pg == 'A' && (rolActivo == 'Director' || rolActivo == 'Coordinador')) || item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
-                            <template v-if="item.aprobado_pg == 'R'">
-                                <button title="Ver razon de rechazo" class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
-                                <i class="fas fa-exclamation-circle"></i>
-                                </button>
-                                <router-link :title="'Editar '+terminoTitulo" class="btn boton btn-info" :to="{name:'tesis.editar', params:{id: item.id}}">
-                                <i class="fas fa-pencil-alt"></i>
-                                </router-link>
-                            </template>
-
-                            <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
-                                <button :title="'Aprobar '+terminoTitulo" class="btn boton btn-success" @click.prevent="setCambiarEstadoFIT(1, item.id)">
-                                  <i class="fas fa-check"></i>
-                                </button>
-                                <button :title="'Rechazar '+terminoTitulo" class="btn boton btn-danger" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
-                                  <i class="fas fa-times"></i>
-                                </button>
-                            </template>
-                          </template>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </template>
-                <template v-else>
-                  <div class="callout callout-info">
-                    <h5> No se han encontrado resultados...</h5>
-                  </div>
-                </template>
+                        <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
+                            <button :title="'Aprobar '+terminoTitulo" class="btn boton btn-success" @click.prevent="setCambiarEstadoFIT(1, item.id)">
+                              <i class="fas fa-check"></i>
+                            </button>
+                            <button :title="'Rechazar '+terminoTitulo" class="btn boton btn-danger" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
+                              <i class="fas fa-times"></i>
+                            </button>
+                        </template>
+                      </template>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </template>
+            <template v-else>
+              <div class="callout callout-info">
+                <h5> No se han encontrado resultados...</h5>
               </div>
-              <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item" v-if="pageNumber > 0">
-                    <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                  </li>
-                  <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                    :class="[page == pageNumber ? 'active' : '']">
-                    <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                  </li>
-                  <li class="page-item" v-if="pageNumber < pageCount -1">
-                    <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            </template>
+          </div>
+          <div class="card-footer clearfix">
+            <ul class="pagination pagination-sm m-0 float-right">
+              <li class="page-item" v-if="pageNumber > 0">
+                <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+              </li>
+              <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                :class="[page == pageNumber ? 'active' : '']">
+                <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+              </li>
+              <li class="page-item" v-if="pageNumber < pageCount -1">
+                <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

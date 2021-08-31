@@ -1,121 +1,105 @@
 <template>
-  <div>
-    <div class="content-header">
+  <div class="card">
+    <template  v-if="listRolPermisosByUsuario.includes('bitacoras.crear')">
+      <div class="card-header">
+        <div class="card-tools">
+            <router-link class="btn btn-info bnt-sm" :to="'/bitacoras/crear'">
+          <i class="fas fa-plus-square"></i> Ingresar bitácora
+        </router-link>
+        </div>
+      </div>
+    </template>
+    <div class="card-body" style="min-height: 70vh !important">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Bitácoras</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-
-    <div class="container container-fluid">
-      <div class="card">
-        <template  v-if="listRolPermisosByUsuario.includes('bitacoras.crear')">
+          <template  v-if="listRolPermisosByUsuario.includes('avances.listaralumnos')">
+        <div class="card card-info">
           <div class="card-header">
-            <div class="card-tools">
-                <router-link class="btn btn-info bnt-sm" :to="'/bitacoras/crear'">
-              <i class="fas fa-plus-square"></i> Ingresar bitácora
-            </router-link>
-            </div>
+            <h3 class="card-title">Criterios de búsqueda</h3>
           </div>
+          <!-- Filtro de busqueda de avances -->
+          <div class="card-body">
+            <form role="form">
+              <div class="row">
+                <div class="col-md-9">
+                  <div class="form-group row">
+                      <label class="col-md-3 col-form-label">Seleccionar alumno/s</label>
+                      <div class="col-md-9">
+                          <Multiselect
+                            v-model="selectedFit"
+                            placeholder="Seleccionar estudiante"
+                            :options="listFits"
+                            label = "nombres"
+                            selectLabel="Seleccionar"
+                            selectedLabel="Seleccionado"
+                            deselectLabel="Remover"
+                            @input="getListarBitacorasByFit"
+                            >
+                          <template slot="noResult">No hay resultados</template>
+                          <template slot="noOptions">Lista vacía</template>
+                          </Multiselect>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div> <!-- Filtro de busqueda de avances -->           
+        </div>
         </template>
-        <div class="card-body">
-          <div class="container-fluid">
-              <template  v-if="listRolPermisosByUsuario.includes('avances.listaralumnos')">
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Criterios de búsqueda</h3>
-              </div>
-             <!-- Filtro de busqueda de avances -->
-              <div class="card-body">
-                <form role="form">
-                  <div class="row">
-                    <div class="col-md-9">
-                      <div class="form-group row">
-                          <label class="col-md-3 col-form-label">Seleccionar alumno/s</label>
-                          <div class="col-md-9">
-                              <Multiselect
-                                v-model="selectedFit"
-                                placeholder="Seleccionar estudiante"
-                                :options="listFits"
-                                label = "nombres"
-                                selectLabel="Seleccionar"
-                                selectedLabel="Seleccionado"
-                                deselectLabel="Remover"
-                                @input="getListarBitacorasByFit"
-                                >
-                              <template slot="noResult">No hay resultados</template>
-                              <template slot="noOptions">Lista vacía</template>
-                              </Multiselect>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div> <!-- Filtro de busqueda de avances -->           
-            </div>
-            </template>
 
-            <div class="card card-info" v-loading="fullscreenLoading">
-              <div class="card-header">
-                <h3 class="card-title">Bandeja de resultados</h3>
-              </div>
-              <template v-if="listBitacoras.length">
-                <div id="accordion">
-                  <div class="card-white" v-for="(item, index) in listBitacoras" :key="index">
-                    <div class="card-header" v-bind:id="'heading'+index">
-                      <div class="container">
-                        <a class="btn btn-outline-primary" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                        </a>
-                        <button class="btn btn-link" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
-                          {{item.fecha | moment}}
-                        </button>
-                        <template  v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
-                          <router-link class="btn btn-info boton btn-w float-right" :to="{name:'bitacoras.editar', params:{id: item.id}}">
-                              <i class="fas fa-pencil-alt"></i>
-                            </router-link>
-                        </template>
-                      </div>
-                    </div>
-
-                    <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
-                      <div class="card-body">
-                        <div v-html="item.acuerdo"></div>
-                      </div>
-                    </div>
+        <div class="card card-info" v-loading="fullscreenLoading">
+          <div class="card-header">
+            <h3 class="card-title">Bandeja de resultados</h3>
+          </div>
+          <template v-if="listBitacoras.length">
+            <div id="accordion">
+              <div class="card-white" v-for="(item, index) in listBitacoras" :key="index">
+                <div class="card-header" v-bind:id="'heading'+index">
+                  <div class="container">
+                    <a class="btn btn-outline-primary" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    </a>
+                    <button class="btn btn-link" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
+                      {{item.fecha | moment}}
+                    </button>
+                    <template  v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
+                      <router-link class="btn btn-info boton btn-w float-right" :to="{name:'bitacoras.editar', params:{id: item.id}}">
+                          <i class="fas fa-pencil-alt"></i>
+                        </router-link>
+                    </template>
                   </div>
                 </div>
-              </template>
-              <template v-else>
-                <div class="callout callout-info">
-                  <h5> No se han encontrado resultados...</h5>
+
+                <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
+                  <div class="card-body">
+                    <div v-html="item.acuerdo"></div>
+                  </div>
                 </div>
-              </template>
-              <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item" v-if="pageNumber > 0">
-                    <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                  </li>
-                  <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                    :class="[page == pageNumber ? 'active' : '']">
-                    <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                  </li>
-                  <li class="page-item" v-if="pageNumber < pageCount -1">
-                    <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                  </li>
-                </ul>
               </div>
             </div>
+          </template>
+          <template v-else>
+            <div class="callout callout-info">
+              <h5> No se han encontrado resultados...</h5>
+            </div>
+          </template>
+          <div class="card-footer clearfix">
+            <ul class="pagination pagination-sm m-0 float-right">
+              <li class="page-item" v-if="pageNumber > 0">
+                <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+              </li>
+              <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                :class="[page == pageNumber ? 'active' : '']">
+                <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+              </li>
+              <li class="page-item" v-if="pageNumber < pageCount -1">
+                <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
-
-</div>
-
+  </div>
 </template>
 
 <script>
