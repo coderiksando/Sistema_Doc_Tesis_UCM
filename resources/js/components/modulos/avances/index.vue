@@ -1,159 +1,144 @@
 <template>
-  <div>
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Avances de documentos</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-
-    <div class="container container-fluid">
-      <div class="card">
-        <template  v-if="listRolPermisosByUsuario.includes('avances.crear')">
-          <div class="card-header">
-            <div class="card-tools">
-            <template v-if="fillEstadoTesis.cEstado  == 'A'">
-              <router-link class="btn btn-success btn-sm bt-fh"  :to="'/avances/subirfinalpdf'">
-                <i class="fas fa-file-upload float fa-fw"></i>Subir PDF final
-              </router-link>
-            </template>
-            <template v-if="fillEstadoTesis.cEstado  == 'D' || fillEstadoTesis.cEstado  == 'R'">
-              <router-link class="btn btn-danger btn-sm link-disabled bt-fh" :to="''">
-                <i class="fas fa-lock fa-fw"></i>Aún no puedes subir el PDF final
-              </router-link>
-            </template>
-            <template v-if="fillEstadoTesis.cEstado  == 'D'">
-              <router-link class="btn btn-info btn-sm bt-fh" :to="'/avances/crear'">
-                <i class="fas fa-plus-square fa-fw"></i> Subir avance
-              </router-link>
-            </template>
-
-            </div>
-          </div>
-        </template>
-        <div class="card-body">
-          <div class="container-fluid">
-            <template  v-if="listRolPermisosByUsuario.includes('avances.listaralumnos')">
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Criterios de búsqueda</h3>
-              </div>
-             <!-- Filtro de busqueda de avances -->
-              <div class="card-body">
-                <form role="form">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                          <label class="col-md-3 col-form-label">Estado</label>
-                          <div class="col-md-9">
-                              <Multiselect
-                                v-model="selectedEstado"
-                                placeholder="Seleccionar estado"
-                                :options="listEstados"
-                                label ="nombre"
-                                selectLabel="Presiona enter para seleccionar"
-                                selectedLabel="Seleccionado"
-                                :allow-empty="false"
-                                deselectLabel="Cancelar"
-                                @input="getListarFitsByprofesor"
-                                >
-                              <template slot="noResult">No hay resultados</template>
-                              <template slot="noOptions">Lista vacía</template>
-                              </Multiselect>
-                          </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                          <label class="col-md-3 col-form-label">Alumno</label>
-                          <div class="col-md-9">
-                              <Multiselect
-                                v-model="selectedFit"
-                                placeholder="Seleccionar estudiante"
-                                :options="listFits"
-                                label = "nombres"
-                                selectLabel="Seleccionar"
-                                selectedLabel="Seleccionado"
-                                deselectLabel="Remover"
-                                @input="getListarAvancesByFit"
-                                >
-                              <template slot="noResult">No hay resultados</template>
-                              <template slot="noOptions">Lista vacía</template>
-                              </Multiselect>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div> <!-- Filtro de busqueda de avances -->
-            </div>
+    <div class="card">
+      <template  v-if="listRolPermisosByUsuario.includes('avances.crear')">
+        <div class="card-header">
+          <div class="card-tools">
+          <template v-if="fillEstadoTesis.cEstado  == 'A'">
+            <router-link class="btn btn-success btn-sm bt-fh"  :to="'/avances/subirfinalpdf'">
+              <i class="fas fa-file-upload float fa-fw"></i>Subir PDF final
+            </router-link>
+          </template>
+          <template v-if="fillEstadoTesis.cEstado  == 'D' || fillEstadoTesis.cEstado  == 'R'">
+            <router-link class="btn btn-danger btn-sm link-disabled bt-fh" :to="''">
+              <i class="fas fa-lock fa-fw"></i>Aún no puedes subir el PDF final
+            </router-link>
+          </template>
+          <template v-if="fillEstadoTesis.cEstado  == 'D'">
+            <router-link class="btn btn-info btn-sm bt-fh" :to="'/avances/crear'">
+              <i class="fas fa-plus-square fa-fw"></i> Subir avance
+            </router-link>
           </template>
 
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Bandeja de resultados</h3>
-              </div>
-              <div class="card-body" v-loading="fullscreenLoading">
-                <template v-if="listarAvancesPaginated.length">
-                  <div id="accordion">
-                    <div class="card-white" v-for="(item, index) in listarAvancesPaginated" :key="index">
-                      <div class="card-header" v-bind:id="'heading'+index">
-                        <div class="container">
-                          <a class="btn btn-outline-primary" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
-                              <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                          </a>
-                          <button class="btn btn-link" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
-                            {{item.created_at | moment}}
-                          </button>
-                            <a title="Ver documento" class="btn btn-warning boton float-right mx-1 btn-w" :href="item.archivo_pdf.path" target="_blank">
-                              <i class="fas fa-file-download"> </i>
-                            </a>
-                            <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">
-                              <router-link class="btn btn-info boton float-right mx-1 btn-w" :to="{name:'avances.editar', params:{id: item.id}}">
-                                  <i class="fas fa-pencil-alt"></i>
-                              </router-link>
-                            </template>
+          </div>
+        </div>
+      </template>
+      <div class="card-body">
+        <div class="container-fluid">
+          <template  v-if="listRolPermisosByUsuario.includes('avances.listaralumnos')">
+          <div class="card card-info">
+            <div class="card-header">
+              <h3 class="card-title">Criterios de búsqueda</h3>
+            </div>
+            <!-- Filtro de busqueda de avances -->
+            <div class="card-body">
+              <form role="form">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Estado</label>
+                        <div class="col-md-9">
+                            <Multiselect
+                              v-model="selectedEstado"
+                              placeholder="Seleccionar estado"
+                              :options="listEstados"
+                              label ="nombre"
+                              selectLabel="Presiona enter para seleccionar"
+                              selectedLabel="Seleccionado"
+                              :allow-empty="false"
+                              deselectLabel="Cancelar"
+                              @input="getListarFitsByprofesor"
+                              >
+                            <template slot="noResult">No hay resultados</template>
+                            <template slot="noOptions">Lista vacía</template>
+                            </Multiselect>
                         </div>
-                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Alumno</label>
+                        <div class="col-md-9">
+                            <Multiselect
+                              v-model="selectedFit"
+                              placeholder="Seleccionar estudiante"
+                              :options="listFits"
+                              label = "nombres"
+                              selectLabel="Seleccionar"
+                              selectedLabel="Seleccionado"
+                              deselectLabel="Remover"
+                              @input="getListarAvancesByFit"
+                              >
+                            <template slot="noResult">No hay resultados</template>
+                            <template slot="noOptions">Lista vacía</template>
+                            </Multiselect>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div> <!-- Filtro de busqueda de avances -->
+          </div>
+        </template>
 
-                      <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
-                        <div class="card-body">
-                          <div v-text="item.descripcion" style="white-space: pre-wrap"></div>
-                        </div>
+          <div class="card card-info">
+            <div class="card-header">
+              <h3 class="card-title">Bandeja de resultados</h3>
+            </div>
+            <div class="card-body" v-loading="fullscreenLoading">
+              <template v-if="listarAvancesPaginated.length">
+                <div id="accordion">
+                  <div class="card-white" v-for="(item, index) in listarAvancesPaginated" :key="index">
+                    <div class="card-header" v-bind:id="'heading'+index">
+                      <div class="container">
+                        <a class="btn btn-outline-primary" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        </a>
+                        <button class="btn btn-link" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
+                          {{item.created_at | moment}}
+                        </button>
+                          <a title="Ver documento" class="btn btn-warning boton float-right mx-1 btn-w" :href="item.archivo_pdf.path" target="_blank">
+                            <i class="fas fa-file-download"> </i>
+                          </a>
+                          <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">
+                            <router-link class="btn btn-info boton float-right mx-1 btn-w" :to="{name:'avances.editar', params:{id: item.id}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </router-link>
+                          </template>
+                      </div>
+                    </div>
+
+                    <div v-bind:id="'collapse'+index" class="collapse" v-bind:aria-labelledby="'heading'+index" data-parent="#accordion">
+                      <div class="card-body">
+                        <div v-text="item.descripcion" style="white-space: pre-wrap"></div>
                       </div>
                     </div>
                   </div>
-                </template>
-                <template v-else>
-                  <div class="callout callout-info">
-                    <h5> No se han encontrado resultados...</h5>
-                  </div>
-                </template>
-              </div>
-              <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item" v-if="pageNumber > 0">
-                    <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                  </li>
-                  <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                    :class="[page == pageNumber ? 'active' : '']">
-                    <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                  </li>
-                  <li class="page-item" v-if="pageNumber < pageCount -1">
-                    <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                  </li>
-                </ul>
-              </div>
+                </div>
+              </template>
+              <template v-else>
+                <div class="callout callout-info">
+                  <h5> No se han encontrado resultados...</h5>
+                </div>
+              </template>
+            </div>
+            <div class="card-footer clearfix">
+              <ul class="pagination pagination-sm m-0 float-right">
+                <li class="page-item" v-if="pageNumber > 0">
+                  <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+                </li>
+                <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                  :class="[page == pageNumber ? 'active' : '']">
+                  <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+                </li>
+                <li class="page-item" v-if="pageNumber < pageCount -1">
+                  <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
-</div>
-
 </template>
 
 <script>

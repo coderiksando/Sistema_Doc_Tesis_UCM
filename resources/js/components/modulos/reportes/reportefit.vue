@@ -1,279 +1,265 @@
 <template>
-  <div>
-    <div class="content-header">
+  <div class="card">
+    <div class="card-body">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Reportes de alumnos</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <div class="container container-fluid">
-      <div class="card">
-        <div class="card-body">
-          <div class="container-fluid">
-              <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Criterios de búsqueda</h3>
-              </div>
-              <div class="card-body">
-                <form role="form">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Facultad</label>
-                        <div class="col-md-9">
-                            <el-select v-model="fillBsqTesisReporte.nIdFacultad" @change="getListarEscuelaByFacultad"
-                            placeholder="Asignar facultad"
-                            clearable>
-                            <el-option
-                                v-for="item in listFacultades"
-                                :key="item.id"
-                                :label="item.nombre"
-                                :value="item.id">
-                            </el-option>
-                            </el-select>
-                        </div>
-                      </div>
+          <div class="card card-info">
+          <div class="card-header">
+            <h3 class="card-title">Criterios de búsqueda</h3>
+          </div>
+          <div class="card-body">
+            <form role="form">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Facultad</label>
+                    <div class="col-md-9">
+                        <el-select v-model="fillBsqTesisReporte.nIdFacultad" @change="getListarEscuelaByFacultad"
+                        placeholder="Asignar facultad"
+                        clearable>
+                        <el-option
+                            v-for="item in listFacultades"
+                            :key="item.id"
+                            :label="item.nombre"
+                            :value="item.id">
+                        </el-option>
+                        </el-select>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Escuelas</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Escuelas</label>
+                    <div class="col-md-9">
+                        <el-select v-model="fillBsqTesisReporte.nIdEscuela" @change="getListarProfesorByEscuela"
+                        placeholder="Asignar Escuela"
+                        clearable>
+                        <el-option
+                            v-for="item in listEscuelas"
+                            :key="item.id"
+                            :label="item.nombre"
+                            :value="item.id">
+                        </el-option>
+                        </el-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Rut alumno</label>
                         <div class="col-md-9">
-                            <el-select v-model="fillBsqTesisReporte.nIdEscuela" @change="getListarProfesorByEscuela"
+                            <input type="text" class="form-control" v-model="fillBsqTesisReporte.nRut">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Profesor</label>
+                    <div class="col-md-9">
+                            <el-select v-model="fillBsqTesisReporte.nIdProfesor"
                             placeholder="Asignar Escuela"
                             clearable>
                             <el-option
-                                v-for="item in listEscuelas"
+                                v-for="item in listProfesores"
                                 :key="item.id"
-                                :label="item.nombre"
-                                :value="item.id">
+                                :label="item.fullname"
+                                :value="item.id_user">
                             </el-option>
                             </el-select>
                         </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Rut alumno</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="fillBsqTesisReporte.nRut">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Profesor</label>
-                        <div class="col-md-9">
-                                <el-select v-model="fillBsqTesisReporte.nIdProfesor"
-                                placeholder="Asignar Escuela"
-                                clearable>
-                                <el-option
-                                    v-for="item in listProfesores"
-                                    :key="item.id"
-                                    :label="item.fullname"
-                                    :value="item.id_user">
-                                </el-option>
-                                </el-select>
-                            </div>
-                      </div>
-                    </div>
-
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Nota pendiente</label>
-                        <div class="col-md-9">
-                            <el-select v-model="fillBsqTesisReporte.cEstadoNotap"
-                            placeholder="Seleccione un estado"
-                            clearable>
-                              <el-option
-                                v-for="item in listTipoDeNotap"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                              </el-option>
-                            </el-select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Estado del documento</label>
-                        <div class="col-md-9">
-                            <el-select v-model="fillBsqTesisReporte.cEstadoTesis"
-                            placeholder="Seleccione un estado"
-                            clearable>
-                              <el-option
-                                v-for="item in listEstadosTesis"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                              </el-option>
-                            </el-select>
-                        </div>
-                      </div>
-                    </div>
-
-
-                     <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Fecha de última asignatura cursada</label>
-                            <div class="col-md-9">
-                                <el-date-picker
-                                    v-model="fillBsqTesisReporte.dfecharango[0]"
-                                    type="month"
-                                    placeholder="Inicio"
-                                    value-format="yyyy-MM-dd"
-                                    :picker-options="pickerOptions"
-                                    @change="selectStart">
-                                </el-date-picker>
-                                <el-date-picker
-                                    v-model="fillBsqTesisReporte.dfecharango[1]"
-                                    type="month"
-                                    placeholder="Término"
-                                    value-format="yyyy-MM-dd"
-                                    :picker-options="endOption">
-                                </el-date-picker>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-md-4 offset-4">
-                      <!-- consulta los datos de la fecha son iguales en forma booleana  -->
-                    <button :disabled="!!fillBsqTesisReporte.dfecharango[0] !== !!fillBsqTesisReporte.dfecharango[1]"
-                    class="btn btn-flat btn-info btnWidth" @click.prevent="getListarTesisReporte"
-                    v-loading.fullscreen.lock="fullscreenLoading">
-                        {{globVar.btnSearch}}
-                    </button>
-                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">
-                    <template v-if="listTesis.length">
-                        <el-tooltip class="item" effect="dark" content="Exportar en Formato Excel" placement="right">
-                          <el-button @click.prevent="setGenerarDocumento">
-                          <i  class="fas fa-file-excel"></i>
-                          Exportar
-                          </el-button>
-                        </el-tooltip>
-                    </template>
-                  Bandeja de resultados</h3>
-              </div>
-              <div class="card-body table table-responsive">
-                <template v-if="listTesis.length">
-
-                  <table class ="table table-hover table-head-fixed text-nowrap projects">
-                    <thead>
-                      <tr>
-                        <th>Alumno</th>
-                        <th>Rut</th>
-                        <th>Escuela</th>
-                        <th>Profesor Guia</th>
-                        <th>Estado documento</th>
-                        <th>Detalle</th>
-                        <th>Descarga de documentos</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(fit, index1) in listTesis" :key="index1">
-                        <td>
-                        <template v-for="(fitUser, index2) in fit.fit__user">
-                            <div :key="'nombreC' + index1 + ' ' + index2">
-                                {{fitUser.user.nombres+' '+fitUser.user.apellidos}}
-                            </div>
-                        </template>
-                        </td>
-                        <td>
-                        <template v-for="(fitUser, index2) in fit.fit__user">
-                            <div :key="'rut' + index1 + ' ' + index2">
-                                {{fitUser.user.rut}}
-                            </div>
-                        </template>
-                        </td>
-                        <td v-text="fit.escuela.nombre"></td>
-                        <td>{{fit.user__p__guia.nombres+' '+fit.user__p__guia.apellidos}}</td>
-                        <td>
-                          <template v-if="fit.estado == 'D'">
-                            <span class="badge badge-warning" >En desarrollo</span>
-                          </template>
-                          <template v-else-if="fit.estado == 'A'">
-                            <span class="badge badge-success" >Aprobada</span>
-                          </template>
-                          <template v-else>
-                            <span class="badge badge-danger" >Reprobada</span>
-                          </template>
-                        </td>
-                        <td>
-                          <router-link :title="'Vista completa de '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: fit.id}}">
-                            <b>{{terminoTitulo}}</b>
-                          </router-link>
-                          <router-link title="Sección de avances" v-if="fit.avances_tesis.length > 0" class="btn boton btn-success" :to="{name:'reportes.detallesavances', params:{id: fit.fit__user[0].id_user}}">
-                             <b>Av</b>
-                          </router-link>
-                          <!-- <div v-if="fit.avances_tesis.length === 0" class="btn btn-flat btn-success btn-sm disabled">Avances</div> -->
-                          <router-link title="Sección de bitácoras" v-if="fit.bitacoras.length > 0" class="btn boton btn-secondary" :to="{name:'reportes.detallesbitacoras', params:{id: fit.fit__user[0].id_user}}">
-                             <b>Bit</b>
-                          </router-link>
-                          <!-- <div v-if="fit.bitacoras.length === 0" class="btn btn-flat btn-secondary btn-sm disabled">Bitacoras</div> -->
-                        </td>
-                        <td>
-                          <template v-if="fit.ultimoDoc">
-                            <a :key="'arch'+index1" title="Descargar archivo" class="btn boton btn-success" :href="fit.ultimoDoc.path" target="_blank">
-                                <b>Ar</b>
-                            </a>
-                          </template>
-                          <template v-if="fit.acta">
-                            <a :key="'acta'+index1" title="Descargar acta de defensa" class="btn boton btn-warning" :href="fit.acta.path" target="_blank">
-                                <b>Ac</b>
-                            </a>
-                          </template>
-                          <template v-if="fit.constancia">
-                            <a :key="'constancia'+index1" title="Descargar constancia" class="btn boton btn-info" :href="fit.constancia.path" target="_blank">
-                                <b>C</b>
-                            </a>
-                          </template>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </template>
-                <template v-else>
-                  <div class="callout callout-info">
-                    <h5> No se han encontrado resultados...</h5>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Nota pendiente</label>
+                    <div class="col-md-9">
+                        <el-select v-model="fillBsqTesisReporte.cEstadoNotap"
+                        placeholder="Seleccione un estado"
+                        clearable>
+                          <el-option
+                            v-for="item in listTipoDeNotap"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                    </div>
                   </div>
-                </template>
-              </div>
-                <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                      <li class="page-item" v-if="pageNumber > 0">
-                        <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                      </li>
-                      <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                        :class="[page == pageNumber ? 'active' : '']">
-                        <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                      </li>
-                      <li class="page-item" v-if="pageNumber < pageCount -1">
-                        <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                      </li>
-                    </ul>
                 </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Estado del documento</label>
+                    <div class="col-md-9">
+                        <el-select v-model="fillBsqTesisReporte.cEstadoTesis"
+                        placeholder="Seleccione un estado"
+                        clearable>
+                          <el-option
+                            v-for="item in listEstadosTesis"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                    </div>
+                  </div>
+                </div>
+
+
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Fecha de última asignatura cursada</label>
+                        <div class="col-md-9">
+                            <el-date-picker
+                                v-model="fillBsqTesisReporte.dfecharango[0]"
+                                type="month"
+                                placeholder="Inicio"
+                                value-format="yyyy-MM-dd"
+                                :picker-options="pickerOptions"
+                                @change="selectStart">
+                            </el-date-picker>
+                            <el-date-picker
+                                v-model="fillBsqTesisReporte.dfecharango[1]"
+                                type="month"
+                                placeholder="Término"
+                                value-format="yyyy-MM-dd"
+                                :picker-options="endOption">
+                            </el-date-picker>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col-md-4 offset-4">
+                  <!-- consulta los datos de la fecha son iguales en forma booleana  -->
+                <button :disabled="!!fillBsqTesisReporte.dfecharango[0] !== !!fillBsqTesisReporte.dfecharango[1]"
+                class="btn btn-flat btn-info btnWidth" @click.prevent="getListarTesisReporte"
+                v-loading.fullscreen.lock="fullscreenLoading">
+                    {{globVar.btnSearch}}
+                </button>
+                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
+              </div>
             </div>
           </div>
         </div>
+
+        <div class="card card-info">
+          <div class="card-header">
+            <h3 class="card-title">
+                <template v-if="listTesis.length">
+                    <el-tooltip class="item" effect="dark" content="Exportar en Formato Excel" placement="right">
+                      <el-button @click.prevent="setGenerarDocumento">
+                      <i  class="fas fa-file-excel"></i>
+                      Exportar
+                      </el-button>
+                    </el-tooltip>
+                </template>
+              Bandeja de resultados</h3>
+          </div>
+          <div class="card-body table table-responsive">
+            <template v-if="listTesis.length">
+
+              <table class ="table table-hover table-head-fixed text-nowrap projects">
+                <thead>
+                  <tr>
+                    <th>Alumno</th>
+                    <th>Rut</th>
+                    <th>Escuela</th>
+                    <th>Profesor Guia</th>
+                    <th>Estado documento</th>
+                    <th>Detalle</th>
+                    <th>Descarga de documentos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(fit, index1) in listTesis" :key="index1">
+                    <td>
+                    <template v-for="(fitUser, index2) in fit.fit__user">
+                        <div :key="'nombreC' + index1 + ' ' + index2">
+                            {{fitUser.user.nombres+' '+fitUser.user.apellidos}}
+                        </div>
+                    </template>
+                    </td>
+                    <td>
+                    <template v-for="(fitUser, index2) in fit.fit__user">
+                        <div :key="'rut' + index1 + ' ' + index2">
+                            {{fitUser.user.rut}}
+                        </div>
+                    </template>
+                    </td>
+                    <td v-text="fit.escuela.nombre"></td>
+                    <td>{{fit.user__p__guia.nombres+' '+fit.user__p__guia.apellidos}}</td>
+                    <td>
+                      <template v-if="fit.estado == 'D'">
+                        <span class="badge badge-warning" >En desarrollo</span>
+                      </template>
+                      <template v-else-if="fit.estado == 'A'">
+                        <span class="badge badge-success" >Aprobada</span>
+                      </template>
+                      <template v-else>
+                        <span class="badge badge-danger" >Reprobada</span>
+                      </template>
+                    </td>
+                    <td>
+                      <router-link :title="'Vista completa de '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: fit.id}}">
+                        <b>{{terminoTitulo}}</b>
+                      </router-link>
+                      <router-link title="Sección de avances" v-if="fit.avances_tesis.length > 0" class="btn boton btn-success" :to="{name:'reportes.detallesavances', params:{id: fit.fit__user[0].id_user}}">
+                          <b>Av</b>
+                      </router-link>
+                      <!-- <div v-if="fit.avances_tesis.length === 0" class="btn btn-flat btn-success btn-sm disabled">Avances</div> -->
+                      <router-link title="Sección de bitácoras" v-if="fit.bitacoras.length > 0" class="btn boton btn-secondary" :to="{name:'reportes.detallesbitacoras', params:{id: fit.fit__user[0].id_user}}">
+                          <b>Bit</b>
+                      </router-link>
+                      <!-- <div v-if="fit.bitacoras.length === 0" class="btn btn-flat btn-secondary btn-sm disabled">Bitacoras</div> -->
+                    </td>
+                    <td>
+                      <template v-if="fit.ultimoDoc">
+                        <a :key="'arch'+index1" title="Descargar archivo" class="btn boton btn-success" :href="fit.ultimoDoc.path" target="_blank">
+                            <b>Ar</b>
+                        </a>
+                      </template>
+                      <template v-if="fit.acta">
+                        <a :key="'acta'+index1" title="Descargar acta de defensa" class="btn boton btn-warning" :href="fit.acta.path" target="_blank">
+                            <b>Ac</b>
+                        </a>
+                      </template>
+                      <template v-if="fit.constancia">
+                        <a :key="'constancia'+index1" title="Descargar constancia" class="btn boton btn-info" :href="fit.constancia.path" target="_blank">
+                            <b>C</b>
+                        </a>
+                      </template>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </template>
+            <template v-else>
+              <div class="callout callout-info">
+                <h5> No se han encontrado resultados...</h5>
+              </div>
+            </template>
+          </div>
+            <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item" v-if="pageNumber > 0">
+                    <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+                  </li>
+                  <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                    :class="[page == pageNumber ? 'active' : '']">
+                    <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+                  </li>
+                  <li class="page-item" v-if="pageNumber < pageCount -1">
+                    <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+                  </li>
+                </ul>
+            </div>
+        </div>
       </div>
     </div>
-</div>
-
+  </div>
 </template>
 <script>
 import globVar from '../../../services/globVar';

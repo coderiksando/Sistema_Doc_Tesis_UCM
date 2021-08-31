@@ -21,7 +21,7 @@
         <div class="card-header">
           <div class="card-tools">
             <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
-              <i class="fas fa-arrow-left"></i> Regresar
+              <i class="fas fa-arrow-left"></i> {{globVar.btnBack}}
             </a>
           </div>
         </div>
@@ -526,7 +526,7 @@
               <tbody>
                 <tr>
                   <td><i class="fas fa-arrow-left"></i></td>
-                  <td>Regresar</td>
+                  <td>{{globVar.btnBack}}</td>
                   <td>Vuelve a la sección anterior de la página</td>
                 </tr>
                 <tr>

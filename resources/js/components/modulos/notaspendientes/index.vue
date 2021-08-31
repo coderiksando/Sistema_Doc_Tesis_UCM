@@ -1,100 +1,83 @@
 <template>
-  <div>
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Notas pendientes</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-tools" v-if="listNotasPendientes">
+        <template v-if="listRolPermisosByUsuario.includes('notaspendientes.crear')">
+          <template v-if="listNotasPendientes.length == 0 && fillEstadoTesis.cEstado  == 'D'">
+            <router-link class="btn btn-info bnt-sm" :to="'/notaspendientes/crear'">
+              <i class="fas fa-plus-square"></i> Solicitar nota pendiente
+            </router-link>
+          </template>
+        </template>
+      </div>
     </div>
-    <div class="container container-fluid">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-tools" v-if="listNotasPendientes">
-            <!-- /.container-fluid -->
-                            <!-- /.container-fluid -->
-            <template v-if="listRolPermisosByUsuario.includes('EsAlumno') && listNotasPendientes.length > 0">
+
+    <div class="card-body">
+      <div class="container-fluid">
+        <div class="card card-info">
+          <div class="card-header">
+            <h3 class="card-title">Bandeja de resultados</h3>
+          </div>
+          <div class="card-body table-responsive" v-loading="fullscreenLoading">
+            <template v-if="listarNotasPendientesPaginated.length">
+
+              <table class ="table table-hover table-head-fixed text-nowrap projects">
+                <thead>
+                  <tr>
+                    <th>Alumno</th>
+                    <th>Fecha de ingreso</th>
+                    <th>Fecha propuesta</th>
+                    <th>Fecha prórroga</th>
+                    <th v-if="listRolPermisosByUsuario.includes('notaspendientes.editar')">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in listarNotasPendientesPaginated" :key="index">
+                    <td> <!-- itera mostrando la cantidad total de estudiantes -->
+                        <div v-for="(itemUser, index) in item.alumnos" :key="index">
+                            <div v-text="itemUser.nombres + ' ' + itemUser.apellidos"></div>
+                        </div>
+                    </td>
+                    <td> {{ item.fecha_presentacion | moment }}</td>
+                    <td> {{ item.fecha_propuesta | moment }}</td>
+                    <td>
+                        <template v-if="item.fecha_prorroga">
+                          {{ item.fecha_prorroga | moment }}
+                        </template>
+                      </td>
+                    <td v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
+                      <router-link title="Editar" class="btn btn-info boton" :to="{name:'notaspendientes.editar', params:{id: item.id}}">
+                        <i class="fas fa-pencil-alt"></i>
+                      </router-link>
+                      <router-link title="Solicitar prórroga" class="btn btn-success boton" :to="{name:'notaspendientes.prorroga', params:{id: item.id}}">
+                        <i class="fas fa-calendar-check"></i>
+                      </router-link>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </template>
-            <template v-if="listRolPermisosByUsuario.includes('notaspendientes.crear')">
-              <template v-if="listNotasPendientes.length == 0 && fillEstadoTesis.cEstado  == 'D'">
-                <router-link class="btn btn-info bnt-sm" :to="'/notaspendientes/crear'">
-                  <i class="fas fa-plus-square"></i> Solicitar nota pendiente
-                </router-link>
-              </template>
+            <template v-else>
+              <div class="callout callout-info">
+                <h5> No se han encontrado resultados...</h5>
+              </div>
             </template>
           </div>
         </div>
-
-        <div class="card-body">
-          <div class="container-fluid">
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Bandeja de resultados</h3>
-              </div>
-              <div class="card-body table-responsive" v-loading="fullscreenLoading">
-                <template v-if="listarNotasPendientesPaginated.length">
-
-                  <table class ="table table-hover table-head-fixed text-nowrap projects">
-                    <thead>
-                      <tr>
-                        <th>Alumno</th>
-                        <th>Fecha de ingreso</th>
-                        <th>Fecha propuesta</th>
-                        <th>Fecha prórroga</th>
-                        <th v-if="listRolPermisosByUsuario.includes('notaspendientes.editar')">Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(item, index) in listarNotasPendientesPaginated" :key="index">
-                        <td> <!-- itera mostrando la cantidad total de estudiantes -->
-                            <div v-for="(itemUser, index) in item.alumnos" :key="index">
-                                <div v-text="itemUser.nombres + ' ' + itemUser.apellidos"></div>
-                            </div>
-                        </td>
-                        <td> {{ item.fecha_presentacion | moment }}</td>
-                        <td> {{ item.fecha_propuesta | moment }}</td>
-                        <td>
-                           <template v-if="item.fecha_prorroga">
-                             {{ item.fecha_prorroga | moment }}
-                           </template>
-                          </td>
-                        <td v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
-                          <router-link title="Editar" class="btn btn-info boton" :to="{name:'notaspendientes.editar', params:{id: item.id}}">
-                            <i class="fas fa-pencil-alt"></i>
-                          </router-link>
-                          <router-link title="Solicitar prórroga" class="btn btn-success boton" :to="{name:'notaspendientes.prorroga', params:{id: item.id}}">
-                            <i class="fas fa-calendar-check"></i>
-                          </router-link>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </template>
-                <template v-else>
-                  <div class="callout callout-info">
-                    <h5> No se han encontrado resultados...</h5>
-                  </div>
-                </template>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer clearfix">
-            <ul class="pagination pagination-sm m-0 float-right">
-              <li class="page-item" v-if="pageNumber > 0">
-                <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-              </li>
-              <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                :class="[page == pageNumber ? 'active' : '']">
-                <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-              </li>
-              <li class="page-item" v-if="pageNumber < pageCount -1">
-                <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-              </li>
-            </ul>
-          </div>
-        </div>
+      </div>
+      <div class="card-footer clearfix">
+        <ul class="pagination pagination-sm m-0 float-right">
+          <li class="page-item" v-if="pageNumber > 0">
+            <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+          </li>
+          <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+            :class="[page == pageNumber ? 'active' : '']">
+            <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+          </li>
+          <li class="page-item" v-if="pageNumber < pageCount -1">
+            <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
