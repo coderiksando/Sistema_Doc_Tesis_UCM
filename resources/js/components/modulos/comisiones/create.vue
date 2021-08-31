@@ -35,7 +35,7 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Profesor comisión 1 (requerido)</label>
+                                            <label class="col-md-3 col-form-label">Prof. comisión 1 (requerido)</label>
                                             <div class="col-md-9">
                                                 <el-select v-model="fillCrearComision.Profesor1"
                                                 placeholder="Asignar profesor para comisión"
@@ -52,7 +52,7 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Profesor comisión 2</label>
+                                            <label class="col-md-3 col-form-label">Prof. comisión 2</label>
                                             <div class="col-md-9">
                                                 <el-select v-model="fillCrearComision.Profesor2"
                                                 placeholder="Asignar profesor para comisión"
@@ -69,19 +69,19 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Profesor externo</label>
+                                            <label class="col-md-3 col-form-label">Prof. externo</label>
                                             <div class="col-md-9">
                                                 <input type="text" placeholder="Nombre profesor externo" class="form-control" v-model="fillCrearComision.NombrePEx" @keyup.enter="setRegistrarComision">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Email profesor externo</label>
+                                            <label class="col-md-3 col-form-label">Email prof. externo</label>
                                             <div class="col-md-9">
                                                 <input type="text" placeholder="Email profesor externo" class="form-control" v-model="fillCrearComision.EmailPEx" @keyup.enter="setRegistrarComision">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Institución profesor externo</label>
+                                            <label class="col-md-3 col-form-label">Institución prof. externo</label>
                                             <div class="col-md-9">
                                                 <input type="text" placeholder="Institución profesor externo" class="form-control" v-model="fillCrearComision.InstitucionPEx" @keyup.enter="setRegistrarComision">
                                             </div>

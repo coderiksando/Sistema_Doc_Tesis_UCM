@@ -50,7 +50,7 @@
                     <div class="col-md-6">
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label"
-                          >Profesor Guía</label
+                          >Prof. Guía</label
                         >
                         <div class="col-md-9">
                           <el-select
@@ -73,7 +73,7 @@
                     <div class="col-md-6">
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label"
-                          >Profesor Co-guía</label
+                          >Prof. Co-guía</label
                         >
                         <div class="col-md-9">
                           <el-select
