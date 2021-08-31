@@ -1,153 +1,137 @@
 <template>
-  <div>
-
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Crear usuarios</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-tools">
+        <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
+          <i class="fas fa-arrow-left"></i> Regresar
+        </a>
+      </div>
     </div>
-
-    <div class="container container-fluid">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-tools">
-            <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
-              <i class="fas fa-arrow-left"></i> Regresar
-            </a>
+    <div class="card-body">
+      <div class="container-fluid">
+        <div class="card card-info">
+          <div class="card-header">
+            <h3 class="card-title">Formulario de registro de usuario</h3>
           </div>
-        </div>
-        <div class="card-body">
-          <div class="container-fluid">
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Formulario de registro de usuario</h3>
-              </div>
-              <div class="card-body">
-                <form role="form">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-4 col-form-label">Nombres</label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" v-model="fillCrearUsuarios.cNombre" @keyup.enter="setRegistrarUsuario">
-                        </div>
-                      </div>
+          <div class="card-body">
+            <form role="form">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Nombres</label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" v-model="fillCrearUsuarios.cNombre" @keyup.enter="setRegistrarUsuario">
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-4 col-form-label">Apellidos</label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" v-model="fillCrearUsuarios.cApellido" @keyup.enter="setRegistrarUsuario">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-4 col-form-label">Correo</label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" v-model="fillCrearUsuarios.cCorreo" @keyup.enter="setRegistrarUsuario">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                          <label class="col-md-4 col-form-label">Asignar escuela</label>
-                          <div class="col-md-8">
-                              <el-select v-model="fillCrearUsuarios.cEscuela"
-                                placeholder="Asignar Escuela"
-                                clearable>
-                                <el-option
-                                    v-for="item in listEscuelas"
-                                    :key="item.id"
-                                    :label="item.nombre"
-                                    :value="item.id">
-                                </el-option>
-                              </el-select>
-                          </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-4 col-form-label">Contraseña</label>
-                        <div class="col-md-8">
-                          <div class="input-group">
-                            <input id="txtPassword" type="password" class="form-control" v-model="fillCrearUsuarios.cContrasena" @keyup.enter="setRegistrarUsuario" @change="checkPassword">
-                            <div class="input-group-append">
-                              <button id="show_password" class="btn btn-primary" type="button" @click.prevent="showPassword('txtPassword')"> <span id="txtPasswordIcon" class="fa fa-eye-slash icon txtPasswordIco"></span> </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-4 col-form-label">Repetir Contraseña</label>
-                        <div class="col-md-8">
-                          <div class="input-group">
-                            <input id="txtConfPassword" type="password" class="form-control" :class="{ 'is-invalid' : passError}" v-model="fillCrearUsuarios.cConfContrasena" @keyup.enter="setRegistrarUsuario" @change="checkPassword">
-                            <div class="input-group-append">
-                              <button id="show_confpassword" class="btn btn-primary" type="button" @click.prevent="showPassword('txtConfPassword')"> <span id="txtConfPasswordIcon" class="fa fa-eye-slash icon txtConfPasswordIco"></span> </button>
-                            </div>
-                          </div>
-                          <div class="custom-file invalid-feedback no-margin" v-show="passError">
-                            Las constraseñas no coinciden.
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-4 col-form-label">Rol</label>
-                        <div class="col-md-8">
-                          <multiselect
-                            v-model="listRoles.value"
-                            mode="tags"
-                            label='name'
-                            track-by="id"
-                            placeholder="Seleccionar roles"
-                            :options="listRoles.options"
-                            :multiple="true"
-                            selectLabel="Seleccionar"
-                            selectedLabel="Seleccionado"
-                            deselectLabel="Presiona enter para remover">
-                            <span slot="noResult">Rol no encontrado.</span>
-                          </multiselect>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-4 col-form-label">Rut</label>
-                        <div class="col-md-8">
-                            <input type="text" placeholder="12345678-9" class="form-control" :class="{ 'is-invalid' : rutError}" v-model="fillCrearUsuarios.cRut" @keyup.enter="setRegistrarUsuario">
-                            <div class="custom-file invalid-feedback no-margin" v-show="rutError">
-                                Formato de RUT invalido.
-                            </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarUsuario" v-loading.fullscreen.lock="fullscreenLoading"
-                      >{{globVar.btnSave}}</button>
-                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">{{globVar.btnClear}}</button>
                   </div>
                 </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Apellidos</label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" v-model="fillCrearUsuarios.cApellido" @keyup.enter="setRegistrarUsuario">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Correo</label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" v-model="fillCrearUsuarios.cCorreo" @keyup.enter="setRegistrarUsuario">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                      <label class="col-md-4 col-form-label">Asignar escuela</label>
+                      <div class="col-md-8">
+                          <el-select v-model="fillCrearUsuarios.cEscuela"
+                            placeholder="Asignar Escuela"
+                            clearable>
+                            <el-option
+                                v-for="item in listEscuelas"
+                                :key="item.id"
+                                :label="item.nombre"
+                                :value="item.id">
+                            </el-option>
+                          </el-select>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Contraseña</label>
+                    <div class="col-md-8">
+                      <div class="input-group">
+                        <input id="txtPassword" type="password" class="form-control" v-model="fillCrearUsuarios.cContrasena" @keyup.enter="setRegistrarUsuario" @change="checkPassword">
+                        <div class="input-group-append">
+                          <button id="show_password" class="btn btn-primary" type="button" @click.prevent="showPassword('txtPassword')"> <span id="txtPasswordIcon" class="fa fa-eye-slash icon txtPasswordIco"></span> </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Repetir Contraseña</label>
+                    <div class="col-md-8">
+                      <div class="input-group">
+                        <input id="txtConfPassword" type="password" class="form-control" :class="{ 'is-invalid' : passError}" v-model="fillCrearUsuarios.cConfContrasena" @keyup.enter="setRegistrarUsuario" @change="checkPassword">
+                        <div class="input-group-append">
+                          <button id="show_confpassword" class="btn btn-primary" type="button" @click.prevent="showPassword('txtConfPassword')"> <span id="txtConfPasswordIcon" class="fa fa-eye-slash icon txtConfPasswordIco"></span> </button>
+                        </div>
+                      </div>
+                      <div class="custom-file invalid-feedback no-margin" v-show="passError">
+                        Las constraseñas no coinciden.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Rol</label>
+                    <div class="col-md-8">
+                      <multiselect
+                        v-model="listRoles.value"
+                        mode="tags"
+                        label='name'
+                        track-by="id"
+                        placeholder="Seleccionar roles"
+                        :options="listRoles.options"
+                        :multiple="true"
+                        selectLabel="Seleccionar"
+                        selectedLabel="Seleccionado"
+                        deselectLabel="Presiona enter para remover">
+                        <span slot="noResult">Rol no encontrado.</span>
+                      </multiselect>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-4 col-form-label">Rut</label>
+                    <div class="col-md-8">
+                        <input type="text" placeholder="12345678-9" class="form-control" :class="{ 'is-invalid' : rutError}" v-model="fillCrearUsuarios.cRut" @keyup.enter="setRegistrarUsuario">
+                        <div class="custom-file invalid-feedback no-margin" v-show="rutError">
+                            Formato de RUT invalido.
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col-md-4 offset-4">
+                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarUsuario" v-loading.fullscreen.lock="fullscreenLoading"
+                  >Registrar</button>
+                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">

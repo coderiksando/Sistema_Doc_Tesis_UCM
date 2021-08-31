@@ -1,170 +1,154 @@
 <template>
-  <div>
-    <div class="content-header">
+  <div class="card">
+    <div class="card-body">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Documentos de escuela</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-
-    <div class="container container-fluid">
-      <div class="card">
-        <div class="card-body">
-          <div class="container-fluid">
-            <div class="card card-info" v-if="listRolPermisosByUsuario.includes('escuelas.documentos.crear')">
-              <div id="accordion">
-                <div class="card-header btn d-block" data-toggle="collapse" data-target="#collapseBody" aria-expanded="false" aria-controls="collapseBody" style="color: white;" id="headingtable">
-                  <h3 class="card-title">Ingresar Documento</h3>
-                </div>
-                <div class="collapse show" id="collapseBody" aria-labelledby="headingtable" data-parent="#accordion">
-                  <div class="card-body">
-                    <form role="form" id="form-documento">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Descripción</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="fillIngresarDocumento.cDescripcion">
+        <div class="card card-info" v-if="listRolPermisosByUsuario.includes('escuelas.documentos.crear')">
+          <div id="accordion">
+            <div class="card-header btn d-block" data-toggle="collapse" data-target="#collapseBody" aria-expanded="false" aria-controls="collapseBody" style="color: white;" id="headingtable">
+              <h3 class="card-title">Ingresar Documento</h3>
+            </div>
+            <div class="collapse show" id="collapseBody" aria-labelledby="headingtable" data-parent="#accordion">
+              <div class="card-body">
+                <form role="form" id="form-documento">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Descripción</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" v-model="fillIngresarDocumento.cDescripcion">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6" v-if="listRolPermisosByUsuario.includes('escuelas.documentos.general')">
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Escuela</label>
+                        <div class="col-md-9">
+                            <el-select v-model="fillIngresarDocumento.nIdEscuela"
+                            placeholder="Seleccione una escuela"
+                            clearable>
+                              <el-option
+                                v-for="item in listEscuelas"
+                                :key="item.id"
+                                :label="item.nombre"
+                                :value="item.id">
+                              </el-option>
+                            </el-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Archivo</label>
+                        <div class="col-md-9">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="inputGroupFileAddon01">
+                              <i class="fas fa-file-upload"></i>
+                              </span>
+                            </div>
+                            <div class="custom-file">
+                              <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError, 'is-valid' : hover}" @change="getFile" @mouseover="hover = true" @mouseleave="hover = false">
+                              <label class="custom-file-label" for="input1">{{nombreArchivo ? nombreArchivo : 'Seleccionar archivo'}}</label>
                             </div>
                           </div>
-                        </div>
-                        <div class="col-md-6" v-if="listRolPermisosByUsuario.includes('escuelas.documentos.general')">
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Escuela</label>
-                            <div class="col-md-9">
-                                <el-select v-model="fillIngresarDocumento.nIdEscuela"
-                                placeholder="Seleccione una escuela"
-                                clearable>
-                                  <el-option
-                                    v-for="item in listEscuelas"
-                                    :key="item.id"
-                                    :label="item.nombre"
-                                    :value="item.id">
-                                  </el-option>
-                                </el-select>
-                            </div>
+                          <div class="custom-file invalid-feedback no-margin" v-show="formatError">
+                            El formato del archivo no es soportado.
                           </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Archivo</label>
-                            <div class="col-md-9">
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text" id="inputGroupFileAddon01">
-                                  <i class="fas fa-file-upload"></i>
-                                  </span>
-                                </div>
-                                <div class="custom-file">
-                                  <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError, 'is-valid' : hover}" @change="getFile" @mouseover="hover = true" @mouseleave="hover = false">
-                                  <label class="custom-file-label" for="input1">{{nombreArchivo ? nombreArchivo : 'Seleccionar archivo'}}</label>
-                                </div>
-                              </div>
-                              <div class="custom-file invalid-feedback no-margin" v-show="formatError">
-                                El formato del archivo no es soportado.
-                              </div>
-                              <div class="custom-file invalid-feedback" v-show="sizeError">
-                                El tamaño del archivo no puede superar los {{fileMaxSize}} MB.
-                              </div>
-                            </div>
+                          <div class="custom-file invalid-feedback" v-show="sizeError">
+                            El tamaño del archivo no puede superar los {{fileMaxSize}} MB.
                           </div>
                         </div>
                       </div>
-                    </form>
-                    <div class="container">
-                      El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
-                    </div>
-                    <div class="container">
-                      Los formatos de archivo soportados son:
-                      <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
                     </div>
                   </div>
-                  <div class="card-footer">
-                    <div class="row">
-                      <div class="col-md-4 offset-4">
-                        <button class="btn btn-flat btn-info btnWidth" @click.prevent="setGuardarArchivo"  v-loading.fullscreen.lock="fullscreenLoading"
-                          >{{globVar.btnSave}}</button>
-                        <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
-                      </div>
-                    </div>
+                </form>
+                <div class="container">
+                  El tamaño máximo de los archivos es: {{fileMaxSize}} MB.
                 </div>
+                <div class="container">
+                  Los formatos de archivo soportados son:
+                  <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
                 </div>
               </div>
+              <div class="card-footer">
+                <div class="row">
+                  <div class="col-md-4 offset-4">
+                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="setGuardarArchivo"  v-loading.fullscreen.lock="fullscreenLoading"
+                      >Registrar</button>
+                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
+                  </div>
+                </div>
             </div>
+            </div>
+          </div>
+        </div>
 
-            <div class="card card-info">
-              <div class="card-header flex p-1">
-                <div class="col-md-11">
-                  <div class="form-group row m-0">
-                    <h3 class="card-title col-md-3">Documentos de escuela:</h3>
-                    <div class="col-md-4" v-if="listRolPermisosByUsuario.includes('escuelas.documentos.general')">
-                        <el-select v-model="escuelaDocumentos"
-                        placeholder="Seleccione una escuela"
-                        filterable
-                        clearable
-                        @change="getListarDocumentos"
-                        >
-                          <el-option
-                            v-for="item in listEscuelas"
-                            :key="item.id"
-                            :label="item.nombre"
-                            :value="item.id">
-                          </el-option>
-                        </el-select>
-                    </div>
-                  </div>
+        <div class="card card-info">
+          <div class="card-header flex p-1">
+            <div class="col-md-11">
+              <div class="form-group row m-0">
+                <h3 class="card-title col-md-3">Documentos de escuela:</h3>
+                <div class="col-md-4" v-if="listRolPermisosByUsuario.includes('escuelas.documentos.general')">
+                    <el-select v-model="escuelaDocumentos"
+                    placeholder="Seleccione una escuela"
+                    filterable
+                    clearable
+                    @change="getListarDocumentos"
+                    >
+                      <el-option
+                        v-for="item in listEscuelas"
+                        :key="item.id"
+                        :label="item.nombre"
+                        :value="item.id">
+                      </el-option>
+                    </el-select>
                 </div>
               </div>
-              <div class="card-body table table-responsive"  v-loading="tableLoading">
-                <template v-if="listarDocumentosPaginated.length">
-                  <table class ="table table-hover table-head-fixed text-nowrap projects">
-                    <thead>
-                      <tr>
-                        <th class="col-md-10">Descripción</th>
-                        <th class="col-md-10">Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(item, index) in listarDocumentosPaginated" :key="index">
-                        <td>
-                          <p v-text="item.descripcion"></p>
-                        </td>
-                        <td >
-                          <a title="Descargar archivo" class="btn boton btn-warning" target="_blank" :href="item.path"><i class="fas fa-file-download"> </i></a>
-                          <button class="btn boton btn-danger"
-                           v-if="(listRolPermisosByUsuario.includes('escuelas.documentos.general')) || (listRolPermisosByUsuario.includes('escuelas.documentos.crear') && item.id_escuela != 0)"
-                           @click.prevent="eliminarDocumento(item.id)">
-                              <i title="Eliminar documento" class="fas fa-trash-alt"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                      <li class="page-item" v-if="pageNumber > 0">
-                        <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                      </li>
-                      <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                        :class="[page == pageNumber ? 'active' : '']">
-                        <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                      </li>
-                      <li class="page-item" v-if="pageNumber < pageCount -1">
-                        <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                      </li>
-                    </ul>
-                  </div>
-                </template>
-                <template v-else>
-                  <div class="callout callout-info">
-                    <h5> No se han encontrado resultados...</h5>
-                  </div>
-                </template>
-              </div>
             </div>
+          </div>
+          <div class="card-body table table-responsive"  v-loading="tableLoading">
+            <template v-if="listarDocumentosPaginated.length">
+              <table class ="table table-hover table-head-fixed text-nowrap projects">
+                <thead>
+                  <th class="col-md-10">Descripción</th>
+                  <th class="col-md-10">Acciones</th>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in listarDocumentosPaginated" :key="index">
+                    <td> 
+                      <p v-text="item.descripcion"></p>
+                    </td>
+                    <td >
+                      <a title="Descargar archivo" class="btn boton btn-warning" target="_blank" :href="item.path"><i class="fas fa-file-download"> </i></a>
+                      <button class="btn boton btn-danger"
+                        v-if="(listRolPermisosByUsuario.includes('escuelas.documentos.general')) || (listRolPermisosByUsuario.includes('escuelas.documentos.crear') && item.id_escuela != 0)"
+                        @click.prevent="eliminarDocumento(item.id)">
+                          <i title="Eliminar documento" class="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item" v-if="pageNumber > 0">
+                    <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+                  </li>
+                  <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                    :class="[page == pageNumber ? 'active' : '']">
+                    <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+                  </li>
+                  <li class="page-item" v-if="pageNumber < pageCount -1">
+                    <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+                  </li>
+                </ul>
+              </div>
+            </template>
+            <template v-else>
+              <div class="callout callout-info">
+                <h5> No se han encontrado resultados...</h5>
+              </div>
+            </template>
           </div>
         </div>
       </div>
