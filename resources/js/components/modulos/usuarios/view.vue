@@ -60,9 +60,9 @@
                 <div class="card">
                   <div class="card-header p-2">
                     <ul class="nav nav-pills position-reverse">
-                      <router-link class="nav-link active" :to="'/usuarios'">
+                      <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
                         <i class="fas fa-arrow-left"></i> Regresar
-                      </router-link>
+                      </a>
                     </ul>
                   </div><!-- /.card-header -->
                   <div class="card-body">
