@@ -52,6 +52,7 @@
                     <th>Nombre</th>
                     <th>Rut</th>
                     <th>Estado de aprobación</th>
+                    <th>Nota</th>
                     <th>Descargar</th>
                   </tr>
                 </thead>
@@ -69,23 +70,28 @@
                     </td>
                     <td>
                       <template v-if="item.estado == 'D'">
-                        <span class="badge badge-warning" >En desarrollo</span>
+                        <span>En desarrollo</span>
                       </template>
                       <template v-else-if="item.estado == 'A'">
-                        <span class="badge badge-success" >Aprobada</span>
+                        <span>Aprobada</span>
                       </template>
                       <template v-else>
-                        <span class="badge badge-danger" >Reprobada</span>
+                        <span>Reprobada</span>
                       </template>
                     </td>
+                    <td>
+                      <span v-text="!item.nota || item.nota == 0.0 ? 'n/a': item.nota"></span>
+                    </td>
                     <td >
-                      <button class="btn btn-flat btn-primary btn-sm" @click.prevent="setGenerarDocumento(item.id)">
-                          <i class="fas fa-file-download"></i> {{terminoTitulo}}
-                        </button>
-                        <button class="btn btn-flat btn-success btn-sm" @click.prevent="setGenerarMemoRevision(item.id)">
-                          <i class="fas fa-file-download"></i> Memo Revision
-                        </button>
-                      <a class="btn btn-flat btn-warning btn-sm" target="_blank" :href="item.path"><i class="fas fa-file-download"> </i> Acta Defensa </a>
+                      <a v-if="item.final" title="Documento final" class="btn boton btn-warning" :href="item.final.path" target="_blank">F</a>
+                      <a v-if="item.constancia" title="Constancia de examen" class="btn boton btn-info" :href="item.constancia.path" target="_blank">C</a>
+                      <a v-if="item.path" title="Acta de defensa" class="btn btn-primary boton" target="_blank" :href="item.path"> Ac </a>
+                      <button title="Memo de revisión" class="btn btn-success boton" @click.prevent="setGenerarMemoRevision(item.id)">
+                          Me
+                      </button>
+                      <button :title="terminoTituloEx" class="btn btn-dark boton" @click.prevent="setGenerarDocumento(item.id)">
+                         {{terminoTitulo}}
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -129,6 +135,7 @@ export default {
         nIdEscuela:''
       },
       fullscreenLoading: false,
+      terminoTituloEx: JSON.parse(localStorage.getItem('TerminoDeTituloExtendido')),
       terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       listEscuelas:[],
       listAlumnos:[],

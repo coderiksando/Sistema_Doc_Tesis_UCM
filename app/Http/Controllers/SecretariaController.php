@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 class SecretariaController extends Controller
 {
     public function getListarAlumnos(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        // if(!$request->ajax()) return redirect('/');
 
         $user     = Auth::user();
         $IdEscuela  = $user->id_escuela;
@@ -27,7 +27,6 @@ class SecretariaController extends Controller
         $rut        = $request->nRut;
         $nombre     = $request->cNombre;
         $estado     = $request->cEstado_tesis;
-        $IdEscuela  = $request->nIdEscuela;
         $EstadoAlumno  = $request->nEstadoAlumno;
 
         $rut        = ($rut == NULL) ? ($rut = '') : $rut;
@@ -37,49 +36,32 @@ class SecretariaController extends Controller
         $EstadoAlumno  = ($EstadoAlumno == NULL) ? ($EstadoAlumno = '') : $EstadoAlumno;
 
         $filter1 = User::where('nombres', 'like', "%$nombre%")->orWhere('apellidos', 'like', "%$nombre%")->get();
-        $filter2 = User::where('id_escuela', 'like', "%$IdEscuela%")->where('rut', 'like', "%$rut%")->get();
+        $filter2 = User::where('id_escuela', $IdEscuela)->where('rut', 'like', "%$rut%")->get();
         $users = $filter1->intersect($filter2)->pluck('id_user');
 
         $fitsId = Fit_User::whereIn('id_user', $users)->pluck('id_fit')->unique()->values();
-        $fits = Fit::whereIn('id', $fitsId)->where('estado', 'like', "%$EstadoAlumno%")->select('id', 'estado')->get();
+        $fits = Fit::whereIn('id', $fitsId)->where('estado', 'like', "%$EstadoAlumno%")->select('id', 'estado', 'nota')->get();
 
-        $actas = $fits->map(function ($item, $key) {
+        $docs = $fits->map(function ($item, $key) {
             $acta = ArchivoPdf::select('path')->where('id_fit', $item->id)->firstWhere('tipo_pdf', 'acta');
+            $constancia = ArchivoPdf::where('id_fit', $item->id)->firstWhere('tipo_pdf', 'constancia_t');
+            $final = ArchivoPdf::where('id_fit', $item->id)->firstWhere('tipo_pdf', 'final_t');
             $item->alumnos = $item->getAlumnos();
+            $item->constancia = $constancia;
+            $item->final = $final;
             return collect($item)->merge($acta);
         });
 
-        return $actas;
+        return $docs;
     }
     public function setGenerarMemoRevision(Request $request){
 
         $id        = $request->nIdTesis;
         $logo      = public_path('img/logo_ucm_marca.png');
 
-        // $datosmemo = DB::table('fit')
-        //                 ->leftjoin('vinculaciones', 'vinculaciones.id', '=','fit.id_vinculacion')
-        //                 ->leftjoin('comisiones', 'comisiones.id_tesis', '=','fit.id')
-        //                 ->join('users as alumno', 'alumno.id_user', '=', 'fit.id_alumno')
-        //                 ->join('users as profesor_guia', 'profesor_guia.id_user', '=', 'fit.id_profesorguia')
-        //                 ->join('escuelas', 'escuelas.id', '=', 'profesor_guia.id_escuela')
-        //                 ->join('users as profesor_1','profesor_1.id_user','=', 'comisiones.id_profesor1')
-        //                 ->leftjoin('users as profesor_2','profesor_2.id_user','=', 'comisiones.id_profesor2')
-        //                 ->select('escuelas.nombre as escuelaname','comisiones.id','comisiones.id_profesor1', 'comisiones.id_profesor2', 'comisiones.p_externo', 'fit.id_profesorguia as profe_guia',
-        //                         DB::raw("CONCAT(alumno.nombres,' ',alumno.apellidos) as Anombres"),
-        //                         DB::raw("CONCAT(profesor_guia.nombres,' ',profesor_guia.apellidos) as Pnombres"),
-        //                         DB::raw("CONCAT(profesor_1.nombres,' ',profesor_1.apellidos) as P1nombres"),
-        //                         DB::raw("CONCAT(profesor_2.nombres,' ',profesor_2.apellidos) as P2nombres"),
-        //                         'fit.id as id_fit','fit.titulo', 'fit.rut_int1')
-        //                 ->where('fit.id', '=', $id)
-        //                 ->get();
-
         $datosmemo = Fit::find($id);
         $alumnos = User::select('nombres', 'apellidos', 'rut')->whereIn('id_user', $datosmemo->Fit_User->pluck('id_user')->all())->get();
         $datosmemo->alumnos = $alumnos->all();
-
-
-
-
         $fechainicial = Carbon::now();
         $datosmemo->fechainicial = $fechainicial->toFormattedDateString();
         $fechafinal   = Carbon::now();
@@ -92,7 +74,7 @@ class SecretariaController extends Controller
         return $pdf->download('invoice.pdf');
     }
     public function setSubirActa(Request $request){
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $id = $request->id_tesis;
         $file = $request->file;

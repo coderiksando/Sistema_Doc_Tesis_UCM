@@ -38,6 +38,11 @@
                         El tamaño del archivo no puede superar los {{fileMaxSize}} MB.
                       </div>
                     </div>
+                    <div class="col-md-1">
+                      <a v-if="lastFile" class="btn btn-primary boton" title="Descargar versión anterior" target="_blank" :href="lastFile.path">
+                        <i class="fas fa-file-download"> </i>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -109,7 +114,8 @@ export default {
       formatError : false,
       sizeError : false,
       fileMaxSize: 0,
-      hover: false
+      hover: false,
+      lastFile: ''
     }
   },
   computed: {
@@ -117,6 +123,7 @@ export default {
   },
   mounted(){
     this.getParametros();
+    this.getDocumento();
   },
 
   methods:{
@@ -216,6 +223,20 @@ export default {
           this.fileTypes = response.data[0];
           this.fileMaxSize = response.data[1][0];
       })
+    },
+    getDocumento(){
+      this.fullscreenLoading = true;
+      var url = '/archivo/getArchivo';
+      axios.get(url,{
+        params: {
+          'tipo'    : 'acta',
+          'fit'     : this.fillSubirActa.IdTesis
+        }
+        }).then(response => {
+          this.lastFile = response.data;
+          this.nombreArchivo = this.lastFile.filename;
+          this.fullscreenLoading = false;
+      });
     }
   }// cierre methods
 }

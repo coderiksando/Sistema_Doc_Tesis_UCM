@@ -223,7 +223,7 @@ export default {
     },
     getDocumento(){
       this.fullscreenLoading = true;
-      var url = '/archivo/getPdfFinal';
+      var url = '/archivo/getArchivo';
       axios.get(url,{
         params: {
           'tipo'    : 'final_t'

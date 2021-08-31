@@ -86,21 +86,21 @@
                     </td>
                     <td>
                       <template v-if="item.estado == 'D'">
-                        <span class="badge badge-warning" >En desarrollo</span>
+                        <span>En desarrollo</span>
                       </template>
                       <template v-else-if="item.estado == 'A'">
-                        <span class="badge badge-success" >Aprobada</span>
+                        <span>Aprobada</span>
                       </template>
                       <template v-else>
-                        <span class="badge badge-danger" >Reprobada</span>
+                        <span>Reprobada</span>
                       </template>
                     </td>
                     <td>
                       <router-link  class="btn btn-success boton" :to="{name:'actadefensa.subirnota', params:{id: item.id}}">
                         <i class="fas fa-graduation-cap"></i>
                       </router-link>
-                      <a v-if="item.path" class="btn btn-warning boton" :href="item.path" @click.prevent="downloadItem(item.path)"><i class="fas fa-file-download"> </i></a>
-                      <router-link v-else class="btn btn-primary boton" :to="{name:'actadefensa.subiracta', params:{id: item.id}}">
+                      <!-- <a v-if="item.path" class="btn btn-warning boton" :href="item.path" @click.prevent="downloadItem(item.path)"><i class="fas fa-file-download"> </i></a> -->
+                      <router-link class="btn boton" :class="{ 'btn-primary' : item.path, 'btn-warning' : !item.path}" :to="{name:'actadefensa.subiracta', params:{id: item.id}}">
                         <i class="fas fa-file-upload"></i>
                       </router-link>
                     </td>
@@ -190,7 +190,6 @@ export default {
     }
   },
   mounted(){
-      this.getListarEscuelas();
     },
   methods:{
     downloadItem (url) {
@@ -202,48 +201,7 @@ export default {
       }).catch(console.error);
     },
 
-    getListarEscuelas(){
-        this.fullscreenLoading = true;
-        var url = '/administracion/escuelas/getListarEscuelas'
-        axios.get(url, {
-        }).then(response => {
-            this.listEscuelas = response.data;
-            this.fullscreenLoading = false;
-        })
-      },
-    setGenerarDocumento(id_tesis){
-      //this.fullscreenLoading = true;
 
-      var config = {
-        responseType: 'blob'
-      }
-
-      var url = '/administracion/tesis/setGenerarDocumento'
-      axios.post(url, {
-          'nIdTesis' :id_tesis
-      }, config).then(response => {
-          var oMyBlob = new Blob([response.data], {type : 'application/pdf'});
-          var url = URL.createObjectURL(oMyBlob);
-          window.open(url);
-          //this.listTesis = response.data;
-          //this.fullscreenLoading = false;
-      })
-    },
-    setGenerarMemoRevision(id_tesis){
-      var config = {
-        responseType: 'blob'
-      }
-      var url = '/secretaria/setGenerarMemoRevision'
-      axios.post(url, {
-          'nIdTesis' :id_tesis
-      }, config).then(response => {
-          var oMyBlob = new Blob([response.data], {type : 'application/pdf'});
-          var url = URL.createObjectURL(oMyBlob);
-          window.open(url);
-          //this.listTesis = response.data;
-          //this.fullscreenLoading = false;
-      })
-    },
     limpiarCriteriosBsq(){
       this.fillBsqAlumno.cNombre = '';
       this.fillBsqAlumno.nRut = '';
@@ -279,35 +237,7 @@ export default {
     },
     inicializarPaginacion(){
       this.pageNumber = 0;
-    },
-    setCambiarEstadoUsuario(op, id_user){
-      Swal.fire({
-      title: 'Estas seguro? ' + ((op == 1) ? 'desactivar ' : 'activar ') + ' el usuario',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: ((op == 1) ? 'Si, desactivar ' : 'Si, activar ')
-    }).then((result) => {
-      if (result.value) {
-        this.fullscreenLoading = true;
-        var url = '/secretaria/setCambiarEstadoUsuario'
-        axios.post(url, {
-          'nIdUsuario' : id_user,
-          'cEstado'    : (op == 1) ? 'I' : 'A'
-        }).then(response => {
-            Swal.fire({
-            icon: 'success',
-            title: 'Se ' + ((op == 1) ? 'desactivo ' : 'activo ') +'el usuario',
-            showConfirmButton: false,
-            timer: 1500
-            })
-            this.getListarAlumnos();
-        })
-      }
-    })
     }
-
   }//cierre de methods
 }
 </script>
