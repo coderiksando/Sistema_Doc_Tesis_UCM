@@ -226,12 +226,12 @@
 
 <script>
 import moment from "moment";
-import globalFunctions from '../../../services/globalFunctions';
+import globFunct from '../../../services/globFunct';
 export default {
     data(){
       return{
         moment: moment,
-        globalFunctions: new globalFunctions(),
+        globFunct: new globFunct(),
         fillBsqTesis:{
           cTitulo: '',
           cAutor: '',
@@ -350,7 +350,7 @@ export default {
             this.inicializarPaginacion();
             this.listTesis = response.data;
             this.listTesis.forEach(tesis => {
-                tesis.titulo = this.globalFunctions.capitalizeFirstLetter(tesis.titulo);
+                tesis.titulo = this.globFunct.capitalizeFirstLetter(tesis.titulo);
             });
             this.fullscreenLoading = false;
         })

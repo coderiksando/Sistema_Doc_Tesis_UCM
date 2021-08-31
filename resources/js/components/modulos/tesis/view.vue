@@ -197,7 +197,7 @@
             <div class="callout callout-danger" style="padding: 5px" v-for="(item, index) in mensajeError" :key="index" v-text="item"></div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-secondary" @click="abrirModal">Cerrar</button>
+            <button class="btn btn-secondary" @click="abrirModal">{{globVar.btnClose}}</button>
           </div>
         </div>
       </div>
@@ -206,9 +206,11 @@
 </template>
 
 <script>
+import globVar from '../../../services/globVar';
 export default {
   data(){
     return{
+      globVar: new globVar(),
       fillVerFIT:{
         nIdTesis: this.$attrs.id,
         cTitulo: '',

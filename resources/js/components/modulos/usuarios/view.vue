@@ -253,10 +253,10 @@
                             </template>
                           <div class="form-group row">
                             <div class=" col-sm-6">
-                              <button style="margin: 2px;" :disabled="formatError || rutError || passwordError===1" class="btn btn-info btnFull" @click.prevent="setEditarUsuario">Editar</button>
+                              <button style="margin: 2px;" :disabled="formatError || rutError || passwordError===1" class="btn btn-info btnFull" @click.prevent="setEditarUsuario">{{globVar.btnSave}}</button>
                             </div>
                             <div class=" col-sm-6">
-                              <button style="margin: 2px;" class="btn btn-primary btnFull" @click.prevent="reestablecerDatos">Reestablecer</button>
+                              <button style="margin: 2px;" class="btn btn-primary btnFull" @click.prevent="reestablecerDatos">{{globVar.btnClear}}</button>
                             </div>
                           </div>
                         </form>
@@ -283,7 +283,7 @@
             <div class="callout callout-danger" style="padding: 5px" v-for="(item, index) in mensajeError" :key="index" v-text="item"></div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-secondary" @click="abrirModal">Cerrar</button>
+            <button class="btn btn-secondary" @click="abrirModal">{{globVar.btnClose}}</button>
           </div>
         </div>
       </div>
@@ -293,10 +293,12 @@
 
 <script>
 import Multiselect from 'vue-multiselect';
+import globVar from '../../../services/globVar';
 export default {
     components: { Multiselect },
     data(){
         return{
+            globVar: new globVar(),
             fillEditarUsuarios:{
                 nIdUsuario: this.$attrs.id_user,
                 cRut: '',

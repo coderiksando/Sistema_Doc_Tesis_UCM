@@ -31,7 +31,7 @@
         </template>
         <div class="card-body">
           <div class="container-fluid">
-            
+
             <div class="card card-info" v-if="!listRolPermisosByUsuario.includes('EsAlumno')">
               <div class="card-header">
                 <h3 class="card-title">Criterios de búsqueda</h3>
@@ -50,7 +50,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <div class="col-md-6">
                       <div class="form-group row">
                         <label class="col-md-4 col-form-label">Estado de aprobación</label>
@@ -89,8 +89,8 @@
                 <div class="row">
                   <div class="col-md-4 offset-4">
                     <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarTesis"
-                      >Buscar</button>
-                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
+                      >{{globVar.btnSearch}}</button>
+                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
                   </div>
                 </div>
               </div>
@@ -287,7 +287,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-            <button class="btn btn-secondary" @click="mostrarModalAyuda">Cerrar</button>
+            <button class="btn btn-secondary" @click="mostrarModalAyuda">{{globVar.btnClose}}</button>
             </div>
         </div>
         </div>
@@ -296,10 +296,12 @@
 </template>
 
 <script>
+import globVar from '../../../services/globVar';
 export default {
     props: ['usuario'],
   data(){
     return{
+      globVar: new globVar(),
       fillBsqTesis:{
         cNombre       : '',
         cApellido     : '',

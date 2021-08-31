@@ -119,8 +119,8 @@
                   <div class="row">
                     <div class="col-md-4 offset-4">
                       <button class="btn btn-flat btn-info btnWidth" @click.prevent="enviar" v-loading.fullscreen.lock="fullscreenLoading"
-                        >Registrar</button>
-                      <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
+                        >{{globVar.btnSave}}</button>
+                      <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">{{globVar.btnClear}}</button>
                     </div>
                   </div>
                 </div>
@@ -141,7 +141,7 @@
             <div class="callout callout-danger" style="padding: 5px" v-for="(item, index) in mensajeError" :key="index" v-text="item"></div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-secondary" @click="abrirModal">Cerrar</button>
+            <button class="btn btn-secondary" @click="abrirModal">{{globVar.btnClose}}</button>
           </div>
         </div>
       </div>
@@ -150,9 +150,11 @@
 </template>
 
 <script>
+import globVar from '../../../services/globVar';
 export default {
   data(){
     return{
+      globVar: new globVar(),
       fillImportUsers:{
         oArchivo: '',
         cEscuela: ''

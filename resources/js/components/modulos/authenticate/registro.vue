@@ -59,7 +59,7 @@
                 </form>
                    <div class="social-auth-links text-center mb-3">
                         <button class="btn btn-flat btn-block btn-danger" @click.prevent="setRegistrarAlumno" v-loading.fullscreen.lock="fullscreenLoading">
-                        Registrarme
+                        {{globVar.btnSave}}
                         </button>
                     </div>
                 <Router-link :to="{name:'login'}">
@@ -79,7 +79,7 @@
                     <div class="callout callout-danger" style="padding: 5px" v-for="(item, index) in mensajeError" :key="index" v-text="item"></div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" @click="abrirModal">Cerrar</button>
+                    <button class="btn btn-secondary" @click="abrirModal">{{globVar.btnClose}}</button>
                 </div>
                 </div>
             </div>
@@ -89,35 +89,37 @@
 </template>
 
 <script>
+import globVar from '../../../services/globVar';
 export default {
-    data(){
-        return{
-            fillRegistrarAlumno:{
-                cNombre: '',
-                cApellido: '',
-                cRut: '',
-                email: '',
-                cContrasena: '',
-                nIdRol:  2
-            },
-            EmailError:[],
-            fullscreenLoading: false,
-            modalShow: false,
-            mostrarModal: {
-                display: 'block',
-                background: '#0000006b',
-            },
-            ocultarModal: {
-                display: 'none',
-            },
-            error: 0,
-            mensajeError:[],
-            addUserErrorMessage: {
-                boton: true,
-                nombre: 2,
-                email: 2,
-                rut: 2
-            }
+  data(){
+    return{
+        globVar: new globVar(),
+        fillRegistrarAlumno:{
+            cNombre: '',
+            cApellido: '',
+            cRut: '',
+            email: '',
+            cContrasena: '',
+            nIdRol:  2
+        },
+        EmailError:[],
+        fullscreenLoading: false,
+        modalShow: false,
+        mostrarModal: {
+            display: 'block',
+            background: '#0000006b',
+        },
+        ocultarModal: {
+            display: 'none',
+        },
+        error: 0,
+        mensajeError:[],
+        addUserErrorMessage: {
+            boton: true,
+            nombre: 2,
+            email: 2,
+            rut: 2
+        }
         }
     },
     mounted(){

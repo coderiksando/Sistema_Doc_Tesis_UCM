@@ -118,8 +118,8 @@
                 <div class="row">
                     <div class="col-md-4 offset-4">
                     <button class="btn btn-flat btn-primary btnWidth" @click.prevent="getListarTesisTerminadas" v-loading.fullscreen.lock="fullscreenLoading"
-                        >Buscar</button>
-                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
+                        >{{globVar.btnSearch}}</button>
+                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
                     </div>
                 </div>
                 </div>
@@ -243,11 +243,13 @@
 </template>
 
 <script>
-import moment from "moment";
+import Multiselect from 'vue-multiselect';
+import globVar from '../../../services/globVar';
 export default {
-    props: ['usuario'],
+  components: { Multiselect },
   data(){
     return{
+        globVar: new globVar(),
         moment: moment,
         fillBsqTesis:{
             cAlumno: '',

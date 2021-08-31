@@ -86,8 +86,8 @@
                     <div class="row">
                       <div class="col-md-4 offset-4">
                         <button class="btn btn-flat btn-info btnWidth" @click.prevent="setGuardarArchivo"  v-loading.fullscreen.lock="fullscreenLoading"
-                          >Registrar</button>
-                        <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
+                          >{{globVar.btnSave}}</button>
+                        <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
                       </div>
                     </div>
                 </div>
@@ -129,7 +129,7 @@
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in listarDocumentosPaginated" :key="index">
-                        <td> 
+                        <td>
                           <p v-text="item.descripcion"></p>
                         </td>
                         <td >
@@ -180,7 +180,7 @@
             <div class="callout callout-danger" style="padding: 5px" v-for="(item, index) in mensajeError" :key="index" v-text="item"></div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-secondary" @click="abrirModal">Cerrar</button>
+            <button class="btn btn-secondary" @click="abrirModal">{{globVar.btnClose}}</button>
           </div>
         </div>
       </div>
@@ -190,9 +190,11 @@
 </template>
 
 <script>
+import globVar from '../../../services/globVar';
 export default {
   data(){
     return{
+      globVar: new globVar(),
       fillIngresarDocumento:{
         cDescripcion: '',
         oArchivo: '',
@@ -423,7 +425,7 @@ export default {
             timer: 1500
           })
         })
-      }) 
+      })
     }
   }//cierre de methods
 }

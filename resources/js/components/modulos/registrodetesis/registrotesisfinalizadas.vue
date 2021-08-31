@@ -520,13 +520,13 @@
                       @click.prevent="setRegistrarTesisfinalizada"
                       v-loading.fullscreen.lock="fullscreenLoading"
                     >
-                      Registrar
+                      {{globVar.btnSave}}
                     </button>
                     <button
                       class="btn btn-flat btn-default btnWidth"
                       @click.prevent="limpiarCriterios"
                     >
-                      Limpiar
+                      {{globVar.btnClear}}
                     </button>
                   </div>
                 </div>
@@ -559,7 +559,7 @@
           </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" @click="abrirModal">
-              Cerrar
+              {{globVar.btnClose}}
             </button>
           </div>
         </div>
@@ -639,7 +639,7 @@
                   class="btn btn-success w-100"
                   @click="setBusquedaUsuario"
                 >
-                  Buscar
+                  {{globVar.btnSearch}}
                 </button>
               </div>
               <div class="col-md-12">
@@ -760,7 +760,7 @@
               class="btn btn-secondary"
               @click="mostrarModalBusquedaEstudiante"
             >
-              Cerrar
+              {{globVar.btnClose}}
             </button>
           </div>
         </div>
@@ -819,7 +819,7 @@
           </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" @click="mostrarModalAyuda">
-              Cerrar
+              {{globVar.btnClose}}
             </button>
           </div>
         </div>
@@ -914,7 +914,7 @@
           </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" @click="mostrarModalComision">
-              Cerrar
+              {{globVar.btnClose}}
             </button>
           </div>
         </div>
@@ -926,10 +926,12 @@
 
 <script>
 import Multiselect from 'vue-multiselect';
+import globVar from '../../../services/globVar';
 export default {
   components: { Multiselect },
-  data() {
-    return {
+  data(){
+    return{
+      globVar: new globVar(),
       fillCrearFIT: {
         Nota: "",
         cTitulo: "",

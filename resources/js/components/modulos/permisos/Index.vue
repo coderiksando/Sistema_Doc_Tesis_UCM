@@ -53,8 +53,8 @@
                 <div class="row">
                   <div class="col-md-4 offset-4">
                     <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarPermisos" v-loading.fullscreen.lock="fullscreenLoading"
-                      >Buscar</button>
-                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
+                      >{{globVar.btnSearch}}</button>
+                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
                   </div>
                 </div>
               </div>
@@ -120,9 +120,11 @@
 </template>
 
 <script>
+import globVar from '../../../services/globVar';
 export default {
   data(){
     return{
+      globVar: new globVar(),
       fillBsqPermiso:{
         cNombre: '',
         cSlug: ''
