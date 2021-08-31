@@ -4,7 +4,7 @@
         <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Usuarios</h1>
+            <h1 class="m-0 text-dark font-weight-bold"></h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -60,9 +60,9 @@
                 <div class="card">
                   <div class="card-header p-2">
                     <ul class="nav nav-pills position-reverse">
-                      <router-link class="nav-link active" :to="'/usuarios'">
-                        <i class="fas fa-arrow-left"></i> Regresar
-                      </router-link>
+                      <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
+                        <i class="fas fa-arrow-left"></i> {{globVar.btnBack}}
+                      </a>
                     </ul>
                   </div><!-- /.card-header -->
                   <div class="card-body">

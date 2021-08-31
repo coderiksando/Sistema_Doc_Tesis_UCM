@@ -1,182 +1,161 @@
 <template>
-    <div>
-    <div class="content-header">
+  <div class="card">
+    <div class="card-body">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-12">
-            <h1 class="m-0 text-dark font-weight-bold">Registros del sistema</h1>
+          <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">Criterios de búsqueda de registros</h3>
           </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </div>
-    <div class="container">
-
-      <div class="card">
-        <div class="card-body">
-          <div class="container-fluid">
-              <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Criterios de búsqueda de registros</h3>
-              </div>
-              <div class="card-body">
-                <form role="form">
-                  <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Actividad</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="fillBuscarRegistros.cActividad">
-                            </div>
+          <div class="card-body">
+            <form role="form">
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Actividad</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" v-model="fillBuscarRegistros.cActividad">
                         </div>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Rol</label>
-                        <div class="col-md-9">
-                            <el-select filterable v-model="fillBuscarRegistros.cRol"
-                            placeholder="Seleccionar rol"
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Rol</label>
+                    <div class="col-md-9">
+                        <el-select filterable v-model="fillBuscarRegistros.cRol"
+                        placeholder="Seleccionar rol"
+                        clearable>
+                        <el-option
+                            v-for="item in listRoles"
+                            :key="item"
+                            :label="item"
+                            :value="item">
+                        </el-option>
+                        </el-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Usuario</label>
+                    <div class="col-md-9">
+                            <el-select filterable v-model="fillBuscarRegistros.nIdUsuario"
+                            placeholder="Seleccionar usuario"
                             clearable>
                             <el-option
-                                v-for="item in listRoles"
-                                :key="item"
-                                :label="item"
-                                :value="item">
+                                v-for="item in listUsuarios"
+                                :key="item.id"
+                                :label="item.fullname"
+                                :value="item.id_user">
                             </el-option>
                             </el-select>
                         </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Usuario</label>
-                        <div class="col-md-9">
-                                <el-select filterable v-model="fillBuscarRegistros.nIdUsuario"
-                                placeholder="Seleccionar usuario"
-                                clearable>
-                                <el-option
-                                    v-for="item in listUsuarios"
-                                    :key="item.id"
-                                    :label="item.fullname"
-                                    :value="item.id_user">
-                                </el-option>
-                                </el-select>
-                            </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Fecha</label>
-                        <div class="col-md-9">
-                          <el-date-picker
-                            v-model="fillBuscarRegistros.dfecharango"
-                            type="daterange"
-                            range-separator="/"
-                            start-placeholder="Fecha Inicio"
-                            end-placeholder="Fecha Fin"
-                            value-format="yyyy-MM-dd">
-                          </el-date-picker>
-                        </div>
-                      </div>
-                    </div>
                   </div>
-                </form>
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-primary btnWidth" @click.prevent="getListarRegistros" v-loading.fullscreen.lock="fullscreenLoading"
-                      >{{globVar.btnSearch}}</button>
-                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Fecha</label>
+                    <div class="col-md-9">
+                      <el-date-picker
+                        v-model="fillBuscarRegistros.dfecharango"
+                        type="daterange"
+                        range-separator="/"
+                        start-placeholder="Fecha Inicio"
+                        end-placeholder="Fecha Fin"
+                        value-format="yyyy-MM-dd">
+                      </el-date-picker>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">
-                  Bandeja de resultados</h3>
-              </div>
-              <div class="card-body table table-responsive">
-                <template v-if="listRegistrosPaginated.length">
-
-                  <table class ="table table-hover table-head-fixed text-nowrap projects">
-                    <thead>
-                      <tr>
-                        <th>Usuario</th>
-                        <th>Actividad</th>
-                        <th>Ip</th>
-                        <th>Rol</th>
-                        <th>Fecha</th>
-                        <th>Objetivo</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      <tr v-for="(item, index) in listRegistrosPaginated" :key="index">
-                        <td v-text="item.nombres + ' ' + item.apellidos"></td>
-                        <td v-text="item.actividad"></td>
-                        <td v-text="item.ip"></td>
-                        <td v-text="item.rol"></td>
-                        <td>{{item.fecha | moment }}</td>
-                        <td>
-                          <template v-if="item.actividad == 'Registrar avance' || item.actividad == 'Editar avance'">
-                            <router-link class="btn btn-primary boton" target="_blank" :to="{name:'avances.editar', params:{id: item.target}}"><i class="fa fa-eye"></i></router-link>
-                          </template>
-                          <template v-if="item.actividad == 'login'">
-                            <button disabled='true' class="btn btn-primary boton"><i class="fa fa-eye-slash"></i></button>
-                          </template>
-                          <template v-if="item.actividad == 'Registrar Bitácora' || item.actividad == 'Editar Bitácora'">
-                            <router-link class="btn btn-primary boton" target="_blank" :to="{name:'bitacoras.editar', params:{id: item.target}}"><i class="fa fa-eye"></i></router-link>
-                          </template>
-                          <template v-if="item.actividad == 'Editar Comisión' || item.actividad == 'Registrar Comisión' ">
-                            <router-link class="btn btn-primary boton" target="_blank" :to="{name:'comisiones.editar', params:{id: item.target}}"><i class="fas fa-eye"></i></router-link>
-                          </template>
-                          <template v-if="item.actividad == 'Subir Acta'">
-                            <a class="btn btn-primary boton" target="_blank" :href="item.target"><i class="fas fa-eye"></i></a>
-                          </template>
-                          <template v-if="item.actividad == 'Subir nota'">
-                            <router-link class="btn btn-primary boton" target="_blank" :to="{name:'tesis.ver', params:{id: item.target}}"><i class="fas fa-eye"></i></router-link>
-                          </template>
-                        </td>
-
-                      </tr>
-                    </tbody>
-                  </table>
-                </template>
-                <template v-else>
-                  <div class="callout callout-primary">
-                    <h5> No se han encontrado resultados...</h5>
-                  </div>
-                </template>
-              </div>
-              <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item" v-if="pageNumber > 0">
-                    <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
-                  </li>
-                  <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                    :class="[page == pageNumber ? 'active' : '']">
-                    <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
-                  </li>
-                  <li class="page-item" v-if="pageNumber < pageCount -1">
-                    <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
-                  </li>
-                </ul>
+            </form>
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col-md-4 offset-4">
+                <button class="btn btn-flat btn-primary btnWidth" @click.prevent="getListarRegistros" v-loading.fullscreen.lock="fullscreenLoading"
+                  >{{globVar.btnSearch}}</button>
+                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">
+              Bandeja de resultados</h3>
+          </div>
+          <div class="card-body table table-responsive">
+            <template v-if="listRegistrosPaginated.length">
+
+              <table class ="table table-hover table-head-fixed text-nowrap projects">
+                <thead>
+                  <tr>
+                    <th>Usuario</th>
+                    <th>Actividad</th>
+                    <th>Ip</th>
+                    <th>Rol</th>
+                    <th>Fecha</th>
+                    <th>Objetivo</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr v-for="(item, index) in listRegistrosPaginated" :key="index">
+                    <td v-text="item.nombres + ' ' + item.apellidos"></td>
+                    <td v-text="item.actividad"></td>
+                    <td v-text="item.ip"></td>
+                    <td v-text="item.rol"></td>
+                    <td>{{item.fecha | moment }}</td>
+                    <td>
+                      <template v-if="item.actividad == 'Registrar avance' || item.actividad == 'Editar avance'">
+                        <router-link class="btn btn-primary boton" target="_blank" :to="{name:'avances.editar', params:{id: item.target}}"><i class="fa fa-eye"></i></router-link>
+                      </template>
+                      <template v-if="item.actividad == 'login'">
+                        <button disabled='true' class="btn btn-primary boton"><i class="fa fa-eye-slash"></i></button>
+                      </template>
+                      <template v-if="item.actividad == 'Registrar Bitácora' || item.actividad == 'Editar Bitácora'">
+                        <router-link class="btn btn-primary boton" target="_blank" :to="{name:'bitacoras.editar', params:{id: item.target}}"><i class="fa fa-eye"></i></router-link>
+                      </template>
+                      <template v-if="item.actividad == 'Editar Comisión' || item.actividad == 'Registrar Comisión' ">
+                        <router-link class="btn btn-primary boton" target="_blank" :to="{name:'comisiones.editar', params:{id: item.target}}"><i class="fas fa-eye"></i></router-link>
+                      </template>
+                      <template v-if="item.actividad == 'Subir Acta'">
+                        <a class="btn btn-primary boton" target="_blank" :href="item.target"><i class="fas fa-eye"></i></a>
+                      </template>
+                      <template v-if="item.actividad == 'Subir nota'">
+                        <router-link class="btn btn-primary boton" target="_blank" :to="{name:'tesis.ver', params:{id: item.target}}"><i class="fas fa-eye"></i></router-link>
+                      </template>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </template>
+            <template v-else>
+              <div class="callout callout-primary">
+                <h5> No se han encontrado resultados...</h5>
+              </div>
+            </template>
+          </div>
+          <div class="card-footer clearfix">
+            <ul class="pagination pagination-sm m-0 float-right">
+              <li class="page-item" v-if="pageNumber > 0">
+                <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
+              </li>
+              <li class="page-item" v-for="(page, index) in pagesList" :key="index"
+                :class="[page == pageNumber ? 'active' : '']">
+                <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+              </li>
+              <li class="page-item" v-if="pageNumber < pageCount -1">
+                <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-
     </div>
-    <!-- /.container -->
-
-    <!-- Bootstrap core JavaScript -->
-    </div>
+  </div>
 </template>
 
 <script>
