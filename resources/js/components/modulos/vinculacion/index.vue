@@ -184,10 +184,12 @@
 </template>
 
 <script>
+import globVar from '../../../services/globVar';
 export default {
   props: ['usuario'],
   data(){
     return{
+      globVar: new globVar(),
       fillBsqVinculacion:{
         cNombre: '',
         cTipo: '',

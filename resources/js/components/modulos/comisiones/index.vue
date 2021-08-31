@@ -570,12 +570,14 @@
 <script>
 import moment from "moment";
 import globFunct from '../../../services/globFunct';
+import globVar from '../../../services/globVar';
 import Multiselect from 'vue-multiselect';
 export default {
     components: { Multiselect },
     props: ['usuario'],
     data(){
     return{
+        globVar: new globVar(),
         globFunct: new globFunct(),
         moment: moment,
         fitDocumentoRevision: {
