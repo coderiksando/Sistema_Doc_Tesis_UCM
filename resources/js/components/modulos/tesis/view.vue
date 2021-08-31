@@ -30,7 +30,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Profesor Guía</label>
+                                            <label class="col-md-3 col-form-label">Prof. Guía</label>
                                             <div class="col-md-9">
                                                 <el-input
                                                     type="text"
@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Profesor Co-guía</label>
+                                            <label class="col-md-3 col-form-label">Prof. Co-guía</label>
                                             <div class="col-md-9">
                                                 <el-input
                                                     type="text"

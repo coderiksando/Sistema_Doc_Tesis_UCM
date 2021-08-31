@@ -167,7 +167,7 @@
                     <th>Alumno</th>
                     <th>Rut</th>
                     <th>Escuela</th>
-                    <th>Profesor Guia</th>
+                    <th>Prof. Guia</th>
                     <th>Estado documento</th>
                     <th>Detalle</th>
                     <th>Descarga de documentos</th>
