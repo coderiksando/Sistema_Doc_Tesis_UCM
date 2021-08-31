@@ -243,10 +243,12 @@
 </template>
 
 <script>
+import moment from "moment";
 import Multiselect from 'vue-multiselect';
 import globVar from '../../../services/globVar';
 export default {
   components: { Multiselect },
+  props: ['usuario'],
   data(){
     return{
         globVar: new globVar(),
