@@ -4,5 +4,5 @@ export default class globVar {
     btnSearch = 'Buscar';
     btnClose = 'Cerrar';
     btnSend = 'Enviar';
-    btnBack = 'Regresarx';
+    btnBack = 'Regresar';
 }
