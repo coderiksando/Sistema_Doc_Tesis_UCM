@@ -202,7 +202,7 @@ class AlumnoController extends Controller
                 ->where('fit.id_escuela','like',"%$nIdEscuela%")
                 ->where('fit.estado','like',"%$cEstadoTesis%")
                 ->where('fit.aprobado_pg',"V")
-                ->whereBetween('fit.updated_at', [$dFechaInicio,$dFechaFin])
+                ->whereBetween('fit.fecha', [$dFechaInicio,$dFechaFin])
                 ->get()
                 ->pluck('id');
 
@@ -242,6 +242,7 @@ class AlumnoController extends Controller
             $registroFit->contribucion = $fit->cContribucion;
             $registroFit->estado = 'D';
             $registroFit->aprobado_pg = 'P';
+            $registroFit->fecha = Carbon::now();
             $registroFit->save();
 
             foreach($fit->cUsers as $user) {

@@ -155,6 +155,8 @@ class FilesController extends Controller
             $registroFit->objetivo_especifico = $request->cObjetivoEspecifico;
             $registroFit->descripcion = $request->cDescripcion;
             $registroFit->contribucion = $request->cContribucion;
+            $registroFit->fecha = ($request->dFecha) ? $request->dFecha : Carbon::now();
+            $registroFit->privado = $request->privado;
             if ($request->fidFinalizada) {
                 $registroFit->nota = $request->Nota;
                 if ($registroFit->nota >= 4) {
@@ -247,6 +249,10 @@ class FilesController extends Controller
             $registroFit->objetivo_especifico = $request->cObjetivoEspecifico;
             $registroFit->descripcion = $request->cDescripcion;
             $registroFit->contribucion = $request->cContribucion;
+            if ($request->dFecha) {
+                $registroFit->fecha = $request->dFecha;
+            }
+            $registroFit->privado = $request->privado;
             if ($request->fidFinalizada) {
                 $registroFit->nota = $request->Nota;
                 if ($registroFit->nota >= 4) {
