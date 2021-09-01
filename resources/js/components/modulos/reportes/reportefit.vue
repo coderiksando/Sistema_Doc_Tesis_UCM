@@ -204,7 +204,7 @@
                         <div class="card-body py-1" :id="'headingFitAlumno'+index">
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseFIT'+index" aria-expanded="false" :aria-controls="'collapseFIT'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
+                                <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseFIT'+index" aria-expanded="false" :aria-controls="'collapseFIT'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
                                 <div title="Sección expandible" class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseFIT'+index" aria-expanded="false" :aria-controls="'collapseFIT'+index">
                                     <p class="float-left">
                                         {{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}
