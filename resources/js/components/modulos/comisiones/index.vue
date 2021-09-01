@@ -193,7 +193,7 @@
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
                                 <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
-                                <div title="Sección expandible" class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
+                                <div title="Sección expandible" class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
                                 <div class="col-md-3 noPadNoMar">
                                     <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
                                         <i class="fas fa-eye"></i>
@@ -223,7 +223,7 @@
                                     </dd>
                                 </template>
                                 <dt class="col-md-4">Título extendido:</dt>
-                                <dd class="col-md-8">{{globalFunctions.capitalizeFirstLetter(item.fit.titulo)}}</dd>
+                                <dd class="col-md-8">{{globFunct.capitalizeFirstLetter(item.fit.titulo)}}</dd>
                                 <dt class="col-md-4">Descripción:</dt>
                                 <dd class="col-md-8">{{item.fit.descripcion}}</dd>
                                 <template v-if="item.fit.user__p__guia">
@@ -380,8 +380,8 @@
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
                                 <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
-                                <div v-if="item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.comisiones.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
-                                <div v-if="!item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
+                                <div v-if="item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.comisiones.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
+                                <div v-if="!item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
                                 <div class="col-md-3 noPadNoMar">
                                     <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                                         <i class="fas fa-eye"></i>
@@ -417,7 +417,7 @@
                                     </dd>
                                 </template>
                                 <dt class="col-md-4">Título extendido:</dt>
-                                <dd class="col-md-8">{{globalFunctions.capitalizeFirstLetter(item.titulo)}}</dd>
+                                <dd class="col-md-8">{{globFunct.capitalizeFirstLetter(item.titulo)}}</dd>
                                 <dt class="col-md-4">Descripción:</dt>
                                 <dd class="col-md-8">{{item.descripcion}}</dd>
                                 <template v-if="item.user__p__guia">

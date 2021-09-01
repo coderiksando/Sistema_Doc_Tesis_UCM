@@ -44,6 +44,10 @@ class ReportesController extends Controller
             $fit->NotasPendientes;
             $fit->Vinculaciones;
             $fit->Comisiones;
+            if ($fit->Comisiones) {
+                $fit->Comisiones->UserP1;
+                $fit->Comisiones->UserP2;
+            }
             $fit->User_P_Guia;
             $fit->User_P_Guia->Escuelas;
             $fit->User_P_Coguia;
