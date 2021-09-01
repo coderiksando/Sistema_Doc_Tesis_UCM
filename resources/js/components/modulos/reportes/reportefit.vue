@@ -3,144 +3,161 @@
     <div class="card-body">
       <div class="container-fluid">
           <div class="card card-info">
-          <div class="card-header">
-            <h3 class="card-title">Criterios de búsqueda</h3>
-          </div>
-          <div class="card-body">
-            <form role="form">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Facultad</label>
-                    <div class="col-md-9">
-                        <el-select v-model="fillBsqTesisReporte.nIdFacultad" @change="getListarEscuelaByFacultad"
-                        placeholder="Asignar facultad"
-                        clearable>
-                        <el-option
-                            v-for="item in listFacultades"
-                            :key="item.id"
-                            :label="item.nombre"
-                            :value="item.id">
-                        </el-option>
-                        </el-select>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Escuelas</label>
-                    <div class="col-md-9">
-                        <el-select v-model="fillBsqTesisReporte.nIdEscuela" @change="getListarProfesorByEscuela"
-                        placeholder="Asignar Escuela"
-                        clearable>
-                        <el-option
-                            v-for="item in listEscuelas"
-                            :key="item.id"
-                            :label="item.nombre"
-                            :value="item.id">
-                        </el-option>
-                        </el-select>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
+            <div class="btn card-header" data-toggle="collapse" href="#busquedaCollapse" role="button" aria-expanded="false" aria-controls="busquedaCollapse">
+                <h3 class="card-title">Criterios de búsqueda</h3>
+            </div>
+          <div class="collapse show" id="busquedaCollapse">
+            <div class="card-body">
+                <form role="form">
+                <div class="row">
+                    <div class="col-md-6">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Rut alumno</label>
+                        <label class="col-md-3 col-form-label">Facultad</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" v-model="fillBsqTesisReporte.nRut">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Profesor</label>
-                    <div class="col-md-9">
-                            <el-select v-model="fillBsqTesisReporte.nIdProfesor"
-                            placeholder="Asignar Escuela"
+                            <el-select v-model="fillBsqTesisReporte.nIdFacultad" @change="getListarEscuelaByFacultad"
+                            placeholder="Asignar facultad"
                             clearable>
                             <el-option
-                                v-for="item in listProfesores"
+                                v-for="item in listFacultades"
                                 :key="item.id"
-                                :label="item.fullname"
-                                :value="item.id_user">
+                                :label="item.nombre"
+                                :value="item.id">
                             </el-option>
                             </el-select>
                         </div>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Nota pendiente</label>
-                    <div class="col-md-9">
-                        <el-select v-model="fillBsqTesisReporte.cEstadoNotap"
-                        placeholder="Seleccione un estado"
-                        clearable>
-                          <el-option
-                            v-for="item in listTipoDeNotap"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                          </el-option>
-                        </el-select>
                     </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Estado del documento</label>
-                    <div class="col-md-9">
-                        <el-select v-model="fillBsqTesisReporte.cEstadoTesis"
-                        placeholder="Seleccione un estado"
-                        clearable>
-                          <el-option
-                            v-for="item in listEstadosTesis"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                          </el-option>
-                        </el-select>
                     </div>
-                  </div>
-                </div>
-
-
-                  <div class="col-md-12">
+                    <div class="col-md-6">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Fecha de última asignatura cursada</label>
+                        <label class="col-md-3 col-form-label">Escuelas</label>
                         <div class="col-md-9">
-                            <el-date-picker
-                                v-model="fillBsqTesisReporte.dfecharango[0]"
-                                type="month"
-                                placeholder="Inicio"
-                                value-format="yyyy-MM-dd"
-                                :picker-options="pickerOptions"
-                                @change="selectStart">
-                            </el-date-picker>
-                            <el-date-picker
-                                v-model="fillBsqTesisReporte.dfecharango[1]"
-                                type="month"
-                                placeholder="Término"
-                                value-format="yyyy-MM-dd"
-                                :picker-options="endOption">
-                            </el-date-picker>
+                            <el-select v-model="fillBsqTesisReporte.nIdEscuela" @change="getListarProfesorByEscuela"
+                            placeholder="Asignar Escuela"
+                            clearable>
+                            <el-option
+                                v-for="item in listEscuelas"
+                                :key="item.id"
+                                :label="item.nombre"
+                                :value="item.id">
+                            </el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Rut alumno</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" v-model="fillBsqTesisReporte.nRut">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Profesor</label>
+                        <div class="col-md-9">
+                                <el-select v-model="fillBsqTesisReporte.nIdProfesor"
+                                placeholder="Asignar Escuela"
+                                clearable>
+                                <el-option
+                                    v-for="item in listProfesores"
+                                    :key="item.id"
+                                    :label="item.fullname"
+                                    :value="item.id_user">
+                                </el-option>
+                                </el-select>
+                            </div>
+                    </div>
+                    </div>
+
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Nota pendiente</label>
+                        <div class="col-md-9">
+                            <el-select v-model="fillBsqTesisReporte.cEstadoNotap"
+                            placeholder="Seleccione un estado"
+                            clearable>
+                            <el-option
+                                v-for="item in listTipoDeNotap"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Estado del documento</label>
+                        <div class="col-md-9">
+                            <el-select v-model="fillBsqTesisReporte.cEstadoTesis"
+                            placeholder="Seleccione un estado"
+                            clearable>
+                            <el-option
+                                v-for="item in listEstadosTesis"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Vinculación</label>
+                        <div class="col-md-9">
+                            <el-select v-model="fillBsqTesisReporte.nIdVinculación"
+                            placeholder="Seleccione un estado"
+                            clearable>
+                            <el-option
+                                v-for="item in listTipoVinculacion"
+                                :key="item.id"
+                                :label="item.nombre"
+                                :value="item.id">
+                            </el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Fecha de última asignatura cursada</label>
+                            <div class="col-md-9">
+                                <el-date-picker
+                                    v-model="fillBsqTesisReporte.dfecharango[0]"
+                                    type="month"
+                                    placeholder="Inicio"
+                                    value-format="yyyy-MM-dd"
+                                    :picker-options="pickerOptions"
+                                    @change="selectStart">
+                                </el-date-picker>
+                                <el-date-picker
+                                    v-model="fillBsqTesisReporte.dfecharango[1]"
+                                    type="month"
+                                    placeholder="Término"
+                                    value-format="yyyy-MM-dd"
+                                    :picker-options="endOption">
+                                </el-date-picker>
+                            </div>
                         </div>
                     </div>
                 </div>
-              </div>
-            </form>
-          </div>
-          <div class="card-footer">
-            <div class="row">
-              <div class="col-md-4 offset-4">
-                  <!-- consulta los datos de la fecha son iguales en forma booleana  -->
-                <button :disabled="!!fillBsqTesisReporte.dfecharango[0] !== !!fillBsqTesisReporte.dfecharango[1]"
-                class="btn btn-flat btn-info btnWidth" @click.prevent="getListarTesisReporte"
-                v-loading.fullscreen.lock="fullscreenLoading">
-                    {{globVar.btnSearch}}
-                </button>
-                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
-              </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                <div class="col-md-4 offset-4">
+                    <!-- consulta los datos de la fecha son iguales en forma booleana  -->
+                    <button :disabled="!!fillBsqTesisReporte.dfecharango[0] !== !!fillBsqTesisReporte.dfecharango[1]"
+                    class="btn btn-flat btn-info btnWidth" @click.prevent="getListarTesisReporte"
+                    v-loading.fullscreen.lock="fullscreenLoading">
+                        {{globVar.btnSearch}}
+                    </button>
+                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
+                </div>
+                </div>
             </div>
           </div>
         </div>
@@ -263,11 +280,13 @@
 </template>
 <script>
 import globVar from '../../../services/globVar';
+import globFunct from '../../../services/globFunct';
   export default {
-      props: ['usuario'],
+    props: ['usuario'],
     data(){
       return{
         globVar: new globVar(),
+        globFunct: new globFunct(),
         fillBsqTesisReporte:{
           nRut: '',
           nIdEscuela:'',
@@ -280,7 +299,8 @@ import globVar from '../../../services/globVar';
           cEstadoPg: '',
           cEstadoD: '',
           dfecharango: [],
-          cEstadoTesis: ''
+          cEstadoTesis: '',
+          nIdVinculación: ''
         },
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
         terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
@@ -298,11 +318,7 @@ import globVar from '../../../services/globVar';
           {value: 'Tesis', label: 'Tesis'},
           {value: 'Memoria', label: 'Memoria'}
         ],
-        listTipoVinculacion: [
-          {value: 'Fondo Concursable', label: 'Fondo Concursable'},
-          {value: 'Empresa', label: 'Empresa'},
-          {value: 'Comunidad', label: 'Comunidad'}
-        ],
+        listTipoVinculacion: [],
         listEstadosTesis: [
           {value: 'A', label: 'Aprobada'},
           {value: 'R', label: 'Reprobada'},
@@ -338,6 +354,13 @@ import globVar from '../../../services/globVar';
             return time.getTime() > Date.now();
           }
         },
+        booleanFunction: {
+            vinculacion: false,
+            escuela: false,
+            facultad: false,
+            profesor: true,
+
+        }
       }
     },
     computed: {
@@ -367,12 +390,23 @@ import globVar from '../../../services/globVar';
       }
     },
     mounted(){
+      this.getlistarVinculacion();
       this.getListarEscuelas();
       this.getListarFacultades();
       this.getListarProfesorByEscuela();
       this.selectStart();
     },
     methods:{
+        getlistarVinculacion(){
+            this.fullscreenLoading = true;
+            const url = '/administracion/vinculacion/getListarVinculacion';
+            axios.get(url, {
+            }).then(response => {
+                this.listTipoVinculacion = response.data;
+                this.booleanFunction.vinculacion = true;
+                if (this.globFunct.booleanElements(this.booleanFunction)) this.fullscreenLoading = false;
+            })
+        },
         getListarEscuelas(){
             this.fullscreenLoading = true;
             var url = '/administracion/escuelas/getListarEscuelas'
@@ -380,7 +414,8 @@ import globVar from '../../../services/globVar';
             }).then(response => {
                 this.listEscuelasOriginal = response.data;
                 this.listEscuelas = response.data;
-                this.fullscreenLoading = false;
+                this.booleanFunction.escuela = true;
+                if (this.globFunct.booleanElements(this.booleanFunction)) this.fullscreenLoading = false;
             })
         },
         getListarFacultades(){
@@ -389,7 +424,8 @@ import globVar from '../../../services/globVar';
             axios.get(url, {
             }).then(response => {
                 this.listFacultades = response.data;
-                this.fullscreenLoading = false;
+                this.booleanFunction.facultad = true;
+                if (this.globFunct.booleanElements(this.booleanFunction)) this.fullscreenLoading = false;
             })
         },
         getListarEscuelaByFacultad(){
@@ -412,7 +448,8 @@ import globVar from '../../../services/globVar';
             }
             }).then(response => {
                 this.listProfesores = response.data;
-                this.fullscreenLoading = false;
+                this.booleanFunction.profesor = true;
+                if (this.globFunct.booleanElements(this.booleanFunction)) this.fullscreenLoading = false;
             })
         },
         setGenerarDocumento(){
@@ -467,9 +504,9 @@ import globVar from '../../../services/globVar';
             this.fillBsqTesisReporte.nIdEscuela = '';
             this.fillBsqTesisReporte.cEstadoNotap = '';
             this.fillBsqTesisReporte.nIdProfesor = '';
-
             this.fillBsqTesisReporte.cEstadoTesis = '';
             this.fillBsqTesisReporte.dfecharango = '';
+            this.fillBsqTesisReporte.nIdVinculación = '';
         },
         limpiarBandejaUsuarios(){
             this.listTesis = [];
