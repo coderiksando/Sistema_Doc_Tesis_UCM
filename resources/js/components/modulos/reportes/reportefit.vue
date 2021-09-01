@@ -549,15 +549,16 @@ import globFunct from '../../../services/globFunct';
             var url = '/administracion/reportes/getListarTesisReporte';
             axios.get(url, {
             params: {
-                'nRut'          : this.fillBsqTesisReporte.nRut,
-                'nIdFacultad'   : this.fillBsqTesisReporte.nIdFacultad,
-                'nIdEscuela'    : this.fillBsqTesisReporte.nIdEscuela,
-                'nIdVinculación': this.fillBsqTesisReporte.nIdVinculación,
-                'cEstadoNotap'  : this.fillBsqTesisReporte.cEstadoNotap,
-                'nIdProfesor'   : this.fillBsqTesisReporte.nIdProfesor,
-                'cEstadoTesis'  : this.fillBsqTesisReporte.cEstadoTesis,
-                'dFechaInicio'  : (!this.fillBsqTesisReporte.dfecharango) ? '' : this.fillBsqTesisReporte.dfecharango[0],
-                'dFechaFin'     : (!this.fillBsqTesisReporte.dfecharango) ? '' : this.fillBsqTesisReporte.dfecharango[1],
+                'nRut'              : this.fillBsqTesisReporte.nRut,
+                'nIdFacultad'       : this.fillBsqTesisReporte.nIdFacultad,
+                'nIdEscuela'        : this.fillBsqTesisReporte.nIdEscuela,
+                'cTipoVinculación'  : this.fillBsqTesisReporte.cTipoVinculación,
+                'nIdVinculación'    : this.fillBsqTesisReporte.nIdVinculación,
+                'cEstadoNotap'      : this.fillBsqTesisReporte.cEstadoNotap,
+                'nIdProfesor'       : this.fillBsqTesisReporte.nIdProfesor,
+                'cEstadoTesis'      : this.fillBsqTesisReporte.cEstadoTesis,
+                'dFechaInicio'      : (!this.fillBsqTesisReporte.dfecharango) ? '' : this.fillBsqTesisReporte.dfecharango[0],
+                'dFechaFin'         : (!this.fillBsqTesisReporte.dfecharango) ? '' : this.fillBsqTesisReporte.dfecharango[1],
             }
             }).then(response => {
                 this.inicializarPaginacion();
