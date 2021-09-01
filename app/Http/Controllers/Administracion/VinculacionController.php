@@ -35,6 +35,13 @@ class VinculacionController extends Controller
         return $rpta;
     }
 
+    public function getListarTipoVinculacion(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $rpta = DB::table('vinculaciones')->get()
+                                          ->pluck('tipo');
+        return $rpta;
+    }
+
     public function getListarVinculacionActiva(Request $request){
 
         if(!$request->ajax()) return redirect('/');

@@ -67,6 +67,7 @@ Route::group(['middleware' => ['auth']], function () {
 
   /*********    RUTAS MODULO DE ADMINISTRACION DE VINCULACIONES     **********/
   Route::get('/administracion/vinculacion/getListarVinculacion', 'Administracion\VinculacionController@getListarVinculacion');
+  Route::get('/administracion/vinculacion/getListarTipoVinculacion', 'Administracion\VinculacionController@getListarTipoVinculacion');
   Route::get('/administracion/vinculacion/getListarVinculacionActiva', 'Administracion\VinculacionController@getListarVinculacionActiva');  //creada para  PAF36
   Route::post('/administracion/vinculacion/setRegistrarVinculacion', 'Administracion\VinculacionController@setRegistrarVinculacion');
   Route::post('/administracion/vinculacion/setEditarVinculacion', 'Administracion\VinculacionController@setEditarVinculacion');

@@ -106,16 +106,35 @@
                     </div>
                     <div class="col-md-6">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Vinculación</label>
+                        <label class="col-md-3 col-form-label">Tipo de vinculación</label>
                         <div class="col-md-9">
-                            <el-select v-model="fillBsqTesisReporte.nIdVinculación"
-                            placeholder="Seleccione un estado"
+                            <el-select v-model="fillBsqTesisReporte.cTipoVinculación"
+                            @change="getListarVinculacion(fillBsqTesisReporte.cTipoVinculación)"
+                            placeholder="Seleccione una vinculación"
                             clearable>
                             <el-option
                                 v-for="item in listTipoVinculacion"
+                                :key="item"
+                                :label="item"
+                                :value="item">
+                            </el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Vinculación</label>
+                        <div class="col-md-9">
+                            <el-select v-model="fillBsqTesisReporte.nIdVinculación"
+                            placeholder="Seleccione una vinculación"
+                            clearable>
+                            <el-option
+                                v-for="item in listVinculacion"
                                 :key="item.id"
                                 :label="item.nombre"
-                                :value="item.id">
+                                :value="item.id"
+                                >
                             </el-option>
                             </el-select>
                         </div>
@@ -127,7 +146,6 @@
                             <div class="col-md-9">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dfecharango[0]"
-                                    type="month"
                                     placeholder="Inicio"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="pickerOptions"
@@ -135,7 +153,6 @@
                                 </el-date-picker>
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dfecharango[1]"
-                                    type="month"
                                     placeholder="Término"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="endOption">
@@ -300,6 +317,7 @@ import globFunct from '../../../services/globFunct';
           cEstadoD: '',
           dfecharango: [],
           cEstadoTesis: '',
+          cTipoVinculación: '',
           nIdVinculación: ''
         },
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
@@ -319,6 +337,7 @@ import globFunct from '../../../services/globFunct';
           {value: 'Memoria', label: 'Memoria'}
         ],
         listTipoVinculacion: [],
+        listVinculacion: [],
         listEstadosTesis: [
           {value: 'A', label: 'Aprobada'},
           {value: 'R', label: 'Reprobada'},
@@ -358,8 +377,8 @@ import globFunct from '../../../services/globFunct';
             vinculacion: false,
             escuela: false,
             facultad: false,
-            profesor: true,
-
+            profesor: false,
+            tipoVinculacion: false
         }
       }
     },
@@ -390,22 +409,36 @@ import globFunct from '../../../services/globFunct';
       }
     },
     mounted(){
-      this.getlistarVinculacion();
+      this.getListarVinculacion();
+      this.getListarTipoVinculacion();
       this.getListarEscuelas();
       this.getListarFacultades();
       this.getListarProfesorByEscuela();
       this.selectStart();
     },
     methods:{
-        getlistarVinculacion(){
+        getListarVinculacion(tipo){
             this.fullscreenLoading = true;
             const url = '/administracion/vinculacion/getListarVinculacion';
             axios.get(url, {
+                params: {
+                    'cTipo': tipo
+                }
             }).then(response => {
-                this.listTipoVinculacion = response.data;
+                this.listVinculacion = response.data;
                 this.booleanFunction.vinculacion = true;
                 if (this.globFunct.booleanElements(this.booleanFunction)) this.fullscreenLoading = false;
             })
+        },
+        getListarTipoVinculacion(){
+          this.fullscreenLoading = true;
+          const url = '/administracion/vinculacion/getListarTipoVinculacion';
+          axios.get(url, {
+          }).then(response => {
+              this.listTipoVinculacion = response.data;
+              this.booleanFunction.tipoVinculacion = true;
+              if (this.globFunct.booleanElements(this.booleanFunction)) this.fullscreenLoading = false;
+          })
         },
         getListarEscuelas(){
             this.fullscreenLoading = true;
@@ -476,12 +509,14 @@ import globFunct from '../../../services/globFunct';
         getListarTesisReporte(){
             // console.log(this.fillBsqTesisReporte)
             this.fullscreenLoading = true;
-            var url = '/administracion/reportes/getListarTesisReporte'
+            var url = '/administracion/reportes/getListarTesisReporte';
+            console.log(this.fillBsqTesisReporte);
             axios.get(url, {
             params: {
                 'nRut'          : this.fillBsqTesisReporte.nRut,
                 'nIdFacultad'   : this.fillBsqTesisReporte.nIdFacultad,
                 'nIdEscuela'    : this.fillBsqTesisReporte.nIdEscuela,
+                'nIdVinculación': this.fillBsqTesisReporte.nIdVinculación,
                 'cEstadoNotap'  : this.fillBsqTesisReporte.cEstadoNotap,
                 'nIdProfesor'   : this.fillBsqTesisReporte.nIdProfesor,
                 'cEstadoTesis'  : this.fillBsqTesisReporte.cEstadoTesis,
@@ -495,7 +530,6 @@ import globFunct from '../../../services/globFunct';
                 const newListTesis = this.moveIndex(this.listTesis);
                 this.listTesisOriginal = this.moveIndex(this.listTesisOriginal);
                 this.listTesis = newListTesis;
-                console.log(this.listTesis);
                 this.fullscreenLoading = false;
             })
         },
@@ -534,6 +568,7 @@ import globFunct from '../../../services/globFunct';
             this.modalOption = 0;
         },
         selectStart() {
+            // if (this.fillBsqTesisReporte.dfecharango[0].hasOwnProperty('1')) this.fillBsqTesisReporte.dfecharango[0] = this.fillBsqTesisReporte.dfecharango[0][1];
             this.fillBsqTesisReporte.dfecharango[1] = null;
             this.endOption = {
                 disabledDate: (time) => {
