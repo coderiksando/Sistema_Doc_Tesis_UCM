@@ -112,6 +112,7 @@ class ComisionesController extends Controller
                         $user_comision->User;
                     }
                 }
+                $fit->archivoActa = $fit->ArchivoPdf->where('tipo_pdf','acta')->values();
             }
         }
         return $MisComisiones;
@@ -158,6 +159,7 @@ class ComisionesController extends Controller
                         $comision_fit_user->User;
                     }
                 }
+                $comision->Fit->archivoActa = $comision->Fit->ArchivoPdf->where('tipo_pdf','acta')->values();
             }
         }
         return $comisiones;
@@ -177,6 +179,7 @@ class ComisionesController extends Controller
             $fit->getAlumnos();
             $fit->Revision_Comision;
             $fit->ArchivoPdf;
+            $fit->archivoActa = $fit->ArchivoPdf->where('tipo_pdf','acta')->values();
         }
         return $fitWithComision;
     }
