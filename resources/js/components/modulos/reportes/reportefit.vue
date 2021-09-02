@@ -10,7 +10,7 @@
             <div class="card-body">
                 <form role="form">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6" v-if="listRolPermisosByUsuario.includes('reportes.general')">
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">Facultad</label>
                         <div class="col-md-9">
@@ -27,13 +27,13 @@
                         </div>
                     </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" v-if="listRolPermisosByUsuario.includes('reportes.general')">
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">Escuelas</label>
                         <div class="col-md-9">
                             <el-select v-model="fillBsqTesisReporte.nIdEscuela" @change="getListarProfesorByEscuela"
                             placeholder="Asignar Escuela"
-                            clearable>
+                            >
                             <el-option
                                 v-for="item in listEscuelas"
                                 :key="item.id"
@@ -57,7 +57,7 @@
                         <label class="col-md-3 col-form-label">Profesor</label>
                         <div class="col-md-9">
                                 <el-select v-model="fillBsqTesisReporte.nIdProfesor"
-                                placeholder="Asignar Escuela"
+                                placeholder="Asignar Profesor"
                                 clearable>
                                 <el-option
                                     v-for="item in listProfesores"
@@ -485,6 +485,10 @@ import globFunct from '../../../services/globFunct';
             }).then(response => {
                 this.listEscuelasOriginal = response.data;
                 this.listEscuelas = response.data;
+                if (this.listRolPermisosByUsuario.includes('reportes.general')) {
+                  this.listEscuelas.unshift({'id':0, 'nombre': 'Todas', 'facultad': {'id':0}});
+                  this.fillBsqTesisReporte.nIdEscuela = 0;
+                }
                 this.booleanFunction.escuela = true;
                 if (this.globFunct.booleanElements(this.booleanFunction)) this.fullscreenLoading = false;
             })
@@ -503,9 +507,9 @@ import globFunct from '../../../services/globFunct';
             this.fullscreenLoading = true;
             this.listEscuelas = this.listEscuelasOriginal;
             const idFacultad = this.fillBsqTesisReporte.nIdFacultad;
-            if (idFacultad !== '') {
+            if (idFacultad != '') {
                 this.listEscuelas = this.listEscuelas.filter(function(escuela) {
-                    return escuela.facultad.id === idFacultad;
+                    return escuela.facultad.id === idFacultad || escuela.id == 0;
                 });
             }
             this.fullscreenLoading = false;
@@ -579,6 +583,12 @@ import globFunct from '../../../services/globFunct';
             this.fillBsqTesisReporte.cEstadoTesis = '';
             this.fillBsqTesisReporte.dfecharango = '';
             this.fillBsqTesisReporte.nIdVinculación = '';
+            this.fillBsqTesisReporte.nIdFacultad = '';
+            this.getListarEscuelaByFacultad();
+            if (this.listRolPermisosByUsuario.includes('reportes.general')) {
+                this.fillBsqTesisReporte.nIdEscuela = 0;
+            }
+
         },
         limpiarBandejaUsuarios(){
             this.listTesis = [];
