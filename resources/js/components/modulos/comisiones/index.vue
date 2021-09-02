@@ -30,7 +30,7 @@
                             <input placeholder="Nombre de alumno completo" class="col-md-9 form-control" type="text" v-model="busquedaComision.nombreAlumno" @keyup.enter="comisionesByRol">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div title="Sección enfocada en Prof. Guía" class="col-md-6">
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Comisión</label>
                             <div class="col-md-9 px-0">
@@ -38,7 +38,7 @@
                                     v-model="busquedaComision.existenciaComision"
                                     label='valor'
                                     track-by="id"
-                                    placeholder="Seleccionar roles"
+                                    placeholder="Seleccione un tipo"
                                     :options="busquedaOpcion"
                                     selectLabel="Seleccionar"
                                     selectedLabel="Seleccionado"
@@ -85,8 +85,8 @@
                         <div class="card-body py-1" :id="'heading'+index">
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
-                                <div title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + item.titulo.slice(0, 40)}}</p></div>
+                                <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
+                                <div title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
                                 <div class="col-md-3 noPadNoMar">
                                     <template v-if="!item.comisiones">
                                         <router-link title="Crear comisión" class="btn boton btn-info" :to="{name:'comisiones.crear', params:{id: item.id}}">
@@ -98,10 +98,13 @@
                                             <i class="fas fa-pencil-alt"></i>
                                         </router-link>
                                     </template>
-                                    <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
+                                    <!-- <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                                         <i class="fas fa-eye"></i>
-                                    </router-link>
-                                    <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                                    </router-link> -->
+                                    <button :title="'Descargar último documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                                        <i class="fas fa-file-download"></i>
+                                    </button>
+                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-secondary" @click.prevent="getDocumento(item.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
                                     <template v-if="item.comisiones">
@@ -125,7 +128,7 @@
                                         </div>
                                     </dd>
                                 </template>
-                                <dt class="col-md-4">Título extendido:</dt>
+                                <dt class="col-md-4">Título:</dt>
                                 <dd class="col-md-8">{{item.titulo}}</dd>
                                 <dt class="col-md-4">Descripción:</dt>
                                 <dd class="col-md-8">{{item.descripcion}}</dd>
@@ -192,13 +195,16 @@
                         <div class="card-body py-1" :id="'headingParticipe'+index">
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
-                                <div title="Sección expandible" class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
+                                <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
+                                <div title="Sección expandible" class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
                                 <div class="col-md-3 noPadNoMar">
                                     <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
                                         <i class="fas fa-eye"></i>
                                     </router-link>
                                     <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.fit.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                                        <i class="fas fa-file-download"></i>
+                                    </button>
+                                    <button v-if="item.fit.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-secondary" @click.prevent="getDocumento(item.fit.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
                                     <template v-if="item">
@@ -222,8 +228,8 @@
                                         </div>
                                     </dd>
                                 </template>
-                                <dt class="col-md-4">Título extendido:</dt>
-                                <dd class="col-md-8">{{globalFunctions.capitalizeFirstLetter(item.fit.titulo)}}</dd>
+                                <dt class="col-md-4">Título:</dt>
+                                <dd class="col-md-8">{{globFunct.capitalizeFirstLetter(item.fit.titulo)}}</dd>
                                 <dt class="col-md-4">Descripción:</dt>
                                 <dd class="col-md-8">{{item.fit.descripcion}}</dd>
                                 <template v-if="item.fit.user__p__guia">
@@ -328,8 +334,8 @@
                                     v-model="busquedaComision.existenciaComision"
                                     label='valor'
                                     track-by="id"
-                                    placeholder="Seleccionar roles"
                                     :options="busquedaOpcion"
+                                    placeholder="Seleccione un tipo"
                                     selectLabel="Seleccionar"
                                     selectedLabel="Seleccionado"
                                     deselectLabel="No puede quitar este valor"
@@ -379,14 +385,17 @@
                         <div class="card-body py-1" :id="'headingTotal'+index">
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><a class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i></a></div>
-                                <div v-if="item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.comisiones.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
-                                <div v-if="!item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globalFunctions.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
-                                <div class="col-md-3 noPadNoMar">
+                                <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
+                                <div v-if="item.comisiones" title="Sección expandible" class="col-md-7 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.comisiones.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
+                                <div v-if="!item.comisiones" title="Sección expandible" class="col-md-7 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
+                                <div class="col-md-4 noPadNoMar">
                                     <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                                         <i class="fas fa-eye"></i>
                                     </router-link>
                                     <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)">
+                                        <i class="fas fa-file-download"></i>
+                                    </button>
+                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-secondary" @click.prevent="getDocumento(item.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
                                     <button v-if="item.comisiones" title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
@@ -416,8 +425,8 @@
                                         </div>
                                     </dd>
                                 </template>
-                                <dt class="col-md-4">Título extendido:</dt>
-                                <dd class="col-md-8">{{globalFunctions.capitalizeFirstLetter(item.titulo)}}</dd>
+                                <dt class="col-md-4">Título:</dt>
+                                <dd class="col-md-8">{{globFunct.capitalizeFirstLetter(item.titulo)}}</dd>
                                 <dt class="col-md-4">Descripción:</dt>
                                 <dd class="col-md-8">{{item.descripcion}}</dd>
                                 <template v-if="item.user__p__guia">
@@ -733,7 +742,7 @@ export default {
         }).then(response => {
             this.inicializarPaginacion();
             this.listMisComisiones = response.data;
-            //   console.log('guia',this.listMisComisiones)
+            console.log('guia',this.listMisComisiones)
             this.fullscreenLoading = false;
         })
     },
@@ -886,6 +895,19 @@ export default {
       if (fileSize >= this.tesisParams.size * 1000000) {
         this.tesisParams.sizeError = true;
       }
+    },
+    getDocumento(idTesis){
+        this.fullscreenLoading = true;
+        var url = '/archivo/getArchivo';
+        axios.get(url,{
+            params: {
+                'tipo'    : 'acta',
+                'fit'     : idTesis
+            }
+        }).then(response => {
+            this.fullscreenLoading = false;
+            location.href = response.data.path;
+        });
     }
   }//cierre de methods
 }

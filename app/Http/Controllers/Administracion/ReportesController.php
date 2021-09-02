@@ -26,6 +26,8 @@ class ReportesController extends Controller
         $estado             = $request->cEstadoTesis;
         $dFechaInicio       = $request->dFechaInicio;
         $dFechaFin          = $request->dFechaFin;
+        $nIdVinculacion     = $request->nIdVinculación;
+        $cTipoVinculación   = $request->cTipoVinculación;
 
         $rut                = ($rut == NULL) ?          ($rut = '')         : $rut;
         $idescuela          = ($idescuela == NULL) ?    ($idescuela = '')   : $idescuela;
@@ -36,7 +38,7 @@ class ReportesController extends Controller
         $dFechaInicio       = ($dFechaInicio == NULL) ? ($dFechaInicio = ''): $dFechaInicio;
         $dFechaFin          = ($dFechaFin == NULL) ?    ($dFechaFin = '')   : $dFechaFin;
 
-        $fits = Fit ::where('estado', 'like', "$estado%")
+        $fits = Fit ::where('estado', 'like', "%$estado%")
                     ->get();
         foreach ($fits as $fit) {
             $fit->Bitacoras;
@@ -44,6 +46,10 @@ class ReportesController extends Controller
             $fit->NotasPendientes;
             $fit->Vinculaciones;
             $fit->Comisiones;
+            if ($fit->Comisiones) {
+                $fit->Comisiones->UserP1;
+                $fit->Comisiones->UserP2;
+            }
             $fit->User_P_Guia;
             $fit->User_P_Guia->Escuelas;
             $fit->User_P_Coguia;
@@ -65,12 +71,10 @@ class ReportesController extends Controller
         $key=0;
         foreach ($fits as $fit) {
             $missing = False;
-            if ($idescuela) {
-                if ($fit->Escuela->id != $idescuela) $missing = True;
-            }
-            if ($idFacultad) {
-                if ($fit->Facultad->id != $idFacultad) $missing = True;
-            }
+            if ($idescuela) if ($fit->Escuela->id != $idescuela) $missing = True;
+            if ($idFacultad) if ($fit->Facultad->id != $idFacultad) $missing = True;
+            if ($cTipoVinculación) if ($fit->Vinculaciones->tipo != $cTipoVinculación) $missing = True;
+            if ($nIdVinculacion) if ($fit->Vinculaciones->id != $nIdVinculacion) $missing = True;
             if ($estado_notap) {
                 if ($fit->NotasPendientes) {
                     if ($fit->NotasPendientes->estado != $estado_notap) $missing = True;
@@ -78,12 +82,8 @@ class ReportesController extends Controller
                     $missing = True;
                 }
             }
-            if ($idprofesor) {
-                if ($fit->User_P_Guia->id_user != $idprofesor) $missing = True;
-            }
-            if ($idprofesor) {
-                if ($fit->User_P_Guia->id_user != $idprofesor) $missing = True;
-            }
+            if ($idprofesor) if ($fit->User_P_Guia->id_user != $idprofesor) $missing = True;
+            if ($idprofesor) if ($fit->User_P_Guia->id_user != $idprofesor) $missing = True;
             $rutFound = 0;
             $dateFound = 0;
             // revision de los usuarios
@@ -91,12 +91,8 @@ class ReportesController extends Controller
                 foreach ($fit->Fit_User as $fitUser) {
                     $user = $fitUser->User;
                     if ($rut) {
-                        if ($user->rut == $rut) {
-                            $rutFound++;
-                        }
-                    } else {
-                        $rutFound++;
-                    }
+                        if (stristr($user->rut, $rut)) $rutFound++;
+                    } else $rutFound++;
                     // revision de los datos entre fechas
                     if ($dFechaInicio && $dFechaFin && $user->f_ingreso && $user->f_salida) {
                         $iTime1 = date("Y-m-d",strtotime($dFechaInicio));
@@ -115,9 +111,7 @@ class ReportesController extends Controller
                 if ($rutFound == 0) $missing = True;
                 if ($dateFound == 0) $missing = True;
             }
-            if ($missing) {
-                $fits[$key] = null;
-            }
+            if ($missing) $fits[$key] = null;
             $key++;
         }
         return $fits;
