@@ -16,6 +16,8 @@ class AlterTableFit extends Migration
         Schema::table('fit', function (Blueprint $table){
             $table->date('fecha')->default('2021-01-01');
             $table->integer('privado')->nullable()->default(0);
+            $table->date('fecha_publicacion')->default('0001-01-01');
+            $table->string('motivo_privado');
         });
     }
 
@@ -29,6 +31,9 @@ class AlterTableFit extends Migration
         Schema::table('fit', function (Blueprint $table) {
             $table->dropColumn('fecha');
             $table->dropColumn('privado');
+            $table->dropColumn('fecha_publicacion');
+            $table->dropColum('motivo_privado');
+            
         });
     }
 }
