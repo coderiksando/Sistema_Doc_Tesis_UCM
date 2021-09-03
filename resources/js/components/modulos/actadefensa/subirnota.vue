@@ -36,7 +36,7 @@
                                                 <label class="col-md-3 col-form-label">Nota final documento</label>
                                                 <div class="col-md-5">
                                                     <template>
-                                                        <el-input-number v-bind:disabled="aprobar" v-model="fillSubirNota.Nota" size="large" v-bind:min="notaMinima" :precision="2" :step="0.1" :max="7"></el-input-number>
+                                                        <el-input-number v-bind:disabled="aprobar" v-model="fillSubirNota.Nota" size="large" v-bind:min="notaMinima" :precision="1" :step="0.1" :max="7"></el-input-number>
                                                     </template>
                                                 </div>
                                                 <label class="col-md-2 col-form-label">Aprobar sin nota</label>

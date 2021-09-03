@@ -96,11 +96,11 @@
                       </template>
                     </td>
                     <td>
-                      <router-link  class="btn btn-success boton" :to="{name:'actadefensa.subirnota', params:{id: item.id}}">
+                      <router-link title="Subir nota de documento final"  class="btn btn-success boton" :to="{name:'actadefensa.subirnota', params:{id: item.id}}">
                         <i class="fas fa-graduation-cap"></i>
                       </router-link>
                       <!-- <a v-if="item.path" class="btn btn-warning boton" :href="item.path" @click.prevent="downloadItem(item.path)"><i class="fas fa-file-download"> </i></a> -->
-                      <router-link class="btn boton" :class="{ 'btn-primary' : item.path, 'btn-warning' : !item.path}" :to="{name:'actadefensa.subiracta', params:{id: item.id}}">
+                      <router-link :title="'Subir acta de defensa de '+terminoTitulo" class="btn boton" :class="{ 'btn-primary' : item.path, 'btn-warning' : !item.path}" :to="{name:'actadefensa.subiracta', params:{id: item.id}}">
                         <i class="fas fa-file-upload"></i>
                       </router-link>
                     </td>
@@ -158,6 +158,7 @@ export default {
         {value: 'R', label: 'Reprobada'},
         {value: 'D', label: 'En desarrollo'}
       ],
+      terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       pageNumber: 0,
       perPage: 5

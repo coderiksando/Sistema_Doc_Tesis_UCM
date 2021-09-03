@@ -87,13 +87,19 @@
         <div class="card card-info">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <h3 class="card-title">Comisiones donde soy Prof. Guía</h3>
                     </div>
-                    <div v-if="listarComisionesPaginated.length" class="col-md-2">
-                        <button title="Descargar acta en ZIP" class="btn btn-primary btn-block" @click.prevent="descargaActaZip(listarComisionesPaginated, 'actaGuia')">
+                    <div v-if="listarComisionesPaginated.length" class="col-md-3">
+                        <el-tooltip class="item" effect="dark" content="Descargar actas en forma masiva (ZIP)" placement="right">
+                            <el-button @click.prevent="descargaActaZip(listarComisionesPaginated, 'actaGuia')">
+                                <i class="fas fa-file-archive"></i> Exportar actas
+                            </el-button>
+                        </el-tooltip>
+
+                        <!-- <button title="Descargar acta en ZIP" class="btn btn-primary btn-block" @click.prevent="descargaActaZip(listarComisionesPaginated, 'actaGuia')">
                             <i class="fas fa-file-archive"></i> Acta
-                        </button>
+                        </button> -->
                     </div>
                 </div>
             </div>
@@ -106,28 +112,28 @@
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
                                 <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
                                 <div title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
-                                <div class="col-md-3 noPadNoMar">
+                                <div class="col-md-3 noPadNoMar d-flex justify-content-start">
                                     <template v-if="!item.comisiones">
-                                        <router-link title="Crear comisión" class="btn boton btn-info" :to="{name:'comisiones.crear', params:{id: item.id}}">
+                                        <router-link title="Crear comisión" class="btn boton btn-info mr-1" :to="{name:'comisiones.crear', params:{id: item.id}}">
                                             <i class="fas fa-plus-circle"></i>
                                         </router-link>
                                     </template>
                                     <template v-if="item.comisiones">
-                                        <router-link title="Editar comisión" class="btn boton btn-info" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
+                                        <router-link title="Editar comisión" class="btn boton btn-info mr-1" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
                                             <i class="fas fa-pencil-alt"></i>
                                         </router-link>
                                     </template>
                                     <!-- <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                                         <i class="fas fa-eye"></i>
                                     </router-link> -->
-                                    <button :title="'Descargar documento final'" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                                    <button :title="'Descargar documento final'" class="btn boton btn-warning mr-1" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
                                         <i class="fas fa-file-download"></i>
                                     </button>
-                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary" @click.prevent="getDocumento(item.id)">
+                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary mr-1" @click.prevent="getDocumento(item.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
                                     <template v-if="item.comisiones">
-                                        <button title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
+                                        <button title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item)">
                                             <i class="fas fa-file-upload"></i>
                                         </button>
                                     </template>
@@ -205,13 +211,15 @@
         <div class="card card-info">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <h3 class="card-title">Comisiones donde soy partícipe</h3>
                     </div>
-                    <div v-if="listarComisionesPaginated2.length" class="col-md-2">
-                        <button title="Descargar actas donde soy participe en ZIP" class="btn btn-primary btn-block" @click.prevent="descargaActaZip(listarComisionesPaginated2, 'actaParticipe')">
-                            <i class="fas fa-file-archive"></i> Acta
-                        </button>
+                    <div v-if="listarComisionesPaginated2.length" class="col-md-3">
+                        <el-tooltip class="item" effect="dark" content="Descargar actas donde soy participe (ZIP)" placement="right">
+                            <el-button @click.prevent="descargaActaZip(listarComisionesPaginated2, 'actaParticipe')">
+                                <i class="fas fa-file-archive"></i> Exportar actas
+                            </el-button>
+                        </el-tooltip>
                     </div>
                 </div>
             </div>
@@ -225,18 +233,18 @@
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
                                 <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
                                 <div title="Sección expandible" class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
-                                <div class="col-md-3 noPadNoMar">
-                                    <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
+                                <div class="col-md-3 noPadNoMar d-flex justify-content-start">
+                                    <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary mr-1" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
                                         <i class="fas fa-eye"></i>
                                     </router-link>
-                                    <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.fit.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                                    <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning mr-1" @click.prevent="descargarDocumento(item.fit.id)" v-loading.fullscreen.lock="fullscreenLoading">
                                         <i class="fas fa-file-download"></i>
                                     </button>
-                                    <button v-if="item.fit.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary" @click.prevent="getDocumento(item.fit.id)">
+                                    <button v-if="item.fit.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary mr-1" @click.prevent="getDocumento(item.fit.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
                                     <template v-if="item">
-                                        <button title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item.fit)">
+                                        <button title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item.fit)">
                                             <i class="fas fa-file-upload"></i>
                                         </button>
                                     </template>
@@ -411,13 +419,15 @@
         <div class="card card-info">
             <div class="card-header container">
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <h3 class="card-title font-weight-bold">Total de comisiones establecidas</h3>
                     </div>
-                    <div v-if="listarComisionesTotalesPaginated.length" class="col-md-2">
-                        <button title="Descargar total de actas en ZIP" class="btn btn-primary btn-block" @click.prevent="descargaActaZip(listarComisionesTotalesPaginated, 'totalDeActasBuscada')">
-                            <i class="fas fa-file-archive"></i> Acta
-                        </button>
+                    <div v-if="listarComisionesTotalesPaginated.length" class="col-md-3">
+                        <el-tooltip class="item" effect="dark" content="Descargar total de actas (ZIP)" placement="right">
+                            <el-button @click.prevent="descargaActaZip(listarComisionesTotalesPaginated, 'totalDeActasBuscada')">
+                                <i class="fas fa-file-archive"></i> Exportar actas
+                            </el-button>
+                        </el-tooltip>
                     </div>
                 </div>
             </div>
@@ -431,24 +441,24 @@
                                 <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
                                 <div v-if="item.comisiones" title="Sección expandible" class="col-md-7 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.comisiones.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
                                 <div v-if="!item.comisiones" title="Sección expandible" class="col-md-7 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
-                                <div class="col-md-4 noPadNoMar">
-                                    <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
+                                <div class="col-md-4 noPadNoMar d-flex justify-content-start">
+                                    <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary mr-1" :to="{name:'tesis.ver', params:{id: item.id}}">
                                         <i class="fas fa-eye"></i>
                                     </router-link>
-                                    <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)">
+                                    <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning mr-1" @click.prevent="descargarDocumento(item.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
-                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary" @click.prevent="getDocumento(item.id)">
+                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary mr-1" @click.prevent="getDocumento(item.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
-                                    <button v-if="item.comisiones" title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
+                                    <button v-if="item.comisiones" title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item)">
                                         <i class="fas fa-file-upload"></i>
                                     </button>
                                     <!-- <router-link title="Ver revisiones de comisión" class="btn boton btn-info" :to="'tesis/revisiones'">
                                         <i class="fa fa-list-alt"></i>
                                     </router-link> -->
                                     <template v-if="item.comisiones">
-                                        <router-link title="Editar comisión" class="btn boton btn-danger" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
+                                        <router-link title="Editar comisión" class="btn boton btn-danger mr-1" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
                                             <i class="fas fa-pencil-alt"></i>
                                         </router-link>
                                     </template>
