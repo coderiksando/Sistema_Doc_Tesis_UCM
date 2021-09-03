@@ -86,9 +86,11 @@ class AlumnoController extends Controller
             $fits = Fit::whereIn('id', $fitUser);
         }elseif($rol == 'Profesor'){
             $fits = Fit::where('id_p_guia', $nIdUsuario)->whereIn('aprobado_pg', ['P', 'A', 'V']);
-        }else{ 
+        }elseif($rol == 'Director'){ 
             $fits = Fit::whereIn('aprobado_pg', ['A', 'V'])
             ->where('id_escuela', Auth::user()->id_escuela);
+        }else{
+            $fits = Fit::whereIn('aprobado_pg', ['A', 'V']);
         }
 
 //      Filtros de busqueda
@@ -202,7 +204,7 @@ class AlumnoController extends Controller
                 ->where('fit.id_escuela','like',"%$nIdEscuela%")
                 ->where('fit.estado','like',"%$cEstadoTesis%")
                 ->where('fit.aprobado_pg',"V")
-                ->whereBetween('fit.updated_at', [$dFechaInicio,$dFechaFin])
+                ->whereBetween('fit.fecha', [$dFechaInicio,$dFechaFin])
                 ->get()
                 ->pluck('id');
 
@@ -242,6 +244,7 @@ class AlumnoController extends Controller
             $registroFit->contribucion = $fit->cContribucion;
             $registroFit->estado = 'D';
             $registroFit->aprobado_pg = 'P';
+            $registroFit->fecha = Carbon::now();
             $registroFit->save();
 
             foreach($fit->cUsers as $user) {

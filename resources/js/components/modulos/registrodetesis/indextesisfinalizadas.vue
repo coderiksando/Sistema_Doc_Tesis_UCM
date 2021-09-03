@@ -193,7 +193,7 @@
                           </template>
                         </td>
                         <td>
-                            <p>{{moment(item.updated_at).format("DD-MM-YYYY")}}</p>
+                            <p>{{moment(item.fecha).format("DD-MM-YYYY")}}</p>
                         </td>
                         <td>
                             <p v-text="item.escuela.nombre"></p>

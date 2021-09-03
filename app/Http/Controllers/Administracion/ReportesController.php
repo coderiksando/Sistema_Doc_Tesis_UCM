@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Exports\TesisExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Debugbar;
 
 class ReportesController extends Controller
@@ -30,7 +31,8 @@ class ReportesController extends Controller
         $cTipoVinculación   = $request->cTipoVinculación;
 
         $rut                = ($rut == NULL) ?          ($rut = '')         : $rut;
-        $idescuela          = ($idescuela == NULL) ?    ($idescuela = '')   : $idescuela;
+        $idescuela          = ($idescuela == NULL) ?    ($idescuela = Auth::user()->id_escuela)   : $idescuela;
+        $idescuela          = ($idescuela == 0) ?       ($idescuela = '')   : $idescuela;
         $idFacultad         = ($idFacultad == NULL) ?    ($idFacultad = '')   : $idFacultad;
         $estado_notap       = ($estado_notap == NULL) ? ($estado_notap = ''): $estado_notap;
         $idprofesor         = ($idprofesor == NULL) ?   ($idprofesor = '')  : $idprofesor;
@@ -72,7 +74,7 @@ class ReportesController extends Controller
         foreach ($fits as $fit) {
             $missing = False;
             if ($idescuela) if ($fit->Escuela->id != $idescuela) $missing = True;
-            if ($idFacultad) if ($fit->Facultad->id != $idFacultad) $missing = True;
+            if ($idFacultad) if ($fit->Escuela->id_facultad != $idFacultad) $missing = True;
             if ($cTipoVinculación) if ($fit->Vinculaciones->tipo != $cTipoVinculación) $missing = True;
             if ($nIdVinculacion) if ($fit->Vinculaciones->id != $nIdVinculacion) $missing = True;
             if ($estado_notap) {

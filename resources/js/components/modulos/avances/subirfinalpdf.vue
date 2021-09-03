@@ -28,7 +28,7 @@
                         </div>
                         <div class="custom-file">
                           <input type="file" class="custom-file-input" id="input1" :class="{ 'is-invalid' : formatError || sizeError, 'is-valid' : hover}" @change="getFile" @mouseover="hover = true" @mouseleave="hover = false">
-                          <label class="custom-file-label" for="input1">{{fillCrearFinalPdf.oArchivo ? fillCrearFinalPdf.oArchivo.name : 'Seleccionar archivo'}}</label>
+                          <label class="custom-file-label" for="input1">{{fileName}}</label>
                         </div>
                       </div>
                       <div class="custom-file invalid-feedback no-margin" v-show="formatError">
@@ -54,11 +54,54 @@
               Los formatos de archivo soportados son:
               <span v-for="item in fileTypes" :key="item" v-text="item +' '"></span>
             </div>
+            <div class="text-center my-4">
+              <b class="text-justify">Autorización de Publicación de Versión Electrónica de Tesis.</b>
+            </div>
+            <form role="form" id="form-autorizacion">
+              <div class="row">
+                <div class="col-md-10 offset-md-1 mb-2">
+                  <div class="form-check">
+                    <input v-model="formOption" class="form-check-input" name="autorizacion" type="radio" value='0' id="autorizacion1">
+                    <label class="form-check-label text-justify" for="autorizacion1">
+                      Autorizo al Sistema de Gestión y Administración de Documentos de la Universidad Católica del Maule a publicar la versión
+                      electrónica de esta tesis en su Repositorio Académico, para ser consultada por la comunidad
+                      UCM. 
+                    </label>
+                  </div>    
+                </div>
+                <div class="col-md-10 offset-md-1 mb-2">
+                  <div class="form-check">
+                    <input v-model="formOption" class="form-check-input" name="autorizacion" type="radio" value='1' id="autorizacion2">
+                    <label class="form-check-label text-justify" for="autorizacion2">
+                      Autorizo al Sistema de Gestión y Administración de Documentos de la Universidad Católica del Maule a publicar la versión
+                      electrónica de esta tesis en su Repositorio Académico, para ser consultada por la comunidad
+                      UCM, previo embargo de <input v-model="fillCrearFinalPdf.nMeses" :disabled="formOption != 1" type="number" class="text-center" style="width: 55px"> meses.  
+                    </label>
+                  </div>    
+                </div>
+                <div class="col-md-10 offset-md-1 mb-2">
+                  <div class="form-check">
+                    <input v-model="formOption" class="form-check-input" name="autorizacion" type="radio" value='2' id="autorizacion3">
+                    <label class="form-check-label" for="autorizacion3">
+                      No autorizo. (Justifique)
+                    </label>
+                  </div>    
+                </div>
+                <div v-if="formOption == 2" class="col-md-10 offset-md-1 mb-2">
+                  <div class="form-group row">
+                    <label class="col-md-12 col-form-label">Motivo</label>
+                    <div class="col-md-12">
+                        <textarea v-model="fillCrearFinalPdf.cMotivo" maxlength="250" rows="3" type="textarea"  class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
           <div class="card-footer">
             <div class="row">
               <div class="col-md-4 offset-4">
-                <button :disabled="btnDis" class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarFinalPdf" v-loading.fullscreen.lock="fullscreenLoading"
+                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarFinalPdf" v-loading.fullscreen.lock="fullscreenLoading"
                   >{{globVar.btnSave}}</button>
                 <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">{{globVar.btnClear}}</button>
               </div>
@@ -93,9 +136,9 @@ export default {
     return{
       globVar: new globVar(),
       fillCrearFinalPdf:{
-        cDescripcion: '',
-        oArchivo: {},
-
+        oArchivo: '',
+        nMeses: '',
+        cMotivo: ''
       },
       form : new FormData,
       fullscreenLoading: false,
@@ -114,8 +157,10 @@ export default {
       sizeError : false,
       fileMaxSize: 0,
       lastFile: {},
-      btnDis: true,
-      hover: false
+      hover: false,
+      edicion: false,
+      formOption : 0,
+      fileName: 'Seleccionar archivo'
     }
   },
   computed: {
@@ -128,13 +173,13 @@ export default {
 
   methods:{
     getFile(element){
-      this.btnDis = false;
       this.formatError = false;
       this.sizeError = false;
       if (!element) return;
       this.fillCrearFinalPdf.oArchivo = element.target.files[0];
       if (!this.fillCrearFinalPdf.oArchivo) return;
       const fileName = this.fillCrearFinalPdf.oArchivo.name;
+      this.fileName = this.fillCrearFinalPdf.oArchivo.name;
       const fileSize = this.fillCrearFinalPdf.oArchivo.size;
       var dots = fileName.split(".")
       var fileType = "." + dots[dots.length-1];
@@ -146,8 +191,8 @@ export default {
       }
     },
     limpiarCriterios(){
-      this.fillCrearFinalPdf.cDescripcion = '';
       this.fillCrearFinalPdf.oArchivo = '';
+      this.fileName = 'Seleccionar archivo'
       document.getElementById("form-final").reset();
       this.getFile();
     },
@@ -159,17 +204,15 @@ export default {
           this.modalShow = true;
           return;
       }
-      if(!this.fillCrearFinalPdf.oArchivo || this.fillCrearFinalPdf.oArchivo == undefined){
-        this.fullscreenLoading = true;
-        this.setGuardarAvance();
-      } else {
-        this.setRegistrarArchivoPDF();
-      }
+      this.setRegistrarArchivoPDF();
     },
     setRegistrarArchivoPDF(){
       this.fullscreenLoading = true;
       this.form.append('file', this.fillCrearFinalPdf.oArchivo);
       this.form.append('tipo', 'final_t');
+      this.form.append('formOption', this.formOption);
+      this.form.append('meses', this.fillCrearFinalPdf.nMeses);
+      this.form.append('motivo', this.fillCrearFinalPdf.cMotivo);
       const config = { headers: {'Content-Type': 'multipart/form-data'}}
       var url = '/archivo/setRegistrarArchivoPDF';
 
@@ -196,7 +239,7 @@ export default {
       this.error = 0;
       this.mensajeError = [];
 
-        if(!this.fillCrearFinalPdf.oArchivo){
+        if(!this.fillCrearFinalPdf.oArchivo && !this.edicion){
           this.mensajeError.push("El archivo es un campo obligatorio")
         }
 
@@ -206,6 +249,12 @@ export default {
 
         if(this.formatError){
           this.mensajeError.push("Los formatos permitidos son:" +this.fileTypes);
+        }
+        if(this.formOption == 1 && !this.fillCrearFinalPdf.nMeses){
+          this.mensajeError.push("La cantidad de meses es un campo obligatorio");
+        }
+        if(this.formOption == 2 && !this.fillCrearFinalPdf.cMotivo){
+          this.mensajeError.push("El motivo es un campo obligatorio");
         }
 
         if(this.mensajeError.length){
@@ -230,7 +279,10 @@ export default {
         }
         }).then(response => {
           this.lastFile = response.data;
-          this.fillCrearFinalPdf.oArchivo.name = this.lastFile.filename;
+          if (this.lastFile) {
+            this.edicion = true;
+            this.fileName = this.lastFile.filename;
+          }
           this.fullscreenLoading = false;
       });
     }

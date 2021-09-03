@@ -57,28 +57,47 @@ class FilesController extends Controller
         $fit = Fit_User::Firstwhere('id_user', $idUser)->Fit;
         $file = $request->file;
         $bandera = Str::random(10);
-        $filename = $file->getClientOriginalName();
-        $fileserver = $bandera .'_'. $filename;
         $tipo = $request->tipo;
+        $rpta = new ArchivoPdf;
 
-        Storage::putFileAs('public/users', $file, $fileserver);
+        if ($file) {
+            $filename = $file->getClientOriginalName();
+            $fileserver = $bandera .'_'. $filename;
+            Storage::putFileAs('public/users', $file, $fileserver);
 
-        if ($tipo == 'final_t' || $tipo == 'constancia_t' || $tipo == 'acta'){
-            $lastVersion = $this->getArchivo($request);
-            if($lastVersion){
-                $name = last(explode('/', $lastVersion->path));
-                Storage::delete('public/users/'.$name);
-                $lastVersion->delete();
+            if ($tipo == 'final_t' || $tipo == 'constancia_t' || $tipo == 'acta'){
+                $lastVersion = $this->getArchivo($request);
+                if($lastVersion){
+                    $name = last(explode('/', $lastVersion->path));
+                    Storage::delete('public/users/'.$name);
+                    $lastVersion->delete();
+                }
             }
+
+            $rpta->path = asset('storage/users/'.$fileserver);
+            $rpta->filename = $filename;
+            $rpta->id_fit = $fit->id;
+            $rpta->tipo_pdf = $tipo;
+            $rpta->save();
         }
 
-        $rpta = new ArchivoPdf;
-        $rpta->path = asset('storage/users/'.$fileserver);
-        $rpta->filename = $filename;
-        $rpta->id_fit = $fit->id;
-        $rpta->tipo_pdf = $tipo;
-        $rpta->save();
-        //$nIdFile = $rpta->id;
+        if ($tipo == 'final_t'){
+            $motivo = $request->motivo;
+            $meses = $request->meses;
+            $opcion = $request->formOption;
+            if ($opcion == 2) {
+                $fit->privado = 1;
+                $fit->motivo_privado = $motivo;
+            }else{
+                $fit->privado = 0;
+                $fit->motivo_privado = '';
+                if ($opcion == 1) {
+                    $fit->fecha_publicacion = Carbon::now()->addMonths($meses);
+                }
+            }
+        $fit->save();
+        }
+
         return $rpta;
     }
 
@@ -157,6 +176,8 @@ class FilesController extends Controller
             $registroFit->objetivo_especifico = $request->cObjetivoEspecifico;
             $registroFit->descripcion = $request->cDescripcion;
             $registroFit->contribucion = $request->cContribucion;
+            $registroFit->fecha = ($request->dFecha) ? $request->dFecha : Carbon::now();
+            $registroFit->privado = $request->privado;
             if ($request->fidFinalizada) {
                 $registroFit->nota = $request->Nota;
                 if ($registroFit->nota >= 4) {
@@ -249,6 +270,10 @@ class FilesController extends Controller
             $registroFit->objetivo_especifico = $request->cObjetivoEspecifico;
             $registroFit->descripcion = $request->cDescripcion;
             $registroFit->contribucion = $request->cContribucion;
+            if ($request->dFecha) {
+                $registroFit->fecha = $request->dFecha;
+            }
+            $registroFit->privado = $request->privado;
             if ($request->fidFinalizada) {
                 $registroFit->nota = $request->Nota;
                 if ($registroFit->nota >= 4) {

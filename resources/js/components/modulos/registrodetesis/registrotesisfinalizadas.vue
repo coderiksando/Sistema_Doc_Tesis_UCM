@@ -277,6 +277,18 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Fecha</label>
+                        <div class="col-md-9">
+                          <el-date-picker
+                            v-model="fillCrearFIT.dFecha"
+                            placeholder="Seleccionar fecha"
+                            value-format="yyyy-MM-dd">
+                          </el-date-picker>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
                         <label class="col-md-3 col-form-label">Comisión evaluadora</label>
                         <div class="col-md-2">
                             <button class="btn btn-primary" @click.prevent="mostrarModalComision">
@@ -287,6 +299,19 @@
                             <div v-if="fillCrearFIT.aComision[0]" class="noPadNoMar"><b>P1: </b>{{fillCrearFIT.aComision[0].fullname}}</div>
                             <div v-if="fillCrearFIT.aComision[1]" class="noPadNoMar"><b>P2: </b>{{fillCrearFIT.aComision[1].fullname}}</div>
                             <div v-if="fillCrearFIT.oProfExterno.fullname" class="noPadNoMar"><b>Pe: </b>{{fillCrearFIT.oProfExterno.fullname}}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-5 col-form-label">
+                        <template> Documento privado </template>
+                        <!-- <template v-if="!fillCrearFIT.fidFinalizada"> Estado final </template> -->
+                        </label>
+                        <div class="col-md-7">
+                          <div class="input-group">
+                            <input style="width: 40px; height: 40px; margin-left: auto; margin-right: 0;" type="checkbox" v-model="fillCrearFIT.privado">
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -952,7 +977,9 @@ export default {
             correo: '',
             institucion: ''
         },
-        fidFinalizada: true
+        fidFinalizada: true,
+        privado: false,
+        dFecha: ""
       },
       tesisForm: new FormData(),
       actaForm: new FormData(),
