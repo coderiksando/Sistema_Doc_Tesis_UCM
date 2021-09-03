@@ -4,7 +4,7 @@
     <div class="card-body pb-0">
         <div class="container-fluid">
             <div class="card card-info">
-                <div class="card-header container btn" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
+                <div class="card-header btn" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="card-title font-weight-bold">
@@ -110,9 +110,9 @@
                         <div class="card-body py-1" :id="'heading'+index">
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
-                                <div title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
-                                <div class="col-md-3 noPadNoMar d-flex justify-content-start">
+                                <div title="Sección expandible" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
+                                <div title="Sección expandible" class="col-md-9 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
+                                <div class="col-md-3 noPadNoMar d-flex flex-wrap">
                                     <template v-if="!item.comisiones">
                                         <router-link title="Crear comisión" class="btn boton btn-info mr-1" :to="{name:'comisiones.crear', params:{id: item.id}}">
                                             <i class="fas fa-plus-circle"></i>
@@ -231,9 +231,9 @@
                         <div class="card-body py-1" :id="'headingParticipe'+index">
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
-                                <div title="Sección expandible" class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
-                                <div class="col-md-3 noPadNoMar d-flex justify-content-start">
+                                <div title="Sección expandible" data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
+                                <div title="Sección expandible" class="col-md-9 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
+                                <div class="col-md-3 noPadNoMar d-flex flex-wrap">
                                     <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary mr-1" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
                                         <i class="fas fa-eye"></i>
                                     </router-link>
@@ -330,7 +330,7 @@
     <div class="card-body pb-0">
         <div class="container-fluid">
             <div class="card card-info">
-                <div class="card-header container btn" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
+                <div class="card-header btn" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="card-title font-weight-bold">
@@ -417,7 +417,7 @@
     <div class="card-body py-0">
         <div class="container-fluid">
         <div class="card card-info">
-            <div class="card-header container">
+            <div class="card-header">
                 <div class="row">
                     <div class="col-md-9">
                         <h3 class="card-title font-weight-bold">Total de comisiones establecidas</h3>
@@ -438,10 +438,10 @@
                         <div class="card-body py-1" :id="'headingTotal'+index">
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
-                                <div v-if="item.comisiones" title="Sección expandible" class="col-md-7 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.comisiones.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
-                                <div v-if="!item.comisiones" title="Sección expandible" class="col-md-7 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
-                                <div class="col-md-4 noPadNoMar d-flex justify-content-start">
+                                <div title="Sección expandible" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
+                                <div v-if="item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.comisiones.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
+                                <div v-if="!item.comisiones" title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseTotal'+index" aria-expanded="false" :aria-controls="'collapseTotal'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
+                                <div class="col-md-4 noPadNoMar d-flex flex-wrap">
                                     <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary mr-1" :to="{name:'tesis.ver', params:{id: item.id}}">
                                         <i class="fas fa-eye"></i>
                                     </router-link>
