@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Hash;
 use \stdClass;
 use Debugbar;
 use Carbon\Carbon;
+use ZipArchive;
+use File as Files;
 
 class FilesController extends Controller
 {
@@ -314,5 +316,28 @@ class FilesController extends Controller
             return $registroFit->id;
         }
         return response()->json(['ok' => 'ok'], 200);
+    }
+
+    public function descargaActaZip(Request $request) {
+        if(!$request->ajax()) return redirect('/');
+        $listaIdArchivo = $request->nIdArchivo;
+        $tipoArchivo = $request->cTipo;
+        $listArchivo = ArchivoPdf::whereIn('id', $listaIdArchivo)->get()->pluck('path');
+        foreach ($listArchivo as $key=>$archivo) {
+            $listArchivo[$key] = last(explode('/', $archivo));
+        }
+        $zip = new ZipArchive();
+        $flag = Str::random(10);
+        if ($zip->open(public_path('storage/compressed/'.$flag.$tipoArchivo), ZipArchive::CREATE) == TRUE) {
+            $files = Files::files(public_path('storage\users'));
+            foreach ($files as $key=>$value) {
+                $relativeName = basename($value);
+                if (in_array($relativeName, $listArchivo->toArray())){
+                    $zip->addFile($value, $relativeName);
+                }
+            }
+            $zip->close();
+        }
+        return response()->download(public_path('storage/compressed/'.$flag.$tipoArchivo));
     }
 }

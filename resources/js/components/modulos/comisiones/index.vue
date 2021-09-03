@@ -4,13 +4,11 @@
     <div class="card-body pb-0">
         <div class="container-fluid">
             <div class="card card-info">
-                <div class="card-header container btn py-1" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
+                <div class="card-header container btn" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="card-title font-weight-bold">
-                                <div class="btn boton btn-primary">
-                                    <i class="fas fa-search"></i>
-                                </div>
+                                <i class="fas fa-search"></i>
                                 Sistema de búsqueda
                             </h3>
                         </div>
@@ -49,18 +47,30 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group row">
-                            <div class="col-md-3">
-                                <label class="col-form-label">Año</label>
+                            <div class="col-md-12">
+                                <label class="col-form-label">Rango de fechas</label>
                             </div>
-                            <div class="col-md-9 px-0">
+                            <div class="col-md-6">
                                 <el-date-picker
-                                    v-model="busquedaComision.yearSelected"
+                                    v-model="busquedaComision.dateRange.startDate"
                                     style="width: 100%;"
-                                    type="year"
                                     placeholder="Inicio"
-                                    value-format="yyyy"
+                                    format="yyyy/MM/dd"
+                                    value-format="yyyy-MM-dd"
+                                    :picker-options="startOption"
+                                    @change="selectStart">
+                                </el-date-picker>
+                            </div>
+                            <div class="col-md-6">
+                                <el-date-picker
+                                    v-model="busquedaComision.dateRange.endDate"
+                                    style="width: 100%;"
+                                    placeholder="Final"
+                                    format="yyyy/MM/dd"
+                                    value-format="yyyy-MM-dd"
+                                    :picker-options="endOption"
                                     @change="comisionesByRol">
                                 </el-date-picker>
                             </div>
@@ -76,7 +86,16 @@
         <div class="container-fluid">
         <div class="card card-info">
             <div class="card-header">
-            <h3 class="card-title">Comisiones lideradas como Prof. Guía</h3>
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3 class="card-title">Comisiones donde soy Prof. Guía</h3>
+                    </div>
+                    <div v-if="listarComisionesPaginated.length" class="col-md-2">
+                        <button title="Descargar acta en ZIP" class="btn btn-primary btn-block" @click.prevent="descargaActaZip(listarComisionesPaginated, 'actaGuia')">
+                            <i class="fas fa-file-archive"></i> Acta
+                        </button>
+                    </div>
+                </div>
             </div>
             <div id="accordion">
             <template v-if="listarComisionesPaginated.length">
@@ -101,10 +120,10 @@
                                     <!-- <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                                         <i class="fas fa-eye"></i>
                                     </router-link> -->
-                                    <button :title="'Descargar último documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                                    <button :title="'Descargar documento final'" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
                                         <i class="fas fa-file-download"></i>
                                     </button>
-                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-secondary" @click.prevent="getDocumento(item.id)">
+                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary" @click.prevent="getDocumento(item.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
                                     <template v-if="item.comisiones">
@@ -185,7 +204,16 @@
         </div>
         <div class="card card-info">
             <div class="card-header">
-            <h3 class="card-title">Comisiones donde soy partícipe</h3>
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3 class="card-title">Comisiones donde soy partícipe</h3>
+                    </div>
+                    <div v-if="listarComisionesPaginated2.length" class="col-md-2">
+                        <button title="Descargar actas donde soy participe en ZIP" class="btn btn-primary btn-block" @click.prevent="descargaActaZip(listarComisionesPaginated2, 'actaParticipe')">
+                            <i class="fas fa-file-archive"></i> Acta
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div id="accordion2">
@@ -204,7 +232,7 @@
                                     <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.fit.id)" v-loading.fullscreen.lock="fullscreenLoading">
                                         <i class="fas fa-file-download"></i>
                                     </button>
-                                    <button v-if="item.fit.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-secondary" @click.prevent="getDocumento(item.fit.id)">
+                                    <button v-if="item.fit.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary" @click.prevent="getDocumento(item.fit.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
                                     <template v-if="item">
@@ -294,13 +322,11 @@
     <div class="card-body pb-0">
         <div class="container-fluid">
             <div class="card card-info">
-                <div class="card-header container btn py-1" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
+                <div class="card-header container btn" data-toggle="collapse" data-target="#busquedaTotal" aria-expanded="false" aria-controls="busquedaTotal">
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="card-title font-weight-bold">
-                                <div class="btn boton btn-primary">
-                                    <i class="fas fa-search"></i>
-                                </div>
+                                <i class="fas fa-search"></i>
                                 Sistema de búsqueda
                             </h3>
                         </div>
@@ -326,7 +352,7 @@
                             <input placeholder="Nombre de profesor completo" class="col-md-9 form-control" type="text" v-model="busquedaComision.nombreProf" @keyup.enter="getListarComisionesByParametros">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label">Comisión</label>
                             <div class="col-md-9 px-0">
@@ -344,20 +370,32 @@
                                 </multiselect>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
+                    </div> -->
+                    <div class="col-md-12">
                         <div class="form-group row">
-                            <div class="col-md-3">
-                                <label class="col-form-label">Año</label>
+                            <div class="col-md-12">
+                                <label class="col-form-label">Rango de fechas</label>
                             </div>
-                            <div class="col-md-9 px-0">
+                            <div class="col-md-6">
                                 <el-date-picker
-                                    v-model="busquedaComision.yearSelected"
+                                    v-model="busquedaComision.dateRange.startDate"
                                     style="width: 100%;"
-                                    type="year"
+                                    format="yyyy/MM/dd"
+                                    value-format="yyyy-MM-dd"
                                     placeholder="Inicio"
-                                    value-format="yyyy"
-                                    @change="getListarComisionesByParametros">
+                                    :picker-options="startOption"
+                                    @change="selectStart">
+                                </el-date-picker>
+                            </div>
+                            <div class="col-md-6">
+                                <el-date-picker
+                                    v-model="busquedaComision.dateRange.endDate"
+                                    style="width: 100%;"
+                                    format="yyyy/MM/dd"
+                                    value-format="yyyy-MM-dd"
+                                    placeholder="Final"
+                                    :picker-options="endOption"
+                                    @change="comisionesByRol">
                                 </el-date-picker>
                             </div>
                         </div>
@@ -372,11 +410,16 @@
         <div class="container-fluid">
         <div class="card card-info">
             <div class="card-header container">
-            <div class="row">
-                <div class="col-md-12 mb-1">
-                    <h3 class="card-title font-weight-bold">Total de comisiones establecidas</h3>
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3 class="card-title font-weight-bold">Total de comisiones establecidas</h3>
+                    </div>
+                    <div v-if="listarComisionesTotalesPaginated.length" class="col-md-2">
+                        <button title="Descargar total de actas en ZIP" class="btn btn-primary btn-block" @click.prevent="descargaActaZip(listarComisionesTotalesPaginated, 'totalDeActasBuscada')">
+                            <i class="fas fa-file-archive"></i> Acta
+                        </button>
+                    </div>
                 </div>
-            </div>
             </div>
             <div id="accordion3" v-loading="fullscreenLoading">
             <template v-if="listarComisionesTotalesPaginated.length">
@@ -395,7 +438,7 @@
                                     <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning" @click.prevent="descargarDocumento(item.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
-                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-secondary" @click.prevent="getDocumento(item.id)">
+                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary" @click.prevent="getDocumento(item.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
                                     <button v-if="item.comisiones" title="Ingresar revisión" class="btn boton btn-success" @click.prevent="modalInsercionDocumento(item)">
@@ -584,7 +627,10 @@ export default {
             nombreAlumno: '',
             nombreProf: '',
             existenciaComision: { "id": 2, "valor": "Todas" },
-            yearSelected: ''
+            dateRange: {
+                startDate: null,
+                endDate: null
+            }
         },
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
         terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
@@ -624,6 +670,16 @@ export default {
         tesisForm: new FormData(),
         rolActivo: JSON.parse(localStorage.getItem('rolActivo')),
         hover: false,
+        startOption: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          }
+        },
+        endOption: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          }
+        },
     }
   },
   computed: {
@@ -700,6 +756,7 @@ export default {
   mounted(){
     this.comisionesByRol();
     this.getParametros();
+    this.selectStart();
   },
   methods:{
     comisionesByRol() {
@@ -731,13 +788,15 @@ export default {
     },
     getListarMisComisiones(){
         this.fullscreenLoading = true;
-        var url = '/comisiones/getListarMisComisiones'
+        var url = '/comisiones/getListarMisComisiones';
+        console.log(this.busquedaComision);
         axios.get(url, {
             params: {
                 bComision: this.busquedaComision.existenciaComision.id,
                 cTitulo: this.busquedaComision.tituloFID,
                 cAlum: this.busquedaComision.nombreAlumno,
-                nYear: this.busquedaComision.yearSelected
+                startDate: this.busquedaComision.dateRange.startDate,
+                endDate: this.busquedaComision.dateRange.endDate
             }
         }).then(response => {
             this.inicializarPaginacion();
@@ -748,12 +807,13 @@ export default {
     },
     getListarComisiones(){
         this.fullscreenLoading = true;
-        var url = '/comisiones/getListarComisiones'
+        var url = '/comisiones/getListarComisiones';
         axios.get(url, {
             params: {
                 cTitulo: this.busquedaComision.tituloFID,
                 cAlum: this.busquedaComision.nombreAlumno,
-                nYear: this.busquedaComision.yearSelected
+                startDate: this.busquedaComision.dateRange.startDate,
+                endDate: this.busquedaComision.dateRange.endDate
             }
         }).then(response => {
             this.inicializarPaginacion2();
@@ -781,7 +841,8 @@ export default {
             cTitulo: this.busquedaComision.tituloFID,
             cProf: this.busquedaComision.nombreProf,
             cAlum: this.busquedaComision.nombreAlumno,
-            nYear: this.busquedaComision.yearSelected
+            startDate: this.busquedaComision.dateRange.startDate,
+            endDate: this.busquedaComision.dateRange.endDate
         }
       }).then(response => {
           this.inicializarPaginacionTotal();
@@ -908,7 +969,41 @@ export default {
             this.fullscreenLoading = false;
             location.href = response.data.path;
         });
-    }
+    },
+    descargaActaZip(fit, tipo){
+        var url = '/comisiones/descargaActaZip';
+        if (fit[0].fit) fit = fit.map(x=>{return x.fit;}); // Revisa si tiene el objeto fit o comision y fuerza a ser fit
+        var arrayComisiones = fit.map(x=>{ // obtengo id de acta de archivoPDF
+            if(x.archivoActa.length > 0) return x.archivoActa[0].id;
+        });
+        arrayComisiones = arrayComisiones.filter(n => n); // limpieza de datos indefinidos
+        var lista = {
+            nIdArchivo: arrayComisiones,
+            cTipo: tipo
+        };
+        let postConfig = {
+            headers: {'X-Requested-With': 'XMLHttpRequest'},
+            responseType: 'blob',
+        }
+        axios.post(url,
+        lista,
+        postConfig
+        ).then(response => {
+            var oMyBlob = new Blob([response.data], {type : 'application/zip'});
+            var url = document.createElement('a')
+            url.href = URL.createObjectURL(oMyBlob);
+            url.download = tipo+'.zip';
+            url.click();
+        });
+    },
+    selectStart() {
+        this.busquedaComision.dateRange.endDate = null;
+        this.endOption = {
+            disabledDate: (time) => {
+                return time.getTime() < Date.parse(this.busquedaComision.dateRange.startDate) || time.getTime() > Date.now();
+            }
+        };
+    },
   }//cierre de methods
 }
 </script>

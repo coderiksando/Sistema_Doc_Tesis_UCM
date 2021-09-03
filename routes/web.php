@@ -126,6 +126,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/comisiones/getListarComisionesByParametros', 'ComisionesController@getListarComisionesByParametros');
   Route::get('/comisiones/pathDocumentoComision', 'ComisionesController@pathDocumentoComision');
   Route::post('/comisiones/setRegistrarDocumentoComision', 'ComisionesController@setRegistrarDocumentoComision');
+  Route::post('/comisiones/descargaActaZip', 'FilesController@descargaActaZip');
 
   /*********    RUTAS MODULO DE ADMINISTRACION DE REPORTES    **********/
   Route::Post('/administracion/tesis/setGenerarDocumento', 'AlumnoController@setGenerarDocumento');
