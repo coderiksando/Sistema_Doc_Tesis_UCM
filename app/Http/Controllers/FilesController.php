@@ -354,7 +354,7 @@ class FilesController extends Controller
         $zip = new ZipArchive();
         $flag = Str::random(10);
         if ($zip->open(public_path('storage/compressed/'.$flag.$tipoArchivo), ZipArchive::CREATE) == TRUE) {
-            $files = Files::files(public_path('storage\users'));
+            $files = Files::files(public_path('storage/users'));
             foreach ($files as $key=>$value) {
                 $relativeName = basename($value);
                 if (in_array($relativeName, $listArchivo->toArray())){
