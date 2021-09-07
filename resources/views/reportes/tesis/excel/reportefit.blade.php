@@ -41,14 +41,14 @@
                     <td>{{ $datatesis->user__p__guia->nombres.' '.$datatesis->user__p__guia->apellidos }}</td>
                     <td>{{ $datatesis->tipo }}</td>
                 @if($datatesis->bitacoras)
-                    <td>{{ $datatesis->bitacoras[count($datatesis->bitacoras)] }}</td>
-                    <td>{{ $datatesis->bitacoras[count($datatesis->bitacoras)] }}</td>
+                    <td>{{ $datatesis->bitacoras[count($datatesis->bitacoras)-1] }}</td>
+                    <td>{{ $datatesis->bitacoras[count($datatesis->bitacoras)-1] }}</td>
                 @else
                     <td></td>
                     <td></td>
                 @endif
                 @if($datatesis->avances_tesis)
-                    <td>{{ $datatesis->avances_tesis[count($datatesis->avances_tesis)] }}</td>
+                    <td>{{ $datatesis->avances_tesis[count($datatesis->avances_tesis)-1] }}</td>
                 @else
                     <td></td>
                 @endif
