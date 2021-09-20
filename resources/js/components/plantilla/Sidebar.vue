@@ -44,7 +44,7 @@
               </router-link>
             </template>
           </li>
-          <template  v-if="permisos.includes('usuarios.index', 'roles.index', 'permisos.index')">
+          <template  v-if="permisos.includes('usuarios.index') || permisos.includes('roles.index') || permisos.includes('permisos.index') || permisos.includes('registrar.tesis') || permisos.includes('index.tesisfinal')">
             <li class="nav-header">CONTROL DE USUARIOS</li>
               <template v-if="permisos.includes('usuarios.index')">
                 <li class="nav-item-sidebar">
@@ -87,7 +87,7 @@
             </template>
             </li>
           </template>
-          <template  v-if="permisos.includes('escuelas.index', 'areatesis.index')">
+          <template  v-if="permisos.includes('escuelas.index') || permisos.includes('areatesis.index') || permisos.includes('vinculacion.index') || permisos.includes('escuelas.documentos.navegar')">
             <li class="nav-header">CONTROL DE ESCUELAS</li>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('escuelas.index')">
@@ -130,7 +130,7 @@
                 </template>
               </li>
           </template>
-          <template  v-if="permisos.includes('parametros.index')">
+          <template  v-if="permisos.includes('parametros.index') || permisos.includes('reportes.logs')">
             <li class="nav-header">CONTROL DE SISTEMA</li>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('parametros.index')">
@@ -169,7 +169,7 @@
             </li>
           </template>
           <!-- VISTA PARA ADMINISTRACION DE DOCUMENTOS -->
-          <template  v-if="permisos.includes('actadefensa.index')">
+          <template  v-if="permisos.includes('actadefensa.index') || permisos.includes('documentos.index')">
             <li class="nav-header">CONTROL DE DOCUMENTOS</li>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('actadefensa.index')">
@@ -181,9 +181,6 @@
                 </router-link>
               </template>
             </li>
-          </template>
-          <template  v-if="permisos.includes('documentos.index')">
-
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('documentos.index')">
                 <router-link class="nav-link" :to="'/documentos'">
@@ -196,14 +193,14 @@
             </li>
           </template>
           <!-- PESTAÑAS PARA EL ALUMNO -->
-          <template  v-if="permisos.includes('tesis.fit')">
+          <template  v-if="permisos.includes('tesis.fit') || permisos.includes('avances.index') || permisos.includes('bitacoras.index') || permisos.includes('vinculacion.index') || permisos.includes('escuelas.documentos.navegar')">
             <li class="nav-header">SEGUIMIENTO DE DOCUMENTOS</li>
               <li class="nav-item-sidebar">
                 <template v-if="permisos.includes('tesis.fit')">
                   <router-link class="nav-link" :to="'/tesis'">
                     <i class="nav-icon far fa-edit"></i>
                     <p>
-                      Inscribir/Revisa {{terminoTitulo}}
+                      Inscribir/Revisar {{terminoTitulo}}
                     </p>
                   </router-link>
                 </template>
@@ -223,7 +220,7 @@
                   <router-link class="nav-link" :to="'/bitacoras'">
                     <i class="nav-icon fas fa-clipboard-check"></i>
                     <p>
-                      Bitácoras
+                      Actas de reunión
                     </p>
                   </router-link>
                 </template>
@@ -273,8 +270,9 @@
                 </template>
               </li>
           </template>
-
-          <template  v-if="permisos.includes('sitios.interes')">
+          <li class="nav-item-sidebar" style="height: 10vh">
+          </li>
+          <!-- <template  v-if="permisos.includes('sitios.interes')">
             <li class="nav-header">SITIOS DE INTERES</li>
             <li class="nav-item-sidebar">
               <a href="http://www.sibib.ucm.cl/" target="_blank" class="nav-link">
@@ -288,7 +286,7 @@
                 <p>Google Scholar</p>
               </a>
             </li>
-          </template>
+          </template> -->
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

@@ -10,6 +10,10 @@
           <i class="fa fa-bars"></i>
         </a>
       </li>
+      <li class="nav-item">
+        <div class="headtext" v-text="ruta"></div>
+      </li>
+
     </ul>
 
     <!-- SEARCH FORM -->
@@ -101,5 +105,11 @@ export default {
     .menuBtn {
         display: none;
     }
+}
+
+.headtext{
+  height: 100%;
+  color: white;
+  font-size: 2rem;
 }
 </style>
