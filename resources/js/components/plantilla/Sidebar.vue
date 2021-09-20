@@ -220,7 +220,7 @@
                   <router-link class="nav-link" :to="'/bitacoras'">
                     <i class="nav-icon fas fa-clipboard-check"></i>
                     <p>
-                      Bitácoras
+                      Actas de reunión
                     </p>
                   </router-link>
                 </template>

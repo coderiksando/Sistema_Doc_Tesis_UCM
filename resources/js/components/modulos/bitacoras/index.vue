@@ -4,7 +4,7 @@
       <div class="card-header">
         <div class="card-tools">
             <router-link class="btn btn-info bnt-sm" :to="'/bitacoras/crear'">
-          <i class="fas fa-plus-square"></i> Ingresar bitácora
+          <i class="fas fa-plus-square"></i> Ingresar Acta de reunión
         </router-link>
         </div>
       </div>
