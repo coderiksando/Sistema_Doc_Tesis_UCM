@@ -1,6 +1,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
   <title>Sistema de documentos UCM</title>
   <link rel="shortcut icon" type="image/png" href="{{ asset('img\ucm1.jpg') }}">
   <link rel="shortcut icon" sizes="192x192" href="{{ asset('img\ucm1.jpg') }}">
