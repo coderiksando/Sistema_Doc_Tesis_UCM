@@ -167,6 +167,7 @@ export default {
 
   },
   mounted(){
+    EventBus.$emit('navegar', 'Importar usuarios');
     //this.getParametros();
     this.getListarEscuelas();
   },

@@ -139,6 +139,7 @@ export default {
   computed: {
   },
   mounted(){
+      EventBus.$emit('navegar', 'Editar rol');
       this.getListarRoles();
       this.getListarPermisosByRol();
   },

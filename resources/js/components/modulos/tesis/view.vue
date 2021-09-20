@@ -1,191 +1,175 @@
 <template>
-  <div>
-
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-12">
-            <h1 class="m-0 text-dark font-weight-bold">{{terminoTituloExtendido}}</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-tools">
+        <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
+          <i class="fas fa-arrow-left"></i> {{globVar.btnBack}}
+        </a>
+      </div>
     </div>
-
-    <div class="container container-fluid">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-tools">
-            <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
-              <i class="fas fa-arrow-left"></i> {{globVar.btnBack}}
-            </a>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="container-fluid">
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">{{terminoTituloExtendido}}</h3>
-                        </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Prof. Guía</label>
-                                            <div class="col-md-9">
-                                                <el-input
-                                                    type="text"
-                                                    :autosize="{ minRows: 2, maxRows: 10}"
-                                                    :disabled="true"
-                                                    v-model="fillVerFIT.cProfesorguia">
-                                                </el-input>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Prof. Co-guía</label>
-                                            <div class="col-md-9">
-                                                <el-input
-                                                    type="text"
-                                                    :autosize="{ minRows: 2, maxRows: 10}"
-                                                    :disabled="true"
-                                                    v-model="fillVerFIT.cProfesorCoGuia">
-                                                </el-input>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Tipo de trabajo</label>
-                                            <div class="col-md-9">
-                                                <el-input
-                                                    type="text"
-                                                    :autosize="{ minRows: 2, maxRows: 10}"
-                                                    :disabled="true"
-                                                    v-model="fillVerFIT.cTipo">
-                                                </el-input>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Vinculación</label>
-                                            <div class="col-md-9">
+    <div class="card-body">
+      <div class="container-fluid">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">{{terminoTituloExtendido}}</h3>
+                    </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label">Prof. Guía</label>
+                                        <div class="col-md-9">
                                             <el-input
                                                 type="text"
                                                 :autosize="{ minRows: 2, maxRows: 10}"
                                                 :disabled="true"
-                                                v-model="fillVerFIT.nIdVinculacion">
-                                            </el-input>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Título</label>
-                                            <div class="col-md-9">
-                                                <el-input
-                                                    type="textarea"
-                                                    :autosize="{ minRows: 2, maxRows: 10}"
-                                                    :disabled="true"
-                                                    v-model="fillVerFIT.cTitulo">
-                                                </el-input>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                        <label class="col-md-3 col-form-label">Contribución</label>
-                                        <div class="col-md-9">
-                                            <el-input
-                                                type="textarea"
-                                                :autosize="{ minRows: 2, maxRows: 10}"
-                                                :disabled="true"
-                                                v-model="fillVerFIT.cContribucion">
+                                                v-model="fillVerFIT.cProfesorguia">
                                             </el-input>
                                         </div>
-                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                        <label class="col-md-3 col-form-label">Objetivo general</label>
-                                        <div class="col-md-9">
-                                            <el-input
-                                                type="textarea"
-                                                :autosize="{ minRows: 2, maxRows: 10}"
-                                                :disabled="true"
-                                                v-model="fillVerFIT.cObjetivoGeneral">
-                                            </el-input>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                        <label class="col-md-3 col-form-label">Objetivos específicos</label>
-                                        <div class="col-md-9">
-                                            <el-input
-                                                type="textarea"
-                                                :autosize="{ minRows: 2, maxRows: 10}"
-                                                :disabled="true"
-                                                v-model="fillVerFIT.cObjetivoEspecifico">
-                                            </el-input>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                        <label class="col-md-3 col-form-label">Descripción</label>
-                                        <div class="col-md-9">
-                                            <el-input
-                                                type="textarea"
-                                                :autosize="{ minRows: 2, maxRows: 10}"
-                                                :disabled="true"
-                                                v-model="fillVerFIT.cDescripcion">
-                                            </el-input>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <h3><b v-text="'Tabla de integrantes'"></b></h3>
-                                    </div>
-                                    <div class="table table-responsive">
-                                    <table class ="table table-hover table-head-fixed text-nowrap projects">
-                                        <thead>
-                                            <tr>
-                                                <th>Nombre integrante</th>
-                                                <th>Rut</th>
-                                                <th>Correo electrónico</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr v-for="(item, index) in fillVerFIT.users" :key="index">
-                                            <td>{{item.user.nombres + ' ' + item.user.apellidos}}</td>
-                                            <td>{{item.user.rut}}</td>
-                                            <td>{{item.user.email}}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    </div>
-                                    <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
-                                        <template v-if="originalResponse.aprobado_pg == 'P' && rolActivo =='Profesor' || originalResponse.aprobado_pg == 'A' && rolActivo !='Profesor'">
-                                            <div class="col-md-6 mx-auto">
-                                                <button :title="'Aprobar '+terminoTitulo" class="btn btn-flat btn-success btnWidth" @click.prevent="setCambiarEstadoFIT(1, fillVerFIT.nIdTesis)">
-                                                    <i class="fas fa-check"></i> Aceptar
-                                                </button>
-                                                <button :title="'Rechazar '+terminoTitulo" class="btn btn-flat btn-danger btnWidth" @click.prevent="setCambiarEstadoFITRechazo(2, fillVerFIT.nIdTesis)">
-                                                    <i class="fas fa-times"></i> Rechazar
-                                                </button>
-                                            </div>
-                                        </template>
-                                    </template>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label">Prof. Co-guía</label>
+                                        <div class="col-md-9">
+                                            <el-input
+                                                type="text"
+                                                :autosize="{ minRows: 2, maxRows: 10}"
+                                                :disabled="true"
+                                                v-model="fillVerFIT.cProfesorCoGuia">
+                                            </el-input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label">Tipo de trabajo</label>
+                                        <div class="col-md-9">
+                                            <el-input
+                                                type="text"
+                                                :autosize="{ minRows: 2, maxRows: 10}"
+                                                :disabled="true"
+                                                v-model="fillVerFIT.cTipo">
+                                            </el-input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label">Vinculación</label>
+                                        <div class="col-md-9">
+                                        <el-input
+                                            type="text"
+                                            :autosize="{ minRows: 2, maxRows: 10}"
+                                            :disabled="true"
+                                            v-model="fillVerFIT.nIdVinculacion">
+                                        </el-input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label">Título</label>
+                                        <div class="col-md-9">
+                                            <el-input
+                                                type="textarea"
+                                                :autosize="{ minRows: 2, maxRows: 10}"
+                                                :disabled="true"
+                                                v-model="fillVerFIT.cTitulo">
+                                            </el-input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Contribución</label>
+                                    <div class="col-md-9">
+                                        <el-input
+                                            type="textarea"
+                                            :autosize="{ minRows: 2, maxRows: 10}"
+                                            :disabled="true"
+                                            v-model="fillVerFIT.cContribucion">
+                                        </el-input>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Objetivo general</label>
+                                    <div class="col-md-9">
+                                        <el-input
+                                            type="textarea"
+                                            :autosize="{ minRows: 2, maxRows: 10}"
+                                            :disabled="true"
+                                            v-model="fillVerFIT.cObjetivoGeneral">
+                                        </el-input>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Objetivos específicos</label>
+                                    <div class="col-md-9">
+                                        <el-input
+                                            type="textarea"
+                                            :autosize="{ minRows: 2, maxRows: 10}"
+                                            :disabled="true"
+                                            v-model="fillVerFIT.cObjetivoEspecifico">
+                                        </el-input>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Descripción</label>
+                                    <div class="col-md-9">
+                                        <el-input
+                                            type="textarea"
+                                            :autosize="{ minRows: 2, maxRows: 10}"
+                                            :disabled="true"
+                                            v-model="fillVerFIT.cDescripcion">
+                                        </el-input>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <h3><b v-text="'Tabla de integrantes'"></b></h3>
+                                </div>
+                                <div class="table table-responsive">
+                                <table class ="table table-hover table-head-fixed text-nowrap projects">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre integrante</th>
+                                            <th>Rut</th>
+                                            <th>Correo electrónico</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(item, index) in fillVerFIT.users" :key="index">
+                                        <td>{{item.user.nombres + ' ' + item.user.apellidos}}</td>
+                                        <td>{{item.user.rut}}</td>
+                                        <td>{{item.user.email}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                </div>
+                                <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
+                                    <template v-if="originalResponse.aprobado_pg == 'P' && rolActivo =='Profesor' || originalResponse.aprobado_pg == 'A' && rolActivo !='Profesor'">
+                                        <div class="col-md-6 mx-auto">
+                                            <button :title="'Aprobar '+terminoTitulo" class="btn btn-flat btn-success btnWidth" @click.prevent="setCambiarEstadoFIT(1, fillVerFIT.nIdTesis)">
+                                                <i class="fas fa-check"></i> Aceptar
+                                            </button>
+                                            <button :title="'Rechazar '+terminoTitulo" class="btn btn-flat btn-danger btnWidth" @click.prevent="setCambiarEstadoFITRechazo(2, fillVerFIT.nIdTesis)">
+                                                <i class="fas fa-times"></i> Rechazar
+                                            </button>
+                                        </div>
+                                    </template>
+                                </template>
                             </div>
                         </div>
-                  </div>
+                    </div>
               </div>
           </div>
-      </div>
-
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -251,6 +235,7 @@ export default {
   computed: {
   },
    mounted(){
+    EventBus.$emit('navegar', 'Formulario de ingreso de documentos (FID)');
     this.getTesisById();
     this.getListarVinculacion();
   },

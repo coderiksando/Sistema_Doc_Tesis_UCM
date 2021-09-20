@@ -164,6 +164,9 @@ export default {
 
     }
   },
+  mounted(){
+      EventBus.$emit('navegar', 'Permisos');
+  },
   methods:{
 
     limpiarCriteriosBsq(){

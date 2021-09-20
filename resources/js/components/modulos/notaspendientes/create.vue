@@ -88,7 +88,8 @@ export default {
   computed: {
   },
    mounted(){
-      this.alertaNotaP();
+    EventBus.$emit('navegar', 'Ingresar nota pendiente');
+    this.alertaNotaP();
   },
   methods:{
     limpiarCriterios(){

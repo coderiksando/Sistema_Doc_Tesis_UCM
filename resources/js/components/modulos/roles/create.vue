@@ -136,6 +136,7 @@ export default {
   computed: {
   },
   mounted(){
+      EventBus.$emit('navegar', 'Crear rol');
       this.getListarPermisosByRol();
   },
   methods:{

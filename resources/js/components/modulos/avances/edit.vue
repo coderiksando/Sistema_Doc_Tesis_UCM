@@ -117,6 +117,7 @@ export default {
     }
   },
   mounted(){
+      EventBus.$emit('navegar', 'Editar Avances de documento');
       this.getAvance();
       this.getParametros();
   },

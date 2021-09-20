@@ -130,6 +130,7 @@ export default {
 
   },
   mounted(){
+    EventBus.$emit('navegar', 'Crear Avance de documento');
     this.getParametros();
   },
 

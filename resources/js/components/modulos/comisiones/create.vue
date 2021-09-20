@@ -159,6 +159,7 @@ export default {
   computed: {
   },
   mounted(){
+    EventBus.$emit('navegar', 'Crear nueva comisión');
     this.fullscreenLoading = true;
     this.getListarProfesores();
     this.getListarTesis();

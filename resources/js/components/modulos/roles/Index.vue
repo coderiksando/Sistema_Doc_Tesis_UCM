@@ -249,6 +249,9 @@ export default {
 
     }
   },
+  mounted(){
+    EventBus.$emit('navegar', 'Roles');
+  },
   methods:{
 
     limpiarCriteriosBsq(){

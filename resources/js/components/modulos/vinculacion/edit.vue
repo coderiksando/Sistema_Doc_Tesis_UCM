@@ -117,6 +117,7 @@ export default {
   computed: {
   },
   mounted(){
+      EventBus.$emit('navegar', 'Editar vinculación');
       this.getListarVinculacion();
   },
   methods:{

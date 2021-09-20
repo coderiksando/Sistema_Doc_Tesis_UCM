@@ -132,6 +132,7 @@ export default {
     }
   },
   mounted(){
+    EventBus.$emit('navegar', 'Areas de documento');
     this.getListarEscuelas();
   },
   computed: {

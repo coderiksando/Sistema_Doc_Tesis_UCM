@@ -1,17 +1,4 @@
 <template>
-  <div>
-
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Asignar permisos</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-
-    <div class="container container-fluid">
       <div class="card">
         <div class="card-header">
           <div class="card-tools">
@@ -105,11 +92,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-
-
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -162,6 +144,7 @@ export default {
   computed: {
   },
   mounted(){
+      EventBus.$emit('navegar', 'Editar permisos de usuario');
       this.getListarPermisosByRolAsignado();
       this.getRolByUsuario();
       this.getListarPermisosByUsuario();

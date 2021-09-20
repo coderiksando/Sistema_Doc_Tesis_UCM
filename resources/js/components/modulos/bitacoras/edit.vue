@@ -82,6 +82,7 @@ export default {
   },
   mounted(){
       this.getListarBitacorasByAlumno();
+      EventBus.$emit('navegar', 'Editar Acta de reunión');
   },
   methods:{
     limpiarCriterios(){
@@ -155,7 +156,6 @@ export default {
     inicializarPaginacion(){
       this.pageNumber = 0;
     },
-
   }// cierre methods
 }
 </script>

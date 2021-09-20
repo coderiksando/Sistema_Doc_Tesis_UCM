@@ -218,6 +218,9 @@ export default {
 
     }
   },
+  mounted(){
+    EventBus.$emit('navegar', 'Vinculaciones');
+  },
   methods:{
     limpiarCriteriosBsq(){
       this.fillBsqVinculacion.cNombre = '';

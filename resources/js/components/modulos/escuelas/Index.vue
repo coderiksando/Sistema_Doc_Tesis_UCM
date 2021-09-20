@@ -157,6 +157,7 @@ export default {
     }
   },
   mounted(){
+    EventBus.$emit('navegar', 'Escuelas');
     this.getListarFacultades();
   },
   methods:{

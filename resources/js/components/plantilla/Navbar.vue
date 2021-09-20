@@ -11,7 +11,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <div class="headtext" v-text="ruta"></div>
+        <div class="headtext" v-text="url"></div>
       </li>
 
     </ul>
@@ -76,9 +76,13 @@ export default {
     return{
       fullscreenLoading: false,
       permisos : JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
+      url : localStorage.getItem('url')
     }
   },
   mounted(){
+    EventBus.$on('navegar', url => {
+      this.url = url;
+    })
   },
   methods:{
     logout(){
@@ -93,6 +97,10 @@ export default {
         }
 
       })
+    },
+    updateUrl(){
+      this.url = localStorage.getItem('url');
+      console.log('hola');
     }
   }
 

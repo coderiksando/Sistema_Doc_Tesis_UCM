@@ -104,6 +104,7 @@ export default {
   computed: {
   },
   mounted(){
+      EventBus.$emit('navegar', 'Editar escuela');
       this.getListarEscuelas();
       this.getListarFacultades();
   },

@@ -191,6 +191,7 @@ export default {
     }
   },
   mounted(){
+    EventBus.$emit('navegar', 'Actas de defensa');
     },
   methods:{
     downloadItem (url) {
