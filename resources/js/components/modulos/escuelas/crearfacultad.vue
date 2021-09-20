@@ -82,6 +82,7 @@ export default {
     }
   },
   mounted(){
+    EventBus.$emit('navegar', 'Crear nueva facultad');
     this.getListarFacultades();
   },
   methods:{

@@ -764,6 +764,7 @@ export default {
     },
   },
   mounted(){
+    EventBus.$emit('navegar', 'Comisiones');
     this.comisionesByRol();
     this.getParametros();
     this.selectStart();

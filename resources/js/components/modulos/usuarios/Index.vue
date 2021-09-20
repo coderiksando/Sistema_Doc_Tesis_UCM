@@ -227,7 +227,9 @@ export default {
 
     }
   },
-
+  mounted(){
+    EventBus.$emit('navegar', 'Usuarios');
+  },
   methods:{
 
     limpiarCriteriosBsq(){

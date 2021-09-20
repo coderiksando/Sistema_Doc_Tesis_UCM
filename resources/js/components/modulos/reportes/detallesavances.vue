@@ -176,7 +176,8 @@ export default {
     }
   },
   mounted(){
-   this.getListarAvancesByAlumno()
+    EventBus.$emit('navegar', 'Detalle de avances');
+    this.getListarAvancesByAlumno()
     //this.getListarAvances();
     //this.getListarAlumnosByprofesor();
   },

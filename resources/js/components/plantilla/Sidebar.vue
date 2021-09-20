@@ -87,7 +87,7 @@
             </template>
             </li>
           </template>
-          <template  v-if="permisos.includes('escuelas.index') || permisos.includes('areatesis.index') || permisos.includes('vinculacion.index') || permisos.includes('escuelas.documentos.navegar')">
+          <template  v-if="permisos.includes('escuelas.index') || permisos.includes('areatesis.index') || permisos.includes('vinculacion.index')">
             <li class="nav-header">CONTROL DE ESCUELAS</li>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('escuelas.index')">
@@ -109,7 +109,7 @@
                 </router-link>
               </template>
             </li>
-            <li class="nav-item-sidebar">
+            <!-- <li class="nav-item-sidebar">
               <template v-if="permisos.includes('vinculacion.index')">
                 <router-link class="nav-link" :to="'/vinculacion'">
                   <i class="nav-icon fas fa-hands-helping"></i>
@@ -118,8 +118,8 @@
                   </p>
                 </router-link>
               </template>
-            </li>
-            <li class="nav-item-sidebar">
+            </li> -->
+            <!-- <li class="nav-item-sidebar">
                 <template v-if="permisos.includes('escuelas.documentos.navegar')">
                   <router-link class="nav-link" :to="'/documentosEscuela'">
                     <i class="nav-icon fa fa-folder"></i>
@@ -128,7 +128,7 @@
                     </p>
                   </router-link>
                 </template>
-              </li>
+              </li> -->
           </template>
           <template  v-if="permisos.includes('parametros.index') || permisos.includes('reportes.logs')">
             <li class="nav-header">CONTROL DE SISTEMA</li>

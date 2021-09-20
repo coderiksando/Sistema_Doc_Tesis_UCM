@@ -208,6 +208,7 @@ export default {
     }
   },
   mounted(){
+    EventBus.$emit('navegar', 'Avances de documento');
     this.getEstadoTesis();
     this.getListarAvances();
     this.getListarFitsByprofesor();

@@ -283,6 +283,7 @@ props: ['usuario'],
         }
     },
     mounted(){
+        EventBus.$emit('navegar', 'Sistema de Gestión y Administración de Documentos');
         this.inicializacion();
         this.datosPendientes();
     },

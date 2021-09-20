@@ -1,15 +1,4 @@
 <template>
-  <div>
-    <div class="content-header relative">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-12">
-            <h1 class="m-0 text-dark font-weight-bold">Documentos finalizados</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <div class="container container-fluid">
       <div class="card">
         <div class="card-body">
           <div class="container-fluid">
@@ -237,9 +226,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-</div>
 </template>
 
 <script>
@@ -319,6 +305,9 @@ export default {
     this.getListarProfesorByEscuela();
     this.getListarTesisTerminadas();
     this.selectStart();
+  },
+  mounted(){
+    EventBus.$emit('navegar', 'Documentos finalizados');
   },
   methods:{
     setGenerarDocumento(nIdTesis){

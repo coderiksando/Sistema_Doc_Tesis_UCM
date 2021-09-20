@@ -167,6 +167,7 @@ export default {
 
   },
   mounted(){
+    EventBus.$emit('navegar', 'Subir Documento final');
     this.getParametros();
     this.getDocumento();
   },

@@ -194,6 +194,7 @@ export default {
 
   },
   mounted(){
+    EventBus.$emit('navegar', 'Crear usuario');
     this.getListarRoles();
     this.getListarEscuelas();
   },

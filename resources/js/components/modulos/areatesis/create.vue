@@ -102,6 +102,7 @@ export default {
   computed: {
   },
    mounted(){
+    EventBus.$emit('navegar', 'Crear Areas de documento');
     this.getListarEscuelas();
   },
 

@@ -102,6 +102,7 @@ export default {
     }
   },
   mounted(){
+    EventBus.$emit('navegar', 'Crear nueva escuela');
     this.getListarFacultades();
   },
   methods:{

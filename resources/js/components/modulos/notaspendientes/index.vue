@@ -134,6 +134,7 @@ export default {
     }
   },
   mounted(){
+    EventBus.$emit('navegar', 'Nota pendiente');
     if(this.listRolPermisosByUsuario.includes('EsAlumno'))
     {
       this.getMiNotaP();

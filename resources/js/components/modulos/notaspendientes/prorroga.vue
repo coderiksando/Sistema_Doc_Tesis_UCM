@@ -91,6 +91,7 @@ export default {
   computed: {
   },
   mounted(){
+      EventBus.$emit('navegar', 'Ingresar prorroga de nota pendiente');
       this.getListarNotasPendientes();
   },
   methods:{

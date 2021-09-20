@@ -228,7 +228,8 @@
       }
     },
     mounted(){
-    this.getParametros()
+        EventBus.$emit('navegar', 'Parámetros del sistema');
+        this.getParametros()
     },
     methods: {
         addTagAvance (newTag, val) {

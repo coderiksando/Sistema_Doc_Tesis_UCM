@@ -122,6 +122,7 @@ export default {
 
   },
   mounted(){
+    EventBus.$emit('navegar', 'Subir Acta de defensa');
     this.getParametros();
     this.getDocumento();
   },

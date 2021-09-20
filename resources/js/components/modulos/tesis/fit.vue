@@ -361,6 +361,7 @@ export default {
     }
   },
   created(){
+    EventBus.$emit('navegar', 'Ingresar/Revisar FID');
     this.getListarTesis();
   },
   methods:{

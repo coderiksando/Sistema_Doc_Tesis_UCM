@@ -447,6 +447,7 @@ import globFunct from '../../../services/globFunct';
       }
     },
     mounted(){
+      EventBus.$emit('navegar', 'Reportes');
       this.getListarVinculacion();
       this.getListarTipoVinculacion();
       this.getListarEscuelas();

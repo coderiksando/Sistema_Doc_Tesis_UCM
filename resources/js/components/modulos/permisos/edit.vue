@@ -115,6 +115,7 @@ export default {
   computed: {
   },
   mounted(){
+      EventBus.$emit('navegar', 'Editar permisos');
       this.getListarPermisos();
   },
   methods:{

@@ -1,72 +1,54 @@
 
 <template>
-  <div>
-
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Ingresar nota final de documento</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-tools">
+        <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
+          <i class="fas fa-arrow-left"></i> {{globVar.btnBack}}
+        </a>
+      </div>
     </div>
-
-    <div class="container container-fluid">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-tools">
-            <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
-              <i class="fas fa-arrow-left"></i> {{globVar.btnBack}}
-            </a>
+    <div class="card-body">
+      <div class="container-fluid">
+        <div class="card card-info">
+          <div class="card-header">
+              <h3 class="card-title">Formulario registro de nota de alumno</h3>
+          </div>
+          <div class="card-body">
+            <form role="form">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Nota final documento</label>
+                    <div class="col-md-5">
+                      <template>
+                          <el-input-number v-bind:disabled="aprobar" v-model="fillSubirNota.Nota" size="large" v-bind:min="notaMinima" :precision="1" :step="0.1" :max="7"></el-input-number>
+                      </template>
+                    </div>
+                    <label class="col-md-2 col-form-label">Aprobar sin nota</label>
+                    <div class="col-md-2">
+                      <label class="switch">
+                        <input v-model="aprobar" type="checkbox" @change="interruptorNota">
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col-md-4 offset-4">
+                  <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarNota" v-loading.fullscreen.lock="fullscreenLoading"
+              >{{globVar.btnSave}}</button>
+              <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">{{globVar.btnClear}}</button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="card-body">
-          <div class="container-fluid">
-
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Formulario registro de nota de alumno</h3>
-                        </div>
-                            <div class="card-body">
-                                <form role="form">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Nota final documento</label>
-                                                <div class="col-md-5">
-                                                    <template>
-                                                        <el-input-number v-bind:disabled="aprobar" v-model="fillSubirNota.Nota" size="large" v-bind:min="notaMinima" :precision="1" :step="0.1" :max="7"></el-input-number>
-                                                    </template>
-                                                </div>
-                                                <label class="col-md-2 col-form-label">Aprobar sin nota</label>
-                                                <div class="col-md-2">
-                                                  <label class="switch">
-                                                      <input v-model="aprobar" type="checkbox" @change="interruptorNota">
-                                                      <span class="slider round"></span>
-                                                  </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-md-4 offset-4">
-                                        <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarNota" v-loading.fullscreen.lock="fullscreenLoading"
-                                    >{{globVar.btnSave}}</button>
-                                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">{{globVar.btnClear}}</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -83,7 +65,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -115,8 +96,9 @@ export default {
   computed: {
   },
    mounted(){
-      this.alertaNota();
-      this.getTesisById();
+    EventBus.$emit('navegar', 'Ingresar Nota');
+    this.alertaNota();
+    this.getTesisById();
   },
   methods:{
     limpiarCriterios(){

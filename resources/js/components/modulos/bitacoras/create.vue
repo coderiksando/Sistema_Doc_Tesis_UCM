@@ -102,7 +102,7 @@ export default {
   computed: {
   },
   mounted(){
-
+    EventBus.$emit('navegar', 'Crear Acta de reunión');  
     this.getListarFitsByprofesor();
   },
   methods:{
