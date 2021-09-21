@@ -180,7 +180,7 @@
                             <button :title="'Aprobar '+terminoTitulo" class="btn boton btn-success" @click.prevent="setCambiarEstadoFIT(1, item.id)">
                               <i class="fas fa-check"></i>
                             </button>
-                            <button :title="'Rechazar '+terminoTitulo" class="btn boton btn-danger" @click.prevent="setCambiarEstadoFITRechazo(2, item.id)">
+                            <button :title="'Rechazar '+terminoTitulo" class="btn boton btn-danger" @click.prevent="modalRechazo(item)">
                               <i class="fas fa-times"></i>
                             </button>
                         </template>
@@ -277,6 +277,29 @@
         </div>
         </div>
     </div>
+
+    <template v-if="mostrarModalRechazo">
+      <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @click.prevent="dismissModal()">
+        <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2;" v-on:click.stop>
+          <div class="swal2-header">
+            <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+              <div class="swal2-icon-content">!</div>
+            </div>
+            <h2 class="swal2-title" id="swal2-title" style="display: flex;">¿Escriba el motivo de su rechazo (opcional)?</h2>
+            <button type="button" class="swal2-close" aria-label="Close this dialog" style="display: none;">×</button>
+          </div>
+          <div class="swal2-content">
+            <div id="swal2-content" class="swal2-html-container" style="display: none;"></div>
+            <textarea v-model="motivo" class="swal2-textarea" style="display: flex;"></textarea>
+            <div class="swal2-validation-message" id="swal2-validation-message"></div>
+          </div>
+          <div class="swal2-actions">
+            <button type="button" class="swal2-confirm swal2-styled" style="display: inline-block; background-color: rgb(48, 133, 214); border-left-color: rgb(48, 133, 214); border-right-color: rgb(48, 133, 214); --darkreader-inline-bgcolor:#2166a7; --darkreader-inline-border-left:#1d5a93; --darkreader-inline-border-right:#1d5a93;"  @click.prevent="setCambiarEstadoFITRechazo">Si, Rechazar</button>
+            <button type="button" class="swal2-cancel swal2-styled" style="display: inline-block; background-color: rgb(221, 51, 51); --darkreader-inline-bgcolor:#a61c1c;" @click.prevent="dismissModal()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </template>
 </div>
 </template>
 
@@ -331,7 +354,10 @@ export default {
       },
       error: 0,
       mensajeError:[],
-      rolActivo : JSON.parse(localStorage.getItem('rolActivo'))
+      rolActivo : JSON.parse(localStorage.getItem('rolActivo')),
+      mostrarModalRechazo: false,
+      motivo: '',
+      idTesis: ''
     }
   },
   computed: {
@@ -393,7 +419,6 @@ export default {
       }).then(response => {
             this.inicializarPaginacion();
             this.listTesis = response.data;
-            console.log(response.data);
             this.fullscreenLoading = false;
       })
     },
@@ -403,15 +428,6 @@ export default {
       axios.get(url, {
       }).then(response => {
           this.listAllTesis = response.data;
-          this.fullscreenLoading = false;
-      })
-    },
-    getListarMiTesis(){
-      this.fullscreenLoading = true;
-      var url = '/alumno/getListarMiTesis'
-      axios.get(url, {
-      }).then(response => {
-          this.listMiTesis = response.data;
           this.fullscreenLoading = false;
       })
     },
@@ -468,38 +484,25 @@ export default {
         }
         })
     },
-    setCambiarEstadoFITRechazo (op, id) {
-        Swal.fire({
-        title: 'Escriba el motivo de su rechazo (opcional)',
-        icon: 'warning',
-        input: 'textarea',
-        inputAttributes: {autocapitalize: 'off'},
-        showCancelButton: true,
-        confirmButtonText: 'Enviar rechazo',
-        cancelButtonText: 'Cancelar rechazo',
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        }).then((response) => {
-        if (response.value) {
-            this.fullscreenLoading = false;
-            var url = '/alumno/setCambiarEstadoFIT'
-            axios.post(url, {
-                'nIdTesis'  : id,
-                'cEstadoPg' : (op == 1) ? 'A' : 'R',
-                'motivo'    : response.value
-            })
-            .then(response => {
-                Swal.fire({
-                icon: 'success',
-                title: 'Se ' + ((op == 1) ? 'aprobó ' : 'rechazó ') +' el formulario de inscripción',
-                showConfirmButton: false,
-                timer: 1500
-                })
-                this.getListarTesis();
-            })
-        }
-        })
+    setCambiarEstadoFITRechazo () {
+      this.mostrarModalRechazo = false;
+      var url = '/alumno/setCambiarEstadoFIT'
+      axios.post(url, {
+          'nIdTesis'  : this.idTesis,
+          'cEstadoPg' : 'R',
+          'motivo'    : this.motivo
+      })
+      .then(response => {
+          Swal.fire({
+          icon: 'success',
+          title: 'Se rechazó el formulario de inscripción',
+          showConfirmButton: false,
+          timer: 1500
+          })
+          this.getListarTesis();
+      })
     },
+
     mostrarModalAyuda() {
         this.modalAyuda = !this.modalAyuda;
     },
@@ -507,9 +510,19 @@ export default {
         Swal.fire({
             icon: 'warning',
             title: 'Motivo de rechazo',
-            text: data,
+            padding: 0,
+            html: '<div style="white-space: pre-wrap; max-height: 50vh; overflow: auto; padding: 10px">'+data+'</div>'
         })
-    }
+    },
+    modalRechazo(fit){
+      this.motivo = fit.motivo_pg;
+      this.idTesis = fit.id;
+      this.mostrarModalRechazo = true;
+    },
+    dismissModal(){
+      this.listTesis.find(fit => fit.id == this.idTesis).motivo_pg = this.motivo;
+      this.mostrarModalRechazo = false;
+    },
 
   }//cierre de methods
 }

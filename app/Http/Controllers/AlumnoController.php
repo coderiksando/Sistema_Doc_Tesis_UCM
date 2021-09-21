@@ -145,27 +145,20 @@ class AlumnoController extends Controller
         return $fit;
     }
     public function getListarMiTesis(Request $request){
-
         if(!$request->ajax()) return redirect('/');
+        $rol = $request->session()->get('rol');
 
         $nIdUsuario  = Auth::id();
-        $nIdTesis    =$request->nIdTesis;
-
-        $nIdUsuario  = ($nIdUsuario == NULL) ? ($nIdUsuario = '') : $nIdUsuario;
-        $nIdTesis    = ($nIdTesis == NULL) ? ($nIdTesis = 0) : $nIdTesis;
-
-        $rpta = DB::table('fit')
-                    ->join('users', 'users.id_user', '=', 'fit.id_profesorguia')
-                    ->leftjoin('vinculaciones', 'vinculaciones.id', '=', 'fit.id_vinculacion')
-                    ->select('fit.id','fit.titulo', 'users.nombres AS pname', 'vinculaciones.nombre AS vname', 'fit.tipo', 'fit.objetivo',
-                                'fit.contribucion', 'nombre_int1', 'rut_int1', 'telefono_int1', 'ingreso_int1', 'email_int1', 'nombre_int2',
-                                'rut_int2', 'email_int2', 'ingreso_int2', 'telefono_int2', 'fit.estado', 'fit.aprobado_pg', 'fit.id_alumno AS idAlumno')
-                    ->where('fit.id', '=', $nIdTesis)
-                    ->orWhere('fit.id', '=', 0)
-                    ->orWhere('fit.id_alumno', '=', $nIdUsuario)
-                    ->get();
-        return $rpta;
+        $fitsAlumno = Fit_User::where('id_user', $nIdUsuario)->pluck('id_fit');
+        $fitsProf = Fit::where('id_p_guia', $nIdUsuario)->pluck('id');
+        $fits = $fitsAlumno->union($fitsProf);
+        if($rol == 'Director'){
+            $fitsDirector = Fit::where('id_escuela', Auth::user()->id_escuela)->pluck('id');
+            $fits = $fits->union($fitsDirector);
+        }
+        return $fits;
     }
+    
     public function getListarTesisTerminadas(Request $request){
         if(!$request->ajax()) return redirect('/');
 
