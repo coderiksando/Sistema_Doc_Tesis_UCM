@@ -363,6 +363,7 @@ export default {
         }
     },
     mounted(){
+        EventBus.$emit('navegar', 'Perfil del usuario');
         this.inicializacion();
         this.getUsuarioById();
         this.getRolByUsuario();

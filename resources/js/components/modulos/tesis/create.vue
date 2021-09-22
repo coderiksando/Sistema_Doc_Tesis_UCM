@@ -515,6 +515,7 @@ export default {
   computed: {
   },
    mounted(){
+    EventBus.$emit('navegar', 'Crear FID');
     this.getListarProfesores();
     this.getListarVinculacion();
     this.getMyOwnUser();

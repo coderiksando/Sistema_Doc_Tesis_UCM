@@ -89,6 +89,7 @@ export default {
     }
   },
   mounted(){
+    EventBus.$emit('navegar', 'Revisiones de la comisión');
     this.getListarRevisiones();
   },
   methods:{

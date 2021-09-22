@@ -174,6 +174,9 @@ export default {
       return pagesArray;
     }
   },
+  mounted(){
+    EventBus.$emit('navegar', 'Documentos de alumnos');
+  },
   methods:{
     setGenerarDocumento(id_tesis){
       //this.fullscreenLoading = true;

@@ -237,6 +237,7 @@ export default {
     }
   },
   mounted(){
+    EventBus.$emit('navegar', 'Documentos de escuela');
     this.getListarEscuelas();
   },
   methods:{

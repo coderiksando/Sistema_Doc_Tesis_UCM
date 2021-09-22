@@ -135,6 +135,7 @@ export default {
 
   },
   mounted(){
+    EventBus.$emit('navegar', 'Subir constancia de examen');
     this.getParametros();
     this.getDocumento();
   },

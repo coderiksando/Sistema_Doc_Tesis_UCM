@@ -165,6 +165,7 @@ export default {
     }
   },
   mounted(){
+    EventBus.$emit('navegar', 'Detalle de Actas de reunión');
     this.getListarBitacorasByAlumno();
     //this.getListarMisBitacoras();
     this.getListarAlumnosByprofesor();

@@ -612,6 +612,7 @@ export default {
   },
   computed: {},
   mounted() {
+    EventBus.$emit('navegar', 'Editar FID');
     this.getListarProfesores();
     this.getTesisById();
     this.getListarVinculacion();

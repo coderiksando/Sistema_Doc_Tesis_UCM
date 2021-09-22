@@ -219,6 +219,7 @@ export default {
       }
     },
     mounted(){
+      EventBus.$emit('navegar', 'Registros del sistema');
       this.getListarUsuarios();
     },
     filters:{

@@ -25,7 +25,7 @@ window.Vue.use(VPopover);
 import Swal from 'sweetalert2';// alertas en botones
 window.Swal = Swal;
 
-export const EventBus = new Vue();// Para traspasar permisos entre componentes
+export const EventBus = new Vue();// Para traspasar informacion entre componentes
 window.EventBus = EventBus;
 
 Vue.component('App', require('./components/App.vue').default);

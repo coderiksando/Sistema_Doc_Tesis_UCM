@@ -10,6 +10,10 @@
           <i class="fa fa-bars"></i>
         </a>
       </li>
+      <li class="nav-item">
+        <div class="headtext" v-text="url"></div>
+      </li>
+
     </ul>
 
     <!-- SEARCH FORM -->
@@ -72,9 +76,13 @@ export default {
     return{
       fullscreenLoading: false,
       permisos : JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
+      url : localStorage.getItem('url')
     }
   },
   mounted(){
+    EventBus.$on('navegar', url => {
+      this.url = url;
+    })
   },
   methods:{
     logout(){
@@ -89,6 +97,10 @@ export default {
         }
 
       })
+    },
+    updateUrl(){
+      this.url = localStorage.getItem('url');
+      console.log('hola');
     }
   }
 
@@ -101,5 +113,11 @@ export default {
     .menuBtn {
         display: none;
     }
+}
+
+.headtext{
+  height: 100%;
+  color: white;
+  font-size: 2rem;
 }
 </style>

@@ -1,20 +1,4 @@
 <template>
-  <div>
-    <tooltip />
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-12">
-            <h1 class="m-0 text-dark font-weight-bold">Registro de documentos finalizados</h1>
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </div>
-
-    <div class="container container-fluid">
       <div class="card">
         <div class="card-header">
           <div class="card-tools">
@@ -559,8 +543,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
     <div
       class="modal fade"
@@ -1058,6 +1040,7 @@ export default {
   },
   computed: {},
   mounted() {
+    EventBus.$emit('navegar', 'Ingresar Documento finalizado');
     this.getListarProfesores();
     this.getListarVinculacion();
     this.getListarAlumnos();

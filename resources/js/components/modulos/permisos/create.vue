@@ -113,7 +113,9 @@ export default {
   },
   computed: {
   },
-
+  mounted(){
+    EventBus.$emit('navegar', 'Crear nuevo permiso');
+  },
   methods:{
     limpiarCriterios(){
       this.fillCrearPermiso.cNombre = '';

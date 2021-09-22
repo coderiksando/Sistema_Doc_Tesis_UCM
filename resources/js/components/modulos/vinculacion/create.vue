@@ -114,7 +114,9 @@ export default {
   },
   computed: {
   },
-
+  mounted(){
+    EventBus.$emit('navegar', 'Crear vinculación');
+  },
   methods:{
     limpiarCriterios(){
       this.fillCrearVinculacion.cNombre = '';

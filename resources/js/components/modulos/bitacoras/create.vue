@@ -11,15 +11,14 @@
       <div class="container-fluid">
         <div class="card card-info">
           <div class="card-header">
-            <h3 class="card-title">Formulario de registro de bitacoras</h3>
+            <h3 class="card-title">Acta de reunión</h3>
           </div>
           <div class="card-body">
             <form role="form">
               <div class="row">
                 <div class="col-md-12">
-                  <div class="form-group row">
-                    <label class="col-md-2 offset-1 col-form-label">Seleccionar alumno</label>
-                    <div class="col-md-8">
+                    <label>Seleccionar alumno</label>
+                    <div class="col-md-12">
                       <Multiselect
                         v-model="selectedFit"
                         placeholder="Seleccionar estudiante"
@@ -33,15 +32,12 @@
                       <template slot="noOptions">Lista vacía</template>
                       </Multiselect>
                     </div>
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-md-2 offset-1 col-form-label">Acuerdo</label>
-                    <div class="col-md-8">
+                    <label class="mt-2">Acuerdo</label>
+                    <div class="col-md-12">
                       <div id="app">
                         <ckeditor v-model="fillCrearBitacora.Acuerdo"></ckeditor>
                       </div>
                     </div>
-                  </div>
                 </div>
               </div>
             </form>
@@ -106,7 +102,7 @@ export default {
   computed: {
   },
   mounted(){
-
+    EventBus.$emit('navegar', 'Crear Acta de reunión');  
     this.getListarFitsByprofesor();
   },
   methods:{
@@ -159,7 +155,7 @@ export default {
         this.$router.push('/bitacoras');
         Swal.fire({
         icon: 'success',
-        title: 'Bitácora creada correctamente',
+        title: 'Acta de reunión registrada correctamente',
         showConfirmButton: false,
         timer: 1500
       })
@@ -167,7 +163,7 @@ export default {
         this.fullscreenLoading = false;
         Swal.fire({
         icon: 'error',
-        title: 'Error al crear Bitácora',
+        title: 'Error al crear Acta de reunión',
         showConfirmButton: false,
         timer: 1500
       })

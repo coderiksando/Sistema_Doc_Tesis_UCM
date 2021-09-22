@@ -155,6 +155,7 @@ export default {
     }
   },
   mounted(){
+      EventBus.$emit('navegar', 'Editar usuario');
       this.getUsuarioById();
       this.getListarRoles();
       this.getListarEscuelas();

@@ -1,65 +1,41 @@
 <template>
-  <div>
-
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">Editar bitácora</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-tools">
+        <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
+          <i class="fas fa-arrow-left"></i> {{globVar.btnBack}}
+        </a>
+      </div>
     </div>
-
-    <div class="container container-fluid">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-tools">
-            <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
-              <i class="fas fa-arrow-left"></i> {{globVar.btnBack}}
-            </a>
+    <div class="card-body">
+      <div class="container-fluid">
+      <div class="card card-info">
+          <div class="card-header">
+              <h3 class="card-title">Edición de Acta de reunión</h3>
           </div>
-        </div>
-        <div class="card-body">
-          <div class="container-fluid">
-
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Formulario de edición de bitácora</h3>
-                        </div>
-                            <div class="card-body">
-                                <form role="form">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 col-form-label">Acuerdo</label>
-                                                <div class="col-md-9">
-                                                  <div id="app">
-                                                      <ckeditor v-model="fillEditarBitacora.Acuerdo"></ckeditor>
-                                                  </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-md-4 offset-4">
-                                        <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarBitacora" v-loading.fullscreen.lock="fullscreenLoading"
-                                    >{{globVar.btnSave}}</button>
-                                    <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">{{globVar.btnClear}}</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+          <div class="card-body">
+            <form role="form">
+              <div class="row">
+                  <div class="col-md-12">
+                    <div id="app">
+                        <ckeditor v-model="fillEditarBitacora.Acuerdo"></ckeditor>
+                    </div>
+                  </div>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+            <div class="row">
+                <div class="col-md-4 offset-4">
+                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarBitacora" v-loading.fullscreen.lock="fullscreenLoading"
+                >{{globVar.btnSave}}</button>
+                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">{{globVar.btnClear}}</button>
                 </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-
-
-
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -106,6 +82,7 @@ export default {
   },
   mounted(){
       this.getListarBitacorasByAlumno();
+      EventBus.$emit('navegar', 'Editar Acta de reunión');
   },
   methods:{
     limpiarCriterios(){
@@ -153,10 +130,18 @@ export default {
         this.fullscreenLoading = false;
         Swal.fire({
         icon: 'success',
-        title: 'Bitacora Editada Correctamente',
+        title: 'Acta de reunión editada correctamente',
         showConfirmButton: false,
         timer: 1500
       })
+      }).catch(response=>{
+        this.fullscreenLoading = false;
+        Swal.fire({
+        icon: 'error',
+        title: 'Error al editar Acta de reunión',
+        showConfirmButton: false,
+        timer: 1500
+        }) 
       })
     },
     nextPage(){
@@ -171,7 +156,6 @@ export default {
     inicializarPaginacion(){
       this.pageNumber = 0;
     },
-
   }// cierre methods
 }
 </script>
