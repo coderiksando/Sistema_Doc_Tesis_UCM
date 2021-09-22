@@ -119,7 +119,6 @@ class AlumnoController extends Controller
     }
     public function getListarTesisView(Request $request){
         if(!$request->ajax()) return redirect('/');
-        Debugbar::info($request);
 
         $nIdTesis = $request->nIdTesis;
 
@@ -136,6 +135,7 @@ class AlumnoController extends Controller
                 $fit_user->User->first();
             }
         }
+        Debugbar::info($fit);
         return $fit;
     }
     public function getTesisById(Request $request){

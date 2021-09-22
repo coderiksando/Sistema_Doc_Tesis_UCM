@@ -177,7 +177,7 @@
                         </template>
 
                         <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
-                            <button :title="'Aprobar '+terminoTitulo" class="btn boton btn-success" @click.prevent="setCambiarEstadoFIT(1, item.id)">
+                            <button :title="'Aprobar '+terminoTitulo" class="btn boton btn-success" @click.prevent="acceptHandler(item)">
                               <i class="fas fa-check"></i>
                             </button>
                             <button :title="'Rechazar '+terminoTitulo" class="btn boton btn-danger" @click.prevent="modalRechazo(item)">
@@ -300,6 +300,98 @@
         </div>
       </div>
     </template>
+    
+    <template v-if="mostrarModalApruebo">
+      <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @click.prevent="mostrarModalApruebo=false">
+        <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2; width: 70% !important; min-width: 360px !important" v-on:click.stop>
+          <div class="swal2-header">
+            <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Sistema de documentos UCM</h5>
+                    <button class="close" @click="modalShow = !modalShow"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="callout callout-danger" style="padding: 5px" v-for="(item, index) in mensajeError" :key="index" v-text="item"></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary" @click="modalShow = !modalShow">{{globVar.btnClose}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+              <div class="swal2-icon-content">!</div>
+            </div>
+            <h2 class="swal2-title" id="swal2-title" style="display: flex;">Para aprobar el formulario ingrese su comisión evaluadora</h2>
+            <button type="button" class="swal2-close" aria-label="Close this dialog" style="display: none;">×</button>
+          </div>
+          <div class="swal2-content text-justify">
+            <form role="form">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Prof. comisión 1 (requerido)</label>
+                    <div class="col-md-9">
+                      <el-select v-model="fillCrearComision.Profesor1"
+                      placeholder="Asignar profesor para comisión"
+                      filterable
+                      clearable>
+                      <el-option
+                          v-for="item in listProfesores"
+                          :key="item.id_user"
+                          :label="item.fullname"
+                          :value="item.id_user">
+                      </el-option>
+                      </el-select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Prof. comisión 2</label>
+                    <div class="col-md-9">
+                      <el-select v-model="fillCrearComision.Profesor2"
+                      placeholder="Asignar profesor para comisión"
+                      filterable
+                      clearable>
+                      <el-option
+                          v-for="item in listProfesores"
+                          :key="item.id_user"
+                          :label="item.fullname"
+                          :value="item.id_user">
+                      </el-option>
+                      </el-select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Prof. externo</label>
+                    <div class="col-md-9">
+                      <input type="text" placeholder="Nombre profesor externo" class="form-control" v-model="fillCrearComision.NombrePEx" @keyup.enter="setCambiarEstadoFIT">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Email prof. externo</label>
+                    <div class="col-md-9">
+                      <input type="text" placeholder="Email profesor externo" class="form-control" v-model="fillCrearComision.EmailPEx" @keyup.enter="setCambiarEstadoFIT">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Institución prof. externo</label>
+                    <div class="col-md-9">
+                      <input type="text" placeholder="Institución profesor externo" class="form-control" v-model="fillCrearComision.InstitucionPEx" @keyup.enter="setCambiarEstadoFIT">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="swal2-actions">
+            <button type="button" class="swal2-confirm swal2-styled" style="display: inline-block; background-color: rgb(48, 133, 214); border-left-color: rgb(48, 133, 214); border-right-color: rgb(48, 133, 214); --darkreader-inline-bgcolor:#2166a7; --darkreader-inline-border-left:#1d5a93; --darkreader-inline-border-right:#1d5a93;"  @click.prevent="setCambiarEstadoFIT">Si, Aprobar</button>
+            <button type="button" class="swal2-cancel swal2-styled" style="display: inline-block; background-color: rgb(221, 51, 51); --darkreader-inline-bgcolor:#a61c1c;" @click.prevent="mostrarModalApruebo=false">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </template>
 </div>
 </template>
 
@@ -321,6 +413,13 @@ export default {
         cNombre: '',
         cSlug: ''
       },
+      fillCrearComision:{
+        Profesor1: '',
+        Profesor2: '',
+        NombrePEx: '',
+        EmailPEx: '',
+        InstitucionPEx: ''
+      },
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       listRolByUser: JSON.parse(localStorage.getItem('rolUser')),
       terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
@@ -339,6 +438,7 @@ export default {
       listTesis: 1,
       listAllTesis:1,
       listMiTesis:[],
+      listProfesores: [],
       fullscreenLoading: false,
       pageNumber: 0,
       perPage: 5,
@@ -356,6 +456,7 @@ export default {
       mensajeError:[],
       rolActivo : JSON.parse(localStorage.getItem('rolActivo')),
       mostrarModalRechazo: false,
+      mostrarModalApruebo: false,
       motivo: '',
       idTesis: ''
     }
@@ -389,6 +490,7 @@ export default {
   created(){
     EventBus.$emit('navegar', 'Ingresar/Revisar FID');
     this.getListarTesis();
+    this.getListarProfesores();
   },
   methods:{
     setGenerarDocumento(nIdTesis){
@@ -455,27 +557,59 @@ export default {
       this.pageNumber = 0;
     },
 
-  setCambiarEstadoFIT(op, id){
-        Swal.fire({
-        title: '¿Está seguro que desea ' + ((op == 1) ? 'aprobar ' : 'rechazar ') + 'el formulario de inscripción?',
+  setCambiarEstadoFIT(){
+    if(this.validarRegistrarComision()){
+      this.modalShow = true;
+      return;
+    }
+    this.mostrarModalApruebo = false;
+    this.fullscreenLoading = true;
+    var url = '/comisiones/setRegistrarComision';
+    axios.post(url, {
+      'idTesis'           : this.idTesis,
+      'Profesor1'         : this.fillCrearComision.Profesor1,
+      'Profesor2'         : this.fillCrearComision.Profesor2,
+      'NombrePEx'         : this.fillCrearComision.NombrePEx,
+      'EmailPEx'          : this.fillCrearComision.EmailPEx,
+      'InstitucionPEx'    : this.fillCrearComision.InstitucionPEx
+    }).then(response => {
+        var url = '/alumno/setCambiarEstadoFIT'
+        axios.post(url, {
+        'nIdTesis' : this.idTesis,
+        'cEstadoPg'    : 'A'
+        }).then(response => {
+            this.fullscreenLoading = false;
+            Swal.fire({
+            icon: 'success',
+            title: 'Se aprobó el formulario de inscripción',
+            showConfirmButton: false,
+            timer: 1500
+            });
+            this.getListarTesis();
+        })
+    })
+  },
+    aprobarFIT(){
+       Swal.fire({
+        title: '¿Está seguro que desea aprobar el formulario de inscripción?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: ((op == 1) ? 'Si, Aprobar' : 'No, Rechazar'),
+        confirmButtonText: 'Si, Aprobar',
         cancelButtonText: 'Cancelar',
         }).then((result) => {
         if (result.value) {
             this.fullscreenLoading = true;
             var url = '/alumno/setCambiarEstadoFIT'
             axios.post(url, {
-            'nIdTesis' : id,
-            'cEstadoPg'    : (op == 1) ? 'A' : 'R'
+            'nIdTesis' : this.idTesis,
+            'cEstadoPg'    : 'A'
             }).then(response => {
                 this.fullscreenLoading = false;
                 Swal.fire({
                 icon: 'success',
-                title: 'Se ' + ((op == 1) ? 'aprobó ' : 'rechazó ') +' el formulario de inscripción',
+                title: 'Se aprobó el formulario de inscripción',
                 showConfirmButton: false,
                 timer: 1500
                 })
@@ -519,11 +653,49 @@ export default {
       this.idTesis = fit.id;
       this.mostrarModalRechazo = true;
     },
+
     dismissModal(){
       this.listTesis.find(fit => fit.id == this.idTesis).motivo_pg = this.motivo;
       this.mostrarModalRechazo = false;
     },
+    getListarProfesores(){
+        var url = '/alumno/getListarProfesores';
+        axios.get(url, {
+        }).then(response => {
+            this.listProfesores = response.data;
+        })
+    },
+    acceptHandler(fit){
+      this.idTesis = fit.id;
+      if (this.rolActivo == 'Profesor' && !fit.comisiones) {
+        this.fillCrearComision.Profesor1       = '';
+        this.fillCrearComision.Profesor2       = '';
+        this.fillCrearComision.NombrePEx       = '';
+        this.fillCrearComision.EmailPEx        = '';
+        this.fillCrearComision.InstitucionPEx  = '';
+        this.mostrarModalApruebo = true;
+      }else{
+        this.aprobarFIT();
+      }
 
+    },
+    validarRegistrarComision(){
+      this.error = 0;
+      this.mensajeError = [];
+        if(!this.idTesis){
+          this.mensajeError.push("La selección de documento es obligatoria");
+        }
+        if(!this.fillCrearComision.Profesor1){
+          this.mensajeError.push("La selección del primer profesor es obligatoria");
+        }
+        if(this.fillCrearComision.Profesor1 == this.fillCrearComision.Profesor2){
+          this.mensajeError.push("El primer y segundo profesor no pueden ser iguales");
+        }
+        if(this.mensajeError.length){
+          this.error = 1;
+        }
+        return this.error;
+    },
   }//cierre de methods
 }
 </script>
