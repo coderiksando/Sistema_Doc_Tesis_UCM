@@ -30,31 +30,35 @@ class UsersController extends Controller
         $cApellido    =   $request->cApellido;
         $cCorreo      =   $request->cCorreo;
         $cEstado      =   $request->cEstado;
-        $cEscuela     =   $request->cEscuela;
+        $nEscuela     =   $request->nEscuela;
+        $nIdRol       =   $request->nIdRol;
 
         $nIdUsuario = ($nIdUsuario == NULL) ? ($nIdUsuario = 0) : $nIdUsuario;
         $cNombre    = ($cNombre == NULL) ? ($cNombre = '') : $cNombre;
         $cApellido  = ($cApellido == NULL) ? ($cApellido = '') : $cApellido;
         $cCorreo    = ($cCorreo == NULL) ? ($cCorreo = '') : $cCorreo;
         $cEstado    = ($cEstado == NULL) ? ($cEstado = '') : $cEstado;
-        $cEscuela   = ($cEscuela == NULL) ? ($cEscuela = '0') : $cEscuela;
+        $nEscuela   = ($nEscuela == NULL) ? ($nEscuela = '0') : $nEscuela;
 
         $iduser   = Auth::id();
 
         $admins = Users_Roles::where('id_roles', '1')->pluck('id_user')->all();
 
-        $rpta = DB::table('users')
-        ->leftjoin('files', 'users.id_files', '=', 'files.id')
-        ->join('escuelas', 'escuelas.id', '=', 'users.id_escuela')
-        ->select('users.*','escuelas.nombre as nombreEscuela')
-        ->selectRaw('CONCAT_WS(" ", nombres, apellidos) as fullname, files.path as profile_image')
-        ->where('nombres', 'like', "%$cNombre%")
-        ->where('apellidos', 'like', "%$cApellido%")
-        ->where('users.email', 'like', "%$cCorreo%")
-        ->where('users.state', 'like', "%$cEstado%")
-        ->where('users.id_user', '<>', "%$iduser%")
-        ->whereNotIn('users.id_user', $admins);
-        if ($cEscuela != 0) $rpta = $rpta->where('users.id_escuela',$cEscuela);
+        $rpta = DB  ::table('users')
+                    ->leftjoin('files', 'users.id_files', '=', 'files.id')
+                    ->leftJoin('users_roles', 'users_roles.id_user', '=', 'users.id_user')
+                    ->leftJoin('roles','roles.id','=','users_roles.id_roles')
+                    ->join('escuelas', 'escuelas.id', '=', 'users.id_escuela')
+                    ->select('users.*','escuelas.nombre as nombreEscuela')
+                    ->selectRaw('CONCAT_WS(" ", nombres, apellidos) as fullname, files.path as profile_image')
+                    ->where('nombres', 'like', "%$cNombre%")
+                    ->where('apellidos', 'like', "%$cApellido%")
+                    ->where('users.email', 'like', "%$cCorreo%")
+                    ->where('users.state', 'like', "%$cEstado%")
+                    ->where('users.id_user', '<>', "$iduser")
+                    ->whereNotIn('users.id_user', $admins);
+        if ($nIdRol) $rpta->where('roles.id', "=", "$nIdRol");
+        if ($nEscuela != 0) $rpta->where('users.id_escuela',$nEscuela);
         return $rpta->orderBy('nombres')->get();
     }
 

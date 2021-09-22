@@ -153,8 +153,10 @@
                                         </div>
                                     </dd>
                                 </template>
+                                <dt class="col-md-4">Escuela:</dt>
+                                <dd class="col-md-8">{{item.escuela.nombre}}</dd>
                                 <dt class="col-md-4">Título:</dt>
-                                <dd class="col-md-8">{{item.titulo}}</dd>
+                                <dd class="col-md-8">{{globFunct.capitalizeFirstLetter(item.titulo)}}</dd>
                                 <dt class="col-md-4">Descripción:</dt>
                                 <dd class="col-md-8">{{item.descripcion}}</dd>
                                 <template v-if="item.user__p__coguia">
@@ -264,6 +266,8 @@
                                         </div>
                                     </dd>
                                 </template>
+                                <dt class="col-md-4">Escuela:</dt>
+                                <dd class="col-md-8">{{item.fit.escuela.nombre}}</dd>
                                 <dt class="col-md-4">Título:</dt>
                                 <dd class="col-md-8">{{globFunct.capitalizeFirstLetter(item.fit.titulo)}}</dd>
                                 <dt class="col-md-4">Descripción:</dt>
@@ -478,6 +482,8 @@
                                         </div>
                                     </dd>
                                 </template>
+                                <dt class="col-md-4">Escuela:</dt>
+                                <dd class="col-md-8">{{item.escuela.nombre}}</dd>
                                 <dt class="col-md-4">Título:</dt>
                                 <dd class="col-md-8">{{globFunct.capitalizeFirstLetter(item.titulo)}}</dd>
                                 <dt class="col-md-4">Descripción:</dt>

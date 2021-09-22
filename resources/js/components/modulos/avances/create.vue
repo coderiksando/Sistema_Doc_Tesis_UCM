@@ -28,7 +28,7 @@
                   <div class="form-group row">
                     <label class="col-md-2 offset-1 col-form-label">Descripción</label>
                     <div class="col-md-8">
-                        <textarea maxlength="255" class="form-control" rows="3" v-model="fillCrearAvances.cDescripcion"></textarea>
+                        <textarea maxlength="255" class="form-control text-justify" rows="3" v-model="fillCrearAvances.cDescripcion"></textarea>
                     </div>
                   </div>
                   <div class="form-group row">

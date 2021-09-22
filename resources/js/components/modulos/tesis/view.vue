@@ -170,7 +170,7 @@
                     </div>
               </div>
           </div>
-    
+
     <template v-if="mostrarModalRechazo">
       <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @click.prevent="dismissModal">
         <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2;" v-on:click.stop>

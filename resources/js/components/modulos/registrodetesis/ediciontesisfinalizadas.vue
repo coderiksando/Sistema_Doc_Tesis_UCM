@@ -133,7 +133,7 @@
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 5 }"
                             maxlength="200"
-                            placeholder="Título del documento" d
+                            placeholder="Título del documento"
                             show-word-limit
                             v-model="fillEditarFIT.cTitulo"
                           >
@@ -1572,5 +1572,8 @@ export default {
     padding-left: 0px;
     margin-right: 0px;
     margin-left: 0px;
+}
+.el-textarea__inner {
+    text-align: justify;
 }
 </style>

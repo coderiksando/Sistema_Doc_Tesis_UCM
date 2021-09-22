@@ -139,10 +139,10 @@ class ReportesController extends Controller
                                 ->join('escuelas', 'users.id_escuela', '=', 'escuelas.id')
                                 ->where('tipo_pdf', 'final_t');
 
-        $reportdata = $archivosPdf->where('titulo', 'like', "%$titulo%")
-                                   ->where('id_user','like', "%$idprofesor%")
-                                   ->where('escuelas.id','like', "%$idEscuela%")
-                                   ->get();
+        $reportdata = $archivosPdf->where('titulo', 'like', "%$titulo%");
+        if ($idprofesor) $reportdata->where('id_user','=', "$idprofesor");
+        if ($idEscuela) $reportdata->where('escuelas.id','=', "$idEscuela");
+        $reportdata->get();
 
         return $reportdata;
 
@@ -163,15 +163,13 @@ class ReportesController extends Controller
         $fechaInicio   = ($fechaInicio == NULL) ? ($fechaInicio = '2000-01-01') : Carbon::parse($fechaInicio)->startOfDay();
         $fechaFin      = ($fechaFin == NULL)    ? ($fechaFin = '2100-01-01')    : Carbon::parse($fechaFin)->endOfDay();
 
-
-        $logs = Log::select('actividad', 'rol', 'ip', 'target', 'logs.created_at as fecha', 'users.nombres', 'users.apellidos')
-                   ->join('users', 'logs.user_id', 'users.id_user')
-                   ->where('actividad', 'like', "%$actividad%")
-                   ->where('user_id', 'like', "%$idUsuario%")
-                   ->where('rol', 'like', "%$rol%")
-                   ->WhereBetween('logs.created_at', [$fechaInicio, $fechaFin])
-                   ->orderByDesc('logs.created_at')->get();
-
+        $logs = Log ::join('users', 'logs.user_id', 'users.id_user')
+                    ->where('actividad', 'like', "%$actividad%");
+        if ($idUsuario) $logs = $logs->where('user_id', '=', "$idUsuario");
+        $logs = $logs   ->where('rol', 'like', "%$rol%")
+                        ->WhereBetween('logs.created_at', [$fechaInicio, $fechaFin])
+                        ->select('actividad', 'rol', 'ip', 'target', 'logs.created_at as fecha', 'users.nombres', 'users.apellidos')
+                        ->orderByDesc('logs.created_at')->get();
         return $logs;
     }
 
@@ -193,9 +191,9 @@ class ReportesController extends Controller
                         ->join('users_roles', 'users_roles.id_user', '=', 'users.id_user')
                         ->join('roles', 'roles.id', '=', 'users_roles.id_roles')
                         ->select('users.id_user', DB::raw("CONCAT(users.nombres,' ',users.apellidos) as fullname"))
-                        ->where('roles.name', 'Profesor')
-                        ->where('users.id_escuela', 'like', "%$escuela%")
-                        ->orderBy('fullname')->get();
+                        ->where('roles.name', 'Profesor');
+        if ($escuela) $profesores->where('users.id_escuela', '=', "$escuela");
+        $profesores->orderBy('fullname')->get();
         return $profesores;
     }
 }

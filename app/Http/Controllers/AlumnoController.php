@@ -86,7 +86,7 @@ class AlumnoController extends Controller
             $fits = Fit::whereIn('id', $fitUser);
         }elseif($rol == 'Profesor'){
             $fits = Fit::where('id_p_guia', $nIdUsuario)->whereIn('aprobado_pg', ['P', 'A', 'V']);
-        }elseif($rol == 'Director'){ 
+        }elseif($rol == 'Director'){
             $fits = Fit::whereIn('aprobado_pg', ['A', 'V'])
             ->where('id_escuela', Auth::user()->id_escuela);
         }else{
@@ -149,16 +149,16 @@ class AlumnoController extends Controller
         $rol = $request->session()->get('rol');
 
         $nIdUsuario  = Auth::id();
-        $fitsAlumno = Fit_User::where('id_user', $nIdUsuario)->pluck('id_fit');
-        $fitsProf = Fit::where('id_p_guia', $nIdUsuario)->pluck('id');
-        $fits = $fitsAlumno->union($fitsProf);
+        $fitsAlumno = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
+        $fitsProf = Fit::where('id_p_guia', $nIdUsuario)->get()->pluck('id');
+        $fits = $fitsAlumno->concat($fitsProf);
         if($rol == 'Director'){
-            $fitsDirector = Fit::where('id_escuela', Auth::user()->id_escuela)->pluck('id');
-            $fits = $fits->union($fitsDirector);
+            $fitsDirector = Fit::where('id_escuela', Auth::user()->id_escuela)->get()->pluck('id');
+            $fits = $fits->concat($fitsDirector);
         }
         return $fits;
     }
-    
+
     public function getListarTesisTerminadas(Request $request){
         if(!$request->ajax()) return redirect('/');
 
@@ -194,11 +194,11 @@ class AlumnoController extends Controller
                 ->where(DB::raw("CONCAT(alumno.nombres,' ',alumno.apellidos)"), 'like', "%$cAlumno%")
                 ->where(DB::raw("CONCAT(pGuia.nombres,' ',pGuia.apellidos)"), 'like', "%$cProfesor%")
                 ->where('fit.titulo','like',"%$cTitulo%")
-                ->where('fit.id_escuela','like',"%$nIdEscuela%")
                 ->where('fit.estado','like',"%$cEstadoTesis%")
                 ->where('fit.aprobado_pg',"V")
-                ->whereBetween('fit.fecha', [$dFechaInicio,$dFechaFin])
-                ->get()
+                ->whereBetween('fit.created_at', [$dFechaInicio,$dFechaFin]);
+        if ($nIdEscuela) $fits->where('fit.id_escuela','=',"$nIdEscuela");
+        $fits   ->get()
                 ->pluck('id');
 
         $fitsDetails = Fit::findMany($fits);

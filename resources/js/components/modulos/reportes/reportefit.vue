@@ -527,7 +527,7 @@ import globFunct from '../../../services/globFunct';
       }
     },
     mounted(){
-      EventBus.$emit('navegar', 'Reportes');
+      EventBus.$emit('navegar', 'Reportes de documentos');
       this.getListarVinculacion();
       this.getListarTipoVinculacion();
       this.getListarEscuelas();

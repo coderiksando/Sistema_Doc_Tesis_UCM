@@ -39,10 +39,10 @@ class EscuelasController extends Controller
         $cNombre        = ($cNombre == NULL)        ? ($cNombre = '')     : $cNombre;
         $nIdFacultad    = ($nIdFacultad == NULL)    ? ($nIdFacultad = '') : $nIdFacultad;
 
-        $rpta = Escuelas::where('id', 'like', "%$nIdEscuela%")
-                        ->where('nombre', 'like', "%$cNombre%")
-                        ->where('id_facultad', 'like', "%$nIdFacultad%")
-                        ->get();
+        $rpta = Escuelas::where('nombre', 'like', "%$cNombre%");
+        if ($nIdEscuela) $rpta = $rpta->where('id', '=', "$nIdEscuela");
+        if ($nIdFacultad) $rpta = $rpta->where('id_facultad', '=', "$nIdFacultad");
+        $rpta = $rpta->get();
         foreach($rpta as $escuela){
             $escuela->Facultad;
         }
@@ -58,7 +58,7 @@ class EscuelasController extends Controller
         $nIdFacultad = ($nIdFacultad == NULL)   ? ($nIdFacultad = '') : $nIdFacultad;
 
         $testEscuela = DB::table('escuelas')->where('nombre', $cNombre)->where('id_facultad', $nIdFacultad)->exists();
-        
+
         if ($testEscuela){
             return response(['error' => 'Elemento ya existe'], 409);
         }else{
@@ -66,7 +66,7 @@ class EscuelasController extends Controller
                 'nombre' => $cNombre,
                 'id_facultad' => $nIdFacultad
             ]);
-        }  
+        }
     }
     public function setEditarEscuelas(Request $request){
 
@@ -101,7 +101,7 @@ class EscuelasController extends Controller
         if ($nIdEscuela == -1) $nIdEscuela = $user->id_escuela;
 
         $documentos = DocumentosEscuela::where('id_escuela', $nIdEscuela);
-        
+
         if ($request->nIdEscuela == -1) {
             $documentos->orWhere('id_escuela', 0);
         }

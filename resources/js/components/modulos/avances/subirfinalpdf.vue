@@ -65,9 +65,9 @@
                     <label class="form-check-label text-justify" for="autorizacion1">
                       Autorizo al Sistema de Gestión y Administración de Documentos de la Universidad Católica del Maule a publicar la versión
                       electrónica de esta tesis en su Repositorio Académico, para ser consultada por la comunidad
-                      UCM. 
+                      UCM.
                     </label>
-                  </div>    
+                  </div>
                 </div>
                 <div class="col-md-10 offset-md-1 mb-2">
                   <div class="form-check">
@@ -75,9 +75,9 @@
                     <label class="form-check-label text-justify" for="autorizacion2">
                       Autorizo al Sistema de Gestión y Administración de Documentos de la Universidad Católica del Maule a publicar la versión
                       electrónica de esta tesis en su Repositorio Académico, para ser consultada por la comunidad
-                      UCM, previo embargo de <input v-model="fillCrearFinalPdf.nMeses" :disabled="formOption != 1" type="number" class="text-center" style="width: 55px"> meses.  
+                      UCM, previo embargo de <input v-model="fillCrearFinalPdf.nMeses" :disabled="formOption != 1" type="number" class="text-center" style="width: 55px"> meses.
                     </label>
-                  </div>    
+                  </div>
                 </div>
                 <div class="col-md-10 offset-md-1 mb-2">
                   <div class="form-check">
@@ -85,13 +85,13 @@
                     <label class="form-check-label" for="autorizacion3">
                       No autorizo. (Justifique)
                     </label>
-                  </div>    
+                  </div>
                 </div>
                 <div v-if="formOption == 2" class="col-md-10 offset-md-1 mb-2">
                   <div class="form-group row">
                     <label class="col-md-12 col-form-label">Motivo</label>
                     <div class="col-md-12">
-                        <textarea v-model="fillCrearFinalPdf.cMotivo" maxlength="250" rows="3" type="textarea"  class="form-control"></textarea>
+                        <textarea v-model="fillCrearFinalPdf.cMotivo" maxlength="250" rows="3" type="textarea"  class="form-control text-justify"></textarea>
                     </div>
                   </div>
                 </div>

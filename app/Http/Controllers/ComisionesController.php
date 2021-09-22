@@ -108,6 +108,7 @@ class ComisionesController extends Controller
                 }
                 $fit->User_P_Guia;
                 $fit->User_P_Coguia;
+                $fit->Escuela;
                 $fit->Fit_User;
                 if ($fit->Fit_User) {
                     foreach ($fit->Fit_User as $user_comision) {
@@ -154,6 +155,7 @@ class ComisionesController extends Controller
                 $comision->Fit;
                 $comision->Fit->User_P_Guia;
                 $comision->Fit->ArchivoPdf;
+                $comision->Fit->Escuela;
                 $comision->UserP1;
                 $comision->UserP2;
                 $comision->Fit->Fit_User;
@@ -169,10 +171,12 @@ class ComisionesController extends Controller
     }
     public function getListarTodasComisiones(Request $request){
         if(!$request->ajax()) return redirect('/');
+        Debugbar::info(Auth::user()->id_escuela);
         $comisiones = Comisiones::get()->pluck('id_tesis');
-        $fitWithComision= Fit::whereIn('id', $comisiones)
-                            ->get()
-                            ->all();
+        $fitWithComision = Fit  ::whereIn('id', $comisiones)
+                                ->where('id_escuela', Auth::user()->id_escuela)
+                                ->get()
+                                ->all();
         foreach ($fitWithComision as $fit) {
             $fit->Comisiones;
             $fit->Comisiones->UserP1;

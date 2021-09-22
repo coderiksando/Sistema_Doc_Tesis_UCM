@@ -707,7 +707,10 @@ export default {
 }
 </script>
 <style>
-  .scrollTable{
-    overflow: auto !important;
-  }
+    .scrollTable{
+        overflow: auto !important;
+    }
+    .el-textarea__inner {
+        text-align: justify;
+    }
 </style>

@@ -865,5 +865,7 @@ export default {
 </script>
 
 <style>
-/* @import '../../../../../public/css/modal.css'; */
+.el-textarea__inner {
+    text-align: justify;
+}
 </style>

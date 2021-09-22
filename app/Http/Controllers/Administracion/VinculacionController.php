@@ -29,9 +29,9 @@ class VinculacionController extends Controller
         $rpta = DB::table('vinculaciones')->where('nombre', 'like', "%$cNombre%")
                                           ->where('tipo', 'like', "%$cTipo%")
                                           ->where('descripcion', 'like', "%$cDescripcion%")
-                                          ->where('id', 'like', "%$nIdVinculacion%")
-                                          ->where('estado', 'like', "%$cEstado%")
-                                          ->get();
+                                          ->where('estado', 'like', "%$cEstado%");
+        if ($nIdVinculacion) $rpta->where('id', '=', "$nIdVinculacion");
+        $rpta->get();
         return $rpta;
     }
 

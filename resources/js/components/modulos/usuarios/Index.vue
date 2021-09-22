@@ -64,6 +64,42 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Escuela</label>
+                    <div class="col-md-9">
+                        <el-select v-model="fillBsqUsuarios.nEscuela"
+                        placeholder="Seleccione una carrera"
+                        filterable
+                        clearable>
+                          <el-option
+                            v-for="item in listCarrera"
+                            :key="item.id"
+                            :label="item.nombre"
+                            :value="item.id">
+                          </el-option>
+                        </el-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Roles</label>
+                    <div class="col-md-9">
+                        <el-select v-model="fillBsqUsuarios.nIdRol"
+                        placeholder="Seleccione una carrera"
+                        filterable
+                        clearable>
+                          <el-option
+                            v-for="item in listRol"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                          </el-option>
+                        </el-select>
+                    </div>
+                  </div>
+                </div>
               </div>
             </form>
 
@@ -187,10 +223,13 @@ export default {
         cApellido: '',
         cCorreo: '',
         cEstado: '',
-        cEscuela: '',
+        nEscuela: '',
+        nIdRol: ''
       },
       fullscreenLoading: false,
       listUsuarios:[],
+      listCarrera: [],
+      listRol: [],
       listEstados: [
         {value: 'A', label: 'Activo'},
         {value: 'I', label: 'Inactivo'}
@@ -229,9 +268,27 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Usuarios');
+    this.getListarEscuelas();
+    this.getListarRoles();
   },
   methods:{
-
+    getListarEscuelas(){
+        var url = "/administracion/escuelas/getListarEscuelas";
+        axios.get(url, {
+        })
+        .then((response) => {
+            this.listCarrera = response.data;
+        });
+    },
+    getListarRoles(){
+        const url = "/administracion/roles/getListarRoles";
+        axios.get(url, {
+        })
+        .then((response) => {
+            this.listRol = response.data;
+            console.log(this.listRol);
+        });
+    },
     limpiarCriteriosBsq(){
       this.fillBsqUsuarios.cNombre = '';
       this.fillBsqUsuarios.cApellido = '';
@@ -246,11 +303,12 @@ export default {
       var url = '/administracion/usuario/getListarUsuarios'
       axios.get(url, {
         params: {
-          'cNombre' : this.fillBsqUsuarios.cNombre,
-          'cApellido' : this.fillBsqUsuarios.cApellido,
-          'cCorreo' : this.fillBsqUsuarios.cCorreo,
-          'cEstado' : this.fillBsqUsuarios.cEstado,
-          'cEscuela' : this.fillBsqUsuarios.cEscuela,
+          'cNombre'     : this.fillBsqUsuarios.cNombre,
+          'cApellido'   : this.fillBsqUsuarios.cApellido,
+          'cCorreo'     : this.fillBsqUsuarios.cCorreo,
+          'cEstado'     : this.fillBsqUsuarios.cEstado,
+          'nEscuela'    : this.fillBsqUsuarios.nEscuela,
+          'nIdRol'        : this.fillBsqUsuarios.nIdRol
         }
       }).then(response => {
           this.inicializarPaginacion();
