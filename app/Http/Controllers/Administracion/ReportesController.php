@@ -20,8 +20,8 @@ class ReportesController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         $rut                = $request->nRut;
-        $idescuela          = $request->nIdEscuela;
         $idFacultad         = $request->nIdFacultad;
+        $idEscuela          = $request->nIdEscuela;
         $estado_notap       = $request->cEstadoNotap;
         $idprofesor         = $request->nIdProfesor;
         $estado             = $request->cEstadoTesis;
@@ -29,19 +29,54 @@ class ReportesController extends Controller
         $dFechaFin          = $request->dFechaFin;
         $nIdVinculacion     = $request->nIdVinculación;
         $cTipoVinculación   = $request->cTipoVinculación;
+        $cTitulo            = $request->cTitulo;
+        $nCantAvances0      = $request->nCantAvances0;
+        $nCantAvances1      = $request->nCantAvances1;
+        $dFechaFIDIni       = $request->dFechaFIDIni;
+        $dFechaFIDFin       = $request->dFechaFIDFin;
 
-        $rut                = ($rut == NULL) ?          ($rut = '')         : $rut;
-        $idescuela          = ($idescuela == NULL) ?    ($idescuela = Auth::user()->id_escuela)   : $idescuela;
-        $idescuela          = ($idescuela == 0) ?       ($idescuela = '')   : $idescuela;
-        $idFacultad         = ($idFacultad == NULL) ?    ($idFacultad = '')   : $idFacultad;
-        $estado_notap       = ($estado_notap == NULL) ? ($estado_notap = ''): $estado_notap;
-        $idprofesor         = ($idprofesor == NULL) ?   ($idprofesor = '')  : $idprofesor;
-        $estado             = ($estado == NULL) ?       ($estado = '')      : $estado;
-        $dFechaInicio       = ($dFechaInicio == NULL) ? ($dFechaInicio = ''): $dFechaInicio;
-        $dFechaFin          = ($dFechaFin == NULL) ?    ($dFechaFin = '')   : $dFechaFin;
-
-        $fits = Fit ::where('estado', 'like', "%$estado%")
-                    ->get();
+        $fits = DB  ::table('fit')
+                    ->join('escuelas','escuelas.id','=','fit.id_escuela')
+                    ->join('facultad','facultad.id','=','escuelas.id_facultad')
+                    ->leftJoin('fit_user','fit_user.id_fit','=','fit.id')
+                    ->leftJoin('users as alumno','alumno.id_user','=','fit_user.id_user')
+                    ->join('users as profesor','profesor.id_user','=','fit.id_p_guia')
+                    ->join('vinculaciones','vinculaciones.id','=','fit.id_vinculacion')
+                    ->leftJoin('notaspendientes','notaspendientes.id_tesis','=','fit.id')
+                    ->select('fit.id');
+        if ($rut)               $fits->where('alumno.rut','like',"%$rut%");
+        if ($idFacultad)        $fits->where('facultad.id','=',"$idFacultad");
+        if ($idEscuela)         $fits->where('fit.id_escuela','=',"$idEscuela");
+        if ($estado_notap)      $fits->where('notaspendientes.estado','=',"$estado_notap");
+        if ($idprofesor)        $fits->where('fit.id_p_guia','=',"$idprofesor");
+        if ($estado)            $fits->where('fit.estado','=',"$estado");
+        if ($dFechaInicio || $dFechaFin)
+            $fits   ->whereBetween('alumno.f_ingreso',[$dFechaInicio, $dFechaFin])
+                    ->whereBetween('alumno.f_salida',[$dFechaInicio, $dFechaFin]);
+        if ($nIdVinculacion)    $fits->where('fit.id_vinculacion','=',"$nIdVinculacion");
+        if ($cTipoVinculación)  $fits->where('vinculaciones.tipo','=',"$cTipoVinculación");
+        if ($cTitulo)           $fits->where('fit.titulo','like',"%$cTitulo%");
+        if ($dFechaFIDIni || $dFechaFIDFin)
+            $fits->whereBetween('fit.updated_at',[$dFechaFIDIni,$dFechaFIDFin]);
+        if ($nCantAvances0 || $nCantAvances1) {
+            $fits   ->join('avancestesis','avancestesis.id_tesis','=','fit.id')
+                    ->groupBy('avancestesis.id_tesis')
+                    ->havingRaw('COUNT(avancestesis.id_tesis) BETWEEN ? AND ?',[$nCantAvances0, $nCantAvances1]);
+            if (!$nCantAvances0) {
+                $exist = DB ::table('avancestesis')
+                            ->select('id_tesis')
+                            ->pluck('id_tesis');
+                $missing= DB::table('fit')
+                            ->select('id')
+                            ->whereNotIn('id', $exist);
+                $fits = $fits->union($missing)->orderBy('id');
+            }
+        }
+        $fits = $fits   ->groupBy('id')
+                        ->get()
+                        ->pluck('id');
+        Debugbar::info('proto',$fits);
+        $fits = Fit::whereIn('id', $fits)->get();
         foreach ($fits as $fit) {
             $fit->Bitacoras;
             $fit->AvancesTesis;
@@ -68,53 +103,10 @@ class ReportesController extends Controller
             $fit->constancia = $fit->ArchivoPdf()
                 ->where('tipo_pdf', '=', 'constancia_t')
                 ->get()->first();
-            $fit->getAlumnos();
-        }
-        $key=0;
-        foreach ($fits as $fit) {
-            $missing = False;
-            if ($idescuela) if ($fit->Escuela->id != $idescuela) $missing = True;
-            if ($idFacultad) if ($fit->Escuela->id_facultad != $idFacultad) $missing = True;
-            if ($cTipoVinculación) if ($fit->Vinculaciones->tipo != $cTipoVinculación) $missing = True;
-            if ($nIdVinculacion) if ($fit->Vinculaciones->id != $nIdVinculacion) $missing = True;
-            if ($estado_notap) {
-                if ($fit->NotasPendientes) {
-                    if ($fit->NotasPendientes->estado != $estado_notap) $missing = True;
-                } else {
-                    $missing = True;
-                }
+            foreach($fit->getAlumnos() as $alumno) {
+                $alumno->Escuelas;
+                $alumno->Escuelas->Facultad;
             }
-            if ($idprofesor) if ($fit->User_P_Guia->id_user != $idprofesor) $missing = True;
-            if ($idprofesor) if ($fit->User_P_Guia->id_user != $idprofesor) $missing = True;
-            $rutFound = 0;
-            $dateFound = 0;
-            // revision de los usuarios
-            if (count($fit->Fit_User) > 0) {
-                foreach ($fit->Fit_User as $fitUser) {
-                    $user = $fitUser->User;
-                    if ($rut) {
-                        if (stristr($user->rut, $rut)) $rutFound++;
-                    } else $rutFound++;
-                    // revision de los datos entre fechas
-                    if ($dFechaInicio && $dFechaFin && $user->f_ingreso && $user->f_salida) {
-                        $iTime1 = date("Y-m-d",strtotime($dFechaInicio));
-                        $iTime2 = date("Y-m-d",strtotime($dFechaFin));
-                        $uTime1 = date("Y-m-d",strtotime($user->f_ingreso));
-                        $uTime2 = date("Y-m-d",strtotime($user->f_salida));
-                        if (($uTime1 >= $iTime1 && $uTime1 <= $iTime2) &&
-                            ($uTime2 >= $iTime1 && $uTime2 <= $iTime2))
-                            $dateFound++;
-                    } elseif (!$dFechaInicio && !$dFechaFin && !$user->f_ingreso && !$user->f_salida) {
-                        $dateFound++;
-                    } elseif ($user->f_ingreso && $user->f_salida) {
-                        $dateFound++;
-                    }
-                }
-                if ($rutFound == 0) $missing = True;
-                if ($dateFound == 0) $missing = True;
-            }
-            if ($missing) $fits[$key] = null;
-            $key++;
         }
         return $fits;
     }
@@ -122,12 +114,12 @@ class ReportesController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         $titulo             = $request->cTitulo;
-        $idescuela          = $request->nIdEscuela;
+        $idEscuela          = $request->nIdEscuela;
         $idprofesor         = $request->nIdProfesor;
 
 
         $titulo             = ($titulo == NULL) ?          ($titulo = '')         : $titulo;
-        $idescuela          = ($idescuela == NULL) ?    ($idescuela = '')   : $idescuela;
+        $idEscuela          = ($idEscuela == NULL) ?    ($idEscuela = '')   : $idEscuela;
         $idprofesor         = ($idprofesor == NULL) ?   ($idprofesor = '')  : $idprofesor;
 
 
@@ -149,7 +141,7 @@ class ReportesController extends Controller
 
         $reportdata = $archivosPdf->where('titulo', 'like', "%$titulo%")
                                    ->where('id_user','like', "%$idprofesor%")
-                                   ->where('escuelas.id','like', "%$idescuela%")
+                                   ->where('escuelas.id','like', "%$idEscuela%")
                                    ->get();
 
         return $reportdata;

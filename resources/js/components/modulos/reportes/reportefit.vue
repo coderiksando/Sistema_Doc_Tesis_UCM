@@ -46,9 +46,17 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Título</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" :placeholder="'Título de '+terminoTitulo" v-model="fillBsqTesisReporte.cTitulo">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
                             <label class="col-md-3 col-form-label">Rut alumno</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" v-model="fillBsqTesisReporte.nRut">
+                                <input type="text" placeholder="11111111-1" class="form-control" v-model="fillBsqTesisReporte.nRut">
                             </div>
                         </div>
                     </div>
@@ -69,7 +77,18 @@
                             </div>
                     </div>
                     </div>
-
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Cantidad de avances</label>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[0]" @input="cambioCantAvance">
+                            </div>
+                            <label class="col-md-1 col-form-label"><p class="d-flex justify-content-center">a</p></label>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[1]" @input="cambioCantAvance">
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-6">
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">Nota pendiente</label>
@@ -142,8 +161,8 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Fecha de última asignatura cursada</label>
-                            <div class="col-md-9">
+                            <label class="col-md-2 col-form-label">Rango de fechas de estudio de alumno</label>
+                            <div class="col-md-5">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dfecharango[0]"
                                     placeholder="Inicio"
@@ -151,11 +170,35 @@
                                     :picker-options="pickerOptions"
                                     @change="selectStart">
                                 </el-date-picker>
+                            </div>
+                            <div class="col-md-5">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dfecharango[1]"
                                     placeholder="Término"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="endOption">
+                                </el-date-picker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Rango de fechas de creación de {{terminoTitulo}}</label>
+                            <div class="col-md-5">
+                                <el-date-picker
+                                    v-model="fillBsqTesisReporte.dFechaFID[0]"
+                                    placeholder="Inicio"
+                                    value-format="yyyy-MM-dd"
+                                    :picker-options="pickerOptions"
+                                    @change="selectStartFID">
+                                </el-date-picker>
+                            </div>
+                            <div class="col-md-5">
+                                <el-date-picker
+                                    v-model="fillBsqTesisReporte.dFechaFID[1]"
+                                    placeholder="Término"
+                                    value-format="yyyy-MM-dd"
+                                    :picker-options="endOptionFID">
                                 </el-date-picker>
                             </div>
                         </div>
@@ -222,9 +265,34 @@
                                 <dt class="col-md-4">Alumnos integrantes:</dt>
                                 <template v-if="item.fit__user">
                                     <dd class="col-md-8">
-                                        <div v-for="(fitUser, index2) in item.fit__user" :key="index2">
-                                            {{globFunct.cutFullName(fitUser.user.nombres, fitUser.user.apellidos)+', '}} <b>{{fitUser.user.rut}}</b>
-                                        </div>
+                                        <dl class="row mb-0">
+                                            <dd class="col-md-4 px-1">
+                                                <p class="mb-0 font-weight-bold">Nombre</p>
+                                            </dd>
+                                            <dd class="col-md-2 px-1">
+                                                <p class="mb-0 font-weight-bold">Rut</p>
+                                            </dd>
+                                            <dd class="col-md-2 px-1">
+                                                <p class="mb-0 font-weight-bold">Teléfono</p>
+                                            </dd>
+                                            <dd class="col-md-4 px-1">
+                                                <p class="mb-0 font-weight-bold">Email</p>
+                                            </dd>
+                                        </dl>
+                                        <dl class="row mb-0" v-for="(fitUser, index2) in item.fit__user" :key="index2">
+                                            <dd class="col-md-4 px-1">
+                                                <p style="font-size: 0.9rem;" class="mb-0">{{globFunct.cutFullName(fitUser.user.nombres, fitUser.user.apellidos)}}</p>
+                                            </dd>
+                                            <dd class="col-md-2 px-1">
+                                                <p style="font-size: 0.9rem;" class="mb-0">{{fitUser.user.rut}}</p>
+                                            </dd>
+                                            <dd class="col-md-2 px-1">
+                                                <p style="font-size: 0.9rem;" class="mb-0">{{fitUser.user.telefono}}</p>
+                                            </dd>
+                                            <dd class="col-md-4 px-1">
+                                                <p style="font-size: 0.9rem;" class="mb-0">{{fitUser.user.email}}</p>
+                                            </dd>
+                                        </dl>
                                     </dd>
                                 </template>
                                 <dt class="col-md-4">Escuela:</dt>
@@ -356,7 +424,10 @@ import globFunct from '../../../services/globFunct';
           dfecharango: [],
           cEstadoTesis: '',
           cTipoVinculación: '',
-          nIdVinculación: ''
+          nIdVinculación: '',
+          cTitulo: '',
+          nCantAvances: [0,0],
+          dFechaFID: []
         },
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
         terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
@@ -367,16 +438,20 @@ import globFunct from '../../../services/globFunct';
           {value: '4', label: 'mas de 3 años'}
         ],
         listTipoDeNotap: [
+          {value: '', label: 'Sin nota pendiente'},
           {value: 'A', label: 'Activa'},
           {value: 'V', label: 'Vencida'}
         ],
         listTipoDeTrabajo: [
+          {value: '', label: 'Todos'},
           {value: 'Tesis', label: 'Tesis'},
-          {value: 'Memoria', label: 'Memoria'}
+          {value: 'Memoria', label: 'Memoria'},
+          {value: 'Proyecto de titulo', label: 'Proyecto de titulo'}
         ],
         listTipoVinculacion: [],
         listVinculacion: [],
         listEstadosTesis: [
+          {value: '', label: 'Todos'},
           {value: 'A', label: 'Aprobada'},
           {value: 'R', label: 'Reprobada'},
           {value: 'D', label: 'En Desarrollo'}
@@ -407,6 +482,11 @@ import globFunct from '../../../services/globFunct';
           }
         },
         endOption: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          }
+        },
+        endOptionFID: {
           disabledDate(time) {
             return time.getTime() > Date.now();
           }
@@ -454,6 +534,7 @@ import globFunct from '../../../services/globFunct';
       this.getListarFacultades();
       this.getListarProfesorByEscuela();
       this.selectStart();
+      this.selectStartFID();
     },
     methods:{
         getListarVinculacion(tipo){
@@ -487,8 +568,7 @@ import globFunct from '../../../services/globFunct';
                 this.listEscuelasOriginal = response.data;
                 this.listEscuelas = response.data;
                 if (this.listRolPermisosByUsuario.includes('reportes.general')) {
-                  this.listEscuelas.unshift({'id':0, 'nombre': 'Todas', 'facultad': {'id':0}});
-                  this.fillBsqTesisReporte.nIdEscuela = 0;
+                  this.listEscuelas.unshift({'id':'', 'nombre': 'Todas', 'facultad': {'id':0}});
                 }
                 this.booleanFunction.escuela = true;
                 if (this.globFunct.booleanElements(this.booleanFunction)) this.fullscreenLoading = false;
@@ -564,6 +644,11 @@ import globFunct from '../../../services/globFunct';
                 'cEstadoTesis'      : this.fillBsqTesisReporte.cEstadoTesis,
                 'dFechaInicio'      : (!this.fillBsqTesisReporte.dfecharango) ? '' : this.fillBsqTesisReporte.dfecharango[0],
                 'dFechaFin'         : (!this.fillBsqTesisReporte.dfecharango) ? '' : this.fillBsqTesisReporte.dfecharango[1],
+                'cTitulo'           : this.fillBsqTesisReporte.cTitulo,
+                'nCantAvances0'     : this.fillBsqTesisReporte.nCantAvances[0],
+                'nCantAvances1'     : this.fillBsqTesisReporte.nCantAvances[1],
+                'dFechaFIDIni'      : this.fillBsqTesisReporte.dFechaFID[0],
+                'dFechaFIDFin'      : this.fillBsqTesisReporte.dFechaFID[1]
             }
             }).then(response => {
                 this.inicializarPaginacion();
@@ -617,11 +702,18 @@ import globFunct from '../../../services/globFunct';
             this.modalOption = 0;
         },
         selectStart() {
-            // if (this.fillBsqTesisReporte.dfecharango[0].hasOwnProperty('1')) this.fillBsqTesisReporte.dfecharango[0] = this.fillBsqTesisReporte.dfecharango[0][1];
             this.fillBsqTesisReporte.dfecharango[1] = null;
             this.endOption = {
                 disabledDate: (time) => {
                     return time.getTime() < Date.parse(this.fillBsqTesisReporte.dfecharango[0]) || time.getTime() > Date.now();
+                }
+            };
+        },
+        selectStartFID() {
+            this.fillBsqTesisReporte.dFechaFID[1] = null;
+            this.endOptionFID = {
+                disabledDate: (time) => {
+                    return time.getTime() < Date.parse(this.fillBsqTesisReporte.dFechaFID[0]) || time.getTime() > Date.now();
                 }
             };
         },
@@ -641,6 +733,11 @@ import globFunct from '../../../services/globFunct';
                 newList[0] = listOfElements[key];
             }
             return newList;
+        },
+        cambioCantAvance() {
+            this.fillBsqTesisReporte.nCantAvances[0] = Math.abs(this.fillBsqTesisReporte.nCantAvances[0]);
+            if (this.fillBsqTesisReporte.nCantAvances[0]>=this.fillBsqTesisReporte.nCantAvances[1])
+                this.fillBsqTesisReporte.nCantAvances[1]=JSON.parse(JSON.stringify(this.fillBsqTesisReporte.nCantAvances[0]));
         }
 
     }//cierre de methods
