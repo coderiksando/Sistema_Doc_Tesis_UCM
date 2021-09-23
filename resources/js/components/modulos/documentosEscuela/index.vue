@@ -87,7 +87,10 @@
           <div class="card-header flex p-1">
             <div class="col-md-11">
               <div class="form-group row m-0">
-                <h3 class="card-title col-md-3">Documentos de escuela:</h3>
+                <h3 class="card-title" 
+                  :class="(listRolPermisosByUsuario.includes('escuelas.documentos.general')) ? 'col-md-3' : 'col-md-6'"
+                  v-text="(listRolPermisosByUsuario.includes('escuelas.documentos.general')) ? 'Documentos de escuela:' : 'Documentos de escuela: '+miEscuela.nombre">
+                </h3>
                 <div class="col-md-4" v-if="listRolPermisosByUsuario.includes('escuelas.documentos.general')">
                     <el-select v-model="escuelaDocumentos"
                     placeholder="Seleccione una escuela"
@@ -209,6 +212,9 @@ export default {
       ocultarModal: {
         display: 'none',
       },
+      miEscuela: {
+        nombre: ''
+      }
     }
   },
   computed: {
@@ -240,6 +246,7 @@ export default {
   mounted(){
     EventBus.$emit('navegar', 'Documentos de escuela');
     this.getListarEscuelas();
+    this.getEscuela();
   },
   methods:{
     getFile(element){
@@ -287,6 +294,12 @@ export default {
           this.listDocumentos = response.data;
           console.log(this.listDocumentos)
           this.tableLoading = false;
+      })
+    },
+    getEscuela(){
+      var url = '/administracion/escuelas/getEscuela'
+      axios.get(url, {}).then(response => {
+          this.miEscuela = response.data;
       })
     },
     nextPage(){
