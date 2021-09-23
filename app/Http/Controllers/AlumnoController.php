@@ -197,9 +197,9 @@ class AlumnoController extends Controller
                 ->where('fit.estado','like',"%$cEstadoTesis%")
                 ->where('fit.aprobado_pg',"V")
                 ->whereBetween('fit.created_at', [$dFechaInicio,$dFechaFin]);
-        if ($nIdEscuela) $fits->where('fit.id_escuela','=',"$nIdEscuela");
-        $fits   ->get()
-                ->pluck('id');
+        if ($nIdEscuela) $fits = $fits->where('fit.id_escuela','=',"$nIdEscuela");
+        $fits = $fits   ->get()
+                        ->pluck('id');
 
         $fitsDetails = Fit::findMany($fits);
         foreach ($fitsDetails as $fit) {

@@ -30,8 +30,8 @@ class VinculacionController extends Controller
                                           ->where('tipo', 'like', "%$cTipo%")
                                           ->where('descripcion', 'like', "%$cDescripcion%")
                                           ->where('estado', 'like', "%$cEstado%");
-        if ($nIdVinculacion) $rpta->where('id', '=', "$nIdVinculacion");
-        $rpta->get();
+        if ($nIdVinculacion) $rpta = $rpta->where('id', '=', "$nIdVinculacion");
+        $rpta = $rpta->get();
         return $rpta;
     }
 

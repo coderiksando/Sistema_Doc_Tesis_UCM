@@ -75,7 +75,6 @@ class ReportesController extends Controller
         $fits = $fits   ->groupBy('id')
                         ->get()
                         ->pluck('id');
-        Debugbar::info('proto',$fits);
         $fits = Fit::whereIn('id', $fits)->get();
         foreach ($fits as $fit) {
             $fit->Bitacoras;
@@ -117,21 +116,9 @@ class ReportesController extends Controller
         $idEscuela          = $request->nIdEscuela;
         $idprofesor         = $request->nIdProfesor;
 
-
         $titulo             = ($titulo == NULL) ?          ($titulo = '')         : $titulo;
         $idEscuela          = ($idEscuela == NULL) ?    ($idEscuela = '')   : $idEscuela;
         $idprofesor         = ($idprofesor == NULL) ?   ($idprofesor = '')  : $idprofesor;
-
-
-        //$archivosPdf = ArchivoPdf::where('tipo_pdf', 'final_t')->get();
-
-        // $reportdata = $archivosPdf->map(function ($item){
-        //     //$item->Fit->User_P_Guia;
-        //     return collect($item)
-        //             ->merge(['titulo'=>$item->Fit->titulo])
-        //             ->merge($item->Fit->User_P_Guia)
-        //             ->merge(['escuela'=>$item->Fit->User_P_Guia->Escuelas->nombre]);
-        // });
 
        $archivosPdf =  ArchivoPdf::select('fit.titulo', 'fit.descripcion', 'fit.updated_at', 'path', 'users.nombres', 'users.apellidos', 'escuelas.nombre', 'escuelas.id', 'users.id_user')
                                 ->join('fit', 'id_fit', '=', 'fit.id')
@@ -140,9 +127,9 @@ class ReportesController extends Controller
                                 ->where('tipo_pdf', 'final_t');
 
         $reportdata = $archivosPdf->where('titulo', 'like', "%$titulo%");
-        if ($idprofesor) $reportdata->where('id_user','=', "$idprofesor");
-        if ($idEscuela) $reportdata->where('escuelas.id','=', "$idEscuela");
-        $reportdata->get();
+        if ($idprofesor) $reportdata = $reportdata->where('id_user','=', "$idprofesor");
+        if ($idEscuela) $reportdata = $reportdata->where('escuelas.id','=', "$idEscuela");
+        $reportdata = $reportdata->get();
 
         return $reportdata;
 
@@ -192,8 +179,8 @@ class ReportesController extends Controller
                         ->join('roles', 'roles.id', '=', 'users_roles.id_roles')
                         ->select('users.id_user', DB::raw("CONCAT(users.nombres,' ',users.apellidos) as fullname"))
                         ->where('roles.name', 'Profesor');
-        if ($escuela) $profesores->where('users.id_escuela', '=', "$escuela");
-        $profesores->orderBy('fullname')->get();
+        if ($escuela) $profesores = $profesores->where('users.id_escuela', '=', "$escuela");
+        $profesores = $profesores->orderBy('fullname')->get();
         return $profesores;
     }
 }

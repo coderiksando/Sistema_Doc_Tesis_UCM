@@ -365,6 +365,7 @@ export default {
             this.listProfesores = response.data;
             this.fullscreenLoading = false;
         })
+            this.fullscreenLoading = false;
     },
     limpiarCriteriosBsq(){
         this.fillBsqTesis.cAlumno = '';
