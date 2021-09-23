@@ -193,7 +193,8 @@
                             <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
                         </li>
                         <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                        :class="[page == pageNumber ? 'active' : '']">
+                        :class="[page == pageNumber ? 'active' : '']"
+                        :style="(page < pageNumber - 2 || page > pageNumber + 2) ? 'display: none' : ''">
                             <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
                         </li>
                         <li class="page-item" v-if="pageNumber < pageCount -1">
@@ -310,7 +311,8 @@
                         <a href="#" class="page-link" @click.prevent="prevPage2">Ant</a>
                         </li>
                         <li class="page-item" v-for="(page, index) in pagesList2" :key="index"
-                        :class="[page == pageNumber2 ? 'active' : '']">
+                        :class="[page == pageNumber2 ? 'active' : '']"
+                        :style="(page < pageNumber2 - 2 || page > pageNumber2 + 2) ? 'display: none' : ''">
                         <a href="#" class=page-link @click.prevent="selectPage2(page)"> {{page+1}}</a>
                         </li>
                         <li class="page-item" v-if="pageNumber2 < pageCount2 -1">
@@ -526,7 +528,8 @@
                         <a href="#" class="page-link" @click.prevent="totalPrevPage">Ant</a>
                         </li>
                         <li class="page-item" v-for="(page, index) in totalPagesList" :key="index"
-                        :class="[page == totalPageNumber ? 'active' : '']">
+                        :class="[page == totalPageNumber ? 'active' : '']"
+                        :style="(page < totalPageNumber - 2 || page > totalPageNumber + 2) ? 'display: none' : ''">
                         <a href="#" class=page-link @click.prevent="selectPage2(page)"> {{page+1}}</a>
                         </li>
                         <li class="page-item" v-if="totalPageNumber < totalPageCount -1">
