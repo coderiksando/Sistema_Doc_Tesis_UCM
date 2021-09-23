@@ -379,7 +379,8 @@
                         <a href="#" class="page-link" @click.prevent="prevPage2">Ant</a>
                         </li>
                         <li class="page-item" v-for="(page, index) in pagesList" :key="index"
-                        :class="[page == pageNumber ? 'active' : '']">
+                        :class="[page == pageNumber ? 'active' : '']"
+                        :style="(page < pageNumber - 2 || page > pageNumber + 2) ? 'display: none' : ''">
                         <a href="#" class=page-link @click.prevent="selectPage2(page)"> {{page+1}}</a>
                         </li>
                         <li class="page-item" v-if="pageNumber < pageCount -1">
