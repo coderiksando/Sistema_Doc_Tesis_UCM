@@ -110,4 +110,12 @@ class EscuelasController extends Controller
 
     }
 
+    public function getEscuela(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $user = Auth::user();
+        $escuela = $user->Escuelas;
+
+        return $escuela;
+    }
+
 }

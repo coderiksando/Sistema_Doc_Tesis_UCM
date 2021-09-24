@@ -250,7 +250,7 @@
                   <router-link class="nav-link" :to="'/documentosEscuela'">
                     <i class="nav-icon fa fa-folder"></i>
                     <p>
-                      Documentos de Escuela
+                      Archivos de Escuela
                     </p>
                   </router-link>
                 </template>

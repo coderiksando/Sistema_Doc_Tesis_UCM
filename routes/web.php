@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/archivo/setRegistrarArchivoEscuela', 'FilesController@setRegistrarArchivoEscuela');
   Route::post('/archivo/setEliminarDocumentoEscuela', 'FilesController@setEliminarDocumentoEscuela');
   Route::get('/administracion/escuelas/getListarDocumentosEscuela', 'Administracion\EscuelasController@getListarDocumentosEscuela');
+  Route::get('/administracion/escuelas/getEscuela', 'Administracion\EscuelasController@getEscuela');
 
   /*********    RUTAS MODULO DE ADMINISTRACION DE AREAS DE TESIS     **********/
   Route::get('/administracion/areatesis/getListarAreaTesis', 'Administracion\AreaTesisController@getListarAreaTesis');
