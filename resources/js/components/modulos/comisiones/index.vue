@@ -90,17 +90,15 @@
                     <div class="col-md-9">
                         <h3 class="card-title">Comisiones donde soy Prof. Guía</h3>
                     </div>
-                    <div v-if="listarComisionesPaginated.length" class="col-md-3">
-                        <el-tooltip class="item" effect="dark" content="Descargar actas en forma masiva (ZIP)" placement="right">
-                            <el-button @click.prevent="descargaActaZip(listarComisionesPaginated, 'actaGuia')">
-                                <i class="fas fa-file-archive"></i> Exportar actas
-                            </el-button>
-                        </el-tooltip>
-
-                        <!-- <button title="Descargar acta en ZIP" class="btn btn-primary btn-block" @click.prevent="descargaActaZip(listarComisionesPaginated, 'actaGuia')">
-                            <i class="fas fa-file-archive"></i> Acta
-                        </button> -->
-                    </div>
+                    <template v-if="listarComisionesPaginated.length">
+                        <div v-if="listarComisionesPaginated.map(x => {if (x.archivoActa.length) return x.archivoActa;}).filter(x => x).length" class="col-md-3">
+                            <el-tooltip class="item" effect="dark" content="Descargar actas en forma masiva (ZIP)" placement="right">
+                                <el-button @click.prevent="descargaActaZip(listarComisionesPaginated, 'actaGuia')">
+                                    <i class="fas fa-file-archive"></i> Exportar actas
+                                </el-button>
+                            </el-tooltip>
+                        </div>
+                    </template>
                 </div>
             </div>
             <div id="accordion">
@@ -217,13 +215,15 @@
                     <div class="col-md-9">
                         <h3 class="card-title">Comisiones donde soy partícipe</h3>
                     </div>
-                    <div v-if="listarComisionesPaginated2.length" class="col-md-3">
-                        <el-tooltip class="item" effect="dark" content="Descargar actas donde soy participe (ZIP)" placement="right">
-                            <el-button @click.prevent="descargaActaZip(listarComisionesPaginated2, 'actaParticipe')">
-                                <i class="fas fa-file-archive"></i> Exportar actas
-                            </el-button>
-                        </el-tooltip>
-                    </div>
+                    <template v-if="listarComisionesPaginated2.length">
+                        <div v-if="listarComisionesPaginated2.map(x => {if (x.fit.archivoActa.length) return x.fit.archivoActa;}).filter(x => x).length" class="col-md-3">
+                            <el-tooltip class="item" effect="dark" content="Descargar actas donde soy participe (ZIP)" placement="right">
+                                <el-button @click.prevent="descargaActaZip(listarComisionesPaginated2, 'actaParticipe')">
+                                    <i class="fas fa-file-archive"></i> Exportar actas
+                                </el-button>
+                            </el-tooltip>
+                        </div>
+                    </template>
                 </div>
             </div>
 
@@ -231,11 +231,14 @@
             <template v-if="listarComisionesPaginated2.length">
                 <template v-for="(item, index) in listarComisionesPaginated2">
                     <div class="card mb-1" :key="'participe'+index">
-                        <div class="card-body py-1" :id="'headingParticipe'+index">
+                        <div class="card-body py-1" :id="'headingParticipe'+index"
+                        :style="(!item.revisionComisionPropia.length && item.constanciaFid.length)?'background-color: lightpink;':''">
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                <div title="Sección expandible" data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
-                                <div title="Sección expandible" class="col-md-9 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
+                                <div :title="(!item.revisionComisionPropia.length && item.constanciaFid.length)?'Existe una constancia de examen, pero no hay una revisión de trabajo de su persona':'Sección expandible'"
+                                data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
+                                <div :title="(!item.revisionComisionPropia.length && item.constanciaFid.length)?'Existe una constancia de examen, pero no hay una revisión de trabajo de su persona':'Sección expandible'"
+                                class="col-md-9 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
                                 <div class="col-md-3 noPadNoMar d-flex flex-wrap">
                                     <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary mr-1" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
                                         <i class="fas fa-eye"></i>
@@ -428,13 +431,15 @@
                     <div class="col-md-9">
                         <h3 class="card-title font-weight-bold">Total de comisiones establecidas</h3>
                     </div>
-                    <div v-if="listarComisionesTotalesPaginated.length" class="col-md-3">
-                        <el-tooltip class="item" effect="dark" content="Descargar total de actas (ZIP)" placement="right">
-                            <el-button @click.prevent="descargaActaZip(listarComisionesTotalesPaginated, 'totalDeActasBuscada')">
-                                <i class="fas fa-file-archive"></i> Exportar actas
-                            </el-button>
-                        </el-tooltip>
-                    </div>
+                    <template v-if="listarComisionesTotalesPaginated.length">
+                        <div v-if="listarComisionesTotalesPaginated.map(x => {if (x.archivoActa.length) return x.archivoActa;}).filter(x => x).length" class="col-md-3">
+                            <el-tooltip class="item" effect="dark" content="Descargar total de actas (ZIP)" placement="right">
+                                <el-button @click.prevent="descargaActaZip(listarComisionesTotalesPaginated, 'totalDeActasBuscada')">
+                                    <i class="fas fa-file-archive"></i> Exportar actas
+                                </el-button>
+                            </el-tooltip>
+                        </div>
+                    </template>
                 </div>
             </div>
             <div id="accordion3" v-loading="fullscreenLoading">
@@ -658,6 +663,9 @@ export default {
         listMisComisiones:[],
         listComisiones:[],
         listAllComisiones:[],
+        listActasGuia:[],
+        listActasParticipe:[],
+        listActasTotal:[],
         busquedaOpcion: [
             {id:0, valor:'Faltantes'},
             {id:1, valor:'Creadas'},
@@ -709,9 +717,9 @@ export default {
       return Math.ceil(a / b);
     },
     listarComisionesPaginated(){
-      let inicio = this.pageNumber * this.perPage,
+        let inicio = this.pageNumber * this.perPage,
         fin = inicio + this.perPage;
-      return this.listMisComisiones.slice(inicio, fin);
+        return this.listMisComisiones.slice(inicio, fin);
     },
     pagesList(){
       let a = this.listMisComisiones.length,
@@ -838,7 +846,7 @@ export default {
         }).then(response => {
             this.inicializarPaginacion2();
             this.listComisiones = response.data;
-            //   console.log('pertenezco',this.listComisiones)
+              console.log('pertenezco',this.listComisiones)
             this.fullscreenLoading = false;
         })
     },

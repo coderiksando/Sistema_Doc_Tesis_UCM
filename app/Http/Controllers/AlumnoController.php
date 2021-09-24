@@ -85,7 +85,9 @@ class AlumnoController extends Controller
             $fitUser = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
             $fits = Fit::whereIn('id', $fitUser);
         }elseif($rol == 'Profesor'){
-            $fits = Fit::where('id_p_guia', $nIdUsuario)->whereIn('aprobado_pg', ['P', 'A', 'V']);
+            $fits = Fit::where(function ($fit) use ($nIdUsuario) {
+                $fit->where('id_p_guia', '=', "$nIdUsuario")->orWhere('id_p_co_guia', '=', "$nIdUsuario");
+            })->whereIn('aprobado_pg', ['P', 'A', 'V']);
         }elseif($rol == 'Director'){
             $fits = Fit::whereIn('aprobado_pg', ['A', 'V'])
             ->where('id_escuela', Auth::user()->id_escuela);
@@ -150,7 +152,9 @@ class AlumnoController extends Controller
 
         $nIdUsuario  = Auth::id();
         $fitsAlumno = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
-        $fitsProf = Fit::where('id_p_guia', $nIdUsuario)->get()->pluck('id');
+        $fitsProf = Fit::where(function ($fit) use ($nIdUsuario) {
+            $fit->where('id_p_guia', '=', "$nIdUsuario")->orWhere('id_p_co_guia', '=', "$nIdUsuario");
+        })->get()->pluck('id');
         $fits = $fitsAlumno->concat($fitsProf);
         if($rol == 'Director'){
             $fitsDirector = Fit::where('id_escuela', Auth::user()->id_escuela)->get()->pluck('id');

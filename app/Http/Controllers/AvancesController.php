@@ -82,11 +82,13 @@ class AvancesController extends Controller
         $estado     = ($estado == NULL) ? ($estado = 'D') : $estado;
 
         if ($rol == 'Profesor') {
-            $fits = Fit::where('id_p_guia', $user->id_user)->where('estado', $estado)->get();
+            $fits = Fit::where(function ($fit) use ($user) {
+                $fit->where('id_p_guia', '=', "$user->id_user")->orWhere('id_p_co_guia', '=', "$user->id_user");
+            })->where('estado', $estado)->get();
         }else {
             $fits = Fit::where('estado', $estado)->where('id_escuela', $user->id_escuela)->get();
         }
-        
+
         foreach ($fits as $fit) {
             $alumnos = $fit->getAlumnos();
             $fit->nombres = $alumnos->first()->nombres.' '.$alumnos->first()->apellidos;
