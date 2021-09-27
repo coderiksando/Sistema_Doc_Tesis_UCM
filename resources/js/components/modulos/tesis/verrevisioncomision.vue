@@ -77,9 +77,11 @@
 </template>
 
 <script>
+import globVar from '../../../services/globVar';
 export default {
   data(){
     return{
+      globVar: new globVar(),
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       listRolByUser: JSON.parse(localStorage.getItem('rolUser')),
       fullscreenLoading: false,

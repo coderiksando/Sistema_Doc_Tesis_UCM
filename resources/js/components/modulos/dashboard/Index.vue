@@ -158,6 +158,7 @@
         <div class="modal-content scrollTable">
           <div class="modal-header">
             <h5 class="modal-title"><b>Ingreso de datos faltantes</b></h5>
+            <button class="btn btn-danger w-20" @click.prevent="logout">Cerrar sesión</button>
           </div>
           <div class="modal-body">
             <div class="row">
@@ -288,6 +289,18 @@ props: ['usuario'],
         this.datosPendientes();
     },
     methods:{
+        logout(){
+            this.fullscreenLoading = true;
+            var url='/authenticate/logout'
+            axios.post(url).then(response => {
+                if(response.data.code == 204){
+                    window.location.href = '/';
+                    //location.reload();
+                    localStorage.clear();
+                    this.fullscreenLoading = false;
+                }
+            })
+        },
         inicializacion () {
             const yearCalculated = 5*365*24*60*60*1000;
             const month = (new Date().getMonth()) * 30*24*60*60*1000;

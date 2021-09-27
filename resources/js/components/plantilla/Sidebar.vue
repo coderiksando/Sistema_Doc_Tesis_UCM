@@ -87,7 +87,7 @@
             </template>
             </li>
           </template>
-          <template  v-if="permisos.includes('escuelas.index') || permisos.includes('areatesis.index') || permisos.includes('vinculacion.index')">
+          <template  v-if="permisos.includes('escuelas.index') || permisos.includes('areatesis.index')">
             <li class="nav-header">CONTROL DE ESCUELAS</li>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('escuelas.index')">

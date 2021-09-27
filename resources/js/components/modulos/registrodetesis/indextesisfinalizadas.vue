@@ -164,17 +164,17 @@
                              <template v-for="(fileItem, fileIndex) in item.archivo_pdf">
                                  <template v-if="fileItem.tipo_pdf == 'final_t'">
                                     <a :key="'arch'+fileIndex" title="Descargar documento final" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <b>Doc</b>
+                                        <b>DF</b>
                                     </a>
                                  </template>
                                  <template v-if="fileItem.tipo_pdf == 'acta'">
-                                    <a :key="'acta'+fileIndex" title="Descargar acta" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <b>Act</b>
+                                    <a :key="'acta'+fileIndex" title="Descargar acta de defensa" class="btn boton btn-success" :href="fileItem.path" target="_blank">
+                                        <b>AD</b>
                                     </a>
                                  </template>
                                  <template v-if="fileItem.tipo_pdf == 'constancia_t'">
-                                    <a :key="'const'+fileIndex" title="Descargar constancia" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <b>Con</b>
+                                    <a :key="'const'+fileIndex" title="Descargar constancia de examen" class="btn boton btn-success" :href="fileItem.path" target="_blank">
+                                        <b>CE</b>
                                     </a>
                                  </template>
                                  <template></template>

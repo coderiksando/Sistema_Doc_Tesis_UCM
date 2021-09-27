@@ -57,7 +57,9 @@ class UsersController extends Controller
                     ->where('users.state', 'like', "%$cEstado%")
                     ->where('users.id_user', '<>', "$iduser")
                     ->whereNotIn('users.id_user', $admins);
-        if ($nIdRol) $rpta->where('roles.id', "=", "$nIdRol");
+        if ($nIdRol) $rpta  ->leftJoin('users_roles', 'users_roles.id_user', '=', 'users.id_user')
+                            ->leftJoin('roles','roles.id','=','users_roles.id_roles')
+                            ->where('roles.id', "=", "$nIdRol");
         if ($nEscuela != 0) $rpta->where('users.id_escuela',$nEscuela);
         return $rpta->orderBy('nombres')->get();
     }

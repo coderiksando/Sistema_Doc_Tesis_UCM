@@ -124,7 +124,9 @@ class ReportesController extends Controller
                                 ->join('fit', 'id_fit', '=', 'fit.id')
                                 ->join('users', 'fit.id_p_guia', '=', 'users.id_user')
                                 ->join('escuelas', 'users.id_escuela', '=', 'escuelas.id')
-                                ->where('tipo_pdf', 'final_t');
+                                ->where('tipo_pdf', 'final_t')
+                                ->where('fit.privado','0')
+                                ->where('fit.fecha_publicacion','<=',Carbon::now());
 
         $reportdata = $archivosPdf->where('titulo', 'like', "%$titulo%");
         if ($idprofesor) $reportdata = $reportdata->where('id_user','=', "$idprofesor");

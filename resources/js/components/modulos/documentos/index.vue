@@ -83,13 +83,13 @@
                       <span v-text="!item.nota || item.nota == 0.0 ? 'n/a': item.nota"></span>
                     </td>
                     <td >
-                      <a v-if="item.final" title="Documento final" class="btn boton btn-warning" :href="item.final.path" target="_blank">F</a>
-                      <a v-if="item.constancia" title="Constancia de examen" class="btn boton btn-info" :href="item.constancia.path" target="_blank">C</a>
-                      <a v-if="item.path" title="Acta de defensa" class="btn btn-primary boton" target="_blank" :href="item.path"> Ac </a>
-                      <button title="Memo de revisión" class="btn btn-success boton" @click.prevent="setGenerarMemoRevision(item.id)">
-                          Me
+                      <a v-if="item.final" title="Documento final" class="btn boton btn-warning font-weight-bold" :href="item.final.path" target="_blank">DF</a>
+                      <a v-if="item.constancia" title="Constancia de examen" class="btn boton btn-info font-weight-bold" :href="item.constancia.path" target="_blank">CE</a>
+                      <a v-if="item.path" title="Acta de defensa" class="btn btn-primary boton font-weight-bold" target="_blank" :href="item.path">AD</a>
+                      <button title="Memo de revisión" class="btn btn-success boton font-weight-bold" @click.prevent="setGenerarMemoRevision(item.id)">
+                          MR
                       </button>
-                      <button :title="terminoTituloEx" class="btn btn-dark boton" @click.prevent="setGenerarDocumento(item.id)">
+                      <button :title="terminoTituloEx" class="btn btn-dark boton font-weight-bold" @click.prevent="setGenerarDocumento(item.id)">
                          {{terminoTitulo}}
                       </button>
                     </td>

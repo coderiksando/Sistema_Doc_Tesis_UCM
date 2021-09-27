@@ -104,6 +104,7 @@
                     <th>Alumno(s)</th>
                     <th>Estado de inscripción</th>
                     <th>Estado de aprobación</th>
+                    <th v-if="rolActivo == 'Profesor'">Rol propio en {{terminoTitulo}}</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
@@ -114,8 +115,6 @@
                             <div v-text="itemUser.nombres + ' ' + itemUser.apellidos"></div>
                         </div>
                     </td>
-
-                    <!-- <td v-text="item.nombre_int1"></td> -->
                     <td>
                       <template v-if="item.aprobado_pg == 'P'">
                         Pendiente
@@ -140,6 +139,14 @@
                       <template v-else>
                         Reprobada
                       </template>
+                    </td>
+                    <td v-if="rolActivo == 'Profesor'">
+                        <template v-if="item.id_p_guia == authUser.id_user">
+                            Guía
+                        </template>
+                        <template v-else-if="item.id_p_co_guia == authUser.id_user">
+                            Co-guía
+                        </template>
                     </td>
                     <td>
                       <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
@@ -301,7 +308,7 @@
         </div>
       </div>
     </template>
-    
+
     <template v-if="mostrarModalApruebo">
       <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @click.prevent="mostrarModalApruebo=false">
         <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2; width: 70% !important; min-width: 360px !important" v-on:click.stop>
@@ -425,6 +432,7 @@ export default {
       listRolByUser: JSON.parse(localStorage.getItem('rolUser')),
       terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       terminoTituloExtendido: JSON.parse(localStorage.getItem('TerminoDeTituloExtendido')),
+      authUser: JSON.parse(localStorage.getItem('authUser')),
       listEstadosFIT: [
         {value: 'V', label: 'Verificado'},
         {value: 'A', label: 'Aprobado'},
