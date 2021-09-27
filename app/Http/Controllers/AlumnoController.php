@@ -87,10 +87,10 @@ class AlumnoController extends Controller
         }elseif($rol == 'Profesor'){
             $fits = Fit::where('id_p_guia', $nIdUsuario)->whereIn('aprobado_pg', ['P', 'A', 'V']);
         }elseif($rol == 'Director'){
-            $fits = Fit::whereIn('aprobado_pg', ['A', 'V'])
+            $fits = Fit::whereIn('aprobado_pg', ['P','A', 'V'])
             ->where('id_escuela', Auth::user()->id_escuela);
         }else{
-            $fits = Fit::whereIn('aprobado_pg', ['A', 'V']);
+            $fits = Fit::whereIn('aprobado_pg', ['P', 'A', 'V']);
         }
 
 //      Filtros de busqueda

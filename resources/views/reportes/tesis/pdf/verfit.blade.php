@@ -74,7 +74,7 @@
             </tr>
             <tr>
                 <td> <strong>RUT:</strong>  {{$fit_user->User->rut}}</td>
-                <td> <strong>AÑO DE INGRESO:</strong>  {{$fit_user->User->f_ingreso}}</td>
+                <td> <strong>AÑO DE INGRESO:</strong> {{\Carbon\Carbon::createFromFormat('Y-m-d', $fit_user->User->f_ingreso)->format('d-m-Y')}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
@@ -107,7 +107,7 @@
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td style="text-align: justify;"> <strong>OBJETIVOS:</strong>  {{$datosfit->objetivo}}</td>
+                <td style="text-align: justify;"> <strong>OBJETIVOS:</strong>  {{$datosfit->objetivo_general}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>

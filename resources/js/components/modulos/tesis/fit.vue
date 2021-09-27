@@ -642,12 +642,21 @@ export default {
         this.modalAyuda = !this.modalAyuda;
     },
     verRazonRechazo(data) {
+      if (data) {
         Swal.fire({
             icon: 'warning',
             title: 'Motivo de rechazo',
             padding: 0,
-            html: '<div style="white-space: pre-wrap; max-height: 50vh; overflow: auto; padding: 10px">'+data+'</div>'
+            html: '<div style="white-space: pre-wrap; max-height: 50vh; overflow: auto; padding: 10px">'+ data +'</div>'
         })
+      }else{
+        Swal.fire({
+            icon: 'warning',
+            title: 'No se especificó un motivo de rechazo',
+            padding: 0,
+        })
+      }
+        
     },
     modalRechazo(fit){
       this.motivo = fit.motivo_pg;

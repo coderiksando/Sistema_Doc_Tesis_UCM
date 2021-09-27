@@ -358,46 +358,48 @@ export default {
     },
     eliminarUsuario(id_user) {
         Swal.fire({
-            title: '¿Está seguro de que desea eliminar definitivamente a éste usuario? (será eliminado de forma permanente)',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText:'Si, eliminar para siempre'
-            }).then((result) => {
-                this.fullscreenLoading = true;
-                var url = '/administracion/usuario/setEliminarUsuario';
-                axios.post(url, {
-                    'idUser' : id_user
-                }).then(response => {
-                    console.log(response.data);
-                    this.fullscreenLoading = false;
-                    if (response.data.estado == 'Ok') {
-                        Swal.fire({
-                            icon: 'success',
-                            title: response.data.mensaje,
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: response.data.mensaje,
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                    }
-                    this.getListarUsuarios();
-                }).catch(response => {
+          title: '¿Está seguro de que desea eliminar definitivamente a éste usuario? (será eliminado de forma permanente)',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText:'Si, eliminar para siempre'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.fullscreenLoading = true;
+            var url = '/administracion/usuario/setEliminarUsuario';
+            axios.post(url, {
+                'idUser' : id_user
+            }).then(response => {
+                this.fullscreenLoading = false;
+                if (response.data.estado == 'Ok') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: response.data.mensaje,
+                        showConfirmButton: false,
+                        timer: 3000
+                    }).then((result) => {
+                      this.getListarUsuarios();
+                    });
+                } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error en eliminación inesperada.',
+                        title: response.data.mensaje,
                         showConfirmButton: false,
                         timer: 3000
                     });
+                }
+            }).catch(response => {
+                this.fullscreenLoading = false;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error en eliminación inesperada.',
+                    showConfirmButton: false,
+                    timer: 3000
                 });
-            }
-        );
+            }); 
+          }
+        });
     }
 
   }//cierre de methods
