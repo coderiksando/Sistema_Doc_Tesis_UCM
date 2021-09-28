@@ -160,6 +160,10 @@ class AlumnoController extends Controller
             $fitsDirector = Fit::where('id_escuela', Auth::user()->id_escuela)->get()->pluck('id');
             $fits = $fits->concat($fitsDirector);
         }
+        if($rol == 'Coordinador'){
+            $fitsCoordinador = Fit::all()->pluck('id');
+            $fits = $fits->concat($fitsCoordinador);
+        }
         return $fits;
     }
 
