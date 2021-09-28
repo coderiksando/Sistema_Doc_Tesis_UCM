@@ -332,7 +332,7 @@
             <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
               <div class="swal2-icon-content">!</div>
             </div>
-            <h2 class="swal2-title" id="swal2-title" style="display: flex;">Para aprobar el formulario ingrese su comisión evaluadora</h2>
+            <h2 class="swal2-title" id="swal2-title" style="display: flex;">Para aprobar el formulario ingrese su comisión sugerida</h2>
             <button type="button" class="swal2-close" aria-label="Close this dialog" style="display: none;">×</button>
           </div>
           <div class="swal2-content text-justify">
@@ -664,7 +664,7 @@ export default {
             padding: 0,
         })
       }
-        
+
     },
     modalRechazo(fit){
       this.motivo = fit.motivo_pg;
