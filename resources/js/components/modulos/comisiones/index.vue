@@ -332,6 +332,107 @@
             </div>
 
         </div>
+
+        <div class="card card-info">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="card-title">Comisiones en las que me han sugerido</h3>
+                    </div>
+                </div>
+            </div>
+            <div id="accordion3">
+            <template v-if="listarComisionesPaginated3.length">
+                <template v-for="(item, index) in listarComisionesPaginated3">
+                    <div class="card mb-1" :key="'participeSugerido'+index">
+                        <div class="card-body py-1" :id="'headingParticipeSugerido'+index">
+                        <h3 class="mb-0">
+                            <div class="btn btn-link col-md-12 noPadNoMar d-flex">
+                                <div title="Sección expandible" data-toggle="collapse" :data-target="'#collapseParticipeSugerido'+index" aria-expanded="false" :aria-controls="'collapseParticipeSugerido'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
+                                <div title="Sección expandible" class="col-md-9 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipeSugerido'+index" aria-expanded="false" :aria-controls="'collapseParticipeSugerido'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
+                                <div class="col-md-3 noPadNoMar d-flex flex-wrap">
+                                    <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary mr-1" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
+                                        <i class="fas fa-eye"></i>
+                                    </router-link>
+                                </div>
+                            </div>
+                        </h3>
+                        </div>
+
+                        <div :id="'collapseParticipeSugerido'+index" class="collapse" :aria-labelledby="'headingParticipeSugerido'+index" data-parent="#accordion3">
+                        <div class="card-footer">
+                            <dl class="row">
+                                <dt class="col-md-4">Alumnos integrantes:</dt>
+                                <template v-if="item.fit.fit__user">
+                                    <dd class="col-md-8">
+                                        <div v-for="(fitUser, index2) in item.fit.fit__user" :key="index2">
+                                            {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
+                                        </div>
+                                    </dd>
+                                </template>
+                                <dt class="col-md-4">Escuela:</dt>
+                                <dd class="col-md-8">{{item.fit.escuela.nombre}}</dd>
+                                <dt class="col-md-4">Título:</dt>
+                                <dd class="col-md-8">{{globFunct.capitalizeFirstLetter(item.fit.titulo)}}</dd>
+                                <dt class="col-md-4">Descripción:</dt>
+                                <dd class="col-md-8">{{item.fit.descripcion}}</dd>
+                                <template v-if="item.fit.user__p__guia">
+                                    <dt class="col-md-4">Prof. Guía:</dt>
+                                    <dd class="col-md-8">{{item.fit.user__p__guia.nombres.split(' ')[0] + ' ' + item.fit.user__p__guia.apellidos.split(' ')[0]}}</dd>
+                                </template>
+                                <template v-if="item.fit.user__p__coguia">
+                                    <dt class="col-md-4">Prof. Co-guía:</dt>
+                                    <dd class="col-md-8">{{item.fit.user__p__coguia.nombres.split(' ')[0] + ' ' + item.fit.user__p__coguia.apellidos.split(' ')[0]}}</dd>
+                                </template>
+                                <dt class="col-md-4">Comisión evaluadora:</dt>
+                                <dd class="col-md-8">
+                                    <dl v-if="item" class="row">
+                                        <template v-if="item.user_p1">
+                                            <dt class="col-md-4">1° Prof. Interno:</dt>
+                                            <dd class="col-md-8">{{item.user_p1.nombres.split(' ')[0] +' '+item.user_p1.apellidos.split(' ')[0]}}</dd>
+                                        </template>
+                                        <template v-if="item.user_p2">
+                                            <dt class="col-md-4">2° Prof. Interno:</dt>
+                                            <dd class="col-md-8">{{item.user_p2.nombres.split(' ')[0] +' '+item.user_p2.apellidos.split(' ')[0]}}</dd>
+                                        </template>
+                                        <template>
+                                            <dt class="col-md-4">Prof. Externo:</dt>
+                                            <dd class="col-md-8">{{item.p_externo}}</dd>
+                                        </template>
+                                    </dl>
+                                </dd>
+                                <dt class="col-md-4">Tipo de documento:</dt>
+                                <dd class="col-md-8">{{item.fit.tipo}}</dd>
+                            </dl>
+                        </div>
+                        </div>
+                    </div>
+                </template>
+                <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li class="page-item" v-if="pageNumber3 > 0">
+                        <a href="#" class="page-link" @click.prevent="prevPage3">Ant</a>
+                        </li>
+                        <li class="page-item" v-for="(page, index) in pagesList3" :key="index"
+                        :class="[page == pageNumber3 ? 'active' : '']"
+                        :style="(page < pageNumber3 - 2 || page > pageNumber3 + 2) ? 'display: none' : ''">
+                        <a href="#" class=page-link @click.prevent="selectPage3(page)"> {{page+1}}</a>
+                        </li>
+                        <li class="page-item" v-if="pageNumber3 < pageCount3 -1">
+                        <a href="#" class="page-link" @click.prevent="nextPage3">Post</a>
+                        </li>
+                    </ul>
+                </div>
+                </template>
+                <template v-else>
+                <div class="callout callout-primary">
+                    <h5> No se han encontrado resultados...</h5>
+                </div>
+                </template>
+            </div>
+
+        </div>
+
         </div>
     </div>
     </template>
@@ -662,6 +763,7 @@ export default {
         listPermisos:[],
         listMisComisiones:[],
         listComisiones:[],
+        listComisionesProvisorias: [],
         listAllComisiones:[],
         listActasGuia:[],
         listActasParticipe:[],
@@ -674,6 +776,7 @@ export default {
         fullscreenLoading: false,
         pageNumber: 0,
         pageNumber2: 0,
+        pageNumber3: 0,
         totalPageNumber:0,
         perPage: 5,
         modalShow: false,
@@ -756,6 +859,29 @@ export default {
       }
       return pagesArray;
     },
+    pageCount3(){
+        //obtener el numero de paginas
+        let a = this.listComisionesProvisorias.length,
+            b = this.perPage;
+      return Math.ceil(a / b);
+    },
+    listarComisionesPaginated3(){
+        let inicio = this.pageNumber3 * this.perPage,
+        fin = inicio + this.perPage;
+        return this.listComisionesProvisorias.slice(inicio, fin);
+    },
+    pagesList3(){
+      let a = this.listComisionesProvisorias.length,
+          b = this.perPage;
+      let pageCount = Math.ceil(a / b);
+      let count = 0,
+        pagesArray = [];
+      while (count < pageCount){
+        pagesArray.push(count);
+        count++;
+      }
+      return pagesArray;
+    },
     totalPageCount(){
         //obtener el numero de paginas
         let a = this.listAllComisiones.length,
@@ -791,6 +917,7 @@ export default {
         if (this.rolActivo == 'Profesor') {
             this.getListarMisComisiones();
             this.getListarComisiones();
+            this.getListarComisionesProvisorias();
         } else {
             this.getListarTodasComisiones();
         }
@@ -838,15 +965,34 @@ export default {
         var url = '/comisiones/getListarComisiones';
         axios.get(url, {
             params: {
-                cTitulo: this.busquedaComision.tituloFID,
-                cAlum: this.busquedaComision.nombreAlumno,
-                startDate: this.busquedaComision.dateRange.startDate,
-                endDate: this.busquedaComision.dateRange.endDate
+                cTitulo:    this.busquedaComision.tituloFID,
+                cAlum:      this.busquedaComision.nombreAlumno,
+                startDate:  this.busquedaComision.dateRange.startDate,
+                endDate:    this.busquedaComision.dateRange.endDate,
+                estado:     'Definitiva'
             }
         }).then(response => {
             this.inicializarPaginacion2();
             this.listComisiones = response.data;
-              console.log('pertenezco',this.listComisiones)
+            console.log('pertenezco definitivo',this.listComisiones);
+            this.fullscreenLoading = false;
+        })
+    },
+    getListarComisionesProvisorias(){
+        this.fullscreenLoading = true;
+        var url = '/comisiones/getListarComisiones';
+        axios.get(url, {
+            params: {
+                cTitulo:    this.busquedaComision.tituloFID,
+                cAlum:      this.busquedaComision.nombreAlumno,
+                startDate:  this.busquedaComision.dateRange.startDate,
+                endDate:    this.busquedaComision.dateRange.endDate,
+                estado:     'Provisoria'
+            }
+        }).then(response => {
+            this.inicializarPaginacion3();
+            this.listComisionesProvisorias = response.data;
+            console.log('pertenezco provisoriamente', this.listComisionesProvisorias);
             this.fullscreenLoading = false;
         })
     },
@@ -904,6 +1050,18 @@ export default {
     },
     inicializarPaginacion2(){
       this.pageNumber2 = 0;
+    },
+    nextPage3(){
+      this.pageNumber3++;
+    },
+    prevPage3(){
+      this.pageNumber3--;
+    },
+    selectPage3(page){
+      this.pageNumber3 = page;
+    },
+    inicializarPaginacion3(){
+      this.pageNumber3 = 0;
     },
     totalNextPage(){
       this.pageNumber2++;

@@ -139,6 +139,7 @@ class ComisionesController extends Controller
                             $revisor->where('comisiones.id_profesor1', '=', "$IdProfesor")
                                     ->orWhere('comisiones.id_profesor2', '=', "$IdProfesor");
                         });
+        if ($request->estado) $fitBusq = $fitBusq->where('comisiones.estado',"$request->estado");
         if ($request->startDate && $request->endDate) $fitBusq = $fitBusq->whereBetween('fit.updated_at', [$startDate,$endDate]);
         $fitBusq = $fitBusq ->where('fit.titulo', 'like', "%$tituloFid%")
                             ->get()
