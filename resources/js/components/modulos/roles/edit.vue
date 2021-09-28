@@ -26,14 +26,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <!-- <div class="col-md-12">
                                         <div class="form-group row">
                                             <label class="col-md-3 col-form-label">Url</label>
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" v-model="fillEditarRol.cSlug" @keyup.enter="setEditarRolPermisos">
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </form>
                         </div>
@@ -146,7 +146,7 @@ export default {
   methods:{
     limpiarCriterios(){
       this.fillEditarRol.cNombre = '';
-      this.fillEditarRol.cSlug = '';
+    //   this.fillEditarRol.cSlug = '';
     },
     abrirModal(){
       this.modalShow = !this.modalShow;
@@ -160,7 +160,7 @@ export default {
         }
       }).then(response => {
           this.fillEditarRol.cNombre = response.data[0].name;
-          this.fillEditarRol.cSlug   = response.data[0].slug;
+        //   this.fillEditarRol.cSlug   = response.data[0].slug;
           this.fullscreenLoading = false;
       })
     },
@@ -181,9 +181,9 @@ export default {
         if(!this.fillEditarRol.cNombre){
           this.mensajeError.push("El nombre es un campo obligatorio")
         }
-        if(!this.fillEditarRol.cSlug){
-          this.mensajeError.push("La Url amigable es un campo obligatorio")
-        }
+        // if(!this.fillEditarRol.cSlug){
+        //   this.mensajeError.push("La Url amigable es un campo obligatorio")
+        // }
 
         let contador = 0;
         this.listPermisosFilter.map(function(x,y){
@@ -210,7 +210,7 @@ export default {
       axios.post(url, {
         'nIdRol'             : this.fillEditarRol.nIdRol,
         'cNombre'            : this.fillEditarRol.cNombre,
-        'cSlug'              : this.fillEditarRol.cSlug,
+        'cSlug'              : 'rol.' + this.fillEditarRol.cNombre.toLowerCase(),
         'listPermisosFilter' : this.listPermisosFilter
       }).then(response => {
         this.getListarRolPermisosByUsuario();

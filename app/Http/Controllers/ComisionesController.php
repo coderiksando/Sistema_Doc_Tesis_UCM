@@ -66,6 +66,7 @@ class ComisionesController extends Controller
         $comision->p_externo                = $request->NombrePEx;
         $comision->correo_p_externo         = $request->EmailPEx;
         $comision->institucion_p_externo    = $request->InstitucionPEx;
+        $comision->estado                   = $request->estado;
         $comision->update();
         $this->reg('Editar comisión', 'Profesor');
 

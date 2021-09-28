@@ -252,6 +252,7 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Roles');
+    this.getListarRoles()
   },
   methods:{
 

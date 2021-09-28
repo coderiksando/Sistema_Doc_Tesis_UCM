@@ -17,4 +17,11 @@ export default class globFunct {
         const shortenedFullName = shortenedFirstName + ' ' + shortenedLastName;
         return shortenedFullName;
     }
+    concatAll(arrayData) {
+        let rpta = '';
+        arrayData.forEach(data => {
+            rpta = rpta + ', '+ data;
+        });
+        return rpta.slice(2);
+    }
 }

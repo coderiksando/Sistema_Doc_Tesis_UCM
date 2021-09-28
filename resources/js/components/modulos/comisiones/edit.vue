@@ -18,6 +18,21 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Tipo de comisión</label>
+                    <div class="col-md-9">
+                        <el-select v-model="fillEditarComision.estadoComision">
+                            <el-option
+                            v-for="item in [{nombre: 'Provisoria'},{nombre: 'Definitiva'}]"
+                            :key="item.nombre"
+                            :label="item.nombre"
+                            :value="item.nombre">
+                            </el-option>
+                        </el-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group row">
                     <label class="col-md-3 col-form-label">Prof. comisión 1 (requerido)</label>
                     <div class="col-md-9">
                       <el-select v-model="fillEditarComision.Profesor1"
@@ -75,7 +90,7 @@
             <div class="row">
               <div class="col-md-4 offset-4">
                 <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarComision" v-loading.fullscreen.lock="fullscreenLoading">{{globVar.btnSave}}</button>
-              <button class="btn btn-flat btn-default btnWidth" @click.prevent="getComision">Restaurar</button>
+                <button class="btn btn-flat btn-default btnWidth" @click.prevent="getComision">Restaurar</button>
               </div>
             </div>
           </div>
@@ -113,7 +128,8 @@ export default {
         Profesor2: '',
         NombrePEx: '',
         EmailPEx: '',
-        InstitucionPEx: ''
+        InstitucionPEx: '',
+        estadoComision: ''
       },
       listAlumnos:[],
       listProfesores:[],
@@ -145,16 +161,15 @@ export default {
         axios.get(url, {
         params: {
           'id' : this.fillEditarComision.IdComision
-
         }
       }).then(response => {
         this.fillEditarComision.Profesor1         = response.data.user_p1.id_user;
-        if (response.data.user_p2) {
-            this.fillEditarComision.Profesor2         = response.data.user_p2.id_user;
-        }
+        if (response.data.user_p2)
+        this.fillEditarComision.Profesor2         = response.data.user_p2.id_user;
         this.fillEditarComision.NombrePEx         = response.data.p_externo;
         this.fillEditarComision.EmailPEx          = response.data.correo_p_externo;
         this.fillEditarComision.InstitucionPEx    = response.data.institucion_p_externo;
+        this.fillEditarComision.estadoComision    = response.data.estado;
         this.fullscreenLoading = false;
       })
     },
@@ -209,7 +224,8 @@ export default {
         'Profesor2'         : this.fillEditarComision.Profesor2,
         'NombrePEx'         : this.fillEditarComision.NombrePEx,
         'EmailPEx'          : this.fillEditarComision.EmailPEx,
-        'InstitucionPEx'    : this.fillEditarComision.InstitucionPEx
+        'InstitucionPEx'    : this.fillEditarComision.InstitucionPEx,
+        'estado'            : this.fillEditarComision.estadoComision
       }).then(response => {
         this.fullscreenLoading = false;
         Swal.fire({

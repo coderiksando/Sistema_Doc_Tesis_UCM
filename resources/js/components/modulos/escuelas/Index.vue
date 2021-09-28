@@ -160,6 +160,7 @@ export default {
   mounted(){
     EventBus.$emit('navegar', 'Escuelas');
     this.getListarFacultades();
+    this.getListarEscuelas()
   },
   methods:{
 

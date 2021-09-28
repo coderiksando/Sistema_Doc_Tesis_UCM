@@ -130,6 +130,7 @@
                     <th>Apellidos</th>
                     <th>Correo</th>
                     <th>Escuela</th>
+                    <th>Rol</th>
                     <th>Estado</th>
                     <th>Acciones</th>
                   </tr>
@@ -152,6 +153,7 @@
                     <td v-text="item.apellidos"></td>
                     <td v-text="item.email"></td>
                     <td v-text="item.nombreEscuela"></td>
+                    <td v-if="item.roles.length">{{globFunct.concatAll(item.roles.map(x=>{return x.name}))}}</td>
                     <td>
                       <template v-if="item.state == 'A'">
                         <span class="badge badge-success">Activo</span>
@@ -215,10 +217,12 @@
 
 <script>
 import globVar from '../../../services/globVar';
+import globFunct from '../../../services/globFunct';
 export default {
   data(){
     return{
       globVar: new globVar(),
+      globFunct: new globFunct(),
       fillBsqUsuarios:{
         cNombre: '',
         cApellido: '',
@@ -271,6 +275,7 @@ export default {
     EventBus.$emit('navegar', 'Usuarios');
     this.getListarEscuelas();
     this.getListarRoles();
+    this.getListarUsuarios()
   },
   methods:{
     getListarEscuelas(){
@@ -314,6 +319,7 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listUsuarios = response.data;
+          console.log(this.listUsuarios)
           this.fullscreenLoading = false;
       })
     },

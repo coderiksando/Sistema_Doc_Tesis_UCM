@@ -59,7 +59,12 @@ class UsersController extends Controller
                             ->leftJoin('roles','roles.id','=','users_roles.id_roles')
                             ->where('roles.id', "=", "$nIdRol");
         if ($nEscuela != 0) $rpta->where('users.id_escuela',$nEscuela);
-        return $rpta->orderBy('nombres')->get();
+        $rpta = $rpta->orderBy('nombres')->get();
+        foreach ($rpta as $data) {
+            $data->id_roles = Users_Roles::where('id_user', "$data->id_user")->get()->pluck('id_roles');
+            $data->roles = Roles::whereIn('id', $data->id_roles)->get();
+        }
+        return $rpta;
     }
 
     public function getListarUserById(Request $request){

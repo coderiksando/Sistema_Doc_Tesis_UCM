@@ -26,14 +26,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <!-- <div class="col-md-12">
                                         <div class="form-group row">
                                             <label class="col-md-3 col-form-label">Url</label>
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control" v-model="fillCrearRol.cSlug" @keyup.enter="setRegistrarRolPermisos">
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </form>
                         </div>
@@ -142,7 +142,7 @@ export default {
   methods:{
     limpiarCriterios(){
       this.fillCrearRol.cNombre = '';
-      this.fillCrearRol.cSlug = '';
+    //   this.fillCrearRol.cSlug = '';
     },
     abrirModal(){
       this.modalShow = !this.modalShow;
@@ -160,9 +160,9 @@ export default {
         if(!this.fillCrearRol.cNombre){
           this.mensajeError.push("El nombre es un campo obligatorio")
         }
-        if(!this.fillCrearRol.cSlug){
-          this.mensajeError.push("La Url amigable es un campo obligatorio")
-        }
+        // if(!this.fillCrearRol.cSlug){
+        //   this.mensajeError.push("La Url amigable es un campo obligatorio")
+        // }
 
         let contador = 0;
         this.listPermisosFilter.map(function(x,y){
@@ -188,7 +188,7 @@ export default {
       var url = '/administracion/roles/setRegistrarRolPermisos'
       axios.post(url, {
         'cNombre'            : this.fillCrearRol.cNombre,
-        'cSlug'              : this.fillCrearRol.cSlug,
+        'cSlug'              : 'rol.' + this.fillCrearRol.cNombre.toLowerCase(),
         'listPermisosFilter' : this.listPermisosFilter
       }).then(response => {
         this.fullscreenLoading = false;

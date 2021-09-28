@@ -324,8 +324,8 @@ class FilesController extends Controller
                 $contComision = 0;
                 foreach ($request->aComision as $comision) {
                     $contComision++;
-                    if ($contComision = 1) $regComision->id_profesor1 = $comision['id_user'];
-                    if ($contComision = 2) $regComision->id_profesor2 = $comision['id_user'];
+                    if ($contComision == 1) $regComision->id_profesor1 = $comision['id_user'];
+                    if ($contComision == 2) $regComision->id_profesor2 = $comision['id_user'];
                 }
             }
             if (array_key_exists('p_externo', $request->oProfExterno)) {

@@ -11,7 +11,7 @@ class Comisiones extends Model
     protected $fillable = [
         'id','id_tesis', 'id_profesor1','id_profesor2',
         'p_externo', 'correo_p_externo', 'institucion_p_externo',
-        'created_at', 'updated_at'
+        'estado', 'created_at', 'updated_at'
     ];
 
     public function UserP1(){

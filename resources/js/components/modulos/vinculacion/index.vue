@@ -221,6 +221,7 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Vinculaciones');
+    this.getListarVinculacion();
   },
   methods:{
     limpiarCriteriosBsq(){
