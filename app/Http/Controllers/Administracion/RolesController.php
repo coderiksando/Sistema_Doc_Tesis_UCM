@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Roles_Permissions;
+use App\Permission;
 
 
 class RolesController extends Controller
@@ -38,10 +40,8 @@ class RolesController extends Controller
 
         $nIdRol = ($nIdRol == NULL) ? ($nIdRol = 0) : $nIdRol;
 
-        $rpta = DB::select('call sp_Rol_getListarPermisosByRol (?)',
-                                                                [
-                                                                $nIdRol
-                                                                ]);
+        $rolList = Roles_Permissions::where('id_role', $nIdRol)->get()->pluck('id_permission');
+        $rpta    = Permission::whereIn('id', $rolList)->get();
         return $rpta;
     }
     

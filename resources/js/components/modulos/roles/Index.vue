@@ -70,7 +70,7 @@
 
                     <td>
 
-                      <button class="btn btn-primary boton" @click.prevent="abrirModalByOption('roles', 'ver', item)">
+                      <button class="btn btn-primary boton" @click.prevent="abrirModalByOption(item)">
                         <i title="Ver" class="fas fa-eye"></i>
                       </button>
                         <router-link class="btn btn-info boton" :to="{name:'roles.editar', params:{id: item.id}}">
@@ -105,8 +105,8 @@
         </div>
       </div>
     </div>
-    <div class="modal fade scrollTable" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
-      <div class="modal-dialog" role="document">
+    <div class="modal fade scrollTable" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal" @click.prevent="modalShow=false">
+      <div class="modal-dialog" role="document" @click.stop>
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Sistema de documentos UCM</h5>
@@ -119,22 +119,22 @@
             </template>
             <template v-if="modalOption == 2">
                     <div class="container-fluid">
-                      <div class="card card-info">
-                        <div class="card-header">
+                      <div class="card">
+                        <div class="card-header" style="background-color: #253e85 !important; color: white">
                           <h3 class="card-title">Información del Rol</h3>
                         </div>
                         <div class="card-body ">
                           <form role="form">
                             <div class="row">
-                              <div class="col-md-12">
+                              <div class="col-md-6">
                                 <div class="form-group row">
-                                  <label class="col-md-12 col-form-label">Nombres</label>
+                                  <label class="col-md-12 col-form-label">Nombre</label>
                                   <div class="col-md-9">
                                       <span class="form-control" v-text="fillVerRol.cNombre"></span>
                                   </div>
                                 </div>
                               </div>
-                              <div class="col-md-12">
+                              <div class="col-md-6">
                                 <div class="form-group row">
                                   <label class="col-md-12 col-form-label">Url</label>
                                   <div class="col-md-9">
@@ -147,8 +147,8 @@
                         </div>
                       </div>
 
-                      <div class="card card-info">
-                        <div class="card-header">
+                      <div class="card">
+                        <div class="card-header" style="background-color: #253e85 !important; color: white">
                           <h3 class="card-title">Listado de permisos</h3>
                         </div>
                         <div class="card-body table-resposive">
@@ -312,33 +312,13 @@ export default {
             this.modalOption = 2;
         })
     },
-    abrirModalByOption(modulo, accion, data){
-    switch (modulo) {
-      case "roles":
-        {
-          switch (accion) {
-            case "ver":
-              {
-                this.fillVerRol.cNombre = data.name;
-                this.fillVerRol.cSlug = data.slug;
-                //obtener los permisos por el rol seleccionado
-                this.getListarPermisosByRol(data.id);
-              }
-              break;
+    abrirModalByOption(data){
 
-            default:
-              break;
-          }
-        }
-
-        break;
-
-      default:
-        break;
+      this.fillVerRol.cNombre = data.name;
+      this.fillVerRol.cSlug = data.slug;
+      //obtener los permisos por el rol seleccionado
+      this.getListarPermisosByRol(data.id);
     }
-  },
-
-
   }//cierre de methods
 }
 </script>

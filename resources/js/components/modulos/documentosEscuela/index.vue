@@ -89,7 +89,7 @@
               <div class="form-group row m-0">
                 <h3 class="card-title" 
                   :class="(listRolPermisosByUsuario.includes('escuelas.documentos.general')) ? 'col-md-3' : 'col-md-6'"
-                  v-text="(listRolPermisosByUsuario.includes('escuelas.documentos.general')) ? 'Documentos de escuela:' : 'Documentos de escuela: '+miEscuela.nombre">
+                  v-text="(listRolPermisosByUsuario.includes('escuelas.documentos.general')) ? 'Archivos de escuela:' : 'Archivos de escuela: '+miEscuela.nombre">
                 </h3>
                 <div class="col-md-4" v-if="listRolPermisosByUsuario.includes('escuelas.documentos.general')">
                     <el-select v-model="escuelaDocumentos"
@@ -244,7 +244,7 @@ export default {
     }
   },
   mounted(){
-    EventBus.$emit('navegar', 'Documentos de escuela');
+    EventBus.$emit('navegar', 'Archivos de escuela');
     this.getListarEscuelas();
     this.getEscuela();
   },

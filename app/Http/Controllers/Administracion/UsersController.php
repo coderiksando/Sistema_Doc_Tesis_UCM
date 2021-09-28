@@ -46,7 +46,9 @@ class UsersController extends Controller
 
         $rpta = DB  ::table('users')
                     ->leftjoin('files', 'users.id_files', '=', 'files.id')
-                    ->join('escuelas', 'escuelas.id', '=', 'users.id_escuela')
+                    ->leftJoin('users_roles', 'users_roles.id_user', '=', 'users.id_user')
+                    ->leftJoin('roles','roles.id','=','users_roles.id_roles')
+                    ->leftjoin('escuelas', 'escuelas.id', '=', 'users.id_escuela')
                     ->select('users.*','escuelas.nombre as nombreEscuela')
                     ->selectRaw('CONCAT_WS(" ", nombres, apellidos) as fullname, files.path as profile_image')
                     ->where('nombres', 'like', "%$cNombre%")
