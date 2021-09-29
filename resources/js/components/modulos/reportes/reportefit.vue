@@ -166,6 +166,7 @@
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dfecharango[0]"
                                     placeholder="Inicio"
+                                    format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="pickerOptions"
                                     @change="selectStart">
@@ -175,6 +176,7 @@
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dfecharango[1]"
                                     placeholder="Término"
+                                    format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="endOption">
                                 </el-date-picker>
@@ -188,6 +190,7 @@
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dFechaFID[0]"
                                     placeholder="Inicio"
+                                    format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="pickerOptions"
                                     @change="selectStartFID">
@@ -197,6 +200,7 @@
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dFechaFID[1]"
                                     placeholder="Término"
+                                    format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="endOptionFID">
                                 </el-date-picker>

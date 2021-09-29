@@ -266,6 +266,7 @@
                           <el-date-picker
                             v-model="fillCrearFIT.dFecha"
                             placeholder="Seleccionar fecha"
+                            format="dd/MM/yyyy"
                             value-format="yyyy-MM-dd">
                           </el-date-picker>
                         </div>

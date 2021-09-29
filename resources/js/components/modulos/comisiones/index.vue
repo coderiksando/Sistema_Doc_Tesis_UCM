@@ -57,7 +57,7 @@
                                     v-model="busquedaComision.dateRange.startDate"
                                     style="width: 100%;"
                                     placeholder="Inicio"
-                                    format="yyyy/MM/dd"
+                                    format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="startOption"
                                     @change="selectStart">
@@ -68,7 +68,7 @@
                                     v-model="busquedaComision.dateRange.endDate"
                                     style="width: 100%;"
                                     placeholder="Final"
-                                    format="yyyy/MM/dd"
+                                    format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="endOption"
                                     @change="comisionesByRol">
@@ -498,7 +498,7 @@
                                 <el-date-picker
                                     v-model="busquedaComision.dateRange.startDate"
                                     style="width: 100%;"
-                                    format="yyyy/MM/dd"
+                                    format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     placeholder="Inicio"
                                     :picker-options="startOption"
@@ -509,7 +509,7 @@
                                 <el-date-picker
                                     v-model="busquedaComision.dateRange.endDate"
                                     style="width: 100%;"
-                                    format="yyyy/MM/dd"
+                                    format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     placeholder="Final"
                                     :picker-options="endOption"

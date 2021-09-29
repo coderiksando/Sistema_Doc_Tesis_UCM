@@ -61,6 +61,7 @@
                         range-separator="/"
                         start-placeholder="Fecha Inicio"
                         end-placeholder="Fecha Fin"
+                        format="dd/MM/yyyy"
                         value-format="yyyy-MM-dd">
                       </el-date-picker>
                     </div>

@@ -159,6 +159,7 @@
                                     v-model="fillEditarUsuarios.f_entrada"
                                     type="month"
                                     placeholder="Fecha de inicio"
+                                    format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="pickerOptions"
                                     @change="selectStart">
@@ -174,6 +175,7 @@
                                     v-model="fillEditarUsuarios.f_salida"
                                     type="month"
                                     placeholder="Fecha de término"
+                                    format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="endOption">
                                     </el-date-picker>
@@ -226,6 +228,7 @@
                                     style="width: 100%;"
                                     v-model="fillEditarUsuarios.f_nacimiento"
                                     placeholder="Fecha de nacimiento"
+                                    format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="pickerOptions">
                                     </el-date-picker>

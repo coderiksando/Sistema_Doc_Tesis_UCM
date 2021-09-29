@@ -33,6 +33,7 @@
                                     v-model="fillBsqTesis.dFechaInicio"
                                     type="month"
                                     placeholder="Inicio"
+                                    format="MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="pickerOptions"
                                     @change="selectStart">
@@ -43,6 +44,7 @@
                                     v-model="fillBsqTesis.dFechaFin"
                                     type="month"
                                     placeholder="Término"
+                                    format="MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="endOption">
                                 </el-date-picker>

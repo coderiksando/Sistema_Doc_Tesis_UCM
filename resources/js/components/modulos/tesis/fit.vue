@@ -61,8 +61,8 @@
                       <el-date-picker
                         v-model="fillBsqTesis.dfecha"
                         type="year"
-                        range-separator="/"
                         placeholder="Año"
+                        format="yyyy"
                         value-format="yyyy-MM-dd">
                       </el-date-picker>
                     </div>

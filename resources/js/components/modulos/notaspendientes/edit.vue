@@ -24,6 +24,7 @@
                         v-model="fillEditarNotaP.fecha_propuesta"
                         type="date"
                         size="large"
+                        format="dd/MM/yyyy"
                         value-format="yyyy-MM-dd"
                         placeholder="Selecionar fecha de nota pendiente">
                     </el-date-picker>
