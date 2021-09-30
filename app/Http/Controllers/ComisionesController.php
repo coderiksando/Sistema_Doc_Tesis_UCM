@@ -36,6 +36,7 @@ class ComisionesController extends Controller
             $comision->p_externo = $request->NombrePEx;
             $comision->correo_p_externo = $request->EmailPEx;
             $comision->institucion_p_externo = $request->InstitucionPEx;
+            if ( $request->estado ) $comision->estado = $request->estado;
             $comision->save();
             $this->reg('Registrar Comisión', $comision->id,  $request->session()->get('rol'));
 
@@ -168,7 +169,7 @@ class ComisionesController extends Controller
                 }
                 $comision->Fit->archivoActa = $comision->Fit->ArchivoPdf->where('tipo_pdf','acta')->values();
                 $comision->revisionComisionPropia = $comision->Fit->Revision_Comision->where('id_user', "$IdProfesor")->where('tipo','revision');
-                $comision->constanciaFid = $comision->Fit->ArchivoPdf->where('tipo_pdf','constancia_t')->values();
+                $comision->archivoPendienteRevision = $comision->Fit->ArchivoPdf->where('tipo_pdf','revision')->values();
             }
         }
         return $comisiones;

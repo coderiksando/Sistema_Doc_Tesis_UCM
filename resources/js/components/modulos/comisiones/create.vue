@@ -33,7 +33,19 @@
                                                 </el-select>
                                             </div>
                                         </div>
-
+                                        <div class="form-group row">
+                                            <label class="col-md-3 col-form-label">Tipo de comisión</label>
+                                            <div class="col-md-9">
+                                                <el-select v-model="fillCrearComision.estadoComision">
+                                                    <el-option
+                                                    v-for="item in [{nombre: 'Provisoria'},{nombre: 'Definitiva'}]"
+                                                    :key="item.nombre"
+                                                    :label="item.nombre"
+                                                    :value="item.nombre">
+                                                    </el-option>
+                                                </el-select>
+                                            </div>
+                                        </div>
                                         <div class="form-group row">
                                             <label class="col-md-3 col-form-label">Prof. comisión 1 (requerido)</label>
                                             <div class="col-md-9">
@@ -130,12 +142,13 @@ export default {
       globVar: new globVar(),
       globFunct: new globFunct(),
       fillCrearComision:{
-        idTesis: this.$route.params.id,
+        idTesis: '',
         Profesor1: '',
         Profesor2: '',
         NombrePEx: '',
         EmailPEx: '',
-        InstitucionPEx: ''
+        InstitucionPEx: '',
+        estadoComision: 'Provisoria'
       },
       listTesis: [],
       listProfesores:[],
@@ -151,8 +164,8 @@ export default {
       error: 0,
       mensajeError:[],
       booleanFunctions: {
-          getListarProfesores: false,
-          getListarTesis: false
+        getListarProfesores: false,
+        getListarTesis: false
       }
     }
   },
@@ -166,12 +179,16 @@ export default {
   },
   methods:{
     getListarTesis () {
-        const url = '/alumno/getListarTesis';
+        const url = '/alumno/getTesisById';
         axios.get(url, {
+            params: {
+                'id' : this.$route.params.id
+            }
         }).then (response => {
-          this.listTesis = response.data;
+          this.listTesis = [response.data];
+          this.fillCrearComision.idTesis = response.data.id;
           this.booleanFunctions.getListarTesis = true;
-          this.fullscreenLoading = !this.globFunct.booleanElements(this.booleanFunctions);
+          if (this.globFunct.booleanElements(this.booleanFunctions)) this.fullscreenLoading = false;
         })
     },
     getListarProfesores(){
@@ -180,7 +197,7 @@ export default {
         }).then(response => {
             this.listProfesores = response.data;
             this.booleanFunctions.getListarProfesores = true;
-            this.fullscreenLoading = !this.globFunct.booleanElements(this.booleanFunctions);
+            if (this.globFunct.booleanElements(this.booleanFunctions)) this.fullscreenLoading = false;
         })
     },
     limpiarCriterios(){
@@ -214,14 +231,14 @@ export default {
       }
       this.fullscreenLoading = true;
       var url = '/comisiones/setRegistrarComision';
-      console.log(this.fillCrearComision);
       axios.post(url, {
         'idTesis'           : this.fillCrearComision.idTesis,
         'Profesor1'         : this.fillCrearComision.Profesor1,
         'Profesor2'         : this.fillCrearComision.Profesor2,
         'NombrePEx'         : this.fillCrearComision.NombrePEx,
         'EmailPEx'          : this.fillCrearComision.EmailPEx,
-        'InstitucionPEx'    : this.fillCrearComision.InstitucionPEx
+        'InstitucionPEx'    : this.fillCrearComision.InstitucionPEx,
+        'estado'            : this.fillCrearComision.estadoComision
       }).then(response => {
         this.fullscreenLoading = false;
         this.$router.push('/comisiones');

@@ -188,7 +188,6 @@ export default {
           this.listAlumnos = response.data;
           this.booleanFunctions.getListarAlumnosByprofesor = true;
           if (this.globFunct.booleanElements(this.booleanFunctions)) this.getComision();
-        //   this.fullscreenLoading = false;
       })
     },
     getListarProfesores(){
@@ -199,11 +198,10 @@ export default {
             'allTeacher' : true
         }
       }).then(response => {
-          //this.inicializarPaginacion();
+          this.inicializarPaginacion();
           this.listProfesores = response.data;
           this.booleanFunctions.getListarProfesores = true;
           if (this.globFunct.booleanElements(this.booleanFunctions)) this.getComision();
-        //   this.fullscreenLoading = false;
       })
     },
     limpiarCriterios(){

@@ -7,6 +7,7 @@ use App\User;
 use App\Fit_User;
 use App\Users_Roles;
 use App\ArchivoPdf;
+use App\Comisiones;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -153,9 +154,15 @@ class AlumnoController extends Controller
         $nIdUsuario  = Auth::id();
         $fitsAlumno = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
         $fitsProf = Fit::where(function ($fit) use ($nIdUsuario) {
-            $fit->where('id_p_guia', '=', "$nIdUsuario")->orWhere('id_p_co_guia', '=', "$nIdUsuario");
+            $fit->where('id_p_guia', '=', "$nIdUsuario")
+                ->orWhere('id_p_co_guia', '=', "$nIdUsuario");
         })->get()->pluck('id');
+        $fitsComision = Comisiones::where(function ($comision) use ($nIdUsuario) {
+            $comision   ->where('id_profesor1',"$nIdUsuario")
+                        ->orWhere('id_profesor2',"$nIdUsuario");
+        })->get()->pluck('id_tesis');
         $fits = $fitsAlumno->concat($fitsProf);
+        $fits = $fits->concat($fitsComision);
         if($rol == 'Director'){
             $fitsDirector = Fit::where('id_escuela', Auth::user()->id_escuela)->get()->pluck('id');
             $fits = $fits->concat($fitsDirector);
