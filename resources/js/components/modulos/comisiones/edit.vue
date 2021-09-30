@@ -118,10 +118,12 @@
 
 <script>
 import globVar from '../../../services/globVar';
+import globFunct from '../../../services/globFunct';
 export default {
   data(){
     return{
       globVar: new globVar(),
+      globFunct: new globFunct(),
       fillEditarComision:{
         IdComision: this.$attrs.id,
         Profesor1: '',
@@ -143,7 +145,11 @@ export default {
         display: 'none',
       },
       error: 0,
-      mensajeError:[]
+      mensajeError:[],
+      booleanFunctions: {
+        getListarProfesores: false,
+        getListarAlumnosByprofesor: false
+      }
     }
   },
   computed: {
@@ -152,11 +158,11 @@ export default {
     EventBus.$emit('navegar', 'Editar comisión');
       this.getListarProfesores();
       this.getListarAlumnosByprofesor();
-      this.getComision();
+    //   this.getComision();
   },
   methods:{
     getComision(){
-        this.fullscreenLoading = true;
+        // this.fullscreenLoading = true;
         var url = '/comisiones/getComision'
         axios.get(url, {
         params: {
@@ -180,17 +186,24 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listAlumnos = response.data;
-          this.fullscreenLoading = false;
+          this.booleanFunctions.getListarAlumnosByprofesor = true;
+          if (this.globFunct.booleanElements(this.booleanFunctions)) this.getComision();
+        //   this.fullscreenLoading = false;
       })
     },
     getListarProfesores(){
       this.fullscreenLoading = true;
       var url = '/alumno/getListarProfesores'
       axios.get(url, {
+        params: {
+            'allTeacher' : true
+        }
       }).then(response => {
           //this.inicializarPaginacion();
           this.listProfesores = response.data;
-          this.fullscreenLoading = false;
+          this.booleanFunctions.getListarProfesores = true;
+          if (this.globFunct.booleanElements(this.booleanFunctions)) this.getComision();
+        //   this.fullscreenLoading = false;
       })
     },
     limpiarCriterios(){

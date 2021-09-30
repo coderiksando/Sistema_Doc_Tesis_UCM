@@ -365,18 +365,20 @@ class AlumnoController extends Controller
 
         if(!$request->ajax()) return redirect('/');
         $nIdUsuario  = Auth::id();
+        $allTeacher = $request->allTeacher;
 
         $profesores = DB::table('users')
                         ->join('users_roles', 'users_roles.id_user', '=', 'users.id_user')
                         ->join('roles', 'roles.id', '=', 'users_roles.id_roles')
                         ->select('users.id_user',DB::raw("CONCAT(users.nombres,' ',users.apellidos) as fullname"), 'users.id_escuela')
-                        ->where('users.state', 'A')
-                        ->where([
+                        ->where('users.state', 'A');
+        if ($allTeacher) $profesores = $profesores->where('roles.name', '=', 'Profesor');
+        else $profesores = $profesores->where([
                             ['roles.name', '=', 'Profesor'],
                             ['users.id_user', '<>', $nIdUsuario]
-                        ])
-                        ->where('state', 'A')
-                        ->orderBy('fullname')->get();
+                        ]);
+        $profesores = $profesores   ->where('state', 'A')
+                                    ->orderBy('fullname')->get();
         return $profesores;
     }
 
