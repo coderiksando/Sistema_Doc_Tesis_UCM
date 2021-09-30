@@ -154,7 +154,7 @@
                                 </table>
                                 </div>
                                 <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
-                                    <template v-if="originalResponse.aprobado_pg == 'P' && rolActivo =='Profesor' || originalResponse.aprobado_pg == 'A' && rolActivo !='Profesor'">
+                                    <template v-if="originalResponse.aprobado_pg == 'P' && rolActivo =='Profesor' || (originalResponse.aprobado_pg == 'A' || originalResponse.aprobado_pg == 'P') && rolActivo !='Profesor'">
                                         <div class="col-md-6 mx-auto">
                                             <button :title="'Aprobar '+terminoTitulo" class="btn btn-flat btn-success btnWidth" @click.prevent="acceptHandler">
                                                 <i class="fas fa-check"></i> Aceptar

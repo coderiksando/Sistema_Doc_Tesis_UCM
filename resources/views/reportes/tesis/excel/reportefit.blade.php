@@ -26,7 +26,7 @@
             <th>Título</th>
             <th>Estado de aprobación</th>
             <th>Estado de avances</th>
-            <th>Detalles de documentos</th>
+            <!-- <th>Detalles de documentos</th> -->
             <th>Fecha última bitácora</th>
             <th>Fecha último avance </th>
             <th>Fecha creación de FID</th>
@@ -46,8 +46,16 @@
                     <td>{{ $count }}</td>
                     <td>{{ $datatesis->fit__user[$i]->user->nombres.' '.$datatesis->fit__user[$i]->user->apellidos }}</td>
                     <td>{{ $datatesis->fit__user[$i]->user->rut }}</td>
-                    <td>{{ Carbon\Carbon::parse($datatesis->fit__user[$i]->user->f_ingreso)->format('d-m-Y') }} </td>
-                    <td>{{ Carbon\Carbon::parse($datatesis->fit__user[$i]->user->f_salida)->format('d-m-Y') }}</td>
+                    @if($datatesis->fit__user[$i]->user->f_ingreso)
+                        <td>{{ Carbon\Carbon::parse($datatesis->fit__user[$i]->user->f_ingreso)->format('d-m-Y') }} </td>
+                    @else
+                        <td>No disponible</td>
+                    @endif
+                    @if($datatesis->fit__user[$i]->user->f_salida)
+                        <td>{{ Carbon\Carbon::parse($datatesis->fit__user[$i]->user->f_salida)->format('d-m-Y') }}</td>
+                    @else
+                        <td>No disponible</td>
+                    @endif
                     @if($datatesis->acta)
                         <td>{{ Carbon\Carbon::parse($datatesis->acta->updated_at)->format('d-m-Y') }}</td>
                         @php($difference = Carbon\Carbon::parse($datatesis->fit__user[$i]->user->f_ingreso)->diff(Carbon\Carbon::parse($datatesis->acta->updated_at)))
@@ -77,7 +85,7 @@
                     @endif
                     @php($estadoAvances = Carbon\Carbon::parse($datatesis->updated_at)->diff($prioridadActaAhora))
                     <td>{{ count($datatesis->avances_tesis).' avances en '.$estadoAvances->m.' mes(es) y '.$estadoAvances->d.' días' }}</td>
-                    <td>Detalles de documentos</td>
+                    <!-- <td>Detalles de documentos</td> -->
                 @if(count($datatesis->bitacoras)>=1)
                     <td>{{ Carbon\Carbon::parse($datatesis->bitacoras[count($datatesis->bitacoras)-1]->updated_at)->format('d-m-Y') }}</td>
                 @else

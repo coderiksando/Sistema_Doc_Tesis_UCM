@@ -118,8 +118,8 @@
                                                 <div class="col-md-9">
                                                     <el-input
                                                       type="textarea"
-                                                      :autosize="{ minRows: 2, maxRows: 5}"
-                                                      maxlength="200"
+                                                      :autosize="{ minRows: 2, maxRows: 10}"
+                                                      maxlength="7000"
                                                       placeholder="Título del documento"
                                                       show-word-limit
                                                       v-model="fillCrearFIT.cTitulo">
@@ -134,7 +134,7 @@
                                                     <el-input
                                                       type="textarea"
                                                       :autosize="{ minRows: 2, maxRows: 10}"
-                                                      maxlength="2000"
+                                                      maxlength="7000"
                                                       placeholder="Contribución esperada"
                                                       show-word-limit
                                                       v-model="fillCrearFIT.cContribucion">
@@ -150,7 +150,7 @@
                                                     <el-input
                                                       type="textarea"
                                                       :autosize="{ minRows: 2, maxRows: 10}"
-                                                      maxlength="2000"
+                                                      maxlength="7000"
                                                       placeholder="Objetivo general del documento"
                                                       show-word-limit
                                                       v-model="fillCrearFIT.cObjetivoGeneral">
@@ -165,7 +165,7 @@
                                                     <el-input
                                                       type="textarea"
                                                       :autosize="{ minRows: 2, maxRows: 10}"
-                                                      maxlength="2000"
+                                                      maxlength="7000"
                                                       placeholder="Objetivos específicos del documento"
                                                       show-word-limit
                                                       v-model="fillCrearFIT.cObjetivoEspecifico">
@@ -180,7 +180,7 @@
                                                     <el-input
                                                       type="textarea"
                                                       :autosize="{ minRows: 2, maxRows: 10}"
-                                                      maxlength="2000"
+                                                      maxlength="7000"
                                                       placeholder="Descripción del tema"
                                                       show-word-limit
                                                       v-model="fillCrearFIT.cDescripcion">

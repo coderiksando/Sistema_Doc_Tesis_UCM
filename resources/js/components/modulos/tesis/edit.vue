@@ -147,8 +147,8 @@
                         <div class="col-md-9">
                           <el-input
                             type="textarea"
-                            :autosize="{ minRows: 2, maxRows: 5 }"
-                            maxlength="200"
+                            :autosize="{ minRows: 2, maxRows: 10 }"
+                            maxlength="7000"
                             placeholder="Título"
                             show-word-limit
                             v-model="fillEditarFIT.cTitulo"
@@ -166,7 +166,7 @@
                           <el-input
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 10 }"
-                            maxlength="2000"
+                            maxlength="7000"
                             placeholder="Contribución"
                             show-word-limit
                             v-model="fillEditarFIT.cContribucion"
@@ -184,7 +184,7 @@
                           <el-input
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 10 }"
-                            maxlength="2000"
+                            maxlength="7000"
                             placeholder="Objetivo"
                             show-word-limit
                             v-model="fillEditarFIT.cObjetivoGeneral"
@@ -202,7 +202,7 @@
                           <el-input
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 10 }"
-                            maxlength="2000"
+                            maxlength="7000"
                             placeholder="Objetivos específicos del documento"
                             show-word-limit
                             v-model="fillEditarFIT.cObjetivoEspecifico"
@@ -220,7 +220,7 @@
                           <el-input
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 10 }"
-                            maxlength="2000"
+                            maxlength="7000"
                             placeholder="Descripción"
                             show-word-limit
                             v-model="fillEditarFIT.cDescripcion"

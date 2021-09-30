@@ -131,8 +131,8 @@
                         <div class="col-md-9">
                           <el-input
                             type="textarea"
-                            :autosize="{ minRows: 2, maxRows: 5 }"
-                            maxlength="200"
+                            :autosize="{ minRows: 2, maxRows: 10 }"
+                            maxlength="7000"
                             placeholder="Título del documento"
                             show-word-limit
                             v-model="fillEditarFIT.cTitulo"
@@ -172,8 +172,8 @@
                         <div class="col-md-9">
                           <el-input
                             type="textarea"
-                            :autosize="{ minRows: 2, maxRows: 5 }"
-                            maxlength="2000"
+                            :autosize="{ minRows: 2, maxRows: 10 }"
+                            maxlength="7000"
                             placeholder="Contribucion esperada"
                             show-word-limit
                             v-model="fillEditarFIT.cContribucion"
@@ -191,7 +191,7 @@
                           <el-input
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 10 }"
-                            maxlength="2000"
+                            maxlength="7000"
                             placeholder="Objetivo general"
                             show-word-limit
                             v-model="fillEditarFIT.cObjetivoGeneral"
@@ -209,7 +209,7 @@
                           <el-input
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 10 }"
-                            maxlength="2000"
+                            maxlength="7000"
                             placeholder="Objetivos específicos del documento"
                             show-word-limit
                             v-model="fillEditarFIT.cObjetivoEspecifico"
@@ -226,8 +226,8 @@
                         <div class="col-md-9">
                           <el-input
                             type="textarea"
-                            :autosize="{ minRows: 2, maxRows: 5 }"
-                            maxlength="2000"
+                            :autosize="{ minRows: 2, maxRows: 10 }"
+                            maxlength="7000"
                             placeholder="Descripcion del tema"
                             show-word-limit
                             v-model="fillEditarFIT.cDescripcion"

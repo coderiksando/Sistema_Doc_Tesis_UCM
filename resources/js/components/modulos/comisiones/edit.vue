@@ -150,9 +150,9 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Editar comisión');
-      this.getComision();
       this.getListarProfesores();
       this.getListarAlumnosByprofesor();
+      this.getComision();
   },
   methods:{
     getComision(){
