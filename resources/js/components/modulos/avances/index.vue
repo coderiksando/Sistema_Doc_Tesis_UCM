@@ -96,7 +96,7 @@
                         <button class="btn btn-link" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
                           {{item.created_at | moment}}
                         </button>
-                        <template v-if="listRolPermisosByUsuario.includes('EsProfesor')">
+                        <template v-if="listRolPermisosByUsuario.includes('EsProfesor') && selectedEstado.valor == 'D'">
                             <button v-if="item.archivo_pdf.tipo_pdf == 'avance_t'" title="Enviar a revisión el documento" class="btn btn-success boton float-right mx-1 btn-w" @click.prevent="setAvanceARevision(item, true)">
                                 <i class="fas fa-file-export"></i>
                             </button>
@@ -242,7 +242,7 @@ export default {
         axios.get(url, {
       }).then(response => {
           if(response.data){
-            this.fillEstadoTesis.cEstado     = response.data;
+            this.fillEstadoTesis.cEstado = response.data;
           }
       })
     },
@@ -259,6 +259,7 @@ export default {
         }).then(response => {
             this.inicializarPaginacion();
             this.listAvances = response.data;
+            console.log(this.listAvances)
             this.loading = false;
         })
       }
