@@ -347,18 +347,18 @@
                                     <router-link :title="'Vista completa de '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                                         <b>{{terminoTitulo}}</b>
                                     </router-link>
-                                    <router-link title="Sección de avances" v-if="item.avances_tesis.length > 0" class="btn boton btn-success" :to="{name:'reportes.detallesavances', params:{id: item.fit__user[0].id_user}}">
+                                    <router-link title="Sección de avances" v-if="item.avances_tesis.length > 0" class="btn boton btn-success" :to="{name:'reportes.detallesavances', params:{id: item.id, estado: item.estado}}">
                                         <b>Av</b>
                                     </router-link>
-                                    <router-link title="Sección de bitácoras" v-if="item.bitacoras.length > 0" class="btn boton btn-secondary" :to="{name:'reportes.detallesbitacoras', params:{id: item.fit__user[0].id_user}}">
-                                        <b>Bit</b>
+                                    <router-link title="Sección de Actas de Reunión" v-if="item.bitacoras.length > 0" class="btn boton btn-secondary" :to="{name:'reportes.detallesbitacoras', params:{id: item.id}}">
+                                        <b>AR</b>
                                     </router-link>
                                 </dd>
                                 <dt class="col-md-4">Descarga de documento:</dt>
                                 <dd class="col-md-8">
                                     <template v-if="item.ultimoDoc">
-                                        <a :key="'arch'+index" title="Descargar archivo" class="btn boton btn-success" :href="item.ultimoDoc.path" target="_blank">
-                                            <b>Ar</b>
+                                        <a :key="'arch'+index" title="Descargar documento" class="btn boton btn-success" :href="item.ultimoDoc.path" target="_blank">
+                                            <b>Doc</b>
                                         </a>
                                     </template>
                                     <template v-if="item.acta">
@@ -586,6 +586,10 @@ import globFunct from '../../../services/globFunct';
             }).then(response => {
                 this.listFacultades = response.data;
                 this.booleanFunction.facultad = true;
+                if (this.listFacultades){
+                    let primerFacultad = this.listFacultades.find(facultad => facultad.nombre == 'Facultad de Ciencias de la Ingeniería')
+                    this.fillBsqTesisReporte.nIdFacultad = primerFacultad.id;
+                }
                 if (this.globFunct.booleanElements(this.booleanFunction)) this.fullscreenLoading = false;
             })
         },
