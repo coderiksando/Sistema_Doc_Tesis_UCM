@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
@@ -50,10 +49,22 @@
                 <td style="text-align: center;">UNIVERSIDAD CATOLICA DEL MAULE</td>
             </tr>
             <tr>
-                <td style="text-align: center;">FACULTAD DE CIENCIAS DE LA INGENIERIA</td>
+                <td style="text-align: center;">
+                @if($fit_user->User->escuelas)
+                    {{mb_strtoupper($datosfit->user_p_guia->escuelas->facultad->nombre)}}
+                @else
+                    FACULTAD NO ESPECIFICADA
+                @endif
+                </td>
             </tr>
             <tr>
-                <td style="text-align: center;">ESCUELA DE {{$datosfit->user_p_guia->escuelas->nombre}}</td>
+                <td style="text-align: center;">ESCUELA
+                @if($fit_user->User->escuelas)
+                    DE {{mb_strtoupper($datosfit->user_p_guia->escuelas->nombre)}}
+                @else
+                    NO ESPECIFICADA
+                @endif
+                </td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
@@ -76,20 +87,37 @@
                 <td> <strong>RUT:</strong>  {{$fit_user->User->rut}}</td>
                 <td>
                     <strong>AÑO DE INGRESO:</strong>
+                    @if($fit_user->User->f_ingreso)
+                        {{\Carbon\Carbon::createFromFormat('Y-m-d', $fit_user->User->f_ingreso)->format('d-m-Y')}}
+                    @else
+                        No registrado
+                    @endif
                 </td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td> <strong>CARRERA:</strong>  {{$fit_user->User->escuelas->nombre}}</td>
+                <td><strong>CARRERA:</strong>
+                    @if($fit_user->User->escuelas)
+                        {{$fit_user->User->escuelas->nombre}}
+                    @else
+                        No registrado
+                    @endif
+                </td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
                 <td> <strong>EMAIL:</strong>  {{$fit_user->User->email}}</td>
-                <td> <strong>TELEFONO:</strong>  {{$fit_user->User->telefono}}</td>
+                <td> <strong>TELEFONO:</strong>
+                @if($fit_user->User->telefono)
+                    {{$fit_user->User->telefono}}
+                @else
+                    No registrado
+                @endif
+                </td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>

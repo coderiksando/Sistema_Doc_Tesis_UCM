@@ -356,6 +356,7 @@ class AlumnoController extends Controller
         foreach($datosfit->Fit_User as $fit_user) {
             $fit_user->User;
             $fit_user->User->Escuelas;
+            $fit_user->User->Escuelas->Facultad;
         }
         if ($datosfit->Comisiones) {
             $datosfit->Comisiones->UserP1;
