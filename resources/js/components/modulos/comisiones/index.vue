@@ -124,9 +124,9 @@
                                     <!-- <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                                         <i class="fas fa-eye"></i>
                                     </router-link> -->
-                                    <button :title="'Descargar documento final'" class="btn boton btn-warning mr-1" @click.prevent="descargarDocumento(item.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                                    <a v-if="item.archivoPendienteRevision" title="Descargar documento" class="btn boton btn-warning mr-1" :href="item.archivoPendienteRevision.path" target="_blank">
                                         <i class="fas fa-file-download"></i>
-                                    </button>
+                                    </a>
                                     <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary mr-1" @click.prevent="getDocumento(item.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
@@ -243,9 +243,9 @@
                                     <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary mr-1" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
                                         <i class="fas fa-eye"></i>
                                     </router-link>
-                                    <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning mr-1" @click.prevent="descargarDocumento(item.fit.id)" v-loading.fullscreen.lock="fullscreenLoading">
+                                    <a v-if="item.archivoPendienteRevision" title="Descargar documento" class="btn boton btn-warning mr-1" :href="item.archivoPendienteRevision.path" target="_blank">
                                         <i class="fas fa-file-download"></i>
-                                    </button>
+                                    </a>
                                     <button v-if="item.fit.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary mr-1" @click.prevent="getDocumento(item.fit.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
@@ -557,9 +557,9 @@
                                     <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary mr-1" :to="{name:'tesis.ver', params:{id: item.id}}">
                                         <i class="fas fa-eye"></i>
                                     </router-link>
-                                    <button :title="'Descargar documento de '+terminoTitulo" class="btn boton btn-warning mr-1" @click.prevent="descargarDocumento(item.id)">
+                                    <a v-if="item.archivoPendienteRevision" title="Descargar documento" class="btn boton btn-warning mr-1" :href="item.archivoPendienteRevision.path" target="_blank">
                                         <i class="fas fa-file-download"></i>
-                                    </button>
+                                    </a>
                                     <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary mr-1" @click.prevent="getDocumento(item.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
@@ -1080,7 +1080,7 @@ export default {
         this.fullscreenLoading = true;
         axios.get(url, {
             params: {
-            'id' :id
+            'id' : id
             }
         }).then(response => {
             this.fullscreenLoading = false;

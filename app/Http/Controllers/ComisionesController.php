@@ -76,7 +76,7 @@ class ComisionesController extends Controller
         return;
     }
     public function getListarMisComisiones(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
         $IdProfesor = Auth::id();
         $nomAlumno  = $request->cAlum;
         $startDate  = Carbon::parse($request->startDate)->startOfDay();
@@ -118,12 +118,14 @@ class ComisionesController extends Controller
                     }
                 }
                 $fit->archivoActa = $fit->ArchivoPdf->where('tipo_pdf','acta')->values();
+                $fit->archivoPendienteRevision = $fit->ArchivoPdf->where('tipo_pdf','revision')->first();
+                
             }
         }
         return $MisComisiones;
     }
     public function getListarComisiones(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
         $IdProfesor  = Auth::id();
         $nomAlumno  = $request->cAlum;
         $startDate  = Carbon::parse($request->startDate)->startOfDay();
@@ -169,7 +171,7 @@ class ComisionesController extends Controller
                 }
                 $comision->Fit->archivoActa = $comision->Fit->ArchivoPdf->where('tipo_pdf','acta')->values();
                 $comision->revisionComisionPropia = $comision->Fit->Revision_Comision->where('id_user', "$IdProfesor")->where('tipo','revision');
-                $comision->archivoPendienteRevision = $comision->Fit->ArchivoPdf->where('tipo_pdf','revision')->values();
+                $comision->archivoPendienteRevision = $comision->Fit->ArchivoPdf->where('tipo_pdf','revision')->first();
             }
         }
         return $comisiones;
@@ -192,6 +194,7 @@ class ComisionesController extends Controller
             $fit->Revision_Comision;
             $fit->ArchivoPdf;
             $fit->archivoActa = $fit->ArchivoPdf->where('tipo_pdf','acta')->values();
+            $fit->archivoPendienteRevision = $fit->ArchivoPdf->where('tipo_pdf','revision')->first();
         }
         return $fitWithComision;
     }
