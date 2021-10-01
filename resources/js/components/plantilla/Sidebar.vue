@@ -99,7 +99,7 @@
                 </router-link>
               </template>
             </li>
-            <li class="nav-item-sidebar">
+            <!-- <li class="nav-item-sidebar">
               <template v-if="permisos.includes('areatesis.index')">
                 <router-link class="nav-link" :to="'/areatesis'">
                   <i class="nav-icon fas fa-microscope"></i>
@@ -108,7 +108,7 @@
                   </p>
                 </router-link>
               </template>
-            </li>
+            </li> -->
             <!-- <li class="nav-item-sidebar">
               <template v-if="permisos.includes('vinculacion.index')">
                 <router-link class="nav-link" :to="'/vinculacion'">

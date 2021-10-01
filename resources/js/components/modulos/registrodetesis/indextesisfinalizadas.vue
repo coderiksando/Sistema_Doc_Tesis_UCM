@@ -70,7 +70,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Profesor</label>
+                        <label class="col-md-3 col-form-label">Profesor Guía</label>
                         <div class="col-md-9">
                                 <el-select filterable v-model="fillBsqTesis.cProfesor"
                                 placeholder="Asignar Profesor"
@@ -129,7 +129,7 @@
                     <thead>
                       <tr>
                         <th>Alumno(s)</th>
-                        <th>Profesor</th>
+                        <th>Profesor Guía</th>
                         <th>Título</th>
                         <th>Acciones</th>
                         <th>Fecha de creación</th>
@@ -157,11 +157,11 @@
                           <router-link :title="'Editar '+terminoTitulo" class="btn boton btn-primary" :to="{name:'editar.tesisfinal', params:{id: item.id}}">
                             <i class="fas fa-edit"></i>
                           </router-link>
-                          <template>
+                          <!-- <template>
                             <button :title="'Generar documento '+terminoTitulo" class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
                               <i class="fas fa-file-download"></i>
                             </button>
-                          </template>
+                          </template> -->
                           <template v-if="item.archivo_pdf.length">
                              <template v-for="(fileItem, fileIndex) in item.archivo_pdf">
                                  <template v-if="fileItem.tipo_pdf == 'final_t'">

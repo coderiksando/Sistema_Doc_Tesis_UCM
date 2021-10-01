@@ -74,7 +74,9 @@
             </tr>
             <tr>
                 <td> <strong>RUT:</strong>  {{$fit_user->User->rut}}</td>
-                <td> <strong>AÑO DE INGRESO:</strong> {{\Carbon\Carbon::createFromFormat('Y-m-d', $fit_user->User->f_ingreso)->format('d-m-Y')}}</td>
+                <td>
+                    <strong>AÑO DE INGRESO:</strong>
+                </td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
