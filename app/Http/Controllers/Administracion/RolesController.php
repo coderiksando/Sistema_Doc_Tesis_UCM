@@ -44,6 +44,13 @@ class RolesController extends Controller
         $rpta    = Permission::whereIn('id', $rolList)->get();
         return $rpta;
     }
+
+    public function getListarPermisos(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
+        $rpta    = Permission::all();
+        return $rpta;
+    }
     
     public function setRegistrarRolPermisos(Request $request){
         if(!$request->ajax()) return redirect('/');

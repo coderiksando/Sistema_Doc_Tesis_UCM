@@ -51,7 +51,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Listar permisos</h3>
                         </div>
-                        <div class="card-body table-resposive">
+                        <div class="card-body table-resposive" v-loading = loading>
                               <template v-if="listPermisosFilter.length">
                                 <div class="scrollTable">
                                   <table class ="table table-hover table-head-fixed text-nowrap projects">
@@ -119,10 +119,12 @@ export default {
         cSlug: '',
       },
       listPermisos: [],
+      listPermisosByRol: [],
       listPermisosFilter:[],
       listRolPermisosByUsuario: [],
       listRolPermisosByUsuarioFilter: [],
       fullscreenLoading: false,
+      loading: false,
       modalShow: false,
       mostrarModal: {
         display: 'block',
@@ -141,7 +143,7 @@ export default {
   mounted(){
       EventBus.$emit('navegar', 'Editar rol');
       this.getListarRoles();
-      this.getListarPermisosByRol();
+      this.getListarPermisos();
   },
   methods:{
     limpiarCriterios(){
@@ -164,6 +166,14 @@ export default {
           this.fullscreenLoading = false;
       })
     },
+    getListarPermisos(){
+        this.loading = true;
+        var ruta = '/administracion/roles/getListarPermisos'
+        axios.get(ruta, {}).then( response => {
+            this.listPermisos = response.data;
+            this.getListarPermisosByRol();
+        })
+    },
     getListarPermisosByRol(){
         var ruta = '/administracion/roles/getListarPermisosByRol'
         axios.get(ruta, {
@@ -171,7 +181,7 @@ export default {
                 'nIdRol' : this.fillEditarRol.nIdRol
             }
         }).then( response => {
-            this.listPermisos = response.data;
+            this.listPermisosByRol = response.data;
             this.filterPermisosByRol();
         })
     },
@@ -230,14 +240,15 @@ export default {
     },
     filterPermisosByRol(){
       let me = this;
-      me.listPermisos.map(function(x,y){
+      me.listPermisos.map(function(x){
         me.listPermisosFilter.push({
           'id'     : x.id,
           'name'   : x.name,
           'slug'   : x.slug,
-          'checked': (x.checked == 1) ? true : false
-        })
-      })
+          'checked': (me.listPermisosByRol.find(y => y.id == x.id)) ? true : false
+        });
+      });
+      this.loading = false;
     },
     marcarFila(index){
       this.listPermisosFilter[index].checked = !this.listPermisosFilter[index].checked;
@@ -264,6 +275,7 @@ export default {
         showConfirmButton: false,
         timer: 1500
       })
+      this.$router.push('/roles');
     },
 
   }// cierre methods
