@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" v-loading.fullscreen.lock="fullscreenLoading">
     <template  v-if="listRolPermisosByUsuario.includes('bitacoras.crear')">
       <div class="card-header">
         <div class="card-tools">
@@ -46,7 +46,7 @@
         </div>
         </template>
 
-        <div class="card card-info" v-loading="fullscreenLoading">
+        <div class="card card-info" v-loading="loading">
           <div class="card-header">
             <h3 class="card-title">Bandeja de resultados</h3>
           </div>
@@ -120,6 +120,7 @@ export default {
       listPermisos:[],
       listBitacoras:[],
       selectedFit:{},
+      loading: false,
       fullscreenLoading: false,
       pageNumber: 0,
       perPage: 5,
@@ -181,29 +182,33 @@ export default {
       var url = '/avances/getListarFitsByprofesor';
       axios.get(url, {
         params: {
-          'estado'    : 'D'
+          'estado'    : (this.$attrs.id != null) ? '' : 'D'
         }
         }).then(response => {
           this.listFits = response.data;
+          if (this.$attrs.id != null) {
+            this.selectedFit = this.listFits.find(fit => fit.id == this.$attrs.id);
+            this.getListarBitacorasByFit();
+          }
           this.fullscreenLoading = false;
       })
     },
     getListarMisBitacoras(){
-      this.fullscreenLoading = true;
+      this.loading = true;
       var url = '/bitacoras/getListarMisBitacoras'
       axios.get(url, {
 
       }).then(response => {
           this.inicializarPaginacion();
           this.listBitacoras = response.data;
-          this.fullscreenLoading = false;
+          this.loading = false;
       })
     },
     getListarBitacorasByFit(){
       if (!this.selectedFit) {
         this.limpiarBandejaUsuarios();
       }else{
-        this.fullscreenLoading = true;
+        this.loading = true;
         var url = '/bitacoras/getListarBitacorasByFit'
         axios.get(url, {
           params: {
@@ -212,7 +217,7 @@ export default {
         }).then(response => {
             this.inicializarPaginacion();
             this.listBitacoras = response.data;
-            this.fullscreenLoading = false;
+            this.loading = false;
         })
       }
     },

@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card" v-loading.fullscreen.lock = fullscreenLoading>
       <template  v-if="listRolPermisosByUsuario.includes('avances.crear')">
         <div class="card-header">
           <div class="card-tools">
@@ -84,7 +84,7 @@
             <div class="card-header">
               <h3 class="card-title">Bandeja de resultados</h3>
             </div>
-            <div class="card-body" v-loading="fullscreenLoading">
+            <div class="card-body" v-loading="loading">
               <template v-if="listarAvancesPaginated.length">
                 <div id="accordion">
                   <div class="card-white" v-for="(item, index) in listarAvancesPaginated" :key="index">
@@ -148,7 +148,6 @@ import Multiselect from 'vue-multiselect';
 
 export default {
   components: {Multiselect},
-  props: ['usuario'],
   data(){
     return{
       fillEstadoTesis:{
@@ -164,6 +163,7 @@ export default {
       selectedFit:{},
       selectedEstado: {nombre: 'En desarrollo', valor: 'D'},
       listPermisos:[],
+      loading: false,
       fullscreenLoading: false,
       pageNumber: 0,
       perPage: 10,
@@ -177,7 +177,8 @@ export default {
         display: 'none',
       },
       error: 0,
-      mensajeError:[]
+      mensajeError:[],
+      id_fit : this.$attrs.id
     }
   },
   computed: {
@@ -241,7 +242,7 @@ export default {
       if (!this.selectedFit) {
           this.limpiarBandejaUsuarios();
       }else{
-        this.fullscreenLoading = true;
+        this.loading = true;
         var url = '/avances/getListarAvancesByFit'
         axios.get(url, {
           params: {
@@ -250,46 +251,38 @@ export default {
         }).then(response => {
             this.inicializarPaginacion();
             this.listAvances = response.data;
-            this.fullscreenLoading = false;
+            this.loading = false;
         })
       }
     },
-    // getListarAlumnosByprofesor(){
-    //   this.fullscreenLoading = true;
-    //   this.selectedAlumno = {};
-    //   var url = '/avances/getListarAlumnosByprofesor';
-    //   axios.get(url, {
-    //     params: {
-    //       'estado'    : this.selectedEstado.valor
-    //     }
-    //     }).then(response => {
-    //       this.listAlumnos = response.data;
-    //       console.log(this.listAlumnos);
-    //       this.fullscreenLoading = false;
-    //   })
-    // },
     getListarFitsByprofesor(){
       this.fullscreenLoading = true;
       this.selectedFit = {};
+      this.listAvances = [];
       var url = '/avances/getListarFitsByprofesor';
       axios.get(url, {
         params: {
-          'estado'    : this.selectedEstado.valor
+          'estado'    : (this.id_fit) ? this.$attrs.estado : this.selectedEstado.valor
         }
         }).then(response => {
           this.listFits = response.data;
-          console.log(this.listFits);
+          if (this.id_fit) {
+            this.selectedFit = this.listFits.find(fit => fit.id == this.$attrs.id);
+            this.selectedEstado = this.listEstados.find(estado => estado.valor == this.selectedFit.estado);
+            this.id_fit = '';
+            this.getListarAvancesByFit();
+          }
           this.fullscreenLoading = false;
       })
     },
     getListarAvances(){
-      this.fullscreenLoading = true;
+      this.loading = true;
       var url = '/avances/getListarAvances'
       axios.get(url, {
       }).then(response => {
           this.inicializarPaginacion();
           this.listAvances = response.data;
-          this.fullscreenLoading = false;
+          this.loading = false;
       })
     },
     nextPage(){

@@ -453,9 +453,9 @@ export const rutas = [
     }
 },
 {
-    path: '/reportes/detallesavances/:id',
+    path: '/reportes/detallesavances/:estado/:id',
     name: 'reportes.detallesavances',
-    component: require('./components/modulos/reportes/detallesavances').default,
+    component: require('./components/modulos/avances/index').default,
     beforeEnter: (to, from, next) => {
         verificarAcceso(to, from, next);
     },
@@ -464,7 +464,7 @@ export const rutas = [
 {
     path: '/reportes/detallesbitacoras/:id',
     name: 'reportes.detallesbitacoras',
-    component: require('./components/modulos/reportes/detallesbitacoras').default,
+    component: require('./components/modulos/bitacoras/index').default,
     beforeEnter: (to, from, next) => {
         verificarAcceso(to, from, next);
     },

@@ -340,7 +340,7 @@ export default {
       originalResponse: {},
       mostrarModalRechazo: false,
       mostrarModalApruebo: false,
-      motivo : 'hola'
+      motivo : ''
     }
   },
   computed: {
