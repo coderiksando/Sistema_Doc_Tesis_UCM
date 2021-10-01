@@ -238,14 +238,10 @@ class ComisionesController extends Controller
     public function pathDocumentoComision(Request $request){
         if(!$request->ajax()) return redirect('/');
         Debugbar::info($request->id);
-        $archivoPDF = ArchivoPdf::where('id_fit', $request->id)
-                                ->where(function ($tipo) {
-                                    $tipo   ->where('tipo_pdf', '=', 'final_t')
-                                            ->orWhere('tipo_pdf', '=', 'avance_t');
-                                })
-                                ->orderBy('updated_at', 'desc')
-                                ->first();
-        return $archivoPDF;
+        $documentoRevision = ArchivoPdf ::where('id_fit', $request->id)
+                                        ->where('tipo_pdf', 'revision')
+                                        ->get()->first();
+        return $documentoRevision;
     }
     public function setRegistrarDocumentoComision(Request $request){
         if(!$request->ajax()) return redirect('/');

@@ -96,14 +96,22 @@
                         <button class="btn btn-link" data-toggle="collapse" v-bind:data-target="'#collapse'+index" aria-expanded="false" v-bind:aria-controls="'collapse'+index">
                           {{item.created_at | moment}}
                         </button>
-                          <a title="Ver documento" class="btn btn-warning boton float-right mx-1 btn-w" :href="item.archivo_pdf.path" target="_blank">
+                        <template v-if="listRolPermisosByUsuario.includes('EsProfesor')">
+                            <button v-if="item.archivo_pdf.tipo_pdf == 'avance_t'" title="Enviar a revisión el documento" class="btn btn-success boton float-right mx-1 btn-w" @click.prevent="setAvanceARevision(item, true)">
+                                <i class="fas fa-file-export"></i>
+                            </button>
+                            <button v-if="item.archivo_pdf.tipo_pdf == 'revision'" title="Cancelar la revisión del documento" class="btn btn-danger boton float-right mx-1 btn-w" @click.prevent="setAvanceARevision(item, false)">
+                                <i class="fas fa-file-import"></i>
+                            </button>
+                        </template>
+                        <a title="Ver documento" class="btn btn-warning boton float-right mx-1 btn-w" :href="item.archivo_pdf.path" target="_blank">
                             <i class="fas fa-file-download"> </i>
-                          </a>
-                          <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">
-                            <router-link class="btn btn-info boton float-right mx-1 btn-w" :to="{name:'avances.editar', params:{id: item.id}}">
+                        </a>
+                        <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">
+                            <router-link title="Editar avance" class="btn btn-info boton float-right mx-1 btn-w" :to="{name:'avances.editar', params:{id: item.id}}">
                                 <i class="fas fa-pencil-alt"></i>
                             </router-link>
-                          </template>
+                        </template>
                       </div>
                     </div>
 
@@ -283,14 +291,46 @@ export default {
       })
     },
     getListarAvances(){
-      this.fullscreenLoading = true;
-      var url = '/avances/getListarAvances'
-      axios.get(url, {
-      }).then(response => {
-          this.inicializarPaginacion();
-          this.listAvances = response.data;
-          this.fullscreenLoading = false;
-      })
+        this.fullscreenLoading = true;
+        var url = '/avances/getListarAvances'
+        axios.get(url, {
+        }).then(response => {
+            this.inicializarPaginacion();
+            this.listAvances = response.data;
+            console.log(this.listAvances);
+            this.fullscreenLoading = false;
+        })
+    },
+    setAvanceARevision(avance, cambio){
+        let titulo = '';
+        if (cambio) titulo = 'Estás seguro que quieres enviar a revisión?';
+        else titulo = 'Desea retirar el documento de revisión?';
+        Swal.fire({
+            title: titulo,
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const url = '/avances/setAvanceARevision';
+                axios.post(url, {
+                    'idTesis'   : avance.id_tesis,
+                    'idArchivo' : avance.id_archivo,
+                    'change'    : cambio
+                }).then(response => {
+                    let tituloRespuesta = '';
+                    if (cambio) tituloRespuesta = 'Su avance ha sido enviado a revisión';
+                    else tituloRespuesta = 'Su documento se ha retirado de revisión';
+                    Swal.fire({
+                        icon: 'success',
+                        title: tituloRespuesta,
+                        showConfirmButton: false,
+                        timer: 2500
+                    });
+                    this.getListarAvances();
+                });
+            }
+        });
     },
     nextPage(){
       this.pageNumber++;

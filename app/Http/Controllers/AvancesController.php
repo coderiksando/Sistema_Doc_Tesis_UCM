@@ -6,6 +6,7 @@ use App\AvancesTesis;
 use App\Fit;
 use App\Fit_User;
 use App\User;
+use App\ArchivoPdf;
 use \stdClass;
 use App\Mail\MailAvances;
 use Illuminate\Http\Request;
@@ -170,6 +171,19 @@ class AvancesController extends Controller
             $archivo->delete();
         }
         $this->reg('Editar avance', $id, 'Alumno');
+    }
+    public function setAvanceARevision(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $idArchivo = $request->idArchivo;
+        $idTesis = $request->idTesis;
+        $cambioAvance = ArchivoPdf  ::where('id_fit',"$idTesis")
+                                    ->where('tipo_pdf','revision')
+                                    ->update(['tipo_pdf'=>'avance_t']);
+        if ($request->change) {
+            $avanceARevision = ArchivoPdf   ::where('id',"$idArchivo")
+                                            ->update(['tipo_pdf'=>'revision']);
+        }
+        return response()->json(['estado' => 'Cambio validado.'], 200);
     }
     public function getEstadoTesis(Request $request){
         if(!$request->ajax()) return redirect('/');

@@ -93,7 +93,8 @@ class ReportesController extends Controller
             $fit->ultimoDoc = $fit->ArchivoPdf()
                 ->where(function ($var) {
                     $var->where('tipo_pdf', '=', 'final_t')
-                        ->orWhere('tipo_pdf', '=', 'avance_t');
+                        ->orWhere('tipo_pdf', '=', 'avance_t')
+                        ->orWhere('tipo_pdf', '=', 'revision');
                 })
                 ->get()->sortByDesc('updated_at')->values()->first();
             $fit->acta = $fit->ArchivoPdf()

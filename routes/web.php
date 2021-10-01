@@ -94,6 +94,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/avances/getSeleccionarAvance', 'AvancesController@getSeleccionarAvance');
   Route::post('/avances/setRegistrarAvance', 'AvancesController@setRegistrarAvance');
   Route::post('/avances/setEditarAvance', 'AvancesController@setEditarAvance');
+  Route::post('/avances/setAvanceARevision', 'AvancesController@setAvanceARevision');
   Route::get('/avances/getListarAvancesByFit', 'AvancesController@getListarAvancesByFit');
   Route::get('/avances/getListarAlumnosByprofesor', 'AvancesController@getListarAlumnosByprofesor');
   Route::get('/avances/getListarFitsByprofesor', 'AvancesController@getListarFitsByprofesor');
