@@ -908,11 +908,15 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Comisiones');
-    this.comisionesByRol();
-    this.getParametros();
-    this.selectStart();
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
   },
   methods:{
+    init(){
+        this.comisionesByRol();
+        this.getParametros();
+        this.selectStart();
+    },
     comisionesByRol() {
         if (this.rolActivo == 'Profesor') {
             this.getListarMisComisiones();

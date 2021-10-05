@@ -273,11 +273,15 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Usuarios');
-    this.getListarEscuelas();
-    this.getListarRoles();
-    this.getListarUsuarios()
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
   },
   methods:{
+    init(){
+      this.getListarEscuelas();
+      this.getListarRoles();
+      this.getListarUsuarios()
+    },
     getListarEscuelas(){
         var url = "/administracion/escuelas/getListarEscuelas";
         axios.get(url, {

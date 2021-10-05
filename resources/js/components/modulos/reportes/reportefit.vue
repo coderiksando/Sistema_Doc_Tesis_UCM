@@ -533,15 +533,19 @@ import globFunct from '../../../services/globFunct';
     },
     mounted(){
       EventBus.$emit('navegar', 'Reportes de documentos');
-      this.getListarVinculacion();
-      this.getListarTipoVinculacion();
-      this.getListarEscuelas();
-      this.getListarFacultades();
-      this.getListarProfesorByEscuela();
-      this.selectStart();
-      this.selectStartFID();
+      EventBus.$on('refresh', x => {this.init()});
+      this.init();
     },
     methods:{
+        init(){
+            this.getListarVinculacion();
+            this.getListarTipoVinculacion();
+            this.getListarEscuelas();
+            this.getListarFacultades();
+            this.getListarProfesorByEscuela();
+            this.selectStart();
+            this.selectStartFID();
+        },
         getListarVinculacion(tipo){
             this.fullscreenLoading = true;
             const url = '/administracion/vinculacion/getListarVinculacion';

@@ -252,10 +252,13 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Roles');
-    this.getListarRoles()
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
   },
   methods:{
-
+    init(){
+      this.getListarRoles();
+    },
     limpiarCriteriosBsq(){
       this.fillBsqRol.cNombre = '';
       this.fillBsqRol.cSlug = '';

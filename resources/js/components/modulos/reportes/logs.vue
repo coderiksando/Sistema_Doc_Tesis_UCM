@@ -222,7 +222,8 @@ export default {
     },
     mounted(){
       EventBus.$emit('navegar', 'Registros del sistema');
-      this.getListarUsuarios();
+      EventBus.$on('refresh', x => {this.init()});
+      this.init();
     },
     filters:{
       moment: function (date) {
@@ -231,6 +232,9 @@ export default {
       }
     },
     methods:{
+      init(){
+        this.getListarUsuarios();
+      },
       getListarUsuarios(){
       this.fullscreenLoading = true;
       var url = '/administracion/usuario/getListarUsuarios'

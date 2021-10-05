@@ -498,10 +498,14 @@ export default {
   },
   created(){
     EventBus.$emit('navegar', 'Ingresar/Revisar FID');
-    this.getListarTesis();
-    this.getListarProfesores();
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
   },
   methods:{
+    init(){
+      this.getListarTesis();
+      this.getListarProfesores();
+    },
     setGenerarDocumento(nIdTesis){
       //this.fullscreenLoading = true;
       var config = {

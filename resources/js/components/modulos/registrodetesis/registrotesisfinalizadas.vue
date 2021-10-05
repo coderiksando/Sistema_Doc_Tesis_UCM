@@ -1042,13 +1042,17 @@ export default {
   computed: {},
   mounted() {
     EventBus.$emit('navegar', 'Ingresar Documento finalizado');
-    this.getListarProfesores();
-    this.getListarVinculacion();
-    this.getListarAlumnos();
-    this.getListarEscuelas();
-    this.getParametros();
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
   },
   methods: {
+    init(){
+      this.getListarProfesores();
+      this.getListarVinculacion();
+      this.getListarAlumnos();
+      this.getListarEscuelas();
+      this.getParametros();
+    },
     getListarEscuelas(){
         this.fullscreenLoading = true;
         var url = '/administracion/escuelas/getListarEscuelas'

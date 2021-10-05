@@ -36,54 +36,54 @@
           <!-- PESTAÑAS ADMINISTRACION -->
           <li class="nav-item-sidebar has-treeview">
             <template v-if="permisos.includes('dashboard.index')">
-              <router-link class="nav-link" :to="'/dashboard'">
+              <a href="#" class="nav-link" @click.prevent="navegar('/dashboard')">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                   Inicio
                 </p>
-              </router-link>
+              </a>
             </template>
           </li>
           <template  v-if="permisos.includes('usuarios.index') || permisos.includes('roles.index') || permisos.includes('permisos.index') || permisos.includes('registrar.tesis') || permisos.includes('index.tesisfinal')">
             <li class="nav-header">CONTROL DE USUARIOS</li>
               <template v-if="permisos.includes('usuarios.index')">
                 <li class="nav-item-sidebar">
-                  <router-link class="nav-link" :to="'/usuarios'">
+                  <a href="#" class="nav-link" @click.prevent="navegar('/usuarios')">
                     <i class="nav-icon fas fa-users"></i>
                     <p>
                       Usuarios
                     </p>
-                  </router-link>
+                  </a>
                 </li>
               </template>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('roles.index')">
-                <router-link class="nav-link" :to="'/roles'">
+                <a href="#" class="nav-link" @click.prevent="navegar('/roles')">
                   <i class="nav-icon fas fa-user-tag"></i>
                   <p>
                     Roles
                   </p>
-                </router-link>
+                </a>
               </template>
             </li>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('registrar.tesis')">
-                <router-link class="nav-link" :to="'/registrodetesis'">
+                <a href="#" class="nav-link" @click.prevent="navegar('/registrodetesis')">
                     <i class="nav-icon fas fa-user-graduate"></i>
                     <p>
                     Registrar documento final
                     </p>
-                </router-link>
+                </a>
             </template>
             </li>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('index.tesisfinal')">
-                <router-link class="nav-link" :to="'/indextesisfinalizada'">
+                <a href="#" class="nav-link" @click.prevent="navegar('/indextesisfinalizada')">
                     <i class="nav-icon fas fa-pencil-alt"></i>
                     <p>
                     Edición de documento final
                     </p>
-                </router-link>
+                </a>
             </template>
             </li>
           </template>
@@ -91,42 +91,42 @@
             <li class="nav-header">CONTROL DE ESCUELAS</li>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('escuelas.index')">
-                <router-link class="nav-link" :to="'/escuelas'">
+                <a href="#" class="nav-link" @click.prevent="navegar('/escuelas')">
                   <i class="nav-icon fas fa-school"></i>
                   <p>
                     Escuelas
                   </p>
-                </router-link>
+                </a>
               </template>
             </li>
             <!-- <li class="nav-item-sidebar">
               <template v-if="permisos.includes('areatesis.index')">
-                <router-link class="nav-link" :to="'/areatesis'">
+                <a class="nav-link" :to="'/areatesis'">
                   <i class="nav-icon fas fa-microscope"></i>
                   <p>
                     Areas de documentos
                   </p>
-                </router-link>
+                </a>
               </template>
             </li> -->
             <!-- <li class="nav-item-sidebar">
               <template v-if="permisos.includes('vinculacion.index')">
-                <router-link class="nav-link" :to="'/vinculacion'">
+                <a class="nav-link" :to="'/vinculacion'">
                   <i class="nav-icon fas fa-hands-helping"></i>
                   <p>
                     Vinculaciones
                   </p>
-                </router-link>
+                </a>
               </template>
             </li> -->
             <!-- <li class="nav-item-sidebar">
                 <template v-if="permisos.includes('escuelas.documentos.navegar')">
-                  <router-link class="nav-link" :to="'/documentosEscuela'">
+                  <a class="nav-link" :to="'/documentosEscuela'">
                     <i class="nav-icon fa fa-folder"></i>
                     <p>
                       Documentos de Escuela
                     </p>
-                  </router-link>
+                  </a>
                 </template>
               </li> -->
           </template>
@@ -134,22 +134,22 @@
             <li class="nav-header">CONTROL DE SISTEMA</li>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('parametros.index')">
-                <router-link class="nav-link" :to="'/parametros'">
+                <a href="#" class="nav-link" @click.prevent="navegar('/parametros')">
                   <i class="nav-icon fas fa-cog"></i>
                   <p>
                     Parámetros
                   </p>
-                </router-link>
+                </a>
               </template>
             </li>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('reportes.logs')">
-                <router-link class="nav-link" :to="'/reportes/logs'">
+                <a href="#" class="nav-link" @click.prevent="navegar('/reportes/logs')">
                   <i class="nav-icon fas fa-database"></i>
                   <p>
                     Registros
                   </p>
-                </router-link>
+                </a>
               </template>
             </li>
 
@@ -159,12 +159,12 @@
             <li class="nav-header">REPORTES</li>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('reportes.reportefit')">
-                <router-link class="nav-link" :to="'/reportes'">
+                <a href="#" class="nav-link" @click.prevent="navegar('/reportes')">
                   <i class="nav-icon fas fa-database"></i>
                   <p>
                     Reportes de documentos
                   </p>
-                </router-link>
+                </a>
               </template>
             </li>
           </template>
@@ -173,22 +173,22 @@
             <li class="nav-header">CONTROL DE DOCUMENTOS</li>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('actadefensa.index')">
-                <router-link class="nav-link" :to="'/actadefensa'">
+                <a href="#" class="nav-link" @click.prevent="navegar('/actadefensa')">
                   <i class="nav-icon fas fa-user-check"></i>
                   <p>
                     Acta de defensa y nota
                   </p>
-                </router-link>
+                </a>
               </template>
             </li>
             <li class="nav-item-sidebar">
               <template v-if="permisos.includes('documentos.index')">
-                <router-link class="nav-link" :to="'/documentos'">
+                <a href="#" class="nav-link" @click.prevent="navegar('/documentos')">
                   <i class="nav-icon far fa-id-card"></i>
                   <p>
                     Documentos alumnos
                   </p>
-                </router-link>
+                </a>
               </template>
             </li>
           </template>
@@ -197,62 +197,62 @@
             <li class="nav-header">SEGUIMIENTO DE DOCUMENTOS</li>
               <li class="nav-item-sidebar">
                 <template v-if="permisos.includes('tesis.fit')">
-                  <router-link class="nav-link" :to="'/tesis'">
+                  <a href="#" class="nav-link" @click.prevent="navegar('/tesis')">
                     <i class="nav-icon far fa-edit"></i>
                     <p>
                       Inscribir/Revisar {{terminoTitulo}}
                     </p>
-                  </router-link>
+                  </a>
                 </template>
               </li>
               <li class="nav-item-sidebar">
                 <template v-if="permisos.includes('avances.index')">
-                  <router-link class="nav-link" :to="'/avances'">
+                  <a href="#" class="nav-link" @click.prevent="navegar('/avances')">
                     <i class="nav-icon fas fa-file-upload"></i>
                     <p>
                       Avances de documento
                     </p>
-                  </router-link>
+                  </a>
                 </template>
               </li>
               <li class="nav-item-sidebar">
                 <template v-if="permisos.includes('bitacoras.index')">
-                  <router-link class="nav-link" :to="'/bitacoras'">
+                  <a href="#" class="nav-link" @click.prevent="navegar('/bitacoras')">
                     <i class="nav-icon fas fa-clipboard-check"></i>
                     <p>
                       Actas de reunión
                     </p>
-                  </router-link>
+                  </a>
                 </template>
               </li>
               <li class="nav-item-sidebar">
                 <template v-if="permisos.includes('comisiones.index')">
-                  <router-link class="nav-link" :to="'/comisiones'">
+                  <a href="#" class="nav-link" @click.prevent="navegar('/comisiones')">
                     <i class="nav-icon fas fa-users"></i>
                     <p>
                       Comisiones
                     </p>
-                  </router-link>
+                  </a>
                 </template>
               </li>
               <li class="nav-item-sidebar">
                 <template v-if="permisos.includes('vinculacion.index')">
-                  <router-link class="nav-link" :to="'/vinculacion'">
+                  <a href="#" class="nav-link" @click.prevent="navegar('/vinculacion')">
                     <i class="nav-icon fas fa-hands-helping"></i>
                     <p>
                         Vinculaciones
                     </p>
-                  </router-link>
+                  </a>
                 </template>
               </li>
               <li class="nav-item-sidebar">
                 <template v-if="permisos.includes('escuelas.documentos.navegar')">
-                  <router-link class="nav-link" :to="'/documentosEscuela'">
+                  <a href="#" class="nav-link" @click.prevent="navegar('/documentosEscuela')">
                     <i class="nav-icon fa fa-folder"></i>
                     <p>
                       Archivos de Escuela
                     </p>
-                  </router-link>
+                  </a>
                 </template>
               </li>
           </template>
@@ -261,12 +261,12 @@
             <li class="nav-header">SOLICITUD NOTA PENDIENTE</li>
               <li class="nav-item-sidebar">
                 <template v-if="permisos.includes('notaspendientes.index')">
-                  <router-link class="nav-link" :to="'/notaspendientes'">
+                  <a href="#" class="nav-link" @click.prevent="navegar('/notaspendientes')">
                     <i class="nav-icon fas fa-calendar-day"></i>
                     <p>
                       Nota pendiente
                     </p>
-                  </router-link>
+                  </a>
                 </template>
               </li>
           </template>
@@ -322,6 +322,13 @@ export default {
         }
 
       })
+    },
+    navegar(ruta){
+      if (ruta != this.$route.path) {
+        this.$router.push(ruta);
+      }else{
+        EventBus.$emit('refresh');
+      }
     },
     cambiarRol(redirect){
       // this.fullscreenLoading = true;

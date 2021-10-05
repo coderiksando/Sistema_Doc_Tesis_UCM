@@ -245,10 +245,14 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Archivos de escuela');
-    this.getListarEscuelas();
-    this.getEscuela();
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
   },
   methods:{
+    init(){
+      this.getListarEscuelas();
+      this.getEscuela();
+    },
     getFile(element){
       this.formatError = false
       this.sizeError = false

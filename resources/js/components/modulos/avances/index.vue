@@ -219,9 +219,8 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Avances de documento');
-    this.getEstadoTesis();
-    this.getListarAvances();
-    this.getListarFitsByprofesor();
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
   },
   filters:{
     moment: function (date) {
@@ -230,6 +229,11 @@ export default {
     }
   },
   methods:{
+    init(){
+      this.getEstadoTesis();
+      this.getListarAvances();
+      this.getListarFitsByprofesor();
+    },
     limpiarCriteriosBsq(){
       this.selectedFit = {};
       this.selectedEstado = {};
