@@ -165,9 +165,9 @@ export default {
     },
   },
   mounted(){
-    this.getListarMisBitacoras();
-    this.getListarFitsByprofesor();
     EventBus.$emit('navegar', 'Actas de reunión');
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
   },
   filters:{
     moment: function (date) {
@@ -176,6 +176,10 @@ export default {
     }
   },
   methods:{
+    init(){
+      this.getListarMisBitacoras();
+      this.getListarFitsByprofesor();
+    },
     getListarFitsByprofesor(){
       this.fullscreenLoading = true;
       this.selectedFit = {};

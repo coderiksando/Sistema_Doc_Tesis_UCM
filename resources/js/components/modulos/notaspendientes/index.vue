@@ -136,17 +136,8 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Nota pendiente');
-    if(this.listRolPermisosByUsuario.includes('EsAlumno'))
-    {
-      this.getMiNotaP();
-      this.getEstadoTesis();
-    }
-    else if(this.listRolPermisosByUsuario.includes('EsProfesor')){
-        this.getListarNotasPendientes();
-    }
-    else{
-        this.getListarNotasPendientesByEscuela();
-    }
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
   },
   filters:{
     moment: function (date) {
@@ -155,6 +146,19 @@ export default {
     }
   },
   methods:{
+    init(){
+      if(this.listRolPermisosByUsuario.includes('EsAlumno'))
+      {
+        this.getMiNotaP();
+        this.getEstadoTesis();
+      }
+      else if(this.listRolPermisosByUsuario.includes('EsProfesor')){
+          this.getListarNotasPendientes();
+      }
+      else{
+          this.getListarNotasPendientesByEscuela();
+      }
+    },
     getListarAlumnosByprofesor(){
       this.fullscreenLoading = true;
       var url = '/avances/getListarAlumnosByprofesor'

@@ -229,9 +229,13 @@
     },
     mounted(){
         EventBus.$emit('navegar', 'Parámetros del sistema');
-        this.getParametros()
+        EventBus.$on('refresh', x => {this.init()});
+        this.init();
     },
     methods: {
+        init(){
+            this.getParametros()
+        },
         addTagAvance (newTag, val) {
             console.log(newTag);
             this.formatosAvance.options.push(newTag)

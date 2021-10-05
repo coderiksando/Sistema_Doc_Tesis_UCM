@@ -221,9 +221,13 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Vinculaciones');
-    this.getListarVinculacion();
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
   },
   methods:{
+    init(){
+      this.getListarVinculacion();
+    },
     limpiarCriteriosBsq(){
       this.fillBsqVinculacion.cNombre = '';
       this.fillBsqVinculacion.cTipo = '';

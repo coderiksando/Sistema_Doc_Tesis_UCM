@@ -193,8 +193,13 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Actas de defensa');
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
     },
   methods:{
+    init(){
+      this.getListarAlumnos();
+    },
     downloadItem (url) {
     axios.get(url, { responseType: 'blob' })
       .then(response => {

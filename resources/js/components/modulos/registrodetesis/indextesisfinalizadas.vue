@@ -303,16 +303,18 @@ export default {
       return pagesArray;
     }
   },
-  created(){
-    this.getListarEscuelas();
-    this.getListarProfesorByEscuela();
-    this.getListarTesisTerminadas();
-    this.selectStart();
-  },
   mounted(){
     EventBus.$emit('navegar', 'Documentos finalizados');
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
   },
   methods:{
+    init(){
+      this.getListarEscuelas();
+      this.getListarProfesorByEscuela();
+      this.getListarTesisTerminadas();
+      this.selectStart();
+    },
     setGenerarDocumento(nIdTesis){
         //this.fullscreenLoading = true;
         var config = {

@@ -159,11 +159,14 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Escuelas');
-    this.getListarFacultades();
-    this.getListarEscuelas()
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
   },
   methods:{
-
+    init(){
+      this.getListarFacultades();
+      this.getListarEscuelas()
+    },
     limpiarCriteriosBsq(){
       this.fillBsqEscuela.cNombre = '';
       this.fillBsqEscuela.nIdFacultad = '';

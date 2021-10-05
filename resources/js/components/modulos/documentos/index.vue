@@ -177,8 +177,13 @@ export default {
   },
   mounted(){
     EventBus.$emit('navegar', 'Documentos de alumnos');
+    EventBus.$on('refresh', x => {this.init()});
+    this.init();
   },
   methods:{
+    init(){
+      this.getListarAlumnos();
+    },
     setGenerarDocumento(id_tesis){
       //this.fullscreenLoading = true;
 

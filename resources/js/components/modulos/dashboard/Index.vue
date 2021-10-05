@@ -287,10 +287,14 @@ props: ['usuario'],
     },
     mounted(){
         EventBus.$emit('navegar', 'Sistema de Gestión y Administración de Documentos');
-        this.inicializacion();
-        this.datosPendientes();
+        EventBus.$on('refresh', x => {this.init()});
+        this.init();
     },
     methods:{
+        init(){
+          this.inicializacion();
+          this.datosPendientes();
+        },
         logout(){
             this.fullscreenLoading = true;
             var url='/authenticate/logout'
