@@ -44,6 +44,9 @@ class User extends Authenticatable
     public function Users_Permissions(){
         return $this->hasMany(Users_Permissions::class, 'id_user', 'id_user');
     }
+    public function Users_Escuelas(){
+        return $this->hasMany(Users_Escuelas::class, 'id_user', 'id_user');
+    }
     public function Fit_User(){
         return $this->hasMany(Fit_User::class, 'id_user', 'id_user');
     }
