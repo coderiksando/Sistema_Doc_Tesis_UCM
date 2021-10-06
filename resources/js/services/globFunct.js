@@ -35,7 +35,7 @@ export default class globFunct {
         if (tipoTrabajo == 'Proyecto de titulo') gL = 'o';
         const mergedStates = [
             {eI: 'P', eA: 'D', resultado: tipoTrabajo + ' pendiente de revisión de Prof. Guía.'},
-            {eI: 'R', eA: 'D', resultado: tipoTrabajo + ' rechazad'+gL+' provisionalmente, se espera edición.'},
+            {eI: 'R', eA: 'D', resultado: tipoTrabajo + ' rechazad'+gL+' provisionalmente, se espera edición estudiantil.'},
             {eI: 'A', eA: 'D', resultado: tipoTrabajo + ' aceptad'+gL+' por profesor Guía.'},
             {eI: 'V', eA: 'D', resultado: tipoTrabajo + ' aceptad'+gL+' por dirección.'},
             {eI: 'V', eA: 'A', resultado: tipoTrabajo + ' aprobad'+gL+'.'},

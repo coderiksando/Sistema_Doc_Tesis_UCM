@@ -40,9 +40,9 @@
                             <Multiselect
                               v-model="selectedEstado"
                               placeholder="Seleccionar estado"
-                              :options="globFunct.listStates([1,6])"
-                              label ="resultado"
-                              selectLabel=""
+                              :options="listEstados"
+                              label ="nombre"
+                              selectLabel="Presiona enter para seleccionar"
                               selectedLabel="Seleccionado"
                               :allow-empty="false"
                               deselectLabel="Cancelar"
@@ -153,12 +153,11 @@
 <script>
 import moment from 'moment';
 import Multiselect from 'vue-multiselect';
-import globFunct from '../../../services/globFunct';
+
 export default {
   components: {Multiselect},
   data(){
     return{
-      globFunct: new globFunct(),
       fillEstadoTesis:{
         cEstado: '',
       },
@@ -170,7 +169,7 @@ export default {
         {nombre: 'Aprobada', valor: 'A'},
         {nombre: 'Reprobada', valor: 'R'}],
       selectedFit:{},
-      selectedEstado: {id:-1, eI: '',  eA: '',  resultado: 'Todas'},
+      selectedEstado: {nombre: 'En desarrollo', valor: 'D'},
       listPermisos:[],
       loading: false,
       fullscreenLoading: false,
@@ -289,6 +288,16 @@ export default {
           this.fullscreenLoading = false;
       })
     },
+    getListarAvances(){
+        this.loading = true;
+        var url = '/avances/getListarAvances';
+        axios.get(url, {
+        }).then(response => {
+            this.inicializarPaginacion();
+            this.listAvances = response.data;
+            this.loading = false;
+        })
+    },
     setAvanceARevision(avance, cambio){
         let titulo = '';
         if (cambio) titulo = 'Estás seguro que quieres enviar a revisión?';
@@ -315,7 +324,7 @@ export default {
                         showConfirmButton: false,
                         timer: 2500
                     });
-                    this.getListarAvancesByFit();
+                    this.getListarAvances();
                 });
             }
         });
