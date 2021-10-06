@@ -40,9 +40,9 @@
                             <Multiselect
                               v-model="selectedEstado"
                               placeholder="Seleccionar estado"
-                              :options="listEstados"
-                              label ="nombre"
-                              selectLabel="Presiona enter para seleccionar"
+                              :options="globFunct.listStates([1,6])"
+                              label ="resultado"
+                              selectLabel=""
                               selectedLabel="Seleccionado"
                               :allow-empty="false"
                               deselectLabel="Cancelar"
@@ -153,11 +153,12 @@
 <script>
 import moment from 'moment';
 import Multiselect from 'vue-multiselect';
-
+import globFunct from '../../../services/globFunct';
 export default {
   components: {Multiselect},
   data(){
     return{
+      globFunct: new globFunct(),
       fillEstadoTesis:{
         cEstado: '',
       },
@@ -169,7 +170,7 @@ export default {
         {nombre: 'Aprobada', valor: 'A'},
         {nombre: 'Reprobada', valor: 'R'}],
       selectedFit:{},
-      selectedEstado: {nombre: 'En desarrollo', valor: 'D'},
+      selectedEstado: {id:-1, eI: '',  eA: '',  resultado: 'Todas'},
       listPermisos:[],
       loading: false,
       fullscreenLoading: false,
