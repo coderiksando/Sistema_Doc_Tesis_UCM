@@ -44,7 +44,8 @@
                         <el-select v-model="fillBsqTesis.cEstado"
                         placeholder="Seleccione un estado"
                         filterable
-                        autocomplete="estadoFusionadoDeSGYAD">
+                        autocomplete="estadoFusionadoDeSGYAD"
+                        @change="getListarTesis">
                           <el-option
                             v-for="item in globFunct.listStates([1,6])"
                             :key="item.id"
@@ -55,17 +56,30 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                   <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Fecha</label>
-                    <div class="col-md-10">
-                      <el-date-picker
-                        v-model="fillBsqTesis.dfecha"
-                        type="year"
-                        placeholder="Año"
-                        format="yyyy"
-                        value-format="yyyy-MM-dd">
-                      </el-date-picker>
+                    <label class="col-md-12 col-form-label">Rango de fechas</label>
+                    <div class="col-md-12 form-group row pr-0">
+                        <div class="col-md-6 pr-0">
+                            <el-date-picker
+                                v-model="fillBsqTesis.dateRange.startDate"
+                                placeholder="Año"
+                                format="dd/MM/yyyy"
+                                value-format="yyyy-MM-dd"
+                                :picker-options="startOption"
+                                @change="selectStart">
+                            </el-date-picker>
+                        </div>
+                        <div class="col-md-6 pr-0">
+                            <el-date-picker
+                                v-model="fillBsqTesis.dateRange.endDate"
+                                placeholder="Año"
+                                format="dd/MM/yyyy"
+                                value-format="yyyy-MM-dd"
+                                :picker-options="endOption"
+                                @change="getListarTesis">
+                            </el-date-picker>
+                        </div>
                     </div>
                   </div>
                 </div>
@@ -397,7 +411,10 @@ export default {
         cApellido     : '',
         cEstadoPg     : '',
         cEstado       : ["",""],
-        dfecha        : ''
+        dateRange: {
+            startDate: null,
+            endDate: null
+        }
       },
       fillVerFIT:{
         cNombre: '',
@@ -449,7 +466,17 @@ export default {
       mostrarModalRechazo: false,
       mostrarModalApruebo: false,
       motivo: '',
-      idTesis: ''
+      idTesis: '',
+      startOption: {
+          disabledDate(time) {
+          return time.getTime() > Date.now();
+          }
+      },
+      endOption: {
+          disabledDate(time) {
+          return time.getTime() > Date.now();
+          }
+      },
     }
   },
   computed: {
@@ -479,16 +506,19 @@ export default {
     }
   },
   created(){
+    this.init();
+  },
+  mounted(){
     let navegar = 'Ingresar/Revisar FID';
     if (this.rolActivo != 'Alumno') navegar = 'Revisar FID';
     EventBus.$emit('navegar', navegar);
     EventBus.$on('refresh', x => {this.init()});
-    this.init();
   },
   methods:{
     init(){
       this.getListarTesis();
       this.getListarProfesores();
+      this.selectStart();
     },
     setGenerarDocumento(nIdTesis){
       //this.fullscreenLoading = true;
@@ -513,7 +543,8 @@ export default {
           'apellido'  :   this.fillBsqTesis.cApellido,
           'estadoI'   :   this.fillBsqTesis.cEstadoPg,
           'estado'    :   this.fillBsqTesis.cEstado,
-          'fecha'     :   (!this.fillBsqTesis.dfecha) ? '' : this.fillBsqTesis.dfecha,
+          'fechaSt'   :   (!this.fillBsqTesis.dateRange.startDate) ? '' : this.fillBsqTesis.dateRange.startDate,
+          'fechaEn'   :   (!this.fillBsqTesis.dateRange.endDate) ? '' : this.fillBsqTesis.dateRange.endDate,
         }
       }).then(response => {
             this.inicializarPaginacion();
@@ -701,6 +732,14 @@ export default {
           this.error = 1;
         }
         return this.error;
+    },
+    selectStart() {
+        this.fillBsqTesis.dateRange.endDate = null;
+        this.endOption = {
+            disabledDate: (time) => {
+                return time.getTime() < Date.parse(this.fillBsqTesis.dateRange.startDate) || time.getTime() > Date.now();
+            }
+        };
     },
   }//cierre de methods
 }

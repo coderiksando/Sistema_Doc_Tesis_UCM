@@ -78,8 +78,8 @@ class AlumnoController extends Controller
         $cNombre        = $request->nombre;
         $cApellido      = $request->apellido;
         $cEstado        = $request->estado;
-        $dFechaInicio   = Carbon::parse($request->fecha)->startOfYear();;
-        $dFechaFin      = Carbon::parse($request->fecha)->endOfYear();;
+        $dFechaInicio   = Carbon::parse($request->fechaSt)->startOfDay();
+        $dFechaFin      = Carbon::parse($request->fechaEn)->endOfDay();
         $rol = $request->session()->get('rol');
 
         if ($rol == 'Alumno'){
@@ -103,10 +103,12 @@ class AlumnoController extends Controller
             $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
             $fits->whereIn('id', $fitUser);
         }
-        if ($cEstado[0] != '') {
-            $fits->where('aprobado_pg', $cEstado[0])->where('estado', $cEstado[1]);
+        if ($cEstado) {
+            if ($cEstado[0] != '') {
+                $fits->where('aprobado_pg', $cEstado[0])->where('estado', $cEstado[1]);
+            }
         }
-        if ($dFechaInicio) {
+        if ($request->fechaSt) {
             $fits->whereBetween('created_at', [$dFechaInicio, $dFechaFin]);
         }
 
