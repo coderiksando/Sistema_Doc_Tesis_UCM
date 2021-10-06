@@ -37,19 +37,17 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="col-md-6">
                   <div class="form-group row">
                     <label class="col-md-2 col-form-label">Estado</label>
                     <div class="col-md-10">
-                        {{fillBsqTesis.cEstado}}
                         <el-select v-model="fillBsqTesis.cEstado"
                         placeholder="Seleccione un estado"
                         filterable
                         autocomplete="estadoFusionadoDeSGYAD">
                           <el-option
-                            v-for="item in globVar.mergedStates"
-                            :key="[item.eI,item.eA]"
+                            v-for="item in globFunct.listStates([1,6])"
+                            :key="item.id"
                             :label="item.resultado"
                             :value="[item.eI,item.eA]">
                           </el-option>
@@ -398,7 +396,7 @@ export default {
         cNombre       : '',
         cApellido     : '',
         cEstadoPg     : '',
-        cEstado       : '',
+        cEstado       : ["",""],
         dfecha        : ''
       },
       fillVerFIT:{
@@ -515,7 +513,7 @@ export default {
           'apellido'  :   this.fillBsqTesis.cApellido,
           'estadoI'   :   this.fillBsqTesis.cEstadoPg,
           'estado'    :   this.fillBsqTesis.cEstado,
-          'fecha'   :    (!this.fillBsqTesis.dfecha) ? '' : this.fillBsqTesis.dfecha,
+          'fecha'     :   (!this.fillBsqTesis.dfecha) ? '' : this.fillBsqTesis.dfecha,
         }
       }).then(response => {
             this.inicializarPaginacion();

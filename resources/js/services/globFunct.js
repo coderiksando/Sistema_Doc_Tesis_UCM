@@ -48,4 +48,22 @@ export default class globFunct {
         });
         return selectedState;
     };
+    listStates(indexBanned) {
+        let mergedStates = [
+            {id:-1, eI: '',  eA: '',  resultado: 'Todas'},
+            {id: 0 ,eI: 'P', eA: 'D', resultado: 'Pendiente de revisión de Prof. Guía'},
+            {id: 1 ,eI: 'R', eA: 'D', resultado: 'Rechazado provisionalmente, se espera edición'},
+            {id: 2 ,eI: 'A', eA: 'D', resultado: 'Aceptado por profesor Guía'},
+            {id: 3 ,eI: 'V', eA: 'D', resultado: 'Aceptado por dirección'},
+            {id: 4 ,eI: 'V', eA: 'A', resultado: 'Aprobado'},
+            {id: 5 ,eI: 'V', eA: 'R', resultado: 'Reprobado'},
+            {id: 6 ,eI: 'R', eA: 'R', resultado: 'En abandono'},
+        ];
+        if (indexBanned) {
+            indexBanned.forEach(index => {
+                mergedStates = mergedStates.filter(state => state.id !== index);
+            });
+        }
+        return mergedStates;
+    }
 }
