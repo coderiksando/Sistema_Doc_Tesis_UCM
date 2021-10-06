@@ -289,16 +289,6 @@ export default {
           this.fullscreenLoading = false;
       })
     },
-    getListarAvances(){
-        this.loading = true;
-        var url = '/avances/getListarAvances';
-        axios.get(url, {
-        }).then(response => {
-            this.inicializarPaginacion();
-            this.listAvances = response.data;
-            this.loading = false;
-        })
-    },
     setAvanceARevision(avance, cambio){
         let titulo = '';
         if (cambio) titulo = 'Estás seguro que quieres enviar a revisión?';
@@ -325,7 +315,7 @@ export default {
                         showConfirmButton: false,
                         timer: 2500
                     });
-                    this.getListarAvances();
+                    this.getListarAvancesByFit();
                 });
             }
         });

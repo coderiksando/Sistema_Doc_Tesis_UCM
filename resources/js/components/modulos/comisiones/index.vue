@@ -130,7 +130,7 @@
                                     <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary mr-1" @click.prevent="getDocumento(item.id)">
                                         <i class="fas fa-file-download"></i>
                                     </button>
-                                    <template v-if="item.comisiones">
+                                    <template v-if="item.comisiones && item.archivoPendienteRevision">
                                         <button title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item)">
                                             <i class="fas fa-file-upload"></i>
                                         </button>
