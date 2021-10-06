@@ -28,7 +28,6 @@ export default class globFunct {
         // estadoInscripcion = [P=pendiente,R=rechazado,A=aprobado,V=verificadoPorDirector]
         // estadoAprobado = [D=enDesarrollo,A=aprobado,R=reprobado]
         // tipoTrabajo = [tesis, memoria, proyectoDeTitulo ]
-        console.log(fid);
         const   estadoInscripcion = fid.aprobado_pg;
         const   estadoAprobado = fid.estado;
         const   tipoTrabajo = fid.tipo;

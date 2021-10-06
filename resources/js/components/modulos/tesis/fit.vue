@@ -28,11 +28,11 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group row">
-                    <label class="col-md-4 col-form-label">Alumno</label>
-                    <div class="col-md-4">
+                    <label class="col-md-2 col-form-label">Alumno</label>
+                    <div class="col-md-5">
                         <input placeholder="Nombre" type="text" class="form-control" v-model="fillBsqTesis.cNombre" @keyup.enter="getListarTesis">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <input placeholder="Apellido" type="text" class="form-control" v-model="fillBsqTesis.cApellido" @keyup.enter="getListarTesis">
                     </div>
                   </div>
@@ -40,15 +40,18 @@
 
                 <div class="col-md-6">
                   <div class="form-group row">
-                    <label class="col-md-4 col-form-label">Estado de aprobación</label>
-                    <div class="col-md-8">
+                    <label class="col-md-2 col-form-label">Estado</label>
+                    <div class="col-md-10">
+                        {{fillBsqTesis.cEstado}}
                         <el-select v-model="fillBsqTesis.cEstado"
-                        placeholder="Seleccione un estado">
+                        placeholder="Seleccione un estado"
+                        filterable
+                        autocomplete="estadoFusionadoDeSGYAD">
                           <el-option
-                            v-for="item in listEstadosTesis"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            v-for="item in globVar.mergedStates"
+                            :key="[item.eI,item.eA]"
+                            :label="item.resultado"
+                            :value="[item.eI,item.eA]">
                           </el-option>
                         </el-select>
                     </div>
@@ -56,8 +59,8 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group row">
-                    <label class="col-md-4 col-form-label">Fecha</label>
-                    <div class="col-md-8">
+                    <label class="col-md-2 col-form-label">Fecha</label>
+                    <div class="col-md-10">
                       <el-date-picker
                         v-model="fillBsqTesis.dfecha"
                         type="year"
@@ -102,9 +105,7 @@
                 <thead>
                   <tr>
                     <th>Alumno(s)</th>
-                    <th>Estado de {{terminoTitulo}}</th>
-                    <!-- <th>Estado de inscripción</th>
-                    <th>Estado de aprobación</th> -->
+                    <th>Estado</th>
                     <th v-if="rolActivo == 'Profesor'">Rol propio en {{terminoTitulo}}</th>
                     <th>Acciones</th>
                   </tr>
@@ -117,31 +118,6 @@
                         </div>
                     </td>
                     <td>{{globFunct.mergedStates(item).resultado}}</td>
-                    <!-- <td>
-                      <template v-if="item.aprobado_pg == 'P'">
-                        Pendiente
-                      </template>
-                      <template v-else-if="item.aprobado_pg == 'A'">
-                        Aprobado
-                      </template>
-                      <template v-else-if="item.aprobado_pg == 'V'">
-                        Verificado
-                      </template>
-                      <template v-else>
-                        Rechazado
-                      </template>
-                    </td>
-                    <td>
-                      <template v-if="item.estado == 'D'">
-                        En desarrollo
-                      </template>
-                      <template v-else-if="item.estado == 'A'">
-                        Aprobada
-                      </template>
-                      <template v-else>
-                        Reprobada
-                      </template>
-                    </td> -->
                     <td v-if="rolActivo == 'Profesor'">
                         <template v-if="item.id_p_guia == authUser.id_user">
                             Guía
