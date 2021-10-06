@@ -56,15 +56,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" title="Éste campo es opcional">
                                             <div class="form-group row">
                                                 <label class="col-md-3 col-form-label">Prof. Co-guía</label>
                                                 <div class="col-md-9">
                                                     <el-select v-model="fillCrearFIT.nIdCoPg"
                                                     placeholder="Asignar Profesor Co-guía"
                                                     filterable
-                                                    clearable
-                                                    v-popover:tooltip.bottom="'Este campo es opcional'">
+                                                    clearable>
                                                     <el-option
                                                         v-for="item in listProfesores"
                                                         :key="item.id_user"

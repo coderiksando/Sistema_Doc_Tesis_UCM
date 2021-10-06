@@ -232,12 +232,12 @@
                 <template v-for="(item, index) in listarComisionesPaginated2">
                     <div class="card mb-1" :key="'participe'+index">
                         <div class="card-body py-1" :id="'headingParticipe'+index"
-                        :style="(!item.revisionComisionPropia.length && item.archivoPendienteRevision.length)?'background-color: lightpink;':''">
+                        :style="(!item.revisionComisionPropia.length && item.archivoPendienteRevision)?'background-color: lightpink;':''">
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                <div :title="(!item.revisionComisionPropia.length && item.archivoPendienteRevision.length)?'Existe un documento sin revisión':'Sección expandible'"
+                                <div :title="(!item.revisionComisionPropia.length && item.archivoPendienteRevision)?'Existe un documento sin revisión':'Sección expandible'"
                                 data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
-                                <div :title="(!item.revisionComisionPropia.length && item.archivoPendienteRevision.length)?'Existe un documento sin revisión':'Sección expandible'"
+                                <div :title="(!item.revisionComisionPropia.length && item.archivoPendienteRevision)?'Existe un documento sin revisión':'Sección expandible'"
                                 class="col-md-9 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
                                 <div class="col-md-3 noPadNoMar d-flex flex-wrap">
                                     <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary mr-1" :to="{name:'tesis.ver', params:{id: item.fit.id}}">

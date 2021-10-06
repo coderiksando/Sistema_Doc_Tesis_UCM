@@ -12,13 +12,13 @@
     <!-- Sidebar -->
     <div class="sidebar text-sm p-0">
       <!-- Sidebar user (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex" v-if="listRolByUser.length > 1">
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="container">
-          <div style="text-align: center;">
+          <div style="text-align: center;" v-if="listRolByUser.length > 1">
             <a>Seleccionar rol</a>
           </div>
           <a>
-            <el-select placeholder="Elegir rol" v-model="rolActivo" @change="cambiarRol(true)">
+            <el-select placeholder="Elegir rol" :disabled="listRolByUser.length == 1" v-model="rolActivo" @change="cambiarRol(true)">
               <el-option
                   v-for="item in listRolByUser"
                   :key="item.id"
@@ -199,9 +199,10 @@
                 <template v-if="permisos.includes('tesis.fit')">
                   <a href="#" class="nav-link" @click.prevent="navegar('/tesis')">
                     <i class="nav-icon far fa-edit"></i>
-                    <p>
+                    <p v-if="rolActivo == 'Alumno'">
                       Inscribir/Revisar {{terminoTitulo}}
                     </p>
+                    <p v-else>Revisar {{terminoTitulo}}</p>
                   </a>
                 </template>
               </li>

@@ -119,19 +119,19 @@ class ComisionesController extends Controller
                 }
                 $fit->archivoActa = $fit->ArchivoPdf->where('tipo_pdf','acta')->values();
                 $fit->archivoPendienteRevision = $fit->ArchivoPdf->where('tipo_pdf','revision')->first();
-                
+
             }
         }
         return $MisComisiones;
     }
     public function getListarComisiones(Request $request){
-        //if(!$request->ajax()) return redirect('/');
-        $IdProfesor  = Auth::id();
+        if(!$request->ajax()) return redirect('/');
+        $IdProfesor = Auth::id();
         $nomAlumno  = $request->cAlum;
         $startDate  = Carbon::parse($request->startDate)->startOfDay();
         $endDate    = Carbon::parse($request->endDate)->endOfDay();
         $tituloFid  = $request->cTitulo;
-        $fitBusq =   DB ::table('fit')
+        $fitBusq    = DB::table('fit')
                         ->leftJoin('fit_user', 'fit_user.id_fit', 'fit.id')
                         ->leftJoin('users as alumno', 'alumno.id_user', 'fit_user.id_user')
                         ->leftJoin('users as profesor', 'profesor.id_user', 'fit.id_p_guia')
@@ -144,7 +144,7 @@ class ComisionesController extends Controller
                         });
         if ($request->estado) $fitBusq = $fitBusq->where('comisiones.estado',"$request->estado");
         if ($request->startDate && $request->endDate) $fitBusq = $fitBusq->whereBetween('fit.updated_at', [$startDate,$endDate]);
-        $fitBusq = $fitBusq ->where('fit.titulo', 'like', "%$tituloFid%")
+        $fitBusq =  $fitBusq->where('fit.titulo', 'like', "%$tituloFid%")
                             ->get()
                             ->pluck('id');
         $comisiones = [];

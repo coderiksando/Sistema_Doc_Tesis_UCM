@@ -24,4 +24,29 @@ export default class globFunct {
         });
         return rpta.slice(2);
     }
+    mergedStates(fid) {
+        // estadoInscripcion = [P=pendiente,R=rechazado,A=aprobado,V=verificadoPorDirector]
+        // estadoAprobado = [D=enDesarrollo,A=aprobado,R=reprobado]
+        // tipoTrabajo = [tesis, memoria, proyectoDeTitulo ]
+        console.log(fid);
+        const   estadoInscripcion = fid.aprobado_pg;
+        const   estadoAprobado = fid.estado;
+        const   tipoTrabajo = fid.tipo;
+        let     gL = 'a'; // Género Lingüístico
+        if (tipoTrabajo == 'Proyecto de titulo') gL = 'o';
+        const mergedStates = [
+            {eI: 'P', eA: 'D', resultado: tipoTrabajo + ' pendiente de revisión de Prof. Guía.'},
+            {eI: 'R', eA: 'D', resultado: tipoTrabajo + ' rechazad'+gL+' provisionalmente, se espera edición.'},
+            {eI: 'A', eA: 'D', resultado: tipoTrabajo + ' aceptad'+gL+' por profesor Guía.'},
+            {eI: 'V', eA: 'D', resultado: tipoTrabajo + ' aceptad'+gL+' por dirección.'},
+            {eI: 'V', eA: 'A', resultado: tipoTrabajo + ' aprobad'+gL+'.'},
+            {eI: 'V', eA: 'R', resultado: tipoTrabajo + ' reprobad'+gL+'.'},
+            {eI: 'R', eA: 'R', resultado: tipoTrabajo + ' en abandono.'},
+        ];
+        let selectedState = {};
+        mergedStates.forEach(state => {
+            if (state.eI == estadoInscripcion && state.eA == estadoAprobado) selectedState= state;
+        });
+        return selectedState;
+    };
 }

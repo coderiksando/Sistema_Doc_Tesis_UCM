@@ -102,8 +102,9 @@
                 <thead>
                   <tr>
                     <th>Alumno(s)</th>
-                    <th>Estado de inscripción</th>
-                    <th>Estado de aprobación</th>
+                    <th>Estado de {{terminoTitulo}}</th>
+                    <!-- <th>Estado de inscripción</th>
+                    <th>Estado de aprobación</th> -->
                     <th v-if="rolActivo == 'Profesor'">Rol propio en {{terminoTitulo}}</th>
                     <th>Acciones</th>
                   </tr>
@@ -115,7 +116,8 @@
                             <div v-text="itemUser.nombres + ' ' + itemUser.apellidos"></div>
                         </div>
                     </td>
-                    <td>
+                    <td>{{globFunct.mergedStates(item).resultado}}</td>
+                    <!-- <td>
                       <template v-if="item.aprobado_pg == 'P'">
                         Pendiente
                       </template>
@@ -139,7 +141,7 @@
                       <template v-else>
                         Reprobada
                       </template>
-                    </td>
+                    </td> -->
                     <td v-if="rolActivo == 'Profesor'">
                         <template v-if="item.id_p_guia == authUser.id_user">
                             Guía
@@ -173,7 +175,7 @@
                         </router-link>
                       </template>
 
-                      <template v-if="(item.aprobado_pg == 'A' && (rolActivo == 'Director' || rolActivo == 'Coordinador')) || item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
+                      <template v-if="(item.aprobado_pg == 'A' && (rolActivo != 'Director' || rolActivo == 'Coordinador' || rolActivo == 'Profesor')) || item.aprobado_pg == 'P' || item.aprobado_pg == 'R'">
                         <template v-if="item.aprobado_pg == 'R'">
                             <button title="Ver razon de rechazo" class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
                             <i class="fas fa-exclamation-circle"></i>
@@ -182,6 +184,10 @@
                             <i class="fas fa-pencil-alt"></i>
                             </router-link>
                         </template>
+                        <router-link v-if="rolActivo == 'Profesor' && item.aprobado_pg != 'V'"
+                        :title="'Editar '+terminoTitulo" class="btn boton btn-info" :to="{name:'tesis.editar', params:{id: item.id}}">
+                        <i class="fas fa-pencil-alt"></i>
+                        </router-link>
 
                         <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
                             <button :title="'Aprobar '+terminoTitulo" class="btn boton btn-success" @click.prevent="acceptHandler(item)">
@@ -405,11 +411,13 @@
 
 <script>
 import globVar from '../../../services/globVar';
+import globFunct from '../../../services/globFunct';
 export default {
     props: ['usuario'],
   data(){
     return{
       globVar: new globVar(),
+      globFunct: new globFunct(),
       fillBsqTesis:{
         cNombre       : '',
         cApellido     : '',
@@ -497,7 +505,9 @@ export default {
     }
   },
   created(){
-    EventBus.$emit('navegar', 'Ingresar/Revisar FID');
+    let navegar = 'Ingresar/Revisar FID';
+    if (this.rolActivo != 'Alumno') navegar = 'Revisar FID';
+    EventBus.$emit('navegar', navegar);
     EventBus.$on('refresh', x => {this.init()});
     this.init();
   },

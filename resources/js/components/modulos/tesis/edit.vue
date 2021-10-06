@@ -1,7 +1,7 @@
 <template>
   <div>
     <tooltip />
-    <div class="content-header">
+    <div class="content-header" v-loading.fullscreen.lock="fullscreenLoading">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
@@ -558,10 +558,12 @@
 
 <script>
 import globVar from '../../../services/globVar';
+import globFunct from '../../../services/globFunct';
 export default {
   data(){
     return{
       globVar: new globVar(),
+      globFunct: new globFunct(),
       fillEditarFIT: {
         nIdTesis: this.$attrs.id,
         cTitulo: "",
@@ -608,15 +610,22 @@ export default {
       error: 0,
       mensajeError: [],
       maxStudentNumber: 2,
+      booleanFunctionOnMounted: {
+        getListarProfesores: false,
+        getMyOwnUser: false,
+        getTesisById: false,
+        getListarVinculacion: false,
+        getParametros: false
+      },
     };
   },
   computed: {},
   mounted() {
     EventBus.$emit('navegar', 'Editar FID');
     this.getListarProfesores();
+    this.getMyOwnUser();
     this.getTesisById();
     this.getListarVinculacion();
-    this.getMyOwnUser();
     this.getParametros();
   },
   methods: {
@@ -626,7 +635,8 @@ export default {
       axios.get(url, {}).then((response) => {
         this.listProfesores = response.data;
         this.listProfesores = _.orderBy(this.listProfesores, "fullname", "asc");
-        this.fullscreenLoading = false;
+        this.booleanFunctionOnMounted.getListarProfesores = true;
+        if (this.globFunct.booleanElements(this.booleanFunctionOnMounted)) this.fullscreenLoading = false;
       });
     },
     getListarVinculacion() {
@@ -636,7 +646,8 @@ export default {
         //this.inicializarPaginacion();
         this.listVinculacion = response.data;
         this.listVinculacion = _.orderBy(this.listVinculacion, "nombre", "asc");
-        this.fullscreenLoading = false;
+        this.booleanFunctionOnMounted.getListarVinculacion = true;
+        if (this.globFunct.booleanElements(this.booleanFunctionOnMounted)) this.fullscreenLoading = false;
       });
     },
     limpiarCriterios() {
@@ -746,7 +757,8 @@ export default {
         })
         .then((response) => {
           this.getUsuarioVer(response.data);
-          this.fullscreenLoading = false;
+        this.booleanFunctionOnMounted.getTesisById = true;
+        if (this.globFunct.booleanElements(this.booleanFunctionOnMounted)) this.fullscreenLoading = false;
         });
     },
     getUsuarioVer(data) {
@@ -772,12 +784,15 @@ export default {
         this.myOwnUser.estadoConfirmado = "A";
         // revisión si es profesor u otro derivado y añadir en la lista,
         // para parche de query antigua multiproposito
+        let boolRolCoincidente = false;
         this.myOwnUser.users__roles.forEach((user_role) => {
           if (
             user_role.roles.name === "Profesor" ||
             user_role.roles.name === "Director" ||
             user_role.roles.name === "Coordinador"
-          ) {
+          ) boolRolCoincidente = true;
+        });
+        if (boolRolCoincidente) {
             const profesorGuia = {
               fullname: this.myOwnUser.nombres + " " + this.myOwnUser.apellidos,
               id_user: this.myOwnUser.id_user,
@@ -788,9 +803,9 @@ export default {
               "fullname",
               "asc"
             );
-          }
-        });
-        this.fullscreenLoading = false;
+        }
+        this.booleanFunctionOnMounted.getMyOwnUser = true;
+        if (this.globFunct.booleanElements(this.booleanFunctionOnMounted)) this.fullscreenLoading = false;
       });
     },
     setBusquedaUsuario() {
@@ -858,6 +873,8 @@ export default {
       var url = "/admin/parametros";
       axios.post(url, { params: ["MaxStudentNumber"] }).then((response) => {
         this.maxStudentNumber = parseInt(response.data[0][0]);
+        this.booleanFunctionOnMounted.getParametros = true;
+        if (this.globFunct.booleanElements(this.booleanFunctionOnMounted)) this.fullscreenLoading = false;
       });
     },
   }, // cierre methods
