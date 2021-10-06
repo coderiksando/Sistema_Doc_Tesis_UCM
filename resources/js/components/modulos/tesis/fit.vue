@@ -28,43 +28,58 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group row">
-                    <label class="col-md-4 col-form-label">Alumno</label>
-                    <div class="col-md-4">
+                    <label class="col-md-2 col-form-label">Alumno</label>
+                    <div class="col-md-5">
                         <input placeholder="Nombre" type="text" class="form-control" v-model="fillBsqTesis.cNombre" @keyup.enter="getListarTesis">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <input placeholder="Apellido" type="text" class="form-control" v-model="fillBsqTesis.cApellido" @keyup.enter="getListarTesis">
                     </div>
                   </div>
                 </div>
-
                 <div class="col-md-6">
                   <div class="form-group row">
-                    <label class="col-md-4 col-form-label">Estado de aprobación</label>
-                    <div class="col-md-8">
+                    <label class="col-md-2 col-form-label">Estado</label>
+                    <div class="col-md-10">
                         <el-select v-model="fillBsqTesis.cEstado"
-                        placeholder="Seleccione un estado">
+                        placeholder="Seleccione un estado"
+                        filterable
+                        autocomplete="estadoFusionadoDeSGYAD"
+                        @change="getListarTesis">
                           <el-option
-                            v-for="item in listEstadosTesis"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            v-for="item in globFunct.listStates([1,6])"
+                            :key="item.id"
+                            :label="item.resultado"
+                            :value="[item.eI,item.eA]">
                           </el-option>
                         </el-select>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                   <div class="form-group row">
-                    <label class="col-md-4 col-form-label">Fecha</label>
-                    <div class="col-md-8">
-                      <el-date-picker
-                        v-model="fillBsqTesis.dfecha"
-                        type="year"
-                        placeholder="Año"
-                        format="yyyy"
-                        value-format="yyyy-MM-dd">
-                      </el-date-picker>
+                    <label class="col-md-12 col-form-label">Rango de fechas</label>
+                    <div class="col-md-12 form-group row pr-0">
+                        <div class="col-md-6 pr-0">
+                            <el-date-picker
+                                v-model="fillBsqTesis.dateRange.startDate"
+                                placeholder="Año"
+                                format="dd/MM/yyyy"
+                                value-format="yyyy-MM-dd"
+                                :picker-options="startOption"
+                                @change="selectStart">
+                            </el-date-picker>
+                        </div>
+                        <div class="col-md-6 pr-0">
+                            <el-date-picker
+                                v-model="fillBsqTesis.dateRange.endDate"
+                                placeholder="Año"
+                                format="dd/MM/yyyy"
+                                value-format="yyyy-MM-dd"
+                                :picker-options="endOption"
+                                @change="getListarTesis">
+                            </el-date-picker>
+                        </div>
                     </div>
                   </div>
                 </div>
@@ -102,9 +117,7 @@
                 <thead>
                   <tr>
                     <th>Alumno(s)</th>
-                    <th>Estado de {{terminoTitulo}}</th>
-                    <!-- <th>Estado de inscripción</th>
-                    <th>Estado de aprobación</th> -->
+                    <th>Estado</th>
                     <th v-if="rolActivo == 'Profesor'">Rol propio en {{terminoTitulo}}</th>
                     <th>Acciones</th>
                   </tr>
@@ -117,31 +130,6 @@
                         </div>
                     </td>
                     <td>{{globFunct.mergedStates(item).resultado}}</td>
-                    <!-- <td>
-                      <template v-if="item.aprobado_pg == 'P'">
-                        Pendiente
-                      </template>
-                      <template v-else-if="item.aprobado_pg == 'A'">
-                        Aprobado
-                      </template>
-                      <template v-else-if="item.aprobado_pg == 'V'">
-                        Verificado
-                      </template>
-                      <template v-else>
-                        Rechazado
-                      </template>
-                    </td>
-                    <td>
-                      <template v-if="item.estado == 'D'">
-                        En desarrollo
-                      </template>
-                      <template v-else-if="item.estado == 'A'">
-                        Aprobada
-                      </template>
-                      <template v-else>
-                        Reprobada
-                      </template>
-                    </td> -->
                     <td v-if="rolActivo == 'Profesor'">
                         <template v-if="item.id_p_guia == authUser.id_user">
                             Guía
@@ -422,8 +410,11 @@ export default {
         cNombre       : '',
         cApellido     : '',
         cEstadoPg     : '',
-        cEstado       : '',
-        dfecha        : ''
+        cEstado       : ["",""],
+        dateRange: {
+            startDate: null,
+            endDate: null
+        }
       },
       fillVerFIT:{
         cNombre: '',
@@ -475,7 +466,17 @@ export default {
       mostrarModalRechazo: false,
       mostrarModalApruebo: false,
       motivo: '',
-      idTesis: ''
+      idTesis: '',
+      startOption: {
+          disabledDate(time) {
+          return time.getTime() > Date.now();
+          }
+      },
+      endOption: {
+          disabledDate(time) {
+          return time.getTime() > Date.now();
+          }
+      },
     }
   },
   computed: {
@@ -505,16 +506,19 @@ export default {
     }
   },
   created(){
+    this.init();
+  },
+  mounted(){
     let navegar = 'Ingresar/Revisar FID';
     if (this.rolActivo != 'Alumno') navegar = 'Revisar FID';
     EventBus.$emit('navegar', navegar);
     EventBus.$on('refresh', x => {this.init()});
-    this.init();
   },
   methods:{
     init(){
       this.getListarTesis();
       this.getListarProfesores();
+      this.selectStart();
     },
     setGenerarDocumento(nIdTesis){
       //this.fullscreenLoading = true;
@@ -539,7 +543,8 @@ export default {
           'apellido'  :   this.fillBsqTesis.cApellido,
           'estadoI'   :   this.fillBsqTesis.cEstadoPg,
           'estado'    :   this.fillBsqTesis.cEstado,
-          'fecha'   :    (!this.fillBsqTesis.dfecha) ? '' : this.fillBsqTesis.dfecha,
+          'fechaSt'   :   (!this.fillBsqTesis.dateRange.startDate) ? '' : this.fillBsqTesis.dateRange.startDate,
+          'fechaEn'   :   (!this.fillBsqTesis.dateRange.endDate) ? '' : this.fillBsqTesis.dateRange.endDate,
         }
       }).then(response => {
             this.inicializarPaginacion();
@@ -727,6 +732,14 @@ export default {
           this.error = 1;
         }
         return this.error;
+    },
+    selectStart() {
+        this.fillBsqTesis.dateRange.endDate = null;
+        this.endOption = {
+            disabledDate: (time) => {
+                return time.getTime() < Date.parse(this.fillBsqTesis.dateRange.startDate) || time.getTime() > Date.now();
+            }
+        };
     },
   }//cierre de methods
 }

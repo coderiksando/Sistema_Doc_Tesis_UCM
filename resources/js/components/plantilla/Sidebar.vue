@@ -14,11 +14,17 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="container">
-          <div style="text-align: center;" v-if="listRolByUser.length > 1">
-            <a>Seleccionar rol</a>
+          <div style="text-align: center;">
+            <a v-if="listRolByUser.length > 1">Seleccionar rol</a>
+            <a v-if="listRolByUser.length == 1">Rol: </a>
+            <el-input
+                v-if="listRolByUser.length == 1"
+                v-model="listRolByUser[0].name"
+                :disabled="true">
+            </el-input>
           </div>
           <a>
-            <el-select placeholder="Elegir rol" :disabled="listRolByUser.length == 1" v-model="rolActivo" @change="cambiarRol(true)">
+            <el-select v-if="listRolByUser.length > 1" placeholder="Elegir rol" v-model="rolActivo" @change="cambiarRol(true)">
               <el-option
                   v-for="item in listRolByUser"
                   :key="item.id"

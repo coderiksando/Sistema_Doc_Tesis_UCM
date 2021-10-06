@@ -78,8 +78,8 @@ class AlumnoController extends Controller
         $cNombre        = $request->nombre;
         $cApellido      = $request->apellido;
         $cEstado        = $request->estado;
-        $dFechaInicio   = Carbon::parse($request->fecha)->startOfYear();;
-        $dFechaFin      = Carbon::parse($request->fecha)->endOfYear();;
+        $dFechaInicio   = Carbon::parse($request->fechaSt)->startOfDay();
+        $dFechaFin      = Carbon::parse($request->fechaEn)->endOfDay();
         $rol = $request->session()->get('rol');
 
         if ($rol == 'Alumno'){
@@ -104,9 +104,11 @@ class AlumnoController extends Controller
             $fits->whereIn('id', $fitUser);
         }
         if ($cEstado) {
-            $fits->where('estado', $cEstado);
+            if ($cEstado[0] != '') {
+                $fits->where('aprobado_pg', $cEstado[0])->where('estado', $cEstado[1]);
+            }
         }
-        if ($dFechaInicio) {
+        if ($request->fechaSt) {
             $fits->whereBetween('created_at', [$dFechaInicio, $dFechaFin]);
         }
 
@@ -171,8 +173,8 @@ class AlumnoController extends Controller
         })->get()->pluck('id_tesis');
         $fits = $fitsAlumno->concat($fitsProf);
         $fits = $fits->concat($fitsComision);
-        
-        
+
+
         return $fits;
     }
 
