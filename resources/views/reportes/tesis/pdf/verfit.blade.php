@@ -137,7 +137,13 @@
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td style="text-align: justify;"> <strong>OBJETIVOS:</strong>  {{$datosfit->objetivo_general}}</td>
+                <td style="text-align: justify;"> <strong>OBJETIVOS GENERALES:</strong>  {{$datosfit->objetivo_general}}</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="text-align: justify;"> <strong>OBJETIVOS ESPECÍFICOS:</strong>  {{$datosfit->objetivo_especifico}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
