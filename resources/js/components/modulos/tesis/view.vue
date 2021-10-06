@@ -172,8 +172,8 @@
           </div>
 
     <template v-if="mostrarModalRechazo">
-      <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @click.prevent="dismissModal">
-        <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2;" v-on:click.stop>
+      <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @mousedown.prevent="dismissModal">
+        <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2;" v-on:mousedown.stop>
           <div class="swal2-header">
             <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
               <div class="swal2-icon-content">!</div>
@@ -195,8 +195,8 @@
     </template>
 
     <template v-if="mostrarModalApruebo">
-      <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @click.prevent="mostrarModalApruebo=false">
-        <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2; width: 70% !important; min-width: 360px !important" v-on:click.stop>
+      <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @mousedown.prevent="mostrarModalApruebo=false">
+        <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2; width: 70% !important; min-width: 360px !important" v-on:mousedown.stop>
           <div class="swal2-header">
             <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
               <div class="modal-dialog" role="document">
