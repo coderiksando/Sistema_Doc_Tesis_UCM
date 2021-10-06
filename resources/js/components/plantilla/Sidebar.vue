@@ -304,7 +304,8 @@ export default {
       rolActivo : JSON.parse(localStorage.getItem('rolActivo')),
       terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       permisos : this.listPermisos,
-      fullscreenLoading: false
+      fullscreenLoading: false,
+      timeout: true
     }
   },
   mounted(){
@@ -328,7 +329,13 @@ export default {
       if (ruta != this.$route.path) {
         this.$router.push(ruta);
       }else{
-        EventBus.$emit('refresh');
+        if (this.timeout) {
+          EventBus.$emit('refresh');
+          this.timeout = false;
+          setTimeout(x => {
+            this.timeout = true;
+            },3000);
+        }
       }
     },
     cambiarRol(redirect){

@@ -241,7 +241,7 @@ export default {
         this.fullscreenLoading = false;
         Swal.fire({
             icon: "success",
-            title: "La comisión ha sido editada correctamente.",
+            title: "La comisión se ha guardado correctamente.",
             showConfirmButton: false,
             timer: 3000,
         });
