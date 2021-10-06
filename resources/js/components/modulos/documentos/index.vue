@@ -51,7 +51,7 @@
                   <tr>
                     <th>Nombre</th>
                     <th>Rut</th>
-                    <th>Estado de aprobación</th>
+                    <th>Estado</th>
                     <th>Nota</th>
                     <th>Descargar</th>
                   </tr>
@@ -69,15 +69,7 @@
                         </div>
                     </td>
                     <td>
-                      <template v-if="item.estado == 'D'">
-                        <span>En desarrollo</span>
-                      </template>
-                      <template v-else-if="item.estado == 'A'">
-                        <span>Aprobada</span>
-                      </template>
-                      <template v-else>
-                        <span>Reprobada</span>
-                      </template>
+                        {{globFunct.mergedStates(item).resultado}}
                     </td>
                     <td>
                       <span v-text="!item.nota || item.nota == 0.0 ? 'n/a': item.nota"></span>
@@ -126,10 +118,12 @@
 
 <script>
 import globVar from '../../../services/globVar';
+import globFunct from '../../../services/globFunct';
 export default {
   data(){
     return{
       globVar: new globVar(),
+      globFunct: new globFunct(),
       fillBsqAlumno:{
         cNombre: '',
         nRut: '',

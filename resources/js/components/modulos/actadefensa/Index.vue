@@ -31,7 +31,8 @@
                     <div class="col-md-9">
                         <el-select v-model="fillBsqAlumno.nEstadoAlumno"
                         placeholder="Selecciona estado"
-                        clearable>
+                        clearable
+                        @change="getListarAlumnos">
                         <el-option
                             v-for="item in listEstadosAlumno"
                             :key="item.value"
@@ -68,7 +69,7 @@
                   <tr>
                     <th>Nombre</th>
                     <th>Rut</th>
-                    <th>Estado de aprobación</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
@@ -85,15 +86,7 @@
                         </div>
                     </td>
                     <td>
-                      <template v-if="item.estado == 'D'">
-                        <span>En desarrollo</span>
-                      </template>
-                      <template v-else-if="item.estado == 'A'">
-                        <span>Aprobada</span>
-                      </template>
-                      <template v-else>
-                        <span>Reprobada</span>
-                      </template>
+                        {{globFunct.mergedStates(item).resultado}}
                     </td>
                     <td>
                       <router-link title="Subir nota de documento final"  class="btn btn-success boton" :to="{name:'actadefensa.subirnota', params:{id: item.id}}">
@@ -138,10 +131,12 @@
 
 <script>
 import globVar from '../../../services/globVar';
+import globFunct from '../../../services/globFunct';
 export default {
   data(){
     return{
       globVar: new globVar(),
+      globFunct: new globFunct(),
       fillBsqAlumno:{
         cNombre: '',
         nRut: '',
@@ -155,7 +150,7 @@ export default {
         {value: 'I', label: 'Inactivo'}
       ],
       listEstadosAlumno: [
-        {value: 'A', label: 'Terminada'},
+        {value: 'A', label: 'Aprobada'},
         {value: 'R', label: 'Reprobada'},
         {value: 'D', label: 'En desarrollo'}
       ],
@@ -192,7 +187,7 @@ export default {
     }
   },
   mounted(){
-    EventBus.$emit('navegar', 'Actas de defensa');
+    EventBus.$emit('navegar', 'Actas de defensa y notas');
     EventBus.$on('refresh', x => {this.init()});
     this.init();
     },
@@ -231,6 +226,7 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listAlumnos = response.data;
+          console.log(this.listAlumnos)
           this.fullscreenLoading = false;
       })
     },

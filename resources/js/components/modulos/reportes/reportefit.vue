@@ -291,7 +291,8 @@
                                                 <p style="font-size: 0.9rem;" class="mb-0">{{fitUser.user.rut}}</p>
                                             </dd>
                                             <dd class="col-md-2 px-1">
-                                                <p style="font-size: 0.9rem;" class="mb-0">{{fitUser.user.telefono}}</p>
+                                                <p v-if="fitUser.user.telefono" style="font-size: 0.9rem;" class="mb-0">{{fitUser.user.telefono}}</p>
+                                                <p v-else style="font-size: 0.9rem;" class="mb-0">No registrado</p>
                                             </dd>
                                             <dd class="col-md-4 px-1">
                                                 <p style="font-size: 0.9rem;" class="mb-0">{{fitUser.user.email}}</p>
@@ -327,7 +328,8 @@
                                             </template>
                                             <template>
                                                 <dt class="col-md-4">Profesor(es) Externo(s):</dt>
-                                                <dd class="col-md-8">{{item.p_externo}}</dd>
+                                                <dd v-if="item.p_externo" class="col-md-8">{{item.p_externo}}</dd>
+                                                <dd v-else class="col-md-8">No registrado</dd>
                                             </template>
                                         </dl>
                                     </template>
@@ -338,10 +340,8 @@
                                 <dt class="col-md-4">Tipo de documento:</dt>
                                 <dd class="col-md-8">{{item.tipo}}</dd>
 
-                                <dt class="col-md-4">Estado de aprobación:</dt>
-                                <dd class="col-md-8" v-if="item.estado == 'A'">Aprobado</dd>
-                                <dd class="col-md-8" v-if="item.estado == 'D'">Desarrollo</dd>
-                                <dd class="col-md-8" v-if="item.estado == 'R'">Reprobado</dd>
+                                <dt class="col-md-4">Estado:</dt>
+                                <dd class="col-md-8">{{globFunct.mergedStates(item).resultado}}</dd>
                                 <dt class="col-md-4">Detalles de documento:</dt>
                                 <dd class="col-md-8">
                                     <router-link :title="'Vista completa de '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
@@ -665,9 +665,11 @@ import globFunct from '../../../services/globFunct';
             }
             }).then(response => {
                 this.inicializarPaginacion();
+                response.data.forEach(data => {
+                    data.estadoGeneral = this.globFunct.mergedStates(data);
+                });
                 this.listTesisOriginal = response.data;
                 this.listTesis = response.data;
-                console.log(this.listTesis)
                 const newListTesis = this.moveIndex(this.listTesis);
                 this.listTesisOriginal = this.moveIndex(this.listTesisOriginal);
                 this.listTesis = newListTesis;

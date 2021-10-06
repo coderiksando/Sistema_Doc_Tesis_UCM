@@ -24,7 +24,7 @@
             <th>Profesor Guía</th>
             <th>Tipo</th>
             <th>Título</th>
-            <th>Estado de aprobación</th>
+            <th>Estado</th>
             <th>Estado de avances</th>
             <!-- <th>Detalles de documentos</th> -->
             <th>Fecha última bitácora</th>
@@ -71,13 +71,7 @@
                     <td>{{ $datatesis->user__p__guia->nombres.' '.$datatesis->user__p__guia->apellidos }}</td>
                     <td>{{ $datatesis->tipo }}</td>
                     <td>{{ substr($datatesis->titulo, 0, 40) }}</td>
-                    @if($datatesis->estado == 'A')
-                        <td> Aprobado </td>
-                    @elseif($datatesis->estado == 'D')
-                        <td> En desarrollo </td>
-                    @elseif($datatesis->estado == 'R')
-                        <td> Reprobado </td>
-                    @endif
+                    <td>{{ $datatesis->estadoGeneral->resultado }}</td>
                     @if($datatesis->acta)
                         @php($prioridadActaAhora = Carbon\Carbon::parse($datatesis->acta->updated_at))
                     @else
