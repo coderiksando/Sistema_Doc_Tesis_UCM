@@ -1,22 +1,7 @@
 <template>
   <div>
-    <tooltip />
-    <div class="content-header" v-loading.fullscreen.lock="fullscreenLoading">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-12">
-            <h1 class="m-0 text-dark font-weight-bold">
-              <b>Editar {{terminoTituloExtendido}}</b>
-            </h1>
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </div>
 
-    <div class="container container-fluid">
+
       <div class="card">
         <div class="card-header">
           <div class="card-tools">
@@ -331,7 +316,6 @@
           </div>
         </div>
       </div>
-    </div>
 
     <div
       class="modal fade"
@@ -622,9 +606,9 @@ export default {
   computed: {},
   mounted() {
     EventBus.$emit('navegar', 'Editar FID');
+    this.getListarMiTesis();
     this.getListarProfesores();
     this.getMyOwnUser();
-    this.getTesisById();
     this.getListarVinculacion();
     this.getParametros();
   },
@@ -876,6 +860,25 @@ export default {
         this.booleanFunctionOnMounted.getParametros = true;
         if (this.globFunct.booleanElements(this.booleanFunctionOnMounted)) this.fullscreenLoading = false;
       });
+    },
+    getListarMiTesis(){
+      this.fullscreenLoading = true;
+      var url = '/alumno/getListarMiTesis'
+      axios.get(url, {
+      }).then(response => {
+          this.listMiTesis = response.data;
+          if (this.listMiTesis.includes(parseInt(this.$attrs.id))) {
+            this.getTesisById();
+          }else{
+            Swal.fire({
+              icon: 'warning',
+              title: 'No tienes permiso para ver este formulario.',
+              showConfirmButton: true,
+              timer: 2500
+            })
+            this.$router.push('/tesis');
+          }
+      })
     },
   }, // cierre methods
 };

@@ -149,9 +149,17 @@ class AlumnoController extends Controller
     }
     public function getListarMiTesis(Request $request){
         if(!$request->ajax()) return redirect('/');
+        $nIdUsuario  = Auth::id();
         $rol = $request->session()->get('rol');
 
-        $nIdUsuario  = Auth::id();
+        if($rol == 'Coordinador'){
+            $fitsCoordinador = Fit::all()->pluck('id');
+            return $fitsCoordinador;
+        }
+        if($rol == 'Director'){
+            $fitsDirector = Fit::where('id_escuela', Auth::user()->id_escuela)->get()->pluck('id');
+            return $fitsDirector;
+        }
         $fitsAlumno = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
         $fitsProf = Fit::where(function ($fit) use ($nIdUsuario) {
             $fit->where('id_p_guia', '=', "$nIdUsuario")
@@ -163,14 +171,8 @@ class AlumnoController extends Controller
         })->get()->pluck('id_tesis');
         $fits = $fitsAlumno->concat($fitsProf);
         $fits = $fits->concat($fitsComision);
-        if($rol == 'Director'){
-            $fitsDirector = Fit::where('id_escuela', Auth::user()->id_escuela)->get()->pluck('id');
-            $fits = $fits->concat($fitsDirector);
-        }
-        if($rol == 'Coordinador'){
-            $fitsCoordinador = Fit::all()->pluck('id');
-            $fits = $fits->concat($fitsCoordinador);
-        }
+        
+        
         return $fits;
     }
 
