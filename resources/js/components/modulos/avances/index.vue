@@ -74,6 +74,27 @@
                         </div>
                     </div>
                   </div>
+                  <div class="col-md-6" v-if="listRolPermisosByUsuario.includes('fid.acceso.total')">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Escuela</label>
+                        <div class="col-md-9">
+                            <Multiselect
+                              v-model="selectedEscuela"
+                              placeholder="Seleccionar escuela"
+                              :options="listEscuelas"
+                              label ="nombre"
+                              selectLabel="Presiona enter para seleccionar"
+                              selectedLabel="Seleccionado"
+                              :allow-empty="false"
+                              deselectLabel="Cancelar"
+                              @input="getListarFitsByprofesor"
+                              >
+                            <template slot="noResult">No hay resultados</template>
+                            <template slot="noOptions">Lista vacía</template>
+                            </Multiselect>
+                        </div>
+                    </div>
+                    </div>
                 </div>
               </form>
             </div> <!-- Filtro de busqueda de avances -->
@@ -160,6 +181,7 @@ export default {
     return{
       fillEstadoTesis:{
         cEstado: '',
+        nIdEscuela: ''
       },
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       listAvances:[],
@@ -170,6 +192,7 @@ export default {
         {nombre: 'Reprobada', valor: 'R'}],
       selectedFit:{},
       selectedEstado: {nombre: 'En desarrollo', valor: 'D'},
+      selectedEscuela: {nombre: 'Todas', id: 0},
       listPermisos:[],
       loading: false,
       fullscreenLoading: false,
@@ -186,7 +209,9 @@ export default {
       },
       error: 0,
       mensajeError:[],
-      id_fit : this.$attrs.id
+      id_fit : this.$attrs.id,
+      listEscuelas: [],
+      nivelAcceso: 3
     }
   },
   computed: {
@@ -236,6 +261,7 @@ export default {
       this.getEstadoTesis();
       this.getListarAvances();
       this.getListarFitsByprofesor();
+      this.getListarEscuelas();
     },
     limpiarCriteriosBsq(){
       this.selectedFit = {};
@@ -275,10 +301,14 @@ export default {
       this.fullscreenLoading = true;
       this.selectedFit = {};
       this.listAvances = [];
+      if (this.listRolPermisosByUsuario.includes('fid.acceso.parcial')) this.nivelAcceso = 2;
+      if (this.listRolPermisosByUsuario.includes('fid.acceso.total')) this.nivelAcceso = 1;
       var url = '/avances/getListarFitsByprofesor';
       axios.get(url, {
         params: {
-          'estado'    : (this.id_fit) ? this.$attrs.estado : this.selectedEstado.valor
+          'estado'    : (this.id_fit) ? this.$attrs.estado : this.selectedEstado.valor,
+          'escuela'   : this.selectedEscuela.id,
+          'nivel'     : this.nivelAcceso
         }
         }).then(response => {
           this.listFits = response.data;
@@ -347,6 +377,15 @@ export default {
     abrirModal(){
       this.modalShow = !this.modalShow;
       this.limpiarModal();
+    },
+    getListarEscuelas(){
+      this.fullscreenLoading = true;
+      var url = '/administracion/escuelas/getListarEscuelas'
+      axios.get(url, {
+      }).then(response => {
+        this.listEscuelas = response.data;
+        this.listEscuelas.unshift({'id':'', 'nombre': 'Todas', 'facultad': {'id':0}});
+      })
     },
   }//cierre de methods
 }

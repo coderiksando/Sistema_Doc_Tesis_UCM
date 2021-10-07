@@ -77,19 +77,26 @@ class AvancesController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         $user   = Auth::user();
-        $rol    = $request->session()->get('rol');
         $estado = $request->estado;
+        $escuela = $request->escuela;
+        $nivel = $request->nivel;
 
-        if ($rol == 'Profesor') {
-            $fits = Fit::where(function ($fit) use ($user) {
-                $fit->where('id_p_guia', '=', "$user->id_user")->orWhere('id_p_co_guia', '=', "$user->id_user");
-            })->where('estado', 'like', "%$estado%")->get();
-        }elseif ($rol == 'Director') {
-            $fits = Fit::where('estado', 'like', "%$estado%")->where('id_escuela', $user->id_escuela)->get();
-        }else{
-            $fits = Fit::where('estado', 'like', "%$estado%")->get();
+
+        $fits = Fit::where('estado', 'like', "%$estado%");
+
+        if ($nivel == 2) $fits->where('id_escuela', $user->id_escuela);
+
+        if ($nivel == 3) {
+            $fits->where(function ($fit) use ($user) {
+                $fit->where('id_p_guia', '=', "$user->id_user")
+                ->orWhere('id_p_co_guia', '=', "$user->id_user");
+            });
         }
 
+        if ($escuela) {
+            $fits->where('id_escuela', $escuela);
+        }
+        $fits = $fits->get();
         foreach ($fits as $fit) {
             $alumnos = $fit->getAlumnos();
             $fit->nombres = $alumnos->first()->nombres.' '.$alumnos->first()->apellidos;
@@ -100,7 +107,7 @@ class AvancesController extends Controller
             }
         }
 
-        return $fits;
+        return ($nivel) ? $fits : [];
     }
 
     public function getSeleccionarAvance(Request $request){
