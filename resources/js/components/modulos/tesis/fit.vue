@@ -514,6 +514,9 @@ export default {
     EventBus.$emit('navegar', navegar);
     EventBus.$on('refresh', x => {this.init()});
   },
+  beforeDestroy(){
+    EventBus.$off('refresh');
+  },
   methods:{
     init(){
       this.getListarTesis();
