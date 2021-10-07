@@ -70,7 +70,7 @@
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td style="text-align: center;">FORMULARIO DE INSCRIPCION DE TEMA DE TESIS Y MEMORIAS DE TITULO</td>
+                <td style="text-align: center;">FORMULARIO DE INSCRIPCIÓN DE TEMA DE {{mb_strtoupper($datosfit->tipo)}}</td>
             </tr>
         </table>
         <br>

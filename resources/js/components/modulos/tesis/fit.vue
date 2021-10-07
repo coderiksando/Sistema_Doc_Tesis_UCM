@@ -140,7 +140,7 @@
                     </td>
                     <td>
                       <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
-                        <i class="fas fa-eye"></i>
+                        <i class="far fa-eye fa-lg"></i>
                       </router-link>
                       <template v-if="(item.aprobado_pg == 'A' || item.aprobado_pg == 'V') && listRolPermisosByUsuario.includes('tesis.subirconstancia')">
                         <router-link title="Subir constancia de examen" class="btn btn-success boton" :to="{name:'tesis.subirconstancia'}">
@@ -179,10 +179,10 @@
 
                         <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
                             <button :title="'Aprobar '+terminoTitulo" class="btn boton btn-success" @click.prevent="acceptHandler(item)">
-                              <i class="fas fa-check"></i>
+                              <i class="far fa-thumbs-up"></i>
                             </button>
                             <button :title="'Rechazar '+terminoTitulo" class="btn boton btn-danger" @click.prevent="modalRechazo(item)">
-                              <i class="fas fa-times"></i>
+                              <i class="far fa-thumbs-down"></i>
                             </button>
                         </template>
                       </template>
@@ -281,8 +281,8 @@
     </div>
 
     <template v-if="mostrarModalRechazo">
-      <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @click.prevent="dismissModal()">
-        <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2;" v-on:click.stop>
+      <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @mousedown.prevent="dismissModal()">
+        <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2;" v-on:mousedown.stop>
           <div class="swal2-header">
             <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
               <div class="swal2-icon-content">!</div>
@@ -304,8 +304,8 @@
     </template>
 
     <template v-if="mostrarModalApruebo">
-      <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @click.prevent="mostrarModalApruebo=false">
-        <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2; width: 70% !important; min-width: 360px !important" v-on:click.stop>
+      <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @mousedown.prevent="mostrarModalApruebo=false">
+        <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2; width: 70% !important; min-width: 360px !important" v-on:mousedown.stop>
           <div class="swal2-header">
             <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
               <div class="modal-dialog" role="document">
@@ -513,6 +513,9 @@ export default {
     if (this.rolActivo != 'Alumno') navegar = 'Revisar FID';
     EventBus.$emit('navegar', navegar);
     EventBus.$on('refresh', x => {this.init()});
+  },
+  beforeDestroy(){
+    EventBus.$off('refresh');
   },
   methods:{
     init(){

@@ -162,6 +162,9 @@ export default {
     EventBus.$on('refresh', x => {this.init()});
     this.init();
   },
+  beforeDestroy(){
+    EventBus.$off('refresh');
+  },
   methods:{
     init(){
       this.getListarFacultades();
