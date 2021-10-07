@@ -285,5 +285,19 @@ class ComisionesController extends Controller
             }
         }
     }
-
+    public function borrarComision(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $fit = Fit  ::where('id',"$request->id")
+                    ->where('aprobado_pg', 'EA')
+                    ->get()
+                    ->first();
+        if ($fit) {
+            $comision = Comisiones::where('id_tesis', "$request->id")->delete();
+            $archivosComision = ArchivoPdf  ::where('id_fit', "$request->id")
+                                            ->where('tipo_pdf', 'revision')
+                                            ->update(['tipo_pdf' => 'avance_t']);
+            return response(['msg' => 'Comisión y archivos de revisión eliminados'], 200);
+        }
+        else return response(['msg' => 'Comisión no encontrada'], 200);
+    }
 }

@@ -121,9 +121,6 @@
                                             <i class="fas fa-pencil-alt"></i>
                                         </router-link>
                                     </template>
-                                    <!-- <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
-                                        <i class="fas fa-eye"></i>
-                                    </router-link> -->
                                     <a v-if="item.archivoPendienteRevision" title="Descargar documento" class="btn boton btn-warning mr-1" :href="item.archivoPendienteRevision.path" target="_blank">
                                         <i class="fas fa-file-download"></i>
                                     </a>
@@ -133,6 +130,11 @@
                                     <template v-if="item.comisiones && item.archivoPendienteRevision">
                                         <button title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item)">
                                             <i class="fas fa-file-upload"></i>
+                                        </button>
+                                    </template>
+                                    <template v-if="item.aprobado_pg == 'EA' && item.comisiones">
+                                        <button title="Eliminar comisión y documentos de revisión" class="btn boton btn-danger mr-1" @click.prevent="eliminarComision(item)">
+                                            <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </template>
                                 </div>
@@ -1028,6 +1030,7 @@ export default {
       }).then(response => {
           this.inicializarPaginacionTotal();
           this.listAllComisiones = response.data;
+          console.log(this.listAllComisiones)
           this.fullscreenLoading = false;
       });
     },
@@ -1163,7 +1166,7 @@ export default {
             location.href = response.data.path;
         });
     },
-    descargaActaZip(fit, tipo){
+    descargaActaZip (fit, tipo){
         var url = '/comisiones/descargaActaZip';
         if (fit[0].fit) fit = fit.map(x=>{return x.fit;}); // Revisa si tiene el objeto fit o comision y fuerza a ser fit
         var arrayComisiones = fit.map(x=>{ // obtengo id de acta de archivoPDF
@@ -1189,7 +1192,7 @@ export default {
             url.click();
         });
     },
-    selectStart() {
+    selectStart () {
         this.busquedaComision.dateRange.endDate = null;
         this.endOption = {
             disabledDate: (time) => {
@@ -1197,6 +1200,20 @@ export default {
             }
         };
     },
+    eliminarComision (item) {
+        const url = '/comisiones/borrarComision';
+        axios
+        .post(url, item)
+        .then(response => {
+            Swal.fire({
+                icon: "success",
+                title: response.data.msg,
+                showConfirmButton: false,
+                timer: 2000,
+            });
+            this.getListarMisComisiones();
+        });
+    }
   }//cierre de methods
 }
 </script>
