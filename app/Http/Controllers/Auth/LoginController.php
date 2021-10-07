@@ -112,12 +112,12 @@ class LoginController extends Controller
 
         $nIdUsuario = Auth::id();
         $permisosUserIds = Users_Permissions::where('id_user', $nIdUsuario)->get()->pluck('id_permission');
-        $permisosUser = Permission::whereIn('id', $permisosUserIds)->get();
+        $permisosUser = Permission::whereIn('id', $permisosUserIds);
 
         $permisosRolUserId = Roles_Permissions::where('id_role', $rol->id)->get()->pluck('id_permission');
-        $permisosRolUser = Permission::whereIn('id', $permisosRolUserId)->get();
+        $permisosRolUser = Permission::whereIn('id', $permisosRolUserId);
 
-        $permisos = $permisosUser->union($permisosRolUser);
+        $permisos = $permisosUser->union($permisosRolUser)->get();
 
 
         return ['rol' => $request->rol,

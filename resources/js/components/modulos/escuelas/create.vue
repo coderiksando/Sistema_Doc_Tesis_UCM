@@ -21,7 +21,7 @@
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Nombre</label>
                     <div class="col-md-9">
-                      <input type="text" maxlength="40"  class="form-control" v-model="fillCrearEscuela.cNombre" @keyup.enter="setRegistrarEscuelas">
+                      <input type="text" maxlength="250"  class="form-control" v-model="fillCrearEscuela.cNombre" @keyup.enter="setRegistrarEscuelas">
                     </div>
                   </div>
                 </div>
