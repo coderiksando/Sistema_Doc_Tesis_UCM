@@ -94,7 +94,7 @@
                             </Multiselect>
                         </div>
                     </div>
-                    </div>
+                  </div>
                 </div>
               </form>
             </div> <!-- Filtro de busqueda de avances -->
