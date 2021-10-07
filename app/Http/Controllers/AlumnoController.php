@@ -88,12 +88,12 @@ class AlumnoController extends Controller
         }elseif($rol == 'Profesor'){
             $fits = Fit::where(function ($fit) use ($nIdUsuario) {
                 $fit->where('id_p_guia', '=', "$nIdUsuario")->orWhere('id_p_co_guia', '=', "$nIdUsuario");
-            })->whereIn('aprobado_pg', ['P', 'A', 'V']);
+            })->whereIn('aprobado_pg', ['P', 'A', 'V', 'EA']);
         }elseif($rol == 'Director'){
-            $fits = Fit::whereIn('aprobado_pg', ['P','A', 'V'])
+            $fits = Fit::whereIn('aprobado_pg', ['P','A', 'V', 'EA'])
             ->where('id_escuela', Auth::user()->id_escuela);
         }else{
-            $fits = Fit::whereIn('aprobado_pg', ['P', 'A', 'V']);
+            $fits = Fit::whereIn('aprobado_pg', ['P', 'A', 'V', 'EA']);
         }
 
 //      Filtros de busqueda
@@ -104,8 +104,11 @@ class AlumnoController extends Controller
             $fits->whereIn('id', $fitUser);
         }
         if ($cEstado) {
-            if ($cEstado[0] != '') {
+            if ($cEstado[0] != '' && $cEstado[0] != 'EA') {
                 $fits->where('aprobado_pg', $cEstado[0])->where('estado', $cEstado[1]);
+            }
+            if ($cEstado[0] == 'EA') {
+                $fits->where('aprobado_pg', $cEstado[0]);
             }
         }
         if ($request->fechaSt) {

@@ -47,7 +47,7 @@
                         autocomplete="estadoFusionadoDeSGYAD"
                         @change="getListarTesis">
                           <el-option
-                            v-for="item in globFunct.listStates([1,6])"
+                            v-for="item in globFunct.listStates([1])"
                             :key="item.id"
                             :label="item.resultado"
                             :value="[item.eI,item.eA]">
@@ -118,7 +118,7 @@
                   <tr>
                     <th>Alumno(s)</th>
                     <th>Estado</th>
-                    <th v-if="rolActivo == 'Profesor'">Rol propio en {{terminoTitulo}}</th>
+                    <th v-if="rolActivo == 'Profesor'">Rol de participación</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
@@ -132,10 +132,10 @@
                     <td>{{globFunct.mergedStates(item).resultado}}</td>
                     <td v-if="rolActivo == 'Profesor'">
                         <template v-if="item.id_p_guia == authUser.id_user">
-                            Guía
+                            Prof. Guía
                         </template>
                         <template v-else-if="item.id_p_co_guia == authUser.id_user">
-                            Co-guía
+                            Prof. Co-guía
                         </template>
                     </td>
                     <td>

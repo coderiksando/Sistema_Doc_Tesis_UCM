@@ -36,15 +36,15 @@ export default class globFunct {
         const mergedStates = [
             {eI: 'P', eA: 'D', resultado: tipoTrabajo + ' pendiente de revisión de Prof. Guía.'},
             {eI: 'R', eA: 'D', resultado: tipoTrabajo + ' rechazad'+gL+' provisionalmente, se espera edición estudiantil.'},
-            {eI: 'A', eA: 'D', resultado: tipoTrabajo + ' aceptad'+gL+' por profesor Guía.'},
-            {eI: 'V', eA: 'D', resultado: tipoTrabajo + ' aceptad'+gL+' por dirección.'},
+            {eI: 'A', eA: 'D', resultado: tipoTrabajo + ' aceptad'+gL+' por profesor Guía, trabajo en ejecución.'},
+            {eI: 'V', eA: 'D', resultado: tipoTrabajo + ' aceptad'+gL+' por dirección, trabajo en ejecución.'},
             {eI: 'V', eA: 'A', resultado: tipoTrabajo + ' aprobad'+gL+'.'},
             {eI: 'V', eA: 'R', resultado: tipoTrabajo + ' reprobad'+gL+'.'},
-            {eI: 'R', eA: 'R', resultado: tipoTrabajo + ' en abandono.'},
+            {eI: 'EA', eA: 'X', resultado: tipoTrabajo + ' en abandono.'},
         ];
         let selectedState = {};
         mergedStates.forEach(state => {
-            if (state.eI == estadoInscripcion && state.eA == estadoAprobado) selectedState= state;
+            if ((state.eI == estadoInscripcion) && (state.eA == estadoAprobado || state.eA == 'X')) selectedState= state;
         });
         return selectedState;
     };
@@ -53,11 +53,11 @@ export default class globFunct {
             {id:-1, eI: '',  eA: '',  resultado: 'Todas'},
             {id: 0 ,eI: 'P', eA: 'D', resultado: 'Pendiente de revisión de Prof. Guía'},
             {id: 1 ,eI: 'R', eA: 'D', resultado: 'Rechazado provisionalmente, se espera edición'},
-            {id: 2 ,eI: 'A', eA: 'D', resultado: 'Aceptado por profesor Guía'},
-            {id: 3 ,eI: 'V', eA: 'D', resultado: 'Aceptado por dirección'},
+            {id: 2 ,eI: 'A', eA: 'D', resultado: 'Aceptado por profesor Guía, trabajo en ejecución.'},
+            {id: 3 ,eI: 'V', eA: 'D', resultado: 'Aceptado por dirección, trabajo en ejecución.'},
             {id: 4 ,eI: 'V', eA: 'A', resultado: 'Aprobado'},
             {id: 5 ,eI: 'V', eA: 'R', resultado: 'Reprobado'},
-            {id: 6 ,eI: 'R', eA: 'R', resultado: 'En abandono'},
+            {id: 6 ,eI: 'EA', eA: 'X', resultado: 'En abandono'},
         ];
         if (indexBanned) {
             indexBanned.forEach(index => {
