@@ -220,12 +220,12 @@
             <h2 class="swal2-title" id="swal2-title" style="display: flex;">Para aprobar el formulario ingrese su comisión sugerida</h2>
             <button type="button" class="swal2-close" aria-label="Close this dialog" style="display: none;">×</button>
           </div>
-          <div class="swal2-content text-justify">
+          <div class="swal2-content text-left">
             <form role="form">
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Prof. comisión 1 (requerido)</label>
+                    <label class="col-md-3 col-form-label">Prof. comisión 1 (*)</label>
                     <div class="col-md-9">
                       <el-select v-model="fillCrearComision.Profesor1"
                       placeholder="Asignar profesor para comisión"
@@ -259,21 +259,22 @@
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Prof. externo</label>
                     <div class="col-md-9">
-                      <input type="text" placeholder="Nombre profesor externo" class="form-control" v-model="fillCrearComision.NombrePEx" @keyup.enter="setCambiarEstadoFIT">
+                      <input type="text" placeholder="Nombre profesor externo" class="form-control" v-model="fillCrearComision.NombrePEx" @keyup.enter="setCambiarEstadoFIT" @change.prevent="validarProfesorExterno()">
                     </div>
                   </div>
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Email prof. externo</label>
                     <div class="col-md-9">
-                      <input type="text" placeholder="Email profesor externo" class="form-control" v-model="fillCrearComision.EmailPEx" @keyup.enter="setCambiarEstadoFIT">
+                      <input :disabled = !fillCrearComision.NombrePEx type="text" placeholder="Email profesor externo" :class="{'is-invalid' : (!validEmail && fillCrearComision.EmailPEx)}" class="form-control" v-model="fillCrearComision.EmailPEx" @keyup.enter="setCambiarEstadoFIT" @change.prevent="validarEmail()">
                     </div>
                   </div>
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Institución prof. externo</label>
                     <div class="col-md-9">
-                      <input type="text" placeholder="Institución profesor externo" class="form-control" v-model="fillCrearComision.InstitucionPEx" @keyup.enter="setCambiarEstadoFIT">
+                      <input :disabled = !fillCrearComision.NombrePEx type="text" placeholder="Institución profesor externo" class="form-control" v-model="fillCrearComision.InstitucionPEx" @keyup.enter="setCambiarEstadoFIT">
                     </div>
                   </div>
+                  <span>(*) Campo requerido.</span>
                 </div>
               </div>
             </form>
@@ -340,7 +341,8 @@ export default {
       originalResponse: {},
       mostrarModalRechazo: false,
       mostrarModalApruebo: false,
-      motivo : ''
+      motivo : '',
+      validEmail: true
     }
   },
   computed: {
@@ -512,11 +514,24 @@ export default {
         if(this.fillCrearComision.Profesor1 == this.fillCrearComision.Profesor2){
           this.mensajeError.push("El primer y segundo profesor no pueden ser iguales");
         }
+        if (this.fillCrearComision.EmailPEx && !this.validEmail) {
+          this.mensajeError.push("El email del profesor externo no tiene un formato valido");
+        }
         if(this.mensajeError.length){
           this.error = 1;
         }
         return this.error;
     },
+    validarEmail() {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      this.validEmail = re.test(this.fillCrearComision.EmailPEx);
+    },
+    validarProfesorExterno(){
+      if (!this.fillCrearComision.NombrePEx) {
+        this.fillCrearComision.EmailPEx = '';
+        this.fillCrearComision.InstitucionPEx = '';
+      }
+    }
   }// cierre methods
 }
 </script>

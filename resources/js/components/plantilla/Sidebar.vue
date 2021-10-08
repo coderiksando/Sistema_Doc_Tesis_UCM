@@ -258,7 +258,7 @@
                   <a href="#" class="nav-link" @click.prevent="navegar('/documentosEscuela')">
                     <i class="nav-icon fa fa-folder"></i>
                     <p>
-                      Archivos de Escuela
+                      Información de Escuela
                     </p>
                   </a>
                 </template>

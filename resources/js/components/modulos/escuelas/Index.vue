@@ -62,7 +62,7 @@
           <div class="card-header">
             <h3 class="card-title">Bandeja de resultados</h3>
           </div>
-          <div class="card-body table-resposive">
+          <div class="card-body table table-responsive">
             <template v-if="listarEscuelasPaginated.length">
 
               <table class ="table table-hover table-head-fixed text-nowrap projects">
@@ -75,7 +75,9 @@
                 </thead>
                 <tbody>
                   <tr v-for="(item, index) in listarEscuelasPaginated" :key="index">
-                    <td v-text="item.nombre"></td>
+                    <td>
+                      <div class="elipsis" v-text="item.nombre"></div>
+                    </td>
                     <td v-text="item.facultad.nombre"></td>
                     <td>
                         <router-link title="Editar" class="btn btn-info boton" :to="{name:'escuelas.editar', params:{id: item.id}}">
@@ -257,4 +259,11 @@ export default {
     max-height: 350px !important;
     overflow: auto !important;
   }
+
+  .elipsis{
+      max-width: 290px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+} 
 </style>

@@ -20,6 +20,27 @@
           <div class="card-body">
             <form role="form">
               <div class="row">
+                <div class="col-md-9" v-if="listRolPermisosByUsuario.includes('fid.acceso.total')">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Escuela</label>
+                    <div class="col-md-9">
+                      <Multiselect
+                        v-model="selectedEscuela"
+                        placeholder="Seleccionar escuela"
+                        :options="listEscuelas"
+                        label ="nombre"
+                        selectLabel="Presiona enter para seleccionar"
+                        selectedLabel="Seleccionado"
+                        :allow-empty="false"
+                        deselectLabel="Cancelar"
+                        @input="getListarFitsByprofesor"
+                        >
+                      <template slot="noResult">No hay resultados</template>
+                      <template slot="noOptions">Lista vacía</template>
+                      </Multiselect>
+                    </div>
+                  </div>
+                </div>
                 <div class="col-md-9">
                   <div class="form-group row">
                       <label class="col-md-3 col-form-label">Seleccionar alumno/s</label>
@@ -120,6 +141,7 @@ export default {
       listPermisos:[],
       listBitacoras:[],
       selectedFit:{},
+      selectedEscuela: {nombre: 'Todas', id: 0},
       loading: false,
       fullscreenLoading: false,
       pageNumber: 0,
@@ -134,7 +156,9 @@ export default {
         display: 'none',
       },
       error: 0,
-      mensajeError:[]
+      mensajeError:[],
+      listEscuelas: [],
+      nivelAcceso: 3
     }
   },
   computed: {
@@ -182,14 +206,19 @@ export default {
     init(){
       this.getListarMisBitacoras();
       this.getListarFitsByprofesor();
+      this.getListarEscuelas();
     },
     getListarFitsByprofesor(){
       this.fullscreenLoading = true;
       this.selectedFit = {};
+      if (this.listRolPermisosByUsuario.includes('fid.acceso.parcial')) this.nivelAcceso = 2;
+      if (this.listRolPermisosByUsuario.includes('fid.acceso.total')) this.nivelAcceso = 1;
       var url = '/avances/getListarFitsByprofesor';
       axios.get(url, {
         params: {
-          'estado'    : (this.$attrs.id != null) ? '' : 'D'
+          'estado'    : (this.$attrs.id != null) ? '' : 'D',
+          'escuela'   : this.selectedEscuela.id,
+          'nivel'     : this.nivelAcceso
         }
         }).then(response => {
           this.listFits = response.data;
@@ -250,13 +279,14 @@ export default {
       this.modalShow = !this.modalShow;
       this.limpiarModal();
     },
-    resizeTextarea(e) {
-      let area = e.target;
-      if(area.style.height != area.scrollHeight + 'px'){
-        area.style.height = area.scrollHeight + 'px'
-      }else{
-        area.style.height = null;
-      }
+    getListarEscuelas(){
+      this.fullscreenLoading = true;
+      var url = '/administracion/escuelas/getListarEscuelas'
+      axios.get(url, {
+      }).then(response => {
+        this.listEscuelas = response.data;
+        this.listEscuelas.unshift({'id':'', 'nombre': 'Todas', 'facultad': {'id':0}});
+      })
     },
   }//cierre de methods
 }
