@@ -121,12 +121,14 @@
                       <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
                         <i class="far fa-eye fa-lg"></i>
                       </router-link>
-                      <button v-if="item.aprobado_pg != 'EA'" :title="'Establecer ' + terminoTitulo + ' en abandono'" class="btn btn-danger boton mx-1 btn-w" @click.prevent="setEstadoDocumento(item, 'EA')">
-                        <i class="fas fa-box"></i>
-                      </button>
-                      <button v-else :title="'Establecer ' + terminoTitulo + ' como pendiente'" class="btn btn-success boton mx-1 btn-w" @click.prevent="setEstadoDocumento(item, 'P')">
-                        <i class="fas fa-box-open"></i>
-                      </button>
+                      <template v-if="item.estado != 'A'">
+                        <button v-if="item.aprobado_pg != 'EA'" :title="'Establecer ' + terminoTitulo + ' en abandono'" class="btn btn-danger boton mx-1 btn-w" @click.prevent="setEstadoDocumento(item, 'EA')">
+                            <i class="fas fa-box"></i>
+                        </button>
+                        <button v-else :title="'Establecer ' + terminoTitulo + ' como pendiente'" class="btn btn-success boton mx-1 btn-w" @click.prevent="setEstadoDocumento(item, 'P')">
+                            <i class="fas fa-box-open"></i>
+                        </button>
+                      </template>
                     </td>
                   </tr>
                 </tbody>
