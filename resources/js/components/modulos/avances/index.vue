@@ -400,12 +400,14 @@ export default {
             this.inicializarPaginacion();
             this.listAvances = response.data[0];
             this.comision = response.data[1];
-            this.fillEditarComision.IdComision       = this.comision.id;
-            this.fillEditarComision.Profesor1        = this.comision.id_profesor1;
-            this.fillEditarComision.Profesor2        = this.comision.id_profesor2;
-            this.fillEditarComision.NombrePEx        = this.comision.p_externo;
-            this.fillEditarComision.EmailPEx         = this.comision.correo_p_externo;
-            this.fillEditarComision.InstitucionPEx   = this.comision.institucion_p_externo;
+            if (this.comision) {
+                this.fillEditarComision.IdComision       = this.comision.id;
+                this.fillEditarComision.Profesor1        = this.comision.id_profesor1;
+                this.fillEditarComision.Profesor2        = this.comision.id_profesor2;
+                this.fillEditarComision.NombrePEx        = this.comision.p_externo;
+                this.fillEditarComision.EmailPEx         = this.comision.correo_p_externo;
+                this.fillEditarComision.InstitucionPEx   = this.comision.institucion_p_externo;
+            }
             this.loading = false;
         })
       }
