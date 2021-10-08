@@ -493,6 +493,9 @@ export default {
     getListarProfesores(){
         var url = '/alumno/getListarProfesores';
         axios.get(url, {
+            params: {
+                'allTeacher' : true
+            }
         }).then(response => {
             this.listProfesores = response.data;
         })

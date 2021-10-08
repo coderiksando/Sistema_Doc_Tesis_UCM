@@ -63,7 +63,7 @@
                         <div class="col-md-6 pr-0">
                             <el-date-picker
                                 v-model="fillBsqTesis.dateRange.startDate"
-                                placeholder="Año"
+                                placeholder="Fecha inicio"
                                 format="dd/MM/yyyy"
                                 value-format="yyyy-MM-dd"
                                 :picker-options="startOption"
@@ -73,7 +73,7 @@
                         <div class="col-md-6 pr-0">
                             <el-date-picker
                                 v-model="fillBsqTesis.dateRange.endDate"
-                                placeholder="Año"
+                                placeholder="Fecha final"
                                 format="dd/MM/yyyy"
                                 value-format="yyyy-MM-dd"
                                 :picker-options="endOption"
@@ -701,6 +701,9 @@ export default {
     getListarProfesores(){
         var url = '/alumno/getListarProfesores';
         axios.get(url, {
+            params: {
+                'allTeacher' : true
+            }
         }).then(response => {
             this.listProfesores = response.data;
         })

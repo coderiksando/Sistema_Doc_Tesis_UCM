@@ -59,7 +59,7 @@ class UsersController extends Controller
                     ->whereNotIn('users.id_user', $admins);
         if ($nIdRol) $rpta->where('roles.id', "=", "$nIdRol");
         if ($nEscuela != 0) $rpta->where('users.id_escuela',$nEscuela);
-        $rpta = $rpta->orderBy('nombres')->get();
+        $rpta = $rpta->groupBy('id_user')->orderBy('nombres')->get();
         foreach ($rpta as $data) {
             $data->id_roles = Users_Roles::where('id_user', "$data->id_user")->get()->pluck('id_roles');
             $data->roles = Roles::whereIn('id', $data->id_roles)->get();

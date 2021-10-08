@@ -86,9 +86,11 @@ class AlumnoController extends Controller
             $fitUser = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
             $fits = Fit::whereIn('id', $fitUser);
         }elseif($rol == 'Profesor'){
+            if (!$request->allStates) $states = ['P', 'A', 'V', 'EA'];
+            else $states = ['P', 'R', 'A', 'V', 'EA'];
             $fits = Fit::where(function ($fit) use ($nIdUsuario) {
                 $fit->where('id_p_guia', '=', "$nIdUsuario")->orWhere('id_p_co_guia', '=', "$nIdUsuario");
-            })->whereIn('aprobado_pg', ['P', 'A', 'V', 'EA']);
+            })->whereIn('aprobado_pg', $states);
         }elseif($rol == 'Director'){
             $fits = Fit::whereIn('aprobado_pg', ['P','A', 'V', 'EA'])
             ->where('id_escuela', Auth::user()->id_escuela);
@@ -351,6 +353,15 @@ class AlumnoController extends Controller
             }
         });
         return response()->json(['estado' => 'ok'], 200);
+    }
+    public function setEditarEstadoTesis(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $idTesis            = $request->idTesis;
+        $estado             = $request->estado;
+        $fit                = Fit::find($idTesis);
+        $fit->aprobado_pg   = $estado;
+        $fit->update();
+        return response()->json(['msg' => 'Tesis editada correctamente'], 200);
     }
     public function setGenerarDocumento(Request $request){
         $id = $request->nIdTesis;

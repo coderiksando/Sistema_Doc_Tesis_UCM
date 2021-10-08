@@ -18,6 +18,7 @@
             <a v-if="listRolByUser.length > 1">Seleccionar rol</a>
             <a v-if="listRolByUser.length == 1">Rol: </a>
             <el-input
+                style="width: 80%;"
                 v-if="listRolByUser.length == 1"
                 v-model="listRolByUser[0].name"
                 :disabled="true">
@@ -272,6 +273,19 @@
                     <i class="nav-icon fas fa-calendar-day"></i>
                     <p>
                       Nota pendiente
+                    </p>
+                  </a>
+                </template>
+              </li>
+          </template>
+          <template  v-if="permisos.includes('abandono.index')">
+            <li class="nav-header">DESCARTE DE DOCUMENTOS</li>
+              <li class="nav-item-sidebar">
+                <template v-if="permisos.includes('abandono.index')">
+                  <a href="#" class="nav-link" @click.prevent="navegar('/abandono')">
+                    <i class="fas fa-box"></i>
+                    <p>
+                      {{terminoTitulo}}s en abandono
                     </p>
                   </a>
                 </template>

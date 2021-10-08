@@ -147,27 +147,131 @@
           </div>
         </div>
       </div>
+
+    <template v-if="mostrarModalComision">
+      <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @mousedown.prevent="mostrarModalComision=false">
+        <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2; width: 70% !important; min-width: 360px !important" v-on:mousedown.stop>
+          <div class="swal2-header">
+            <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Sistema de documentos UCM</h5>
+                    <button class="close" @click="modalShow = !modalShow"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="callout callout-danger" style="padding: 5px" v-for="(item, index) in mensajeError" :key="index" v-text="item"></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary" @click="modalShow = !modalShow">{{globVar.btnClose}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+              <div class="swal2-icon-content">!</div>
+            </div>
+            <h2 class="swal2-title" id="swal2-title" style="display: flex;">Para ingresar un documento a revisión debe ingresar su comisión definitiva</h2>
+            <button type="button" class="swal2-close" aria-label="Close this dialog" style="display: none;">×</button>
+          </div>
+          <div class="swal2-content text-justify">
+            <form role="form">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Prof. comisión 1 (requerido)</label>
+                    <div class="col-md-9">
+                      <el-select v-model="fillEditarComision.Profesor1"
+                      placeholder="Asignar profesor para comisión"
+                      filterable
+                      clearable>
+                      <el-option
+                          v-for="item in listProfesores"
+                          :key="item.id_user"
+                          :label="item.fullname"
+                          :value="item.id_user">
+                      </el-option>
+                      </el-select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Prof. comisión 2</label>
+                    <div class="col-md-9">
+                      <el-select v-model="fillEditarComision.Profesor2"
+                      placeholder="Asignar profesor para comisión"
+                      filterable
+                      clearable>
+                      <el-option
+                          v-for="item in listProfesores"
+                          :key="item.id_user"
+                          :label="item.fullname"
+                          :value="item.id_user">
+                      </el-option>
+                      </el-select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Prof. externo</label>
+                    <div class="col-md-9">
+                      <input type="text" placeholder="Nombre profesor externo" class="form-control" v-model="fillEditarComision.NombrePEx" @keyup.enter="setEditarComision">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Email prof. externo</label>
+                    <div class="col-md-9">
+                      <input type="text" placeholder="Email profesor externo" class="form-control" v-model="fillEditarComision.EmailPEx" @keyup.enter="setEditarComision">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Institución prof. externo</label>
+                    <div class="col-md-9">
+                      <input type="text" placeholder="Institución profesor externo" class="form-control" v-model="fillEditarComision.InstitucionPEx" @keyup.enter="setEditarComision">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="swal2-actions">
+            <button type="button" class="swal2-confirm swal2-styled" style="display: inline-block; background-color: rgb(48, 133, 214); border-left-color: rgb(48, 133, 214); border-right-color: rgb(48, 133, 214); --darkreader-inline-bgcolor:#2166a7; --darkreader-inline-border-left:#1d5a93; --darkreader-inline-border-right:#1d5a93;"  @click.prevent="setEditarComision(datosMomentaneos[0],datosMomentaneos[1])">Si, Aprobar</button>
+            <button type="button" class="swal2-cancel swal2-styled" style="display: inline-block; background-color: rgb(221, 51, 51); --darkreader-inline-bgcolor:#a61c1c;" @click.prevent="mostrarModalComision=false">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </template>
+
     </div>
 </template>
 
 <script>
 import moment from 'moment';
 import Multiselect from 'vue-multiselect';
+import globVar from '../../../services/globVar';
 
 export default {
   components: {Multiselect},
   data(){
     return{
+      globVar: new globVar(),
       fillEstadoTesis:{
         cEstado: '',
       },
+      fillEditarComision:{
+        Profesor1       : '',
+        Profesor2       : '',
+        NombrePEx       : '',
+        EmailPEx        : '',
+        InstitucionPEx  : ''
+      },
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       listAvances:[],
+      comision: {},
       listFits:[],
       listEstados: [
         {nombre: 'En desarrollo', valor: 'D'},
         {nombre: 'Aprobada', valor: 'A'},
         {nombre: 'Reprobada', valor: 'R'}],
+      listProfesores: [],
       selectedFit:{},
       selectedEstado: {nombre: 'En desarrollo', valor: 'D'},
       listPermisos:[],
@@ -186,6 +290,8 @@ export default {
       },
       error: 0,
       mensajeError:[],
+      mostrarModalComision: false,
+      datosMomentaneos: [],
       id_fit : this.$attrs.id
     }
   },
@@ -236,6 +342,7 @@ export default {
       this.getEstadoTesis();
       this.getListarAvances();
       this.getListarFitsByprofesor();
+      this.getListarProfesores();
     },
     limpiarCriteriosBsq(){
       this.selectedFit = {};
@@ -265,8 +372,14 @@ export default {
           }
         }).then(response => {
             this.inicializarPaginacion();
-            this.listAvances = response.data;
-            console.log(this.listAvances)
+            this.listAvances = response.data[0];
+            this.comision = response.data[1];
+            this.fillEditarComision.IdComision       = this.comision.id;
+            this.fillEditarComision.Profesor1        = this.comision.id_profesor1;
+            this.fillEditarComision.Profesor2        = this.comision.id_profesor2;
+            this.fillEditarComision.NombrePEx        = this.comision.p_externo;
+            this.fillEditarComision.EmailPEx         = this.comision.correo_p_externo;
+            this.fillEditarComision.InstitucionPEx   = this.comision.institucion_p_externo;
             this.loading = false;
         })
       }
@@ -312,24 +425,83 @@ export default {
             cancelButtonText: 'Cancelar',
         }).then((result) => {
             if (result.isConfirmed) {
-                const url = '/avances/setAvanceARevision';
-                axios.post(url, {
-                    'idTesis'   : avance.id_tesis,
-                    'idArchivo' : avance.id_archivo,
-                    'change'    : cambio
-                }).then(response => {
-                    let tituloRespuesta = '';
-                    if (cambio) tituloRespuesta = 'Su avance ha sido enviado a revisión';
-                    else tituloRespuesta = 'Su documento se ha retirado de revisión';
+                if (this.comision) {
+                    if (this.comision.estado == 'Provisoria') {
+                        this.mostrarModalComision = true;
+                        this.datosMomentaneos = [avance, cambio];
+                    }
+                    else this.enviarARevision(avance, cambio);
+                }
+                else {
                     Swal.fire({
-                        icon: 'success',
-                        title: tituloRespuesta,
+                        icon: 'warning',
+                        title: 'No existe una comisión.',
                         showConfirmButton: false,
                         timer: 2500
                     });
-                    this.getListarAvances();
-                });
+                    this.$router.push('/comisiones/crear/' + this.listAvances[0].id_tesis);
+                }
             }
+        });
+    },
+    getListarProfesores(){
+        var url = '/alumno/getListarProfesores';
+        axios.get(url, {
+            params: {
+                'allTeacher' : true
+            }
+        }).then(response => {
+            this.listProfesores = response.data;
+        })
+    },
+    setEditarComision(avance, cambio){
+        if(this.validarEditarComision()){
+            this.modalShow = true;
+            return;
+        }
+        this.fullscreenLoading = true;
+        var url = '/comisiones/setEditarComision'
+        axios.post(url, {
+            'IdComision'        : this.fillEditarComision.IdComision,
+            'Profesor1'         : this.fillEditarComision.Profesor1,
+            'Profesor2'         : this.fillEditarComision.Profesor2,
+            'NombrePEx'         : this.fillEditarComision.NombrePEx,
+            'EmailPEx'          : this.fillEditarComision.EmailPEx,
+            'InstitucionPEx'    : this.fillEditarComision.InstitucionPEx,
+            'estado'            : 'Definitiva'
+        }).then(response => {
+            this.enviarARevision(avance, cambio);
+            this.fullscreenLoading = false;
+        })
+    },
+    validarEditarComision(){
+      this.error = 0;
+      this.mensajeError = [];
+        if(!this.fillEditarComision.Profesor1){
+          this.mensajeError.push("El Profesor nº1 es un campo obligatorio")
+        }
+        if(this.mensajeError.length){
+          this.error = 1;
+        }
+        return this.error;
+    },
+    enviarARevision (avance, cambio) {
+        const url = '/avances/setAvanceARevision';
+        axios.post(url, {
+            'idTesis'   : avance.id_tesis,
+            'idArchivo' : avance.id_archivo,
+            'change'    : cambio
+        }).then(response => {
+            let tituloRespuesta = '';
+            if (cambio) tituloRespuesta = 'Su avance ha sido enviado a revisión';
+            else tituloRespuesta = 'Su documento se ha retirado de revisión';
+            Swal.fire({
+                icon: 'success',
+                title: tituloRespuesta,
+                showConfirmButton: false,
+                timer: 2500
+            });
+            this.getListarAvances();
         });
     },
     nextPage(){

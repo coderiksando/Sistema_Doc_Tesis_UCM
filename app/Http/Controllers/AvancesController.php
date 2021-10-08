@@ -47,7 +47,7 @@ class AvancesController extends Controller
             $avance->ArchivoPdf;
         }
 
-        return $AvancesTesis;
+        return [$AvancesTesis, $Fit->Comisiones];
     }
     public function getListarAlumnosByprofesor(Request $request){
         if(!$request->ajax()) return redirect('/');

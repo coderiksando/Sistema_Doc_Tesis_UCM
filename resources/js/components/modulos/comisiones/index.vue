@@ -109,7 +109,11 @@
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
                                 <div title="Sección expandible" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
-                                <div title="Sección expandible" class="col-md-9 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}</p></div>
+                                <div title="Sección expandible" class="col-md-9 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index">
+                                    <p class="float-left">
+                                        {{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}{{(item.titulo.length > 40)?'...':''}}, ({{(item.comisiones) ? item.comisiones.estado:'Comisión no establecida'}})
+                                    </p>
+                                </div>
                                 <div class="col-md-3 noPadNoMar d-flex flex-wrap">
                                     <template v-if="!item.comisiones">
                                         <router-link title="Crear comisión" class="btn boton btn-info mr-1" :to="{name:'comisiones.crear', params:{id: item.id}}">
@@ -953,7 +957,7 @@ export default {
     getListarMisComisiones(){
         this.fullscreenLoading = true;
         var url = '/comisiones/getListarMisComisiones';
-        console.log(this.busquedaComision);
+        // console.log(this.busquedaComision);
         axios.get(url, {
             params: {
                 bComision: this.busquedaComision.existenciaComision.id,
@@ -965,7 +969,7 @@ export default {
         }).then(response => {
             this.inicializarPaginacion();
             this.listMisComisiones = response.data;
-            console.log('guia',this.listMisComisiones)
+            // console.log('guia',this.listMisComisiones)
             this.fullscreenLoading = false;
         })
     },
@@ -983,7 +987,7 @@ export default {
         }).then(response => {
             this.inicializarPaginacion2();
             this.listComisiones = response.data;
-            console.log('pertenezco definitivo',this.listComisiones);
+            // console.log('pertenezco definitivo',this.listComisiones);
             this.fullscreenLoading = false;
         })
     },
@@ -1001,7 +1005,7 @@ export default {
         }).then(response => {
             this.inicializarPaginacion3();
             this.listComisionesProvisorias = response.data;
-            console.log('pertenezco provisoriamente', this.listComisionesProvisorias);
+            // console.log('pertenezco provisoriamente', this.listComisionesProvisorias);
             this.fullscreenLoading = false;
         })
     },
@@ -1030,7 +1034,7 @@ export default {
       }).then(response => {
           this.inicializarPaginacionTotal();
           this.listAllComisiones = response.data;
-          console.log(this.listAllComisiones)
+          // console.log(this.listAllComisiones)
           this.fullscreenLoading = false;
       });
     },
@@ -1127,7 +1131,7 @@ export default {
             });
             this.limpiezaInsercionDocumento();
         }).catch((response) => {
-            // console.log(response)
+            // // console.log(response)
             this.fullscreenLoading = false;
             Swal.fire({
                 icon: "error",
@@ -1201,17 +1205,26 @@ export default {
         };
     },
     eliminarComision (item) {
-        const url = '/comisiones/borrarComision';
-        axios
-        .post(url, item)
-        .then(response => {
-            Swal.fire({
-                icon: "success",
-                title: response.data.msg,
-                showConfirmButton: false,
-                timer: 2000,
-            });
-            this.getListarMisComisiones();
+        Swal.fire({
+            title: 'Desea eliminar la comisión de este '+ this.terminoTitulo +' abandonado?',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const url = '/comisiones/borrarComision';
+                axios
+                .post(url, item)
+                .then(response => {
+                    Swal.fire({
+                        icon: "success",
+                        title: response.data.msg,
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                    this.getListarMisComisiones();
+                });
+            }
         });
     }
   }//cierre de methods

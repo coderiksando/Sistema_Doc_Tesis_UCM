@@ -365,6 +365,16 @@ export const rutas = [
     },
     props: true
 },
+/******** RUTAS MODULO DE ADMINISTRACION DE TESIS EN ABANDONO ********/
+{
+    path: '/abandono',
+    name: 'abandono.index',
+    component: require('./components/modulos/abandono/index').default,
+    beforeEnter: (to, from, next) => {
+        verificarAcceso(to, from, next);
+    },
+    props: true
+},
 /******** RUTAS MODULO DE ADMINISTRACION VINCULACiONES DE TESIS ********/
 {
     path: '/vinculacion',

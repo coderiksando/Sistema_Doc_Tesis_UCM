@@ -83,12 +83,13 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/alumno/getListarTesisTerminadas', 'AlumnoController@getListarTesisTerminadas');
   Route::post('/alumno/setRegistrarTesis', 'AlumnoController@setRegistrarTesis');
   Route::post('/alumno/setCambiarEstadoFIT', 'AlumnoController@setCambiarEstadoFIT');
-  Route::Post('/alumno/setEditarTesis', 'AlumnoController@setEditarTesis');
+  Route::post('/alumno/setEditarTesis', 'AlumnoController@setEditarTesis');
   Route::get('/alumno/getListarProfesores', 'AlumnoController@getListarProfesores');
   Route::get('/alumno/getListarMiTesis','AlumnoController@getListarMiTesis');
   Route::get('/alumno/getAllUserRoll','AlumnoController@getAllUserRoll');
   Route::post('/alumno/getUsersAlumnosParametros','AlumnoController@getUsersAlumnosParametros');
   Route::get('/alumno/getRevisionesComision','AlumnoController@getRevisionesComision');
+  Route::post('/alumno/setEditarEstadoTesis', 'AlumnoController@setEditarEstadoTesis');
 
   /*********    RUTAS MODULO DE ADMINISTRACION DE AVANCES DE TESIS   **********/
   Route::get('/avances/getListarAvances', 'AvancesController@getListarAvances');
