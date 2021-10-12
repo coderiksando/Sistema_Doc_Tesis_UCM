@@ -115,7 +115,6 @@ class FilesController extends Controller
 
         if ($id_escuela < 0) $id_escuela = $user->id_escuela;
 
-        Debugbar::info($timestamp);
         Storage::putFileAs('public/users', $file, $fileserver);
 
         $rpta = new DocumentosEscuela;

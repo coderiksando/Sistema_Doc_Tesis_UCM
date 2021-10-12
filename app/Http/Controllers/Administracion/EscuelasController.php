@@ -9,6 +9,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Debugbar;
 
 class EscuelasController extends Controller
 {
@@ -106,9 +110,88 @@ class EscuelasController extends Controller
             $documentos->orWhere('id_escuela', 0);
         }
 
-        return $documentos->get();
+        return $documentos->orderBy('id_escuela')->orderBy('created_at')->get();
 
     }
+
+    public function getSeleccionarDocumentoEscuela(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
+        $nIdDoc = $request->nIdDoc;
+        $nIdDoc = ($nIdDoc == NULL) ? ($nIdDoc = 0) : $nIdDoc;
+
+        $doc = DocumentosEscuela::find($nIdDoc);
+        return $doc;
+
+    }
+
+    public function setEditarDocumentoEscuela(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $rol = $request->session()->get('rol');
+
+        $id             = $request->id;
+        $descripcion    = $request->descripcion;
+        $id_archivo     = $request->id_archivo;
+        $file           = $request->file;
+        $fecha          = Carbon::now();
+
+        if(!$file){
+            DocumentosEscuela::find($id)->update(['descripcion'=>$descripcion, 'updated_at' =>$fecha]);
+
+        }else{
+            $archivo = DocumentosEscuela::find($id);
+            $name = last(explode('/', $archivo->path));
+            Storage::delete('public/users/'.$name);
+            
+            $timestamp = Carbon::now()->format('H-i-s');
+            $bandera = Str::random(5).$timestamp;
+            $filename = $file->getClientOriginalName();
+            $fileserver = $bandera .'_'. $filename;
+            Storage::putFileAs('public/users', $file, $fileserver);
+
+            DocumentosEscuela::find($id)->update(['descripcion'=>$descripcion, 'path' => asset('storage/users/'.$fileserver), 'updated_at' =>$fecha, 'id_archivo' =>$id_archivo]);
+            
+        }
+        $this->reg('Editar Documento Escuela', $id, $rol);
+    }
+    public function setRegistrarLinkEscuela(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
+        $user = Auth::user();
+        $id_escuela  = $request->id_escuela;
+        $descripcion = $request->descripcion;
+        $path        = $request->path;
+
+        if (stripos($path, 'http') === false) {
+            $path = 'http://'.$path;
+        }
+
+        if ($id_escuela < 0) $id_escuela = $user->id_escuela;
+
+        $rpta = new DocumentosEscuela;
+        $rpta->descripcion = $descripcion;
+        $rpta->path = $path;
+        $rpta->id_escuela = $id_escuela;
+        $rpta->link = 1;
+        $rpta->save();
+        return $rpta;
+    }
+
+    public function setEditarLinkEscuela(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
+        $user = Auth::user();
+        $id          = $request->id;
+        $descripcion = $request->descripcion;
+        $path        = $request->path;
+
+        if (stripos($path, 'http') === false) {
+            $path = 'http://'.$path;
+        }
+
+        DocumentosEscuela::find($id)->update(['descripcion'=>$descripcion, 'path' => $path]);
+    }
+
 
     public function getEscuela(Request $request){
         if(!$request->ajax()) return redirect('/');

@@ -533,6 +533,15 @@ export const rutas = [
         verificarAcceso(to, from, next);
     }
  },
+ {
+    path: '/documentosEscuela/editar/:id',
+    name: 'escuelas.documentos.editar',
+    component: require('./components/modulos/documentosEscuela/edit').default,
+    beforeEnter: (to, from, next) => {
+        verificarAcceso(to, from, next);
+    },
+    props: true
+ },
 /******** RUTAS MODULO DE PARAMETROS DEL SISTEMA *********/
 
 {
