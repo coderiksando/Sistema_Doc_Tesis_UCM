@@ -1,14 +1,5 @@
 <template>
   <div class="card">
-    <template  v-if="listRolPermisosByUsuario.includes('reportes.reportefit')">
-      <div class="card-header">
-        <div class="card-tools">
-            <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
-                <i class="fas fa-arrow-left"></i> {{globVar.btnBack}}
-            </a>
-        </div>
-      </div>
-    </template>
     <div class="card-body">
       <div class="container-fluid">
           <template  v-if="listRolPermisosByUsuario.includes('avances.listaralumnos')">

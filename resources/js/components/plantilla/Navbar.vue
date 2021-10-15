@@ -22,7 +22,14 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Messages Dropdown Menu -->
-
+      <li class="nav-item mr-3 mt-1">
+        <div class="container">
+          <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
+            <i class="fas fa-arrow-left"></i>
+            <span class="btn-back"> Regresar</span>
+        </a>
+        </div>
+      </li>
       <li class="nav-item dropdown">
         <a class="btn-lg btn btn-outline-light" data-toggle="dropdown" href="#">
           <i class="fa fa-user-circle"></i>
@@ -120,4 +127,11 @@ export default {
   color: white;
   font-size: 2rem;
 }
+
+@media only screen and (max-width: 420px) {
+    .btn-back {
+        display: none;
+    }
+}
+
 </style>

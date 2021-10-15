@@ -57,8 +57,12 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/administracion/escuelas/setRegistrarEscuelas', 'Administracion\EscuelasController@setRegistrarEscuelas');
   Route::post('/administracion/escuelas/setRegistrarFacultad', 'Administracion\EscuelasController@setRegistrarFacultad');
   Route::post('/administracion/escuelas/setEditarEscuelas', 'Administracion\EscuelasController@setEditarEscuelas');
+  Route::post('/administracion/escuelas/setRegistrarLinkEscuela', 'Administracion\EscuelasController@setRegistrarLinkEscuela');
+  Route::post('/administracion/escuelas/setEditarLinkEscuela', 'Administracion\EscuelasController@setEditarLinkEscuela');
   Route::post('/archivo/setRegistrarArchivoEscuela', 'FilesController@setRegistrarArchivoEscuela');
+  Route::post('/archivo/setEditarArchivoEscuela', 'Administracion\EscuelasController@setEditarDocumentoEscuela');
   Route::post('/archivo/setEliminarDocumentoEscuela', 'FilesController@setEliminarDocumentoEscuela');
+  Route::get('/administracion/escuelas/getDocumentosEscuela', 'Administracion\EscuelasController@getSeleccionarDocumentoEscuela');
   Route::get('/administracion/escuelas/getListarDocumentosEscuela', 'Administracion\EscuelasController@getListarDocumentosEscuela');
   Route::get('/administracion/escuelas/getEscuela', 'Administracion\EscuelasController@getEscuela');
 

@@ -1,15 +1,6 @@
 <template>
   <div>
-
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-tools">
-            <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
-              <i class="fas fa-arrow-left"></i> {{globVar.btnBack}}
-            </a>
-          </div>
-        </div>
+      <div class="card" v-loading.fullscreen.lock = fullscreenLoading>
         <div class="card-body">
           <div class="container-fluid">
             <div class="card card-info">
@@ -299,7 +290,7 @@
                   <div class="col-md-4 offset-4">
                     <button
                       class="btn btn-flat btn-info btnWidth"
-                      @click.prevent="setEditarTesis"
+                      @click.prevent="getListarMiTesis(1)"
                     >
                       {{globVar.btnSave}}
                     </button>
@@ -606,7 +597,7 @@ export default {
   computed: {},
   mounted() {
     EventBus.$emit('navegar', 'Editar FID');
-    this.getListarMiTesis();
+    this.getListarMiTesis(0);
     this.getListarProfesores();
     this.getMyOwnUser();
     this.getListarVinculacion();
@@ -861,14 +852,18 @@ export default {
         if (this.globFunct.booleanElements(this.booleanFunctionOnMounted)) this.fullscreenLoading = false;
       });
     },
-    getListarMiTesis(){
+    getListarMiTesis(step){
       this.fullscreenLoading = true;
       var url = '/alumno/getListarMiTesis'
       axios.get(url, {
       }).then(response => {
           this.listMiTesis = response.data;
           if (this.listMiTesis.includes(parseInt(this.$attrs.id))) {
-            this.getTesisById();
+            if (step) {
+              this.setEditarTesis();
+            }else{
+              this.getTesisById();
+            }
           }else{
             Swal.fire({
               icon: 'warning',
