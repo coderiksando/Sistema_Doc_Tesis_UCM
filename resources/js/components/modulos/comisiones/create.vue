@@ -19,7 +19,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label">Título de documentos</label>
+                                            <label class="col-md-3 col-form-label">Título de documento</label>
                                             <div class="col-md-9">
                                                 <el-select v-model="fillCrearComision.idTesis"
                                                 placeholder="Asignar título de documento"
@@ -186,6 +186,7 @@ export default {
             }
         }).then (response => {
           this.listTesis = [response.data];
+          if (response.data.id_p_co_guia) this.fillCrearComision.Profesor1 = response.data.id_p_co_guia;
           this.fillCrearComision.idTesis = response.data.id;
           this.booleanFunctions.getListarTesis = true;
           if (this.globFunct.booleanElements(this.booleanFunctions)) this.fullscreenLoading = false;

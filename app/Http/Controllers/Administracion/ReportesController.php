@@ -47,7 +47,13 @@ class ReportesController extends Controller
         if ($rut)               $fits->where('alumno.rut','like',"%$rut%");
         if ($idFacultad)        $fits->where('facultad.id','=',"$idFacultad");
         if ($idEscuela)         $fits->where('fit.id_escuela','=',"$idEscuela");
-        if ($estado_notap)      $fits->where('notaspendientes.estado','=',"$estado_notap");
+        if ($estado_notap) {
+            if ($estado_notap == 'S') {
+                $idNotaP= DB::table('notaspendientes')->select('id_tesis')->get()->pluck('id_tesis');
+                $fits->whereNotIn('fit.id', $idNotaP);
+            }
+            else $fits->where('notaspendientes.estado','=',"$estado_notap");
+        }
         if ($idprofesor)        $fits->where('fit.id_p_guia','=',"$idprofesor");
         if ($estado)            $fits->where('fit.estado','=',"$estado");
         if ($dFechaInicio || $dFechaFin)
@@ -108,6 +114,9 @@ class ReportesController extends Controller
                 $alumno->Escuelas->Facultad;
             }
         }
+        $fits = $fits->sortBy(function ($fit, $key) {
+            return $fit->Escuela->nombre.$fit->User_P_Guia->nombres.$fit->User_P_Guia->apellidos;
+        })->values()->all();
         return $fits;
     }
     public function getListarTesisHome(Request $request){

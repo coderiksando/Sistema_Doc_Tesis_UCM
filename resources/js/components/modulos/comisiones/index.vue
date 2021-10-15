@@ -88,7 +88,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-9">
-                        <h3 class="card-title">Comisiones donde soy Prof. Guía</h3>
+                        <h3 class="card-title">Profesor Guía</h3>
                     </div>
                     <template v-if="listarComisionesPaginated.length">
                         <div v-if="listarComisionesPaginated.map(x => {if (x.archivoActa.length) return x.archivoActa;}).filter(x => x).length" class="col-md-3">
@@ -183,6 +183,7 @@
                                             <dd class="col-md-8">{{item.comisiones.p_externo}}</dd>
                                         </template>
                                     </dl>
+                                    <dl v-else><b>No establecida</b></dl>
                                 </dd>
                                 <dt class="col-md-4">Tipo de documento:</dt>
                                 <dd class="col-md-8">{{item.tipo}}</dd>
@@ -219,7 +220,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-9">
-                        <h3 class="card-title">Comisiones donde soy partícipe</h3>
+                        <h3 class="card-title">Partícipe</h3>
                     </div>
                     <template v-if="listarComisionesPaginated2.length">
                         <div v-if="listarComisionesPaginated2.map(x => {if (x.fit.archivoActa.length) return x.fit.archivoActa;}).filter(x => x).length" class="col-md-3">
@@ -342,6 +343,128 @@
         <div class="card card-info">
             <div class="card-header">
                 <div class="row">
+                    <div class="col-md-9">
+                        <h3 class="card-title">Profesor Co-Guía</h3>
+                    </div>
+                    <template v-if="listarComisionesPaginatedCoGuia.length">
+                        <div v-if="listarComisionesPaginatedCoGuia.map(x => {if (x.archivoActa.length) return x.archivoActa;}).filter(x => x).length" class="col-md-3">
+                            <el-tooltip class="item" effect="dark" content="Descargar actas en forma masiva (ZIP)" placement="right">
+                                <el-button @click.prevent="descargaActaZip(listarComisionesPaginatedCoGuia, 'actaCoGuia')">
+                                    <i class="fas fa-file-archive"></i> Exportar actas
+                                </el-button>
+                            </el-tooltip>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <div id="accordion">
+            <template v-if="listarComisionesPaginatedCoGuia.length">
+                <template v-for="(item, index) in listarComisionesPaginatedCoGuia">
+                    <div class="card mb-1" :key="'coGuia'+index">
+                        <div class="card-body py-1" :id="'headingCoGuia'+index">
+                        <h3 class="mb-0">
+                            <div class="btn btn-link col-md-12 noPadNoMar d-flex">
+                                <div title="Sección expandible" data-toggle="collapse" :data-target="'#collapseCoGuia'+index" aria-expanded="false" :aria-controls="'collapseCoGuia'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
+                                <div title="Sección expandible" class="col-md-9 noPadNoMar" data-toggle="collapse" :data-target="'#collapseCoGuia'+index" aria-expanded="false" :aria-controls="'collapseCoGuia'+index">
+                                    <p class="float-left">
+                                        {{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}{{(item.titulo.length > 40)?'...':''}}, ({{(item.comisiones) ? item.comisiones.estado:'Comisión no establecida'}})
+                                    </p>
+                                </div>
+                                <div class="col-md-3 noPadNoMar d-flex flex-wrap">
+                                    <a v-if="item.archivoPendienteRevision" title="Descargar documento" class="btn boton btn-warning mr-1" :href="item.archivoPendienteRevision.path" target="_blank">
+                                        <i class="fas fa-file-download"></i>
+                                    </a>
+                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary mr-1" @click.prevent="getDocumento(item.id)">
+                                        <i class="fas fa-file-download"></i>
+                                    </button>
+                                    <template v-if="item.comisiones && item.archivoPendienteRevision">
+                                        <button title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item)">
+                                            <i class="fas fa-file-upload"></i>
+                                        </button>
+                                    </template>
+                                    <template v-if="item.aprobado_pg == 'EA' && item.comisiones">
+                                        <button title="Eliminar comisión y documentos de revisión" class="btn boton btn-danger mr-1" @click.prevent="eliminarComision(item)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+                        </h3>
+                        </div>
+
+                        <div :id="'collapseCoGuia'+index" class="collapse" :aria-labelledby="'headingCoGuia'+index" data-parent="#accordion">
+                        <div class="card-footer">
+                            <dl class="row">
+                                <dt class="col-md-4">Alumnos integrantes:</dt>
+                                <template v-if="item.fit__user">
+                                    <dd class="col-md-8">
+                                        <div v-for="(fitUser, index2) in item.fit__user" :key="index2">
+                                            {{fitUser.user.nombres.split(' ')[0]+' '+fitUser.user.apellidos.split(' ')[0]}}
+                                        </div>
+                                    </dd>
+                                </template>
+                                <dt class="col-md-4">Escuela:</dt>
+                                <dd class="col-md-8">{{item.escuela.nombre}}</dd>
+                                <dt class="col-md-4">Título:</dt>
+                                <dd class="col-md-8">{{globFunct.capitalizeFirstLetter(item.titulo)}}</dd>
+                                <dt class="col-md-4">Descripción:</dt>
+                                <dd class="col-md-8">{{item.descripcion}}</dd>
+                                <template>
+                                    <dt class="col-md-4">Prof. Guía:</dt>
+                                    <dd class="col-md-8">{{item.user__p__guia.nombres.split(' ')[0] + ' ' + item.user__p__guia.apellidos.split(' ')[0]}}</dd>
+                                </template>
+                                <dt class="col-md-4">Comisión evaluadora:</dt>
+                                <dd class="col-md-8">
+                                    <dl v-if="item.comisiones" class="row">
+                                        <template v-if="item.comisiones.user_p1">
+                                            <dt class="col-md-4">1° Prof. Interno:</dt>
+                                            <dd class="col-md-8">{{item.comisiones.user_p1.nombres.split(' ')[0]+' '+item.comisiones.user_p1.apellidos.split(' ')[0]}}</dd>
+                                        </template>
+                                        <template v-if="item.comisiones.user_p2">
+                                            <dt class="col-md-4">2° Prof. Interno:</dt>
+                                            <dd class="col-md-8">{{item.comisiones.user_p2.nombres.split(' ')[0]+' '+item.comisiones.user_p2.apellidos.split(' ')[0]}}</dd>
+                                        </template>
+                                        <template>
+                                            <dt class="col-md-4">Prof. Externo:</dt>
+                                            <dd class="col-md-8">{{item.comisiones.p_externo}}</dd>
+                                        </template>
+                                    </dl>
+                                    <dl v-else><b>No establecida</b></dl>
+                                </dd>
+                                <dt class="col-md-4">Tipo de documento:</dt>
+                                <dd class="col-md-8">{{item.tipo}}</dd>
+                            </dl>
+                        </div>
+                        </div>
+                    </div>
+                </template>
+                <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li class="page-item" v-if="pageNumberCoGuia > 0">
+                            <a href="#" class="page-link" @click.prevent="prevPageCoGuia">Ant</a>
+                        </li>
+                        <li class="page-item" v-for="(page, index) in pagesListCoGuia" :key="index"
+                        :class="[page == pageNumberCoGuia ? 'active' : '']"
+                        :style="(page < pageNumberCoGuia - 2 || page > pageNumberCoGuia + 2) ? 'display: none' : ''">
+                            <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
+                        </li>
+                        <li class="page-item" v-if="pageNumberCoGuia < pageCountCoGuia -1">
+                            <a href="#" class="page-link" @click.prevent="nextPageCoGuia">Post</a>
+                        </li>
+                    </ul>
+                </div>
+            </template>
+            <template v-else>
+                <div class="callout callout-primary">
+                <h5> No se han encontrado resultados...</h5>
+                </div>
+            </template>
+            </div>
+        </div>
+
+        <!-- <div class="card card-info">
+            <div class="card-header">
+                <div class="row">
                     <div class="col-md-12">
                         <h3 class="card-title">Comisiones en las que me han sugerido</h3>
                     </div>
@@ -437,7 +560,7 @@
                 </template>
             </div>
 
-        </div>
+        </div> -->
 
         </div>
     </div>
@@ -530,6 +653,8 @@
             </div>
         </div>
     </div>
+
+
     <div class="card-body py-0">
         <div class="container-fluid">
         <div class="card card-info">
@@ -572,13 +697,10 @@
                                     <button v-if="item.comisiones" title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item)">
                                         <i class="fas fa-file-upload"></i>
                                     </button>
-                                    <!-- <router-link title="Ver revisiones de comisión" class="btn boton btn-info" :to="'tesis/revisiones'">
-                                        <i class="fa fa-list-alt"></i>
-                                    </router-link> -->
                                     <template v-if="item.comisiones">
-                                        <router-link title="Editar comisión" class="btn boton btn-danger mr-1" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
+                                        <button title="Editar comisión" class="btn boton btn-info mr-1" @click.prevent="edicionComision(item)">
                                             <i class="fas fa-pencil-alt"></i>
-                                        </router-link>
+                                        </button>
                                     </template>
                                 </div>
                             </div>
@@ -661,6 +783,8 @@
         </div>
     </div>
     </template>
+
+
     <div class="modal fade" :class="{ show: modalShow }" :style="modalShow ? mostrarModal : ocultarModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -768,6 +892,7 @@ export default {
         listAlumnos:[],
         listPermisos:[],
         listMisComisiones:[],
+        listMisComisionesCoGuia:[],
         listComisiones:[],
         listComisionesProvisorias: [],
         listAllComisiones:[],
@@ -781,10 +906,11 @@ export default {
         ],
         fullscreenLoading: false,
         pageNumber: 0,
+        pageNumberCoGuia: 0,
         pageNumber2: 0,
         pageNumber3: 0,
         totalPageNumber:0,
-        perPage: 5,
+        perPage: 10,
         modalShow: false,
         modalOption: 0,
         mostrarModal: {
@@ -842,7 +968,30 @@ export default {
       }
       return pagesArray;
     },
-     pageCount2(){
+    pageCountCoGuia(){
+      //obtener el numero de paginas
+      let a = this.listMisComisionesCoGuia.length,
+          b = this.perPage;
+      return Math.ceil(a / b);
+    },
+    listarComisionesPaginatedCoGuia(){
+        let inicio = this.pageNumberCoGuia * this.perPage,
+        fin = inicio + this.perPage;
+        return this.listMisComisionesCoGuia.slice(inicio, fin);
+    },
+    pagesListCoGuia(){
+      let a = this.listMisComisionesCoGuia.length,
+          b = this.perPage;
+      let pageCount = Math.ceil(a / b);
+      let count = 0,
+        pagesArray = [];
+      while (count < pageCount){
+        pagesArray.push(count);
+        count++;
+      }
+      return pagesArray;
+    },
+    pageCount2(){
         //obtener el numero de paginas
         let a = this.listComisiones.length,
             b = this.perPage;
@@ -925,14 +1074,17 @@ export default {
         this.comisionesByRol();
         this.getParametros();
         this.selectStart();
+        // this.busquedaComision.dateRange.startDate = new Date(new Date().getFullYear(), 0, 1);
+        // this.busquedaComision.dateRange.endDate = new Date();
     },
     comisionesByRol() {
         if (this.rolActivo == 'Profesor') {
             this.getListarMisComisiones();
+            this.getListarMisComisionesCoGuia();
             this.getListarComisiones();
-            this.getListarComisionesProvisorias();
+            // this.getListarComisionesProvisorias();
         } else {
-            this.getListarTodasComisiones();
+            this.getListarComisionesByParametros();
         }
     },
     getParametros() {
@@ -960,6 +1112,7 @@ export default {
         // console.log(this.busquedaComision);
         axios.get(url, {
             params: {
+                rolComision: 'Guia',
                 bComision: this.busquedaComision.existenciaComision.id,
                 cTitulo: this.busquedaComision.tituloFID,
                 cAlum: this.busquedaComision.nombreAlumno,
@@ -988,6 +1141,24 @@ export default {
             this.inicializarPaginacion2();
             this.listComisiones = response.data;
             // console.log('pertenezco definitivo',this.listComisiones);
+            this.fullscreenLoading = false;
+        })
+    },
+    getListarMisComisionesCoGuia(){
+        this.fullscreenLoading = true;
+        var url = '/comisiones/getListarMisComisiones';
+        axios.get(url, {
+            params: {
+                rolComision:'CoGuia',
+                cTitulo:    this.busquedaComision.tituloFID,
+                cAlum:      this.busquedaComision.nombreAlumno,
+                startDate:  this.busquedaComision.dateRange.startDate,
+                endDate:    this.busquedaComision.dateRange.endDate,
+                estado:     'Provisoria'
+            }
+        }).then(response => {
+            this.inicializarPaginacionCoGuia();
+            this.listMisComisionesCoGuia = response.data;
             this.fullscreenLoading = false;
         })
     },
@@ -1024,17 +1195,17 @@ export default {
       var url = '/comisiones/getListarComisionesByParametros';
       axios.get(url, {
         params: {
-            bComision: this.busquedaComision.existenciaComision.id,
-            cTitulo: this.busquedaComision.tituloFID,
-            cProf: this.busquedaComision.nombreProf,
-            cAlum: this.busquedaComision.nombreAlumno,
-            startDate: this.busquedaComision.dateRange.startDate,
-            endDate: this.busquedaComision.dateRange.endDate
+            rolUser     : this.rolActivo,
+            bComision   : 1,
+            cTitulo     : this.busquedaComision.tituloFID,
+            cProf       : this.busquedaComision.nombreProf,
+            cAlum       : this.busquedaComision.nombreAlumno,
+            startDate   : this.busquedaComision.dateRange.startDate,
+            endDate     : this.busquedaComision.dateRange.endDate
         }
       }).then(response => {
           this.inicializarPaginacionTotal();
           this.listAllComisiones = response.data;
-          // console.log(this.listAllComisiones)
           this.fullscreenLoading = false;
       });
     },
@@ -1052,6 +1223,18 @@ export default {
     },
     inicializarPaginacion(){
       this.pageNumber = 0;
+    },
+    nextPageCoGuia(){
+      this.pageNumberCoGuia++;
+    },
+    prevPageCoGuia(){
+      this.pageNumberCoGuia--;
+    },
+    selectPageCoGuia(page){
+      this.pageNumberCoGuia = page;
+    },
+    inicializarPaginacionCoGuia(){
+      this.pageNumberCoGuia = 0;
     },
     nextPage2(){
       this.pageNumber2++;
@@ -1196,8 +1379,21 @@ export default {
             url.click();
         });
     },
+    edicionComision (fit) {
+        Swal.fire({
+            icon: "warning",
+            title: 'Este registro compete a un profesor guía ¿Quiere realizar una edición de comisión?',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.$router.push('/comisiones/editar/' + fit.comisiones.id);
+            }
+        });
+    },
     selectStart () {
-        this.busquedaComision.dateRange.endDate = null;
+        this.busquedaComision.dateRange.endDate  = null;
         this.endOption = {
             disabledDate: (time) => {
                 return time.getTime() < Date.parse(this.busquedaComision.dateRange.startDate) || time.getTime() > Date.now();
