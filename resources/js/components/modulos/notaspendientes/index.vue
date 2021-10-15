@@ -14,6 +14,82 @@
 
     <div class="card-body">
       <div class="container-fluid">
+
+        <div class="card card-info" v-if="!listRolPermisosByUsuario.includes('EsAlumno')">
+          <div class="card-header">
+            <h3 class="card-title">Criterios de búsqueda</h3>
+          </div>
+          <div class="card-body">
+            <form role="form">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-2 col-form-label">Alumno</label>
+                    <div class="col-md-5">
+                        <input placeholder="Nombre" type="text" class="form-control" v-model="fillBsqNotasPendientes.cNombre" @keyup.enter="getListarNotasPendientes">
+                    </div>
+                    <div class="col-md-5">
+                        <input placeholder="Apellido" type="text" class="form-control" v-model="fillBsqNotasPendientes.cApellido" @keyup.enter="getListarNotasPendientes">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-2 col-form-label">Estado</label>
+                    <div class="col-md-10">
+                        <el-select v-model="fillBsqNotasPendientes.cEstado"
+                        placeholder="Seleccione un estado"
+                        filterable
+                        autocomplete="estadoFusionadoDeSGYAD"
+                        @change="init">
+                          <el-option
+                            v-for="item in estadosNotaP"
+                            :key="item.id"
+                            :label="item.label"
+                            :value="item.id">
+                          </el-option>
+                        </el-select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <label class="col-md-12 col-form-label">Rango de fechas</label>
+                    <div class="col-md-12 form-group row pr-0">
+                        <div class="col-md-6 pr-0">
+                            <el-date-picker
+                                v-model="fillBsqNotasPendientes.dFechaInicio"
+                                placeholder="Fecha inicio"
+                                format="dd/MM/yyyy"
+                                value-format="yyyy-MM-dd">
+                            </el-date-picker>
+                        </div>
+                        <div class="col-md-6 pr-0">
+                            <el-date-picker
+                                v-model="fillBsqNotasPendientes.dFechaFin"
+                                placeholder="Fecha final"
+                                format="dd/MM/yyyy"
+                                value-format="yyyy-MM-dd">
+                            </el-date-picker>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col-md-4 offset-4">
+                <button class="btn btn-flat btn-info btnWidth" @click.prevent="init"
+                  >{{globVar.btnSearch}}</button>
+                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="card card-info">
           <div class="card-header">
             <h3 class="card-title">Bandeja de resultados</h3>
@@ -86,13 +162,20 @@
 
 <script>
 import moment from 'moment';
+import globVar from '../../../services/globVar';
+import globFunct from '../../../services/globFunct';
 export default {
   props: ['usuario'],
   data(){
     return{
+      globVar: new globVar(),
+      globFunct: new globFunct(),
       fillBsqNotasPendientes:{
-        estado: '',
-        dfecharango: '',
+        cNombre: '',
+        cApellido: '',
+        cEstado: 0,
+        dFechaInicio: '',
+        dFechaFin: ''
       },
       fillEstadoTesis:{
         cEstado: '',
@@ -108,6 +191,11 @@ export default {
       pageNumber: 0,
       perPage: 5,
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
+      estadosNotaP: [
+        {id: 0, label: 'Todas'},
+        {id: 1, label: 'Sin prorroga'},
+        {id: 2, label: 'Con prorroga'}
+      ]
     }
   },
   computed: {
@@ -158,8 +246,11 @@ export default {
       else if(this.listRolPermisosByUsuario.includes('EsProfesor')){
           this.getListarNotasPendientes();
       }
-      else{
-          this.getListarNotasPendientesByEscuela();
+      else if (this.listRolPermisosByUsuario.includes('fid.acceso.parcial')){
+          this.getListarNotasPendientesByEscuela(1);
+      }
+      else if (this.listRolPermisosByUsuario.includes('fid.acceso.total')){
+          this.getListarNotasPendientesByEscuela(0);
       }
     },
     getListarAlumnosByprofesor(){
@@ -183,7 +274,10 @@ export default {
     },
     limpiarCriteriosBsq(){
       this.fillBsqNotasPendientes.estado = '';
-      this.fillBsqNotasPendientes.dfecharango = '';
+      this.fillBsqNotasPendientes.dFechaFin = '';
+      this.fillBsqNotasPendientes.dFechaInicio = '';
+      this.fillBsqNotasPendientes.cNombre = '';
+      this.fillBsqNotasPendientes.cApellido = '';
     },
     limpiarBandejaNotasPendientes(){
       this.listNotasPendientes = [];
@@ -193,9 +287,11 @@ export default {
       var url = '/notaspendientes/getListarNotasPendientes'
       axios.get(url, {
         params: {
-          'estado' : this.fillBsqNotasPendientes.estado,
-          'dFechaInicio'  :   (!this.fillBsqNotasPendientes.dfecharango) ? '' : this.fillBsqNotasPendientes.dfecharango[0],
-          'dFechaFin'     :   (!this.fillBsqNotasPendientes.dfecharango) ? '' : this.fillBsqNotasPendientes.dfecharango[1],
+          'estado'        : this.fillBsqNotasPendientes.cEstado,
+          'nombre'        : this.fillBsqNotasPendientes.cNombre,
+          'apellido'      : this.fillBsqNotasPendientes.cApellido,
+          'dFechaInicio'  : this.fillBsqNotasPendientes.dFechaInicio,
+          'dFechaFin'     : this.fillBsqNotasPendientes.dFechaFin
         }
       }).then(response => {
           this.inicializarPaginacion();
@@ -203,12 +299,17 @@ export default {
           this.fullscreenLoading = false;
       })
     },
-    getListarNotasPendientesByEscuela(){
+    getListarNotasPendientesByEscuela(nivelAcceso){
       this.fullscreenLoading = true;
       var url = '/notaspendientes/getListarNotasPendientesByEscuela'
       axios.get(url, {
         params: {
-          'estado' : this.fillBsqNotasPendientes.estado,
+          'estado'        : this.fillBsqNotasPendientes.cEstado,
+          'nombre'        : this.fillBsqNotasPendientes.cNombre,
+          'apellido'      : this.fillBsqNotasPendientes.cApellido,
+          'dFechaInicio'  : this.fillBsqNotasPendientes.dFechaInicio,
+          'dFechaFin'     : this.fillBsqNotasPendientes.dFechaFin,
+          'nivelAcceso'   : nivelAcceso
         }
       }).then(response => {
           this.inicializarPaginacion();

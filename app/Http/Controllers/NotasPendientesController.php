@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\NotasPendientes;
 use App\Fit;
+use App\Fit_User;
 use App\User;
 use App\Users_Roles;
 use Illuminate\Support\Facades\DB;
@@ -87,40 +88,91 @@ class NotasPendientesController extends Controller
     public function getListarNotasPendientes(Request $request){
         if(!$request->ajax()) return redirect('/');
 
-        $IdProfesor     = Auth::id();
-        $nIdNotaP       = $request->nIdNotaP;
-        $estado         = $request->estado;
-        $dFechaInicio   = $request->dFechaInicio;
-        $dFechaFin      = $request->dFechaFin;
+        $user = Auth::user();
+        $idEscuela = $user->id_escuela;
+        $nombre = $request->nombre;
+        $apellido = $request->apellido;
+        $fechaInicio = ($request->dFechaInicio == NULL) ? '0001/01/01' : Carbon::parse($request->dFechaInicio)->startOfDay();
+        $fechaFin    = ($request->dFechaFin == NULL) ? '9999/12/31' : Carbon::parse($request->dFechaFin)->endOfDay();
+        $estado      = $request->estado;
 
-        $nIdNotaP       = ($nIdNotaP == NULL) ? ($nIdNotaP = 0) : $nIdNotaP;
-        $NotasP = DB::table('fit')
-                        ->join('notaspendientes', 'notaspendientes.id_tesis', '=','fit.id')
-                        ->where('fit.estado', '=', 'D')
-                        ->where(function($query) use ($estado, $nIdNotaP, $IdProfesor, $dFechaInicio, $dFechaFin){
-                            $query->Where('notaspendientes.estado', '=', $estado);
-                            $query->orWhere('notaspendientes.id', '=', $nIdNotaP);
-                            $query->orWhere('fit.id_p_guia', '=', $IdProfesor);
-                            $query->orWhere('notaspendientes.id', '=', 0);
-                            $query->orWhereBetween('notaspendientes.fecha_propuesta', [$dFechaInicio, $dFechaFin]);
-                        })
-                        ->select('notaspendientes.id', 'notaspendientes.id_tesis','fecha_presentacion', 'fecha_propuesta', 'fecha_prorroga', 'notaspendientes.estado')
-                        ->get();
+        $nombre     = ($nombre == NULL) ? '' : $nombre;
+        $apellido   = ($apellido == NULL) ? '' : $apellido;
 
+        $idFits = Fit::where('id_escuela', $idEscuela)->where('estado', 'D')->where('id_p_guia', $user->id_user);
 
-                        foreach($NotasP as $nota){
-                            $nota->alumnos = Fit::find($nota->id_tesis)->getAlumnos();
-                        }
+        if ($nombre || $apellido) {
+            $users = User::where('nombres', 'LIKE', "%$nombre%")
+                           ->where('apellidos', 'LIKE', "%$apellido%")->get()->pluck('id_user');
+            $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
+            $idFits->whereIn('id', $fitUser);
+        }
+        
+        $idFits = $idFits->pluck('id');
 
-        return $NotasP;
+        $users  = User::where('nombres', 'like', "%$nombre%")->where('apellidos', 'like', "%$apellido%")->get()->pluck('id');
+        $notasP = NotasPendientes::whereIn('id_tesis', $idFits)
+                                ->whereBetween('fecha_propuesta', [$fechaInicio, $fechaFin]);
+
+        if ($estado == 1) {
+            $notasP = $notasP->whereNull('fecha_prorroga');
+        }
+        if ($estado == 2) {
+            $notasP = $notasP->whereNotNull('fecha_prorroga');
+        }
+        $notasP = $notasP->get();
+
+        foreach ($notasP as $nota) {
+            $nota->alumnos = Fit::find($nota->id_tesis)->getAlumnos();
+        }
+
+        
+
+        return $notasP;
+
     }
     public function getListarNotasPendientesbyEscuela(Request $request){
         //if(!$request->ajax()) return redirect('/');
-        $user = Auth::user();
-        $estado = $request->estado;
-        $idEscuela = $user->id_escuela;
-        $idFits = Fit::where('id_escuela', $idEscuela)->where('estado', 'D')->pluck('id');
-        $notasP = NotasPendientes::whereIn('id_tesis', $idFits)->get();
+        $user           = Auth::user();
+        $estado         = $request->estado;
+        $idEscuela      = $user->id_escuela;
+        $nombre         = $request->nombre;
+        $apellido       = $request->apellido;
+        $fechaInicio    = ($request->dFechaInicio == NULL) ? '0001/01/01' : Carbon::parse($request->dFechaInicio)->startOfDay();
+        $fechaFin       = ($request->dFechaFin == NULL) ? '9999/12/31' : Carbon::parse($request->dFechaFin)->endOfDay();
+        $nivelAcceso        =  $request->nivelAcceso;
+
+
+        $nombre     = ($nombre == NULL) ? '' : $nombre;
+        $apellido   = ($apellido == NULL) ? '' : $apellido;
+
+        $idFits = Fit::where('estado', 'D');
+
+        if ($nivelAcceso) {
+           $idFits = $idFits->where('id_escuela', $idEscuela);
+        }
+
+        if ($nombre || $apellido) {
+            $users = User::where('nombres', 'LIKE', "%$nombre%")
+                           ->where('apellidos', 'LIKE', "%$apellido%")->get()->pluck('id_user');
+            $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
+            $idFits->whereIn('id', $fitUser);
+        }
+        
+        $idFits = $idFits->pluck('id');
+
+        $users  = User::where('nombres', 'like', "%$nombre%")->where('apellidos', 'like', "%$apellido%")->get()->pluck('id');
+        $notasP = NotasPendientes::whereIn('id_tesis', $idFits)
+                                ->whereBetween('fecha_propuesta', [$fechaInicio, $fechaFin]);
+
+
+        if ($estado == 1) {
+            $notasP = $notasP->whereNull('fecha_prorroga');
+        }
+        if ($estado == 2) {
+            $notasP = $notasP->whereNotNull('fecha_prorroga');
+        }
+        $notasP = $notasP->get();
 
         foreach ($notasP as $nota) {
             $nota->alumnos = Fit::find($nota->id_tesis)->getAlumnos();
