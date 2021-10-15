@@ -108,7 +108,7 @@
                 <div class="card-footer">
                 <div class="row">
                     <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-primary btnWidth" @click.prevent="getListarTesisTerminadas" v-loading.fullscreen.lock="fullscreenLoading"
+                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarTesisTerminadas" v-loading.fullscreen.lock="fullscreenLoading"
                         >{{globVar.btnSearch}}</button>
                     <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
                     </div>
@@ -154,8 +154,8 @@
                             </textarea>
                         </td>
                         <td>
-                          <router-link :title="'Editar '+terminoTitulo" class="btn boton btn-primary" :to="{name:'editar.tesisfinal', params:{id: item.id}}">
-                            <i class="fas fa-edit"></i>
+                          <router-link :title="'Editar '+terminoTitulo" class="btn boton btn-info" :to="{name:'editar.tesisfinal', params:{id: item.id}}">
+                            <i class="fas fa-pencil-alt"></i>
                           </router-link>
                           <!-- <template>
                             <button :title="'Generar documento '+terminoTitulo" class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
@@ -191,13 +191,13 @@
                         </td>
                         <td>
                           <template v-if="item.estado == 'D'">
-                            <span class="badge badge-warning" >En desarrollo</span>
+                            <p v-text="'En desarrollo'"></p>
                           </template>
                           <template v-else-if="item.estado == 'A'">
-                            <span class="badge badge-success" >Aprobada</span>
+                            <p v-text="'Aprobada'"></p>
                           </template>
                           <template v-else>
-                            <span class="badge badge-danger" >Reprobada</span>
+                            <p v-text="'Reprobada'"></p>
                           </template>
                         </td>
                       </tr>
