@@ -106,6 +106,47 @@
           </div>
         </div>
 
+      <div class="card card-info" v-if="listarDocumentosGeneralesPaginated.length">
+        <div class="card-header flex p-1" >
+            <h3 class="card-title ml-3" v-text="'Información general'"></h3>
+        </div>
+        <div class="card-body table table-responsive"  v-loading="tableLoading">
+              <table class ="table table-hover table-head-fixed text-nowrap projects">
+                <thead>
+                  <th class="col-md-10">Descripción</th>
+                  <th class="col-md-10">Acciones</th>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in listarDocumentosGeneralesPaginated" :key="index">
+                    <td>
+                      <p v-text="item.descripcion"></p>
+                    </td>
+                    <td >
+                      <a v-if="!item.link" title="Descargar archivo" class="btn boton btn-warning" target="_blank" :href="item.path"><i class="fas fa-file-download"> </i></a>
+                      <a v-if="item.link" title="Abrir link" class="btn boton btn-primary" target="_blank" :href="item.path"><i class="fa fa-link"> </i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item" v-if="pageNumber2 > 0">
+                    <a href="#" class="page-link" @click.prevent="prevPage2">Ant</a>
+                  </li>
+                  <li class="page-item" v-for="(page, index) in pagesList2" :key="index"
+                    :class="[page == pageNumber2 ? 'active' : '']"
+                    :style="(page < pageNumber2 - 2 || page > pageNumber2 + 2) ? 'display: none' : ''">
+                    <a href="#" class=page-link @click.prevent="selectPage2(page)"> {{page+1}}</a>
+                  </li>
+                  <li class="page-item" v-if="pageNumber2 < pageCount2 -1">
+                    <a href="#" class="page-link" @click.prevent="nextPage2">Post</a>
+                  </li>
+                </ul>
+              </div>
+          </div>
+      </div>
+
+
         <div class="card card-info">
           <div class="card-header flex p-1">
             <div class="col-md-11">
@@ -221,9 +262,11 @@ export default {
       tableLoading: false,
       listEscuelas:[],
       listDocumentos: [],
+      listDocumentosGeneral: [],
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       pageNumber: 0,
-      perPage: 10,
+      pageNumber2: 0,
+      perPage: 5,
       nombreArchivo: '',
       fileTypes: ['.pdf', '.docx'],
       formatError : false,
@@ -253,14 +296,38 @@ export default {
           b = this.perPage;
       return Math.ceil(a / b);
     },
+    pageCount2(){
+      //obtener el numero de paginas
+      let a = this.listDocumentosGeneral.length,
+          b = this.perPage;
+      return Math.ceil(a / b);
+    },
     listarDocumentosPaginated(){
       //
       let inicio = this.pageNumber * this.perPage,
         fin = inicio + this.perPage;
       return this.listDocumentos.slice(inicio, fin);
     },
+    listarDocumentosGeneralesPaginated(){
+      //
+      let inicio = this.pageNumber2 * this.perPage,
+        fin = inicio + this.perPage;
+      return this.listDocumentosGeneral.slice(inicio, fin);
+    },
     pagesList(){
       let a = this.listDocumentos.length,
+          b = this.perPage;
+      let pageCount = Math.ceil(a / b);
+      let count = 0,
+        pagesArray = [];
+      while (count < pageCount){
+        pagesArray.push(count);
+        count++;
+      }
+      return pagesArray;
+    },
+    pagesList2(){
+      let a = this.listDocumentosGeneral.length,
           b = this.perPage;
       let pageCount = Math.ceil(a / b);
       let count = 0,
@@ -313,8 +380,10 @@ export default {
     limpiarCriteriosBsq(){
       this.fillIngresarDocumento.cDescripcion = '';
       this.fillIngresarDocumento.oArchivo = '';
+      this.fillIngresarDocumento.cPath = '';
+      //this.linkType = 0;
       this.nombreArchivo = '';
-      document.getElementById("form-documento").reset();
+      //document.getElementById("form-documento").reset();
       if (this.listRolPermisosByUsuario.includes('escuelas.documentos.general')) {
         this.fillIngresarDocumento.nIdEscuela = 0;
       }else{
@@ -335,8 +404,13 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listDocumentos = response.data;
-          console.log(this.listDocumentos)
           this.tableLoading = false;
+          if (!this.listRolPermisosByUsuario.includes('escuelas.documentos.general')){
+            this.listDocumentosGeneral = this.listDocumentos.filter(doc => doc.id_escuela == 0);
+            this.listDocumentos = this.listDocumentos.filter(doc => doc.id_escuela != 0);
+          }
+          console.log(this.listDocumentos);
+          console.log(this.listDocumentosGeneral);
       })
     },
     getEscuela(){
@@ -357,6 +431,18 @@ export default {
     inicializarPaginacion(){
       this.pageNumber = 0;
     },
+    nextPage2(){
+      this.pageNumber2++;
+    },
+    prevPage2(){
+      this.pageNumber2--;
+    },
+    selectPage2(page){
+      this.pageNumber2 = page;
+    },
+    inicializarPaginacion2(){
+      this.pageNumber2 = 0;
+    },
     getListarEscuelas(){
       this.fullscreenLoading = true;
       var url = '/administracion/escuelas/getListarEscuelas'
@@ -364,7 +450,6 @@ export default {
 
       }).then(response => {
           this.listEscuelas = response.data;
-          console.log(this.listEscuelas);
           this.listEscuelas.unshift({'id':0, 'nombre': 'General'});
           if (this.listRolPermisosByUsuario.includes('escuelas.documentos.general')) {
             this.fillIngresarDocumento.nIdEscuela = this.escuelaDocumentos = 0;
@@ -487,6 +572,7 @@ export default {
           'path'        : this.fillIngresarDocumento.cPath
       }).then(response =>{
         this.fullscreenLoading = false;
+        this.limpiarCriteriosBsq();
         this.getListarDocumentos();
         Swal.fire({
           icon: 'success',

@@ -149,7 +149,7 @@
                       </template>
                       <template v-if="item.aprobado_pg == 'A' || item.aprobado_pg == 'V'">
                         <button title="Generar documento PDF" class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
-                          <i class="fas fa-file-download"></i>
+                          <i class="far fa-file-pdf"></i>
                         </button>
                       </template>
                       <template v-if="item.constancia && rolActivo != 'Alumno'">
@@ -737,11 +737,17 @@ export default {
     acceptHandler(fit){
       this.idTesis = fit.id;
       if (this.rolActivo == 'Profesor' && !fit.comisiones) {
-        this.fillCrearComision.Profesor1       = '';
         this.fillCrearComision.Profesor2       = '';
         this.fillCrearComision.NombrePEx       = '';
         this.fillCrearComision.EmailPEx        = '';
         this.fillCrearComision.InstitucionPEx  = '';
+        if (fit.id_p_co_guia) {
+          this.fillCrearComision.Profesor1 = fit.id_p_co_guia;
+        }else{
+          this.fillCrearComision.Profesor1 = '';
+        }
+
+
         this.mostrarModalApruebo = true;
       }else{
         this.aprobarFIT();

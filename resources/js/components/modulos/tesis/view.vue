@@ -1,12 +1,5 @@
 <template>
   <div class="card">
-    <div class="card-header">
-      <div class="card-tools">
-        <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
-          <i class="fas fa-arrow-left"></i> {{globVar.btnBack}}
-        </a>
-      </div>
-    </div>
     <div class="card-body" v-loading="fullscreenLoading">
       <div class="container-fluid">
                 <div class="card card-info">
