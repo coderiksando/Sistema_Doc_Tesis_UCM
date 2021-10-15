@@ -15,7 +15,7 @@
                         <label class="col-md-3 col-form-label">Facultad</label>
                         <div class="col-md-9">
                             <el-select v-model="fillBsqTesisReporte.nIdFacultad" @change="getListarEscuelaByFacultad"
-                            placeholder="Asignar facultad"
+                            placeholder="Asignar facultad" filterable
                             clearable>
                             <el-option
                                 v-for="item in listFacultades"
@@ -32,7 +32,7 @@
                         <label class="col-md-3 col-form-label">Escuelas</label>
                         <div class="col-md-9">
                             <el-select v-model="fillBsqTesisReporte.nIdEscuela" @change="getListarProfesorByEscuela"
-                            placeholder="Asignar Escuela"
+                            placeholder="Asignar Escuela" filterable
                             >
                             <el-option
                                 v-for="item in listEscuelas"
@@ -65,7 +65,7 @@
                         <label class="col-md-3 col-form-label">Profesor</label>
                         <div class="col-md-9">
                                 <el-select v-model="fillBsqTesisReporte.nIdProfesor"
-                                placeholder="Asignar Profesor"
+                                placeholder="Asignar Profesor" filterable
                                 clearable>
                                 <el-option
                                     v-for="item in listProfesores"
@@ -94,7 +94,7 @@
                         <label class="col-md-3 col-form-label">Nota pendiente</label>
                         <div class="col-md-9">
                             <el-select v-model="fillBsqTesisReporte.cEstadoNotap"
-                            placeholder="Seleccione un estado"
+                            placeholder="Seleccione un estado" filterable
                             clearable>
                             <el-option
                                 v-for="item in listTipoDeNotap"
@@ -111,7 +111,7 @@
                         <label class="col-md-3 col-form-label">Estado del documento</label>
                         <div class="col-md-9">
                             <el-select v-model="fillBsqTesisReporte.cEstadoTesis"
-                            placeholder="Seleccione un estado"
+                            placeholder="Seleccione un estado" filterable
                             clearable>
                             <el-option
                                 v-for="item in listEstadosTesis"
@@ -129,7 +129,7 @@
                         <div class="col-md-9">
                             <el-select v-model="fillBsqTesisReporte.cTipoVinculación"
                             @change="getListarVinculacion(fillBsqTesisReporte.cTipoVinculación)"
-                            placeholder="Seleccione una vinculación"
+                            placeholder="Seleccione una vinculación" filterable
                             clearable>
                             <el-option
                                 v-for="item in listTipoVinculacion"
@@ -146,7 +146,7 @@
                         <label class="col-md-3 col-form-label">Vinculación</label>
                         <div class="col-md-9">
                             <el-select v-model="fillBsqTesisReporte.nIdVinculación"
-                            placeholder="Seleccione una vinculación"
+                            placeholder="Seleccione una vinculación" filterable
                             clearable>
                             <el-option
                                 v-for="item in listVinculacion"
@@ -443,7 +443,8 @@ import globFunct from '../../../services/globFunct';
           {value: '4', label: 'mas de 3 años'}
         ],
         listTipoDeNotap: [
-          {value: '', label: 'Sin nota pendiente'},
+          {value: '',  label: 'Todos'},
+          {value: 'S', label: 'Sin nota pendiente'},
           {value: 'A', label: 'Activa'},
           {value: 'V', label: 'Vencida'}
         ],
@@ -673,8 +674,8 @@ import globFunct from '../../../services/globFunct';
                 });
                 this.listTesisOriginal = response.data;
                 this.listTesis = response.data;
-                const newListTesis = this.moveIndex(this.listTesis);
-                this.listTesisOriginal = this.moveIndex(this.listTesisOriginal);
+                const newListTesis = this.listTesis;
+                this.listTesisOriginal = this.listTesisOriginal;
                 this.listTesis = newListTesis;
                 this.fullscreenLoading = false;
             })
