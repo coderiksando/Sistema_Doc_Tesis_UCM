@@ -303,6 +303,8 @@
       </div>
     </template>
 
+    
+
     <template v-if="mostrarModalApruebo">
       <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @mousedown.prevent="mostrarModalApruebo=false">
         <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2; width: 70% !important; min-width: 360px !important" v-on:mousedown.stop>
@@ -323,16 +325,24 @@
                 </div>
               </div>
             </div>
-            <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
+            <!-- <div class="swal2-icon swal2-warning swal2-icon-show" style="display: flex;">
               <div class="swal2-icon-content">!</div>
-            </div>
-            <h2 class="swal2-title" id="swal2-title" style="display: flex;">Para aprobar el formulario ingrese su comisión sugerida</h2>
+            </div> -->
+            <h2 class="swal2-title" id="swal2-title" style="display: flex;">Ingrese su comisión sugerida</h2>
             <button type="button" class="swal2-close" aria-label="Close this dialog" style="display: none;">×</button>
           </div>
           <div class="swal2-content text-left">
             <form role="form">
               <div class="row">
                 <div class="col-md-12">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label" v-text="(selectedFid.listUsers.length > 1) ? 'Alumnos' : 'Alumno' "></label>
+                    <div class="col-md-9 p-0 m-0">
+                      <div class="col-md-12 my-1" v-for="(itemUser, index) in selectedFid.listUsers" :key="index">
+                        <input type="text" class="form-control"  disabled :value="itemUser.nombres + ' ' + itemUser.apellidos">
+                      </div>
+                    </div>
+                  </div>
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Prof. comisión 1 (*)</label>
                     <div class="col-md-9">
@@ -468,6 +478,7 @@ export default {
       mostrarModalApruebo: false,
       motivo: '',
       idTesis: '',
+      selectedFid: {},
       startOption: {
           disabledDate(time) {
           return time.getTime() > Date.now();
@@ -735,6 +746,7 @@ export default {
         })
     },
     acceptHandler(fit){
+      this.selectedFid = fit;
       this.idTesis = fit.id;
       if (this.rolActivo == 'Profesor' && !fit.comisiones) {
         this.fillCrearComision.Profesor2       = '';

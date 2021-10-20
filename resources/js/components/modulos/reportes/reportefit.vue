@@ -79,7 +79,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Cantidad de avances</label>
+                            <label class="col-md-3 col-form-label">Avances</label>
                             <div class="col-md-4">
                                 <input type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[0]" @input="cambioCantAvance">
                             </div>
@@ -108,7 +108,7 @@
                     </div>
                     <div class="col-md-6">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Estado del documento</label>
+                        <label class="col-md-3 col-form-label">Estado</label>
                         <div class="col-md-9">
                             <el-select v-model="fillBsqTesisReporte.cEstadoTesis"
                             placeholder="Seleccione un estado" filterable
@@ -125,11 +125,11 @@
                     </div>
                     <div class="col-md-6">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Tipo de vinculación</label>
+                        <label class="col-md-3 col-form-label">Categoría</label>
                         <div class="col-md-9">
                             <el-select v-model="fillBsqTesisReporte.cTipoVinculación"
                             @change="getListarVinculacion(fillBsqTesisReporte.cTipoVinculación)"
-                            placeholder="Seleccione una vinculación" filterable
+                            placeholder="Seleccione un tipo de vinculación" filterable
                             clearable>
                             <el-option
                                 v-for="item in listTipoVinculacion"
@@ -159,10 +159,10 @@
                         </div>
                     </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-md-2 col-form-label">Rango de fechas de estudio de alumno</label>
-                            <div class="col-md-5">
+                            <label class="col-md-3 col-form-label">Fecha ingreso alumno</label>
+                            <div class="col-md-9">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dfecharango[0]"
                                     placeholder="Inicio"
@@ -172,7 +172,11 @@
                                     @change="selectStart">
                                 </el-date-picker>
                             </div>
-                            <div class="col-md-5">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <div class="col-md-9 offset-3">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dfecharango[1]"
                                     placeholder="Término"
@@ -183,10 +187,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-md-2 col-form-label">Rango de fechas de creación de {{terminoTitulo}}</label>
-                            <div class="col-md-5">
+                            <label class="col-md-3 col-form-label">Fecha de inscripción</label>
+                            <div class="col-md-9">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dFechaFID[0]"
                                     placeholder="Inicio"
@@ -196,7 +200,11 @@
                                     @change="selectStartFID">
                                 </el-date-picker>
                             </div>
-                            <div class="col-md-5">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <div class="col-md-9 offset-3">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dFechaFID[1]"
                                     placeholder="Término"

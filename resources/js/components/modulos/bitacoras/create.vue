@@ -77,6 +77,7 @@ export default {
         id_user: '',
         Acuerdo: ''
       },
+      listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       listFits:[],
       selectedFit: [],
       fullscreenLoading: false,
@@ -90,6 +91,7 @@ export default {
       },
       error: 0,
       mensajeError:[],
+      nivelAcceso: 3
     }
   },
   computed: {
@@ -102,13 +104,17 @@ export default {
     getListarFitsByprofesor(){
       this.fullscreenLoading = true;
       this.selectedFit = [];
+      if (this.listRolPermisosByUsuario.includes('fid.acceso.parcial')) this.nivelAcceso = 2;
+      if (this.listRolPermisosByUsuario.includes('fid.acceso.total')) this.nivelAcceso = 1;
       var url = '/avances/getListarFitsByprofesor';
       axios.get(url, {
         params: {
-          'estado'    : 'D'
+          'estado'    : 'D',
+          'nivel'     : this.nivelAcceso
         }
         }).then(response => {
           this.listFits = response.data;
+          console.log(response.data);
           this.fullscreenLoading = false;
       })
     },
