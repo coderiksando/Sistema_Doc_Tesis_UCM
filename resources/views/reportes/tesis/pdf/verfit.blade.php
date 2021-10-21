@@ -125,7 +125,7 @@
         </table>
         <table width="100%" cellspacing="0" cellspacing="1" align="center">
             <tr>
-                <td style="text-align: justify;"> <strong>NOMBRE TESIS/MEMORIA:</strong>  {{$datosfit->titulo}}</td>
+                <td style="text-align: justify;"> <strong>NOMBRE DE {{mb_strtoupper($datosfit->tipo)}}:</strong>  {{$datosfit->titulo}}</td>
             </tr>
             <tr>
                 <td style="text-align: center;">&nbsp;</td>
