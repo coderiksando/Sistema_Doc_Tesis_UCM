@@ -73,7 +73,7 @@
                       <button class="btn btn-primary boton" @click.prevent="abrirModalByOption(item)">
                         <i title="Ver" class="fas fa-eye"></i>
                       </button>
-                        <router-link class="btn btn-info boton" :to="{name:'roles.editar', params:{id: item.id}}">
+                        <router-link class="btn btn-primary boton" :to="{name:'roles.editar', params:{id: item.id}}">
                           <i title="Editar" class="fas fa-pencil-alt"></i>
                         </router-link>
                     </td>

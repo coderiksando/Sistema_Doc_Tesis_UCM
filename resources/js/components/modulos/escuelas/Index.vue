@@ -80,7 +80,7 @@
                     </td>
                     <td v-text="item.facultad.nombre"></td>
                     <td>
-                        <router-link title="Editar" class="btn btn-info boton" :to="{name:'escuelas.editar', params:{id: item.id}}">
+                        <router-link title="Editar" class="btn btn-primary boton" :to="{name:'escuelas.editar', params:{id: item.id}}">
                           <i class="fas fa-pencil-alt"></i>
                         </router-link>
                     </td>
@@ -265,5 +265,5 @@ export default {
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-} 
+}
 </style>

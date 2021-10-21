@@ -93,7 +93,7 @@
                         <i class="fas fa-graduation-cap"></i>
                       </router-link>
                       <!-- <a v-if="item.path" class="btn btn-warning boton" :href="item.path" @click.prevent="downloadItem(item.path)"><i class="fas fa-file-download"> </i></a> -->
-                      <router-link :title="'Subir acta de defensa de '+terminoTitulo" class="btn boton" :class="{ 'btn-primary' : item.path, 'btn-warning' : !item.path}" :to="{name:'actadefensa.subiracta', params:{id: item.id}}">
+                      <router-link :title="'Subir acta de defensa de '+terminoTitulo" class="btn boton" :class="{ 'btn-success' : item.path, 'btn-warning' : !item.path}" :to="{name:'actadefensa.subiracta', params:{id: item.id}}">
                         <i class="fas fa-file-upload"></i>
                       </router-link>
                     </td>

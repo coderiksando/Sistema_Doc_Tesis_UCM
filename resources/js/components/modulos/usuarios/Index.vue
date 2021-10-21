@@ -163,25 +163,25 @@
                       </template>
                     </td>
                     <td>
-                      <router-link class="btn boton btn-primary" :to="{name:'usuarios.ver', params:{id_user: item.id_user}}">
-                        <i title="Ver y Editar" class="fas fa-eye"></i>
+                      <router-link title="Ver y Editar" class="btn boton btn-primary" :to="{name:'usuarios.ver', params:{id_user: item.id_user}}">
+                        <i class="fas fa-eye"></i>
                       </router-link>
                       <template v-if="item.state == 'A'">
-                        <router-link class="btn boton btn-success" :to="{name:'usuarios.permisos', params:{id_user: item.id_user}}">
-                          <i title="Permisos" class="fas fa-key"></i>
+                        <router-link title="Permisos" class="btn boton btn-primary" :to="{name:'usuarios.permisos', params:{id_user: item.id_user}}">
+                          <i class="fas fa-key"></i>
                         </router-link>
-                        <button class="btn boton btn-danger" @click.prevent="setCambiarEstadoUsuario(1, item.id_user)">
-                          <i title="Desactivar usuario" class="fas fa-ban"></i>
+                        <button title="Desactivar usuario" class="btn boton btn-danger" @click.prevent="setCambiarEstadoUsuario(1, item.id_user)">
+                          <i class="fas fa-ban"></i>
                         </button>
 
                       </template>
                       <template v-else>
-                        <button class="btn boton btn-success" @click.prevent="setCambiarEstadoUsuario(2, item.id_user)">
-                          <i title="Activar usuario" class="fas fa-check-circle"></i>
+                        <button title="Activar usuario" class="btn boton btn-success" @click.prevent="setCambiarEstadoUsuario(2, item.id_user)">
+                          <i class="fas fa-check-circle"></i>
                         </button>
                       </template>
-                        <button class="btn boton btn-danger" @click.prevent="eliminarUsuario(item.id_user)">
-                          <i title="Eliminar usuario" class="fas fa-trash-alt"></i>
+                        <button title="Eliminar usuario" class="btn boton btn-danger" @click.prevent="eliminarUsuario(item.id_user)">
+                          <i class="fas fa-trash-alt"></i>
                         </button>
                     </td>
                   </tr>
@@ -410,7 +410,7 @@ export default {
                     showConfirmButton: false,
                     timer: 3000
                 });
-            }); 
+            });
           }
         });
     }

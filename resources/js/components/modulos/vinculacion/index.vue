@@ -114,7 +114,7 @@
                     </td>
                     <td>
                       <template  v-if="listRolPermisosByUsuario.includes('vinculacion.editar')">
-                      <router-link title="Editar" class="btn btn-info boton" :to="{name:'vinculacion.editar', params:{id: item.id}}">
+                      <router-link title="Editar" class="btn btn-primary boton" :to="{name:'vinculacion.editar', params:{id: item.id}}">
                         <i class="fas fa-pencil-alt"></i>
                       </router-link>
                       <template v-if="item.estado == 'A'">

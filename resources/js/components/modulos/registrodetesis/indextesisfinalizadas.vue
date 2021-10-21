@@ -150,11 +150,12 @@
                             <p v-text="item.user__p__guia.nombres + ' ' + item.user__p__guia.apellidos"></p>
                         </td>
                         <td style="min-width: 200px">
+                            <!-- <div class="elipsis" v-text="item.nombre"></div> -->
                             <textarea v-bind:id='"text-" + index' readonly v-model="item.titulo" rows="1" @click="resizeTextarea" @keyup="resizeTextarea">
                             </textarea>
                         </td>
                         <td>
-                          <router-link :title="'Editar '+terminoTitulo" class="btn boton btn-info" :to="{name:'editar.tesisfinal', params:{id: item.id}}">
+                          <router-link :title="'Editar '+terminoTitulo" class="btn boton btn-primary" :to="{name:'editar.tesisfinal', params:{id: item.id}}">
                             <i class="fas fa-pencil-alt"></i>
                           </router-link>
                           <!-- <template>
@@ -163,24 +164,21 @@
                             </button>
                           </template> -->
                           <template v-if="item.archivo_pdf.length">
-                             <template v-for="(fileItem, fileIndex) in item.archivo_pdf">
-                                 <template v-if="fileItem.tipo_pdf == 'final_t'">
-                                    <a :key="'arch'+fileIndex" title="Descargar documento final" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <b>DF</b>
-                                    </a>
-                                 </template>
-                                 <template v-if="fileItem.tipo_pdf == 'acta'">
-                                    <a :key="'acta'+fileIndex" title="Descargar acta de defensa" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <b>AD</b>
-                                    </a>
-                                 </template>
-                                 <template v-if="fileItem.tipo_pdf == 'constancia_t'">
-                                    <a :key="'const'+fileIndex" title="Descargar constancia de examen" class="btn boton btn-success" :href="fileItem.path" target="_blank">
-                                        <b>CE</b>
-                                    </a>
-                                 </template>
-                                 <template></template>
-                            </template>
+                            <button :disabled="item.archivo_pdf.find(e => e.tipo_pdf == 'final_t') == undefined"
+                            title="Descargar documento final" class="btn boton btn-info"
+                            @click.prevent="redirectTo((item.archivo_pdf.find(e => e.tipo_pdf == 'final_t')) ? item.archivo_pdf.find(e => e.tipo_pdf == 'final_t').path : '')">
+                                <b>DF</b>
+                            </button>
+                            <button :disabled="item.archivo_pdf.find(e => e.tipo_pdf == 'acta') == undefined"
+                            title="Descargar acta de defensa" class="btn boton btn-info"
+                            @click.prevent="redirectTo((item.archivo_pdf.find(e => e.tipo_pdf == 'acta')) ? item.archivo_pdf.find(e => e.tipo_pdf == 'acta').path : '')">
+                                <b>AD</b>
+                            </button>
+                            <button :disabled="item.archivo_pdf.find(e => e.tipo_pdf == 'constancia_t') == undefined"
+                            title="Descargar constancia de examen" class="btn boton btn-info"
+                            @click.prevent="redirectTo((item.archivo_pdf.find(e => e.tipo_pdf == 'constancia_t')) ? item.archivo_pdf.find(e => e.tipo_pdf == 'constancia_t').path : '')">
+                                <b>CE</b>
+                            </button>
                           </template>
                         </td>
                         <td>
@@ -351,6 +349,7 @@ export default {
             this.listTesis.forEach(archivoPdf => {
                 archivoPdf.archivo_pdf = _.orderBy(archivoPdf.archivo_pdf, "tipo_pdf", "asc");
             });
+            console.log(this.listTesis)
             this.fullscreenLoading = false;
         })
     },
@@ -415,6 +414,13 @@ export default {
         area.style.height = null;
       }
     },
+    redirectTo(route, objectId) {
+        console.log(route.search("http"))
+        if (route.search("http") !== 0) {
+            if (objectId) this.$router.push({name: route, params: objectId});
+            else this.$router.push({name: route});
+        } else window.open(route, '_blank');
+    }
 
   }//cierre de methods
 }
