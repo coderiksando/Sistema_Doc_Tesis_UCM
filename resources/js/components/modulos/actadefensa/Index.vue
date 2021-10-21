@@ -229,7 +229,6 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listAlumnos = response.data;
-          console.log(this.listAlumnos)
           this.fullscreenLoading = false;
       })
     },
