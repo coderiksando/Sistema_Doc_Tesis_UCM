@@ -53,7 +53,7 @@
                 <td WIDTH="200">
                 <img src="{{$logo}}" alt="Logo UCM" class="logo", width="200" height="80">
                 </td>
-                <td >FACULTAD DE CIENCIAS DE LA INGENIERIA <br> ESCUELA DE {{$datosmemo->User_P_Guia->Escuelas->nombre}}</td>
+                <td >{{mb_strtoupper($datosmemo->Escuela->Facultad->nombre)}} <br> ESCUELA DE {{mb_strtoupper($datosmemo->Escuela->nombre)}}</td>
             </tr>
         </table>
         <table width="100%" cellspacing="0" cellspacing="1" align="center">
@@ -61,7 +61,7 @@
                 <td style="text-align: center;">&nbsp;</td>
             </tr>
             <tr>
-                <td style="text-align: center; font-weight: bold;">MEMORANDUM REVISION DE TESIS</td>
+                <td style="text-align: center; font-weight: bold;">MEMORANDUM REVISION DE {{mb_strtoupper($datosmemo->tipo)}}</td>
             </tr>
         </table>
         <br>
@@ -103,9 +103,9 @@
             <tr>
                 <td style="font-weight: bold;">Ref. </td>
                 @if(count($datosmemo->alumnos) == 1)
-                <td>Envia tesis a revision del alumno {{$datosmemo->alumnos[0]->nombres.' '.$datosmemo->alumnos[0]->apellidos}}</td>
+                <td>Envia {{mb_strtolower($datosmemo->tipo)}} a revision del alumno {{$datosmemo->alumnos[0]->nombres.' '.$datosmemo->alumnos[0]->apellidos}}</td>
                 @else
-                <td>Envia tesis a revision de los alumnos
+                <td>Envia {{mb_strtolower($datosmemo->tipo)}} a revision de los alumnos
                     @foreach ($datosmemo->alumnos as $alumno)
                         @if($loop->last)
                             {{'y '.$alumno->nombres.' '.$alumno->apellidos}}
@@ -141,14 +141,14 @@
                 <tr>
                     <td>
                         <div style="text-align: justify; text-justify: inter-word;">
-                            Junto con saludarle, y como integrante de la comision de examen de Titulo <b>"{{$datosmemo->titulo}}"</b>, 
+                            Junto con saludarle, y como integrante de la comision de {{mb_strtolower($datosmemo->tipo)}} <b>"{{$datosmemo->titulo}}"</b>, 
                             @if(count($datosmemo->alumnos) == 1)
-                                del alumno {{$datosmemo->alumnos[0]->nombres.' '.$datosmemo->alumnos[0]->apellidos}}
+                                del alumno {{$datosmemo->alumnos[0]->nombres.' '.$datosmemo->alumnos[0]->apellidos}}, quisiera solicitar a Ud. que una vez recepcionado el documento, en el plazo de 15 dias habiles ({{$datosmemo->fechafinal}}), entregue el informe de evaluacion de este trabajo al profesor guia, {{$datosmemo->User_P_Guia->nombres.' '.$datosmemo->User_P_Guia->apellidos}}.
                             @else
                                 de los alumnos
                                 @foreach ($datosmemo->alumnos as $alumno)
                                     @if($loop->last)
-                                        {{'y '.$alumno->nombres.' '.$alumno->apellidos.', Rut: '.$alumno->rut}}
+                                        {{'y '.$alumno->nombres.' '.$alumno->apellidos.', Rut: '.$alumno->rut}}, quisiera solicitar a Ud. que una vez recepcionado el documento, en el plazo de 15 dias habiles ({{$datosmemo->fechafinal}}), entregue el informe de evaluacion de este trabajo al profesor guia, {{$datosmemo->User_P_Guia->nombres.' '.$datosmemo->User_P_Guia->apellidos}}.
                                     @elseif($loop->first)
                                         {{$alumno->nombres.' '.$alumno->apellidos.', Rut: '.$alumno->rut}}
                                     @else
@@ -156,7 +156,6 @@
                                     @endif
                                 @endforeach
                             @endif
-                            <span>, quisiera solicitar a Ud. que una vez recepcionado el documento, en el plazo de 15 dias habiles ({{$datosmemo->fechafinal}}), entregue el informe de evaluacion de este trabajo al profesor guia, {{$datosmemo->User_P_Guia->nombres.' '.$datosmemo->User_P_Guia->apellidos}}.</span>
                         </div>
                     </td>
                 </tr>

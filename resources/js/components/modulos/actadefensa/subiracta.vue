@@ -154,8 +154,8 @@ export default {
           this.modalShow = true;
           return;
       }
+      this.fullscreenLoading = true;
       if(!this.fillSubirActa.oArchivo || this.fillSubirActa.oArchivo == undefined){
-        this.fullscreenLoading = true;
         this.setRegistrarActa();
       } else {
         this.setRegistrarArchivoPDF();
@@ -168,18 +168,21 @@ export default {
       var url = '/secretaria/setSubirActa'
       axios.post(url, this.form, config).then(response => {
         this.fullscreenLoading = false;
-        this.$router.push('/actadefensa');
         Swal.fire({
         icon: 'success',
         title: 'Acta subida correctamente',
-        showConfirmButton: true
-      })
+        showConfirmButton: true,
+        timer: 1500
+      }).then(x=>{
+        this.$router.push('/actadefensa');
+      });
       }).catch(response=>{
         this.fullscreenLoading = false;
         Swal.fire({
         icon: 'error',
         title: 'Error al subir acta',
-        showConfirmButton: true
+        showConfirmButton: true,
+        timer: 1500
       })
       })
     },

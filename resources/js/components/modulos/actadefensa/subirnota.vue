@@ -123,7 +123,22 @@ export default {
         'nota'            : this.fillSubirNota.Nota
       }).then(response => {
         this.fullscreenLoading = false;
-        this.$router.push('/actadefensa');
+        Swal.fire({
+          icon: 'success',
+          title: 'Nota subida correctamente',
+          showConfirmButton: true,
+          timer: 1500
+        }).then(x=>{
+          this.$router.push('/actadefensa');
+        });
+        }).catch(response=>{
+        this.fullscreenLoading = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al subir nota',
+          showConfirmButton: true,
+          timer: 1500
+        });
       })
     },
     alertaNota(){

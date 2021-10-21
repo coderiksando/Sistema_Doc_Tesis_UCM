@@ -13,7 +13,7 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Descripción</label>
+                        <label class="col-md-3 col-form-label">Nombre</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" v-model="fillIngresarDocumento.cDescripcion">
                         </div>
@@ -30,6 +30,23 @@
                                 v-for="item in listEscuelas"
                                 :key="item.id"
                                 :label="item.nombre"
+                                :value="item.id">
+                              </el-option>
+                            </el-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Tipo</label>
+                        <div class="col-md-9">
+                            <el-select v-model="linkType"
+                            placeholder="Seleccione una tipo"
+                            >
+                              <el-option
+                                v-for="item in listType"
+                                :key="item.id"
+                                :label="item.name"
                                 :value="item.id">
                               </el-option>
                             </el-select>
@@ -72,17 +89,6 @@
                       </div>
                     </div>
                     </template>
-                    <div class="col-md-6">
-                      <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Link</label>
-                        <div class="col-md-9">
-                            <label class="switch">
-                                <input v-model="linkType" type="checkbox">
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </form>
                 <div class="container">
@@ -286,7 +292,11 @@ export default {
       miEscuela: {
         nombre: ''
       },
-      linkType: 0
+      linkType: 0,
+      listType: [
+        {id: 0, name: 'Documento'},
+        {id: 1, name: 'Link'},
+      ]
     }
   },
   computed: {

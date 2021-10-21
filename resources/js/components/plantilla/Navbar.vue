@@ -11,7 +11,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <div class="headtext" v-text="url"></div>
+        <h4 style="color: white" v-text="url"></h4>
       </li>
 
     </ul>

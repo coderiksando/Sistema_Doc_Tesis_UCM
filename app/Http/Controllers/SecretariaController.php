@@ -40,7 +40,7 @@ class SecretariaController extends Controller
         $users = $filter1->intersect($filter2)->pluck('id_user');
 
         $fitsId = Fit_User::whereIn('id_user', $users)->pluck('id_fit')->unique()->values();
-        $fits = Fit::whereIn('id', $fitsId)->where('estado', 'like', "%$EstadoAlumno%")->select('id', 'estado', 'aprobado_pg', 'nota', 'tipo')->get();
+        $fits = Fit::whereIn('id', $fitsId)->where('estado', 'like', "%$EstadoAlumno%")->where('aprobado_pg', 'V')->select('id', 'estado', 'aprobado_pg', 'nota', 'tipo')->get();
 
         $docs = $fits->map(function ($item, $key) {
             $acta = ArchivoPdf::select('path')->where('id_fit', $item->id)->firstWhere('tipo_pdf', 'acta');
