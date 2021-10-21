@@ -139,53 +139,54 @@
                         </template>
                     </td>
                     <td>
-                      <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
-                        <i class="far fa-eye fa-lg"></i>
-                      </router-link>
-                      <template v-if="(item.aprobado_pg == 'A' || item.aprobado_pg == 'V') && listRolPermisosByUsuario.includes('tesis.subirconstancia')">
-                        <router-link title="Subir constancia de examen" class="btn btn-success boton" :to="{name:'tesis.subirconstancia'}">
-                          <i class="fas fa-file-upload"></i>
+                        <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
+                            <i class="far fa-eye fa-lg"></i>
                         </router-link>
-                      </template>
-                      <template v-if="item.aprobado_pg == 'A' || item.aprobado_pg == 'V'">
-                        <button title="Generar documento PDF" class="btn boton btn-warning" @click.prevent="setGenerarDocumento(item.id)">
-                          <i class="far fa-file-pdf"></i>
+                        <button :title="'Editar '+terminoTitulo" class="btn boton btn-primary"
+                        :disabled="!(item.aprobado_pg == 'R') || (rolActivo == 'Profesor' && !item.aprobado_pg != 'V')"
+                        @click.prevent="redirectTo('tesis.editar', {id: item.id})">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                        <template v-if="listRolPermisosByUsuario.includes('tesis.subirconstancia')">
+                            <button :disabled="!(item.aprobado_pg == 'A' || item.aprobado_pg == 'V')"
+                            title="Subir constancia de examen" class="btn btn-success boton"
+                            @click.prevent="redirectTo('tesis.subirconstancia')">
+                            <i class="fas fa-file-upload"></i>
+                            </button>
+                        </template>
+                        <button :title="'Generar documento PDF de '+terminoTitulo" class="btn boton btn-primary"
+                        :disabled="!(item.aprobado_pg == 'A' || item.aprobado_pg == 'V')"
+                        @click.prevent="setGenerarDocumento(item.id)">
+                          <b>{{terminoTitulo}}</b>
+                        </button>
+                      <template v-if="rolActivo != 'Alumno'">
+                        <button :disabled="!(item.constancia)"
+                        title="Descargar constancia de examen" class="btn boton btn-info"
+                        @click.prevent="redirectTo(item.constancia.path)">
+                          <b>CE</b>
                         </button>
                       </template>
-                      <template v-if="item.constancia && rolActivo != 'Alumno'">
-                        <a title="Descargar constancia de examen" class="btn boton btn-info" :href="item.constancia.path" target="_blank">
-                          <i class="fas fa-file-download"></i>
-                        </a>
-                      </template>
-                      <template v-if="item.comisiones && rolActivo == 'Alumno'">
-                        <router-link title="Ver revisiones de comisión" class="btn boton btn-primary" :to="'tesis/revisiones'">
+                      <template v-if="rolActivo == 'Alumno'">
+                        <router-link title="Ver revisiones de comisión"
+                        class="btn boton btn-primary" :to="'tesis/revisiones'">
                           <i class="fa fa-list-alt"></i>
                         </router-link>
                       </template>
 
-                      <template v-if="item.aprobado_pg != 'V'">
-                        <template v-if="item.aprobado_pg == 'R'">
-                            <button title="Ver razon de rechazo" class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
+                        <button v-if="item.aprobado_pg == 'R'" title="Ver razon de rechazo"
+                        class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
                             <i class="fas fa-exclamation-circle"></i>
-                            </button>
-                            <router-link :title="'Editar '+terminoTitulo" class="btn boton btn-info" :to="{name:'tesis.editar', params:{id: item.id}}">
-                            <i class="fas fa-pencil-alt"></i>
-                            </router-link>
-                        </template>
-                        <router-link v-if="rolActivo == 'Profesor' && item.aprobado_pg != 'V'"
-                        :title="'Editar '+terminoTitulo" class="btn boton btn-info" :to="{name:'tesis.editar', params:{id: item.id}}">
-                        <i class="fas fa-pencil-alt"></i>
-                        </router-link>
-
+                        </button>
                         <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
-                            <button v-if="((rolActivo == 'Profesor' && item.aprobado_pg == 'P') || ((rolActivo == 'Director' || rolActivo == 'Coordinador') && ['P', 'A'].includes(item.aprobado_pg)))" :title="'Aprobar '+terminoTitulo" class="btn boton btn-success" @click.prevent="acceptHandler(item)">
-                              <i class="far fa-thumbs-up"></i>
+                            <button :disabled="(rolActivo == 'Profesor' && item.aprobado_pg != 'P') || (rolActivo != 'Profesor' && item.aprobado_pg == 'V') || (item.aprobado_pg == 'EA')"
+                            :title="'Aprobar '+terminoTitulo" class="btn boton btn-success" @click.prevent="acceptHandler(item)">
+                            <i class="far fa-thumbs-up"></i>
                             </button>
-                            <button :title="'Rechazar '+terminoTitulo" class="btn boton btn-danger" @click.prevent="modalRechazo(item)">
-                              <i class="far fa-thumbs-down"></i>
+                            <button :disabled="((rolActivo == 'Profesor' && item.aprobado_pg == 'V') || (item.aprobado_pg == 'EA'))"
+                            :title="'Rechazar '+terminoTitulo" class="btn boton btn-danger" @click.prevent="modalRechazo(item)">
+                            <i class="far fa-thumbs-down"></i>
                             </button>
                         </template>
-                      </template>
                     </td>
                   </tr>
                 </tbody>
@@ -693,7 +694,7 @@ export default {
     modalRechazo(fit){
       if (this.rolActivo == 'Profesor') {
         var url = '/alumno/getTesisById';
-        axios.get(url, { 
+        axios.get(url, {
           params: {
             'id' : fit.id
           }
@@ -791,6 +792,13 @@ export default {
         this.fillCrearComision.EmailPEx = '';
         this.fillCrearComision.InstitucionPEx = '';
       }
+    },
+    redirectTo(route, objectId) {
+        console.log(route.search("http"))
+        if (route.search("http") !== 0) {
+            if (objectId) this.$router.push({name: route, params: objectId});
+            else this.$router.push({name: route});
+        } else window.open(route, '_blank');
     }
   }//cierre de methods
 }

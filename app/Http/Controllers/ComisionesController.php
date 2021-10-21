@@ -241,6 +241,7 @@ class ComisionesController extends Controller
             $fit->Revision_Comision;
             $fit->ArchivoPdf;
             $fit->archivoActa = $fit->ArchivoPdf->where('tipo_pdf','acta')->values();
+            $fit->archivoPendienteRevision = $fit->ArchivoPdf->where('tipo_pdf','revision')->values()->first();
         }
         return $fitWithComision;
     }

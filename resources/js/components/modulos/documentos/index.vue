@@ -75,13 +75,13 @@
                       <span v-text="!item.nota || item.nota == 0.0 ? 'n/a': item.nota"></span>
                     </td>
                     <td >
-                      <a v-if="item.final" title="Documento final" class="btn boton btn-warning font-weight-bold" :href="item.final.path" target="_blank">DF</a>
-                      <a v-if="item.constancia" title="Constancia de examen" class="btn boton btn-info font-weight-bold" :href="item.constancia.path" target="_blank">CE</a>
-                      <a v-if="item.path" title="Acta de defensa" class="btn btn-primary boton font-weight-bold" target="_blank" :href="item.path">AD</a>
-                      <button title="Memo de revisión" class="btn btn-success boton font-weight-bold" @click.prevent="setGenerarMemoRevision(item.id)">
+                      <button :disabled="!item.final" title="Documento final" class="btn boton btn-info font-weight-bold" @click.prevent="redirectTo((item.final) ? item.final.path : '')">DF</button>
+                      <button :disabled="!item.constancia" title="Constancia de examen" class="btn boton btn-info font-weight-bold" @click.prevent="redirectTo((item.constancia) ? item.constancia.path : '')" target="_blank">CE</button>
+                      <button :disabled="!item.path" title="Acta de defensa" class="btn btn-info boton font-weight-bold" @click.prevent="redirectTo((item.path) ? item.path : '')">AD</button>
+                      <button title="Memo de revisión" class="btn btn-primary boton font-weight-bold" @click.prevent="setGenerarMemoRevision(item.id)">
                           MR
                       </button>
-                      <button :title="terminoTituloEx" class="btn btn-dark boton font-weight-bold" @click.prevent="setGenerarDocumento(item.id)">
+                      <button :title="terminoTituloEx" class="btn btn-primary boton font-weight-bold" @click.prevent="setGenerarDocumento(item.id)">
                          {{terminoTitulo}}
                       </button>
                     </td>
@@ -250,31 +250,39 @@ export default {
       this.pageNumber = 0;
     },
     setCambiarEstadoUsuario(op, id_user){
-      Swal.fire({
-      title: 'Estas seguro? ' + ((op == 1) ? 'desactivar ' : 'activar ') + ' el usuario',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: ((op == 1) ? 'Si, desactivar ' : 'Si, activar ')
-    }).then((result) => {
-      if (result.value) {
-        this.fullscreenLoading = true;
-        var url = '/secretaria/setCambiarEstadoUsuario'
-        axios.post(url, {
-          'nIdUsuario' : id_user,
-          'cEstado'    : (op == 1) ? 'I' : 'A'
-        }).then(response => {
-            Swal.fire({
-            icon: 'success',
-            title: 'Se ' + ((op == 1) ? 'desactivo ' : 'activo ') +'el usuario',
-            showConfirmButton: false,
-            timer: 1500
-            })
-            this.getListarAlumnos();
+        Swal.fire({
+            title: 'Estas seguro? ' + ((op == 1) ? 'desactivar ' : 'activar ') + ' el usuario',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: ((op == 1) ? 'Si, desactivar ' : 'Si, activar ')
+        }).then((result) => {
+            if (result.value) {
+                this.fullscreenLoading = true;
+                var url = '/secretaria/setCambiarEstadoUsuario'
+                axios.post(url, {
+                'nIdUsuario' : id_user,
+                'cEstado'    : (op == 1) ? 'I' : 'A'
+                }).then(response => {
+                    Swal.fire({
+                    icon: 'success',
+                    title: 'Se ' + ((op == 1) ? 'desactivo ' : 'activo ') +'el usuario',
+                    showConfirmButton: false,
+                    timer: 1500
+                    })
+                    this.getListarAlumnos();
+                })
+            }
         })
-      }
-    })
+    },
+    redirectTo(route, objectId) {
+        console.log(route.search("http"))
+        if (route.search("http") !== 0) {
+            if (objectId) this.$router.push({name: route, params: objectId});
+            else this.$router.push({name: route});
+        } else window.open(route, '_blank');
+
     }
 
   }//cierre de methods

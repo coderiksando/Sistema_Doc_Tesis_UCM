@@ -9,9 +9,10 @@
             </router-link>
           </template>
           <template v-if="fillEstadoTesis.cEstado  == 'D' || fillEstadoTesis.cEstado  == 'R'">
-            <router-link class="btn btn-danger btn-sm link-disabled bt-fh" :to="''">
+            <button :disabled="fillEstadoTesis.cEstado  == 'D' || fillEstadoTesis.cEstado  == 'R'"
+            class="btn btn-danger btn-sm bt-fh">
               <i class="fas fa-lock fa-fw"></i>Aún no puedes subir el PDF final
-            </router-link>
+            </button>
           </template>
           <template v-if="fillEstadoTesis.cEstado  == 'D'">
             <router-link class="btn btn-info btn-sm bt-fh" :to="'/avances/crear'">
@@ -24,7 +25,7 @@
       </template>
       <div class="card-body">
         <div class="container-fluid">
-          <template  v-if="listRolPermisosByUsuario.includes('avances.listaralumnos')">
+          <template v-if="listRolPermisosByUsuario.includes('avances.listaralumnos')">
           <div class="card card-info">
             <div class="card-header">
               <h3 class="card-title">Criterios de búsqueda</h3>
@@ -125,7 +126,7 @@
                                 <i class="fas fa-file-import"></i>
                             </button>
                         </template>
-                        <a title="Ver documento" class="btn btn-warning boton float-right mx-1 btn-w" :href="item.archivo_pdf.path" target="_blank">
+                        <a title="Ver avance" class="btn btn-info boton float-right mx-1 btn-w" :href="item.archivo_pdf.path" target="_blank">
                             <i class="fas fa-file-download"> </i>
                         </a>
                         <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">

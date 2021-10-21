@@ -109,38 +109,36 @@
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
                                 <div title="Sección expandible" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
-                                <div title="Sección expandible" class="col-md-9 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index">
+                                <div title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index">
                                     <p class="float-left">
                                         {{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}{{(item.titulo.length > 40)?'...':''}}, ({{(item.comisiones) ? item.comisiones.estado:'Comisión no establecida'}})
                                     </p>
                                 </div>
-                                <div class="col-md-3 noPadNoMar d-flex flex-wrap">
+                                <div class="col-md-4 noPadNoMar d-flex flex-wrap">
                                     <template v-if="!item.comisiones">
-                                        <router-link title="Crear comisión" class="btn boton btn-info mr-1" :to="{name:'comisiones.crear', params:{id: item.id}}">
+                                        <router-link title="Crear comisión" class="btn boton btn-primary mr-1" :to="{name:'comisiones.crear', params:{id: item.id}}">
                                             <i class="fas fa-plus-circle"></i>
                                         </router-link>
                                     </template>
                                     <template v-if="item.comisiones">
-                                        <router-link title="Editar comisión" class="btn boton btn-info mr-1" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
+                                        <router-link title="Editar comisión" class="btn boton btn-primary mr-1" :to="{name:'comisiones.editar', params:{id: item.comisiones.id}}">
                                             <i class="fas fa-pencil-alt"></i>
                                         </router-link>
                                     </template>
-                                    <a v-if="item.archivoPendienteRevision" title="Descargar documento" class="btn boton btn-warning mr-1" :href="item.archivoPendienteRevision.path" target="_blank">
-                                        <i class="fas fa-file-download"></i>
-                                    </a>
-                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary mr-1" @click.prevent="getDocumento(item.id)">
-                                        <i class="fas fa-file-download"></i>
+                                    <button :disabled="item.archivoActa.length == 0" :title="'Descargar acta de defensa'" class="btn boton btn-info mr-1"
+                                    @click.prevent="getDocumento(item.id)">
+                                        <b>AD</b>
                                     </button>
-                                    <template v-if="item.comisiones && item.archivoPendienteRevision">
-                                        <button title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item)">
-                                            <i class="fas fa-file-upload"></i>
-                                        </button>
-                                    </template>
-                                    <template v-if="item.aprobado_pg == 'EA' && item.comisiones">
-                                        <button title="Eliminar comisión y documentos de revisión" class="btn boton btn-danger mr-1" @click.prevent="eliminarComision(item)">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </template>
+                                    <button :disabled="!item.archivoPendienteRevision" title="Descargar documento de revisión" class="btn boton btn-info mr-1"
+                                    @click.prevent="redirectTo((item.archivoPendienteRevision) ? item.archivoPendienteRevision.path : '')">
+                                        <b>DR</b>
+                                    </button>
+                                    <button :disabled="!(item.comisiones && item.archivoPendienteRevision)" title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item)">
+                                        <i class="fas fa-file-upload"></i>
+                                    </button>
+                                    <button :disabled="!(item.aprobado_pg == 'EA' && item.comisiones)" title="Eliminar comisión y documentos de revisión" class="btn boton btn-danger mr-1" @click.prevent="eliminarComision(item)">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
                                 </div>
                             </div>
                         </h3>
@@ -245,22 +243,26 @@
                                 <div :title="(!item.revisionComisionPropia.length && item.archivoPendienteRevision)?'Existe un documento sin revisión':'Sección expandible'"
                                 data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
                                 <div :title="(!item.revisionComisionPropia.length && item.archivoPendienteRevision)?'Existe un documento sin revisión':'Sección expandible'"
-                                class="col-md-9 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><p class="float-left">{{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}</p></div>
-                                <div class="col-md-3 noPadNoMar d-flex flex-wrap">
+                                class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index">
+                                    <p class="float-left">
+                                        {{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}{{(item.fit.titulo.length > 40)?'...':''}}
+                                    </p>
+                                </div>
+                                <div class="col-md-4 noPadNoMar d-flex flex-wrap">
                                     <router-link :title="'Ver '+terminoTitulo" class="btn boton btn-primary mr-1" :to="{name:'tesis.ver', params:{id: item.fit.id}}">
                                         <i class="fas fa-eye"></i>
                                     </router-link>
-                                    <a v-if="item.archivoPendienteRevision" title="Descargar documento" class="btn boton btn-warning mr-1" :href="item.archivoPendienteRevision.path" target="_blank">
-                                        <i class="fas fa-file-download"></i>
-                                    </a>
-                                    <button v-if="item.fit.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary mr-1" @click.prevent="getDocumento(item.fit.id)">
-                                        <i class="fas fa-file-download"></i>
+                                    <button :disabled="item.fit.archivoActa.length == 0" :title="'Descargar acta de defensa'"
+                                    class="btn boton btn-info mr-1" @click.prevent="getDocumento(item.fit.id)">
+                                        <b>AD</b>
                                     </button>
-                                    <template v-if="item">
-                                        <button title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item.fit)">
-                                            <i class="fas fa-file-upload"></i>
-                                        </button>
-                                    </template>
+                                    <button :disabled="!item.archivoPendienteRevision" title="Descargar documento de revisión" class="btn boton btn-info mr-1"
+                                    @click.prevent="(item.archivoPendienteRevision) ? item.archivoPendienteRevision.path : ''">
+                                        <b>DR</b>
+                                    </button>
+                                    <button title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item.fit)">
+                                        <i class="fas fa-file-upload"></i>
+                                    </button>
                                 </div>
                             </div>
                         </h3>
@@ -365,28 +367,19 @@
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
                                 <div title="Sección expandible" data-toggle="collapse" :data-target="'#collapseCoGuia'+index" aria-expanded="false" :aria-controls="'collapseCoGuia'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
-                                <div title="Sección expandible" class="col-md-9 noPadNoMar" data-toggle="collapse" :data-target="'#collapseCoGuia'+index" aria-expanded="false" :aria-controls="'collapseCoGuia'+index">
+                                <div title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseCoGuia'+index" aria-expanded="false" :aria-controls="'collapseCoGuia'+index">
                                     <p class="float-left">
                                         {{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}{{(item.titulo.length > 40)?'...':''}}, ({{(item.comisiones) ? item.comisiones.estado:'Comisión no establecida'}})
                                     </p>
                                 </div>
-                                <div class="col-md-3 noPadNoMar d-flex flex-wrap">
-                                    <a v-if="item.archivoPendienteRevision" title="Descargar documento" class="btn boton btn-warning mr-1" :href="item.archivoPendienteRevision.path" target="_blank">
-                                        <i class="fas fa-file-download"></i>
-                                    </a>
-                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary mr-1" @click.prevent="getDocumento(item.id)">
-                                        <i class="fas fa-file-download"></i>
+                                <div class="col-md-4 noPadNoMar d-flex flex-wrap">
+                                    <button :disabled="item.archivoActa.length == 0" :title="'Descargar acta de defensa'" class="btn boton btn-info mr-1" @click.prevent="getDocumento(item.id)">
+                                        <b>AD</b>
                                     </button>
-                                    <template v-if="item.comisiones && item.archivoPendienteRevision">
-                                        <button title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item)">
-                                            <i class="fas fa-file-upload"></i>
-                                        </button>
-                                    </template>
-                                    <template v-if="item.aprobado_pg == 'EA' && item.comisiones">
-                                        <button title="Eliminar comisión y documentos de revisión" class="btn boton btn-danger mr-1" @click.prevent="eliminarComision(item)">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </template>
+                                    <button :disabled="!item.archivoPendienteRevision" title="Descargar documento de revisión" class="btn boton btn-primary mr-1"
+                                    @click.prevent="(item.archivoPendienteRevision) ? item.archivoPendienteRevision.path : ''">
+                                        <b>DR</b>
+                                    </button>
                                 </div>
                             </div>
                         </h3>
@@ -688,17 +681,17 @@
                                     <router-link :title="'Ver '+ terminoTitulo" class="btn boton btn-primary mr-1" :to="{name:'tesis.ver', params:{id: item.id}}">
                                         <i class="fas fa-eye"></i>
                                     </router-link>
-                                    <a v-if="item.archivoPendienteRevision" title="Descargar documento" class="btn boton btn-warning mr-1" :href="item.archivoPendienteRevision.path" target="_blank">
-                                        <i class="fas fa-file-download"></i>
-                                    </a>
-                                    <button v-if="item.archivoActa.length > 0" :title="'Descargar acta de defensa'" class="btn boton btn-primary mr-1" @click.prevent="getDocumento(item.id)">
-                                        <i class="fas fa-file-download"></i>
+                                    <button :disabled="item.archivoActa.length == 0" :title="'Descargar acta de defensa'" class="btn boton btn-info mr-1" @click.prevent="getDocumento(item.id)">
+                                        <b>AD</b>
+                                    </button>
+                                    <button :disabled="!item.archivoPendienteRevision" title="Descargar documento de revisión" class="btn boton btn-info mr-1" @click.prevent="redirectTo((item.archivoPendienteRevision) ? item.archivoPendienteRevision.path : '')">
+                                        <b>DR</b>
                                     </button>
                                     <button v-if="item.comisiones" title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item)">
                                         <i class="fas fa-file-upload"></i>
                                     </button>
                                     <template v-if="item.comisiones">
-                                        <button title="Editar comisión" class="btn boton btn-info mr-1" @click.prevent="edicionComision(item)">
+                                        <button title="Editar comisión" class="btn boton btn-primary mr-1" @click.prevent="edicionComision(item)">
                                             <i class="fas fa-pencil-alt"></i>
                                         </button>
                                     </template>
@@ -1140,7 +1133,7 @@ export default {
         }).then(response => {
             this.inicializarPaginacion2();
             this.listComisiones = response.data;
-            // console.log('pertenezco definitivo',this.listComisiones);
+            console.log('pertenezco definitivo',this.listComisiones);
             this.fullscreenLoading = false;
         })
     },
@@ -1206,6 +1199,7 @@ export default {
       }).then(response => {
           this.inicializarPaginacionTotal();
           this.listAllComisiones = response.data;
+          console.log(this.listAllComisiones)
           this.fullscreenLoading = false;
       });
     },
@@ -1422,6 +1416,14 @@ export default {
                 });
             }
         });
+    },
+    redirectTo(route, objectId) {
+        console.log(route.search("http"))
+        if (route.search("http") !== 0) {
+            if (objectId) this.$router.push({name: route, params: objectId});
+            else this.$router.push({name: route});
+        } else window.open(route, '_blank');
+
     }
   }//cierre de methods
 }

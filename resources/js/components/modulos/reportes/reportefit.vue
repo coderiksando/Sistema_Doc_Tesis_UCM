@@ -344,33 +344,27 @@
                                 <dd class="col-md-8">{{globFunct.mergedStates(item).resultado}}</dd>
                                 <dt class="col-md-4">Detalles de documento:</dt>
                                 <dd class="col-md-8">
-                                    <router-link :title="'Vista completa de '+ terminoTitulo" class="btn boton btn-primary" :to="{name:'tesis.ver', params:{id: item.id}}">
+                                    <button :title="'Vista completa de '+ terminoTitulo" class="btn boton btn-primary" @click.prevent="redirectTo('tesis.ver',{id: item.id})">
                                         <b>{{terminoTitulo}}</b>
-                                    </router-link>
-                                    <router-link title="Sección de avances" v-if="item.avances_tesis.length > 0" class="btn boton btn-success" :to="{name:'reportes.detallesavances', params:{id: item.id, estado: item.estado}}">
+                                    </button>
+                                    <button title="Sección de avances" :disabled="item.avances_tesis.length <= 0" class="btn boton btn-primary" @click.prevent="redirectTo('reportes.detallesavances', {id: item.id, estado: item.estado})">
                                         <b>Av</b>
-                                    </router-link>
-                                    <router-link title="Sección de Actas de Reunión" v-if="item.bitacoras.length > 0" class="btn boton btn-secondary" :to="{name:'reportes.detallesbitacoras', params:{id: item.id}}">
+                                    </button>
+                                    <button title="Sección de Actas de Reunión" :disabled="item.bitacoras.length <= 0" class="btn boton btn-primary"  @click.prevent="redirectTo('reportes.detallesbitacoras', {id: item.id})">
                                         <b>AR</b>
-                                    </router-link>
+                                    </button>
                                 </dd>
                                 <dt class="col-md-4">Descarga de documento:</dt>
                                 <dd class="col-md-8">
-                                    <template v-if="item.ultimoDoc">
-                                        <a :key="'arch'+index" title="Descargar documento" class="btn boton btn-success" :href="item.ultimoDoc.path" target="_blank">
-                                            <b>Doc</b>
-                                        </a>
-                                    </template>
-                                    <template v-if="item.acta">
-                                        <a :key="'acta'+index" title="Descargar acta de defensa" class="btn boton btn-warning" :href="item.acta.path" target="_blank">
-                                            <b>Ac</b>
-                                        </a>
-                                    </template>
-                                    <template v-if="item.constancia">
-                                        <a :key="'constancia'+index" title="Descargar constancia" class="btn boton btn-info" :href="item.constancia.path" target="_blank">
-                                            <b>C</b>
-                                        </a>
-                                    </template>
+                                    <button :disabled="!item.ultimoDoc" :key="'arch'+index" title="Descargar documento" class="btn boton btn-info" @click.prevent="redirectTo((item.ultimoDoc) ? item.ultimoDoc.path: '')">
+                                        <b>Doc</b>
+                                    </button>
+                                    <button :disabled="!item.acta" :key="'acta'+index" title="Descargar acta de defensa" class="btn boton btn-info" @click.prevent="redirectTo((item.acta) ? item.acta.path : '')">
+                                        <b>Ac</b>
+                                    </button>
+                                    <button :disabled="!item.constancia" :key="'constancia'+index" title="Descargar constancia" class="btn boton btn-info" @click.prevent="redirectTo((item.constancia) ? item.constancia.path : '')">
+                                        <b>C</b>
+                                    </button>
                                 </dd>
                             </dl>
                         </div>
@@ -757,6 +751,12 @@ import globFunct from '../../../services/globFunct';
             this.fillBsqTesisReporte.nCantAvances[0] = Math.abs(this.fillBsqTesisReporte.nCantAvances[0]);
             if (this.fillBsqTesisReporte.nCantAvances[0]>=this.fillBsqTesisReporte.nCantAvances[1])
                 this.fillBsqTesisReporte.nCantAvances[1]=JSON.parse(JSON.stringify(this.fillBsqTesisReporte.nCantAvances[0]));
+        },
+        redirectTo(route, objectId) {
+            if (route.search("http") !== 0) {
+                if (objectId) this.$router.push({name: route, params: objectId});
+                else this.$router.push({name: route});
+            } else window.open(route, '_blank');
         }
 
     }//cierre de methods
