@@ -5,7 +5,7 @@
         <div class="card card-info" v-if="listRolPermisosByUsuario.includes('escuelas.documentos.crear')">
           <div id="accordion">
             <div class="card-header btn d-block" data-toggle="collapse" data-target="#collapseBody" aria-expanded="false" aria-controls="collapseBody" style="color: white;" id="headingtable">
-              <h3 class="card-title">Ingresar Documento</h3>
+              <h3 class="card-title">Ingresar información</h3>
             </div>
             <div class="collapse show" id="collapseBody" aria-labelledby="headingtable" data-parent="#accordion">
               <div class="card-body">
