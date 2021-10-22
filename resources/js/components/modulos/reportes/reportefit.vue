@@ -259,8 +259,8 @@
                         <div class="card-body py-1" :id="'headingFitAlumno'+index">
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseFIT'+index" aria-expanded="false" :aria-controls="'collapseFIT'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
-                                <div title="Sección expandible" class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseFIT'+index" aria-expanded="false" :aria-controls="'collapseFIT'+index">
+                                <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseFIT'+index" aria-expanded="false" :aria-controls="'collapseFIT'+index"><a class="btn" @click.prevent="focus"><i class="fas fa-plus-circle"></i></a></div>
+                                <div title="Sección expandible" class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseFIT'+index" aria-expanded="false" :aria-controls="'collapseFIT'+index" @click.prevent="focus">
                                     <p class="float-left">
                                         {{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}
                                     </p>
@@ -765,6 +765,14 @@ import globFunct from '../../../services/globFunct';
                 if (objectId) this.$router.push({name: route, params: objectId});
                 else this.$router.push({name: route});
             } else window.open(route, '_blank');
+        },
+        focus(e){
+            setTimeout(x => {
+            window.scrollBy({
+                top: e.target.getBoundingClientRect().top -80,
+                behavior: 'smooth'
+            });
+            },350);
         }
 
     }//cierre de methods

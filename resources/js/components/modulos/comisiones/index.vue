@@ -108,8 +108,8 @@
                         <div class="card-body py-1" :id="'heading'+index">
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                <div title="Sección expandible" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
-                                <div title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index">
+                                <div title="Sección expandible" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index"><a class="btn" @click.prevent="focus"><i class="fas fa-plus-circle"></i></a></div>
+                                <div title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapse'+index" aria-expanded="false" :aria-controls="'collapse'+index" @click.prevent="focus">
                                     <p class="float-left">
                                         {{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}{{(item.titulo.length > 40)?'...':''}}, ({{(item.comisiones) ? item.comisiones.estado:'Comisión no establecida'}})
                                     </p>
@@ -241,9 +241,9 @@
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
                                 <div :title="(!item.revisionComisionPropia.length && item.archivoPendienteRevision)?'Existe un documento sin revisión':'Sección expandible'"
-                                data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
+                                data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index"><a class="btn" @click.prevent="focus"><i class="fas fa-plus-circle"></i></a></div>
                                 <div :title="(!item.revisionComisionPropia.length && item.archivoPendienteRevision)?'Existe un documento sin revisión':'Sección expandible'"
-                                class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index">
+                                class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseParticipe'+index" aria-expanded="false" :aria-controls="'collapseParticipe'+index" @click.prevent="focus">
                                     <p class="float-left">
                                         {{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.fit.titulo.slice(0, 40))}}{{(item.fit.titulo.length > 40)?'...':''}}
                                     </p>
@@ -366,8 +366,8 @@
                         <div class="card-body py-1" :id="'headingCoGuia'+index">
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                <div title="Sección expandible" data-toggle="collapse" :data-target="'#collapseCoGuia'+index" aria-expanded="false" :aria-controls="'collapseCoGuia'+index"><a class="btn"><i class="fas fa-plus-circle"></i></a></div>
-                                <div title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseCoGuia'+index" aria-expanded="false" :aria-controls="'collapseCoGuia'+index">
+                                <div title="Sección expandible" data-toggle="collapse" :data-target="'#collapseCoGuia'+index" aria-expanded="false" :aria-controls="'collapseCoGuia'+index"><a class="btn" @click.prevent="focus"><i class="fas fa-plus-circle"></i></a></div>
+                                <div title="Sección expandible" class="col-md-8 noPadNoMar" data-toggle="collapse" :data-target="'#collapseCoGuia'+index" aria-expanded="false" :aria-controls="'collapseCoGuia'+index" @click.prevent="focus">
                                     <p class="float-left">
                                         {{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}{{(item.titulo.length > 40)?'...':''}}, ({{(item.comisiones) ? item.comisiones.estado:'Comisión no establecida'}})
                                     </p>
@@ -1424,6 +1424,14 @@ export default {
             else this.$router.push({name: route});
         } else window.open(route, '_blank');
 
+    },
+    focus(e){
+        setTimeout(x => {
+        window.scrollBy({
+            top: e.target.getBoundingClientRect().top -80,
+            behavior: 'smooth'
+        });
+        },350);
     }
   }//cierre de methods
 }
