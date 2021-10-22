@@ -359,6 +359,7 @@ class AlumnoController extends Controller
         $idTesis            = $request->idTesis;
         $estado             = $request->estado;
         $fit                = Fit::find($idTesis);
+        $fit->estado        = 'D';
         $fit->aprobado_pg   = $estado;
         $fit->update();
         return response()->json(['msg' => 'Tesis editada correctamente'], 200);

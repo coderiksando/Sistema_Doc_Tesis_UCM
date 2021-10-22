@@ -46,6 +46,8 @@ export default class globFunct {
         mergedStates.forEach(state => {
             if ((state.eI == estadoInscripcion) && (state.eA == estadoAprobado || state.eA == 'X')) selectedState= state;
         });
+        if (Object.keys(selectedState).length == 0)
+            selectedState= {eI: '', eA: '', resultado: tipoTrabajo + ' en estado no determinado (EI: '+estadoInscripcion+', EA: '+estadoAprobado+').'};
         return selectedState;
     };
     listStates(indexBanned) {
