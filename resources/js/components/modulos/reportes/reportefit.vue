@@ -78,16 +78,27 @@
                     </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Avances</label>
-                            <div class="col-md-4">
-                                <input type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[0]" @input="cambioCantAvance">
+                        <el-popover
+                        title="Número de avances (Opcional)"
+                        placement="top-start"
+                        width="400"
+                        trigger="hover"
+                        content="Ingresa un rango de avances que se han realizado en un trabajo,
+                                donde [0,0] serán todos los trabajos, [0,1] si requiere un trabajo de 0 a 1 avances,
+                                [N,M] buscará los trabajos entre N y M avances.">
+                            <div slot="reference" class="form-group row">
+                                <label class="col-md-3 col-form-label">Avances</label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[0]" @input="cambioCantAvance">
+                                </div>
+                                <label class="col-md-1 col-form-label">
+                                    <p class="d-flex justify-content-center">a</p>
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[1]" @input="cambioCantAvance">
+                                </div>
                             </div>
-                            <label class="col-md-1 col-form-label"><p class="d-flex justify-content-center">a</p></label>
-                            <div class="col-md-4">
-                                <input type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[1]" @input="cambioCantAvance">
-                            </div>
-                        </div>
+                        </el-popover>
                     </div>
                     <div class="col-md-6">
                     <div class="form-group row">
@@ -165,7 +176,7 @@
                             <div class="col-md-9">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dfecharango[0]"
-                                    placeholder="Inicio"
+                                    placeholder="Desde"
                                     format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="pickerOptions"
@@ -179,7 +190,7 @@
                             <div class="col-md-9 offset-3">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dfecharango[1]"
-                                    placeholder="Término"
+                                    placeholder="Hasta"
                                     format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="endOption">
@@ -193,7 +204,7 @@
                             <div class="col-md-9">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dFechaFID[0]"
-                                    placeholder="Inicio"
+                                    placeholder="Desde"
                                     format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="pickerOptions"
@@ -207,7 +218,7 @@
                             <div class="col-md-9 offset-3">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dFechaFID[1]"
-                                    placeholder="Término"
+                                    placeholder="Hasta"
                                     format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="endOptionFID">
@@ -505,7 +516,7 @@ import globFunct from '../../../services/globFunct';
             facultad: false,
             profesor: false,
             tipoVinculacion: false
-        }
+        },
       }
     },
     computed: {

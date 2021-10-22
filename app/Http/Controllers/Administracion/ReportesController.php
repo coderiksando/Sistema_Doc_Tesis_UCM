@@ -57,13 +57,13 @@ class ReportesController extends Controller
         if ($idprofesor)        $fits->where('fit.id_p_guia','=',"$idprofesor");
         if ($estado)            $fits->where('fit.estado','=',"$estado");
         if ($dFechaInicio || $dFechaFin)
-            $fits   ->whereBetween('alumno.f_ingreso',[$dFechaInicio, $dFechaFin])
-                    ->whereBetween('alumno.f_salida',[$dFechaInicio, $dFechaFin]);
+            $fits   ->whereBetween('alumno.f_ingreso',[$dFechaInicio, $dFechaFin]);
+                    // ->whereBetween('alumno.f_salida',[$dFechaInicio, $dFechaFin]);
         if ($nIdVinculacion)    $fits->where('fit.id_vinculacion','=',"$nIdVinculacion");
         if ($cTipoVinculación)  $fits->where('vinculaciones.tipo','=',"$cTipoVinculación");
         if ($cTitulo)           $fits->where('fit.titulo','like',"%$cTitulo%");
         if ($dFechaFIDIni || $dFechaFIDFin)
-            $fits->whereBetween('fit.updated_at',[$dFechaFIDIni,$dFechaFIDFin]);
+            $fits->whereBetween('fit.created_at',[$dFechaFIDIni,$dFechaFIDFin]);
         if ($nCantAvances0 || $nCantAvances1) {
             $fits   ->join('avancestesis','avancestesis.id_tesis','=','fit.id')
                     ->groupBy('avancestesis.id_tesis')
