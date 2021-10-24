@@ -182,7 +182,7 @@ export default {
       listVinculacion:[],
       fullscreenLoading: false,
       pageNumber: 0,
-      perPage: 5,
+      perPage: 10,
       listEstados: [
         {value: 'A', label: 'Activo'},
         {value: 'I', label: 'Inactivo'},

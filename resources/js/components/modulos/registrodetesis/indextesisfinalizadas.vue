@@ -259,7 +259,7 @@ export default {
         listTesis: 1,
         fullscreenLoading: false,
         pageNumber: 0,
-        perPage: 5,
+        perPage: 10,
         error: 0,
         mensajeError:[],
         listEscuelas: [],

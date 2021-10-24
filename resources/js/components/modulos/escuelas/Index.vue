@@ -129,7 +129,7 @@ export default {
       listFacultades:[],
       fullscreenLoading: false,
       pageNumber: 0,
-      perPage: 5,
+      perPage: 10,
 
     }
   },

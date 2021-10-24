@@ -180,7 +180,7 @@ export default {
         listUsuarios:[],
         fullscreenLoading: false,
         pageNumber: 0,
-        perPage: 5,
+        perPage: 10,
         modalShow: false,
         modalOption: 0,
         mostrarModal: {
