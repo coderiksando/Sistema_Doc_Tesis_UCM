@@ -178,11 +178,11 @@
                             <i class="fas fa-exclamation-circle"></i>
                         </button>
                         <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
-                            <button :disabled="(rolActivo == 'Profesor' && item.aprobado_pg != 'P') || (rolActivo != 'Profesor' && item.aprobado_pg == 'V') || (item.aprobado_pg == 'EA')"
+                            <button :disabled="(rolActivo == 'Profesor' && item.aprobado_pg != 'P') || (rolActivo != 'Profesor' && item.aprobado_pg == 'V') || (item.aprobado_pg == 'EA') || (rolActivo == 'Profesor' && item.id_p_co_guia == authUser.id_user)"
                             :title="'Aprobar '+terminoTitulo" class="btn boton btn-success" @click.prevent="acceptHandler(item)">
                             <i class="far fa-thumbs-up"></i>
                             </button>
-                            <button :disabled="((rolActivo == 'Profesor' && item.aprobado_pg == 'V') || (item.aprobado_pg == 'EA'))"
+                            <button :disabled="((rolActivo == 'Profesor' && item.aprobado_pg == 'V') || (item.aprobado_pg == 'EA')) || (rolActivo == 'Profesor' && item.id_p_co_guia == authUser.id_user)"
                             :title="'Rechazar '+terminoTitulo" class="btn boton btn-danger" @click.prevent="modalRechazo(item)">
                             <i class="far fa-thumbs-down"></i>
                             </button>
@@ -641,7 +641,7 @@ export default {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, Aprobar',
+        confirmButtonText: 'Aprobar',
         cancelButtonText: 'Cancelar',
         }).then((result) => {
         if (result.value) {

@@ -12,8 +12,8 @@
                 <div class="row">
                     <div class="col-md-6" v-if="listRolPermisosByUsuario.includes('reportes.general')">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Facultad</label>
-                        <div class="col-md-9">
+                        <label class="col-md-4 col-form-label">Facultad</label>
+                        <div class="col-md-8">
                             <el-select v-model="fillBsqTesisReporte.nIdFacultad" @change="getListarEscuelaByFacultad"
                             placeholder="Asignar facultad" filterable
                             clearable>
@@ -29,8 +29,8 @@
                     </div>
                     <div class="col-md-6" v-if="listRolPermisosByUsuario.includes('reportes.general')">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Escuelas</label>
-                        <div class="col-md-9">
+                        <label class="col-md-4 col-form-label">Escuelas</label>
+                        <div class="col-md-8">
                             <el-select v-model="fillBsqTesisReporte.nIdEscuela" @change="getListarProfesorByEscuela"
                             placeholder="Asignar Escuela" filterable
                             >
@@ -46,24 +46,24 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Título</label>
-                            <div class="col-md-9">
+                            <label class="col-md-4 col-form-label">Título</label>
+                            <div class="col-md-8">
                                 <input type="text" class="form-control" :placeholder="'Título de '+terminoTitulo" v-model="fillBsqTesisReporte.cTitulo">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Rut alumno</label>
-                            <div class="col-md-9">
+                            <label class="col-md-4 col-form-label">Rut alumno</label>
+                            <div class="col-md-8">
                                 <input type="text" placeholder="11111111-1" class="form-control" v-model="fillBsqTesisReporte.nRut">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Profesor</label>
-                        <div class="col-md-9">
+                        <label class="col-md-4 col-form-label">Profesor</label>
+                        <div class="col-md-8">
                                 <el-select v-model="fillBsqTesisReporte.nIdProfesor"
                                 placeholder="Asignar Profesor" filterable
                                 clearable>
@@ -87,14 +87,14 @@
                                 donde [0,0] serán todos los trabajos, [0,1] si requiere un trabajo de 0 a 1 avances,
                                 [N,M] buscará los trabajos entre N y M avances.">
                             <div slot="reference" class="form-group row">
-                                <label class="col-md-3 col-form-label">Avances</label>
-                                <div class="col-md-4">
+                                <label class="col-md-4 col-form-label">Avances</label>
+                                <div class="col-md-3">
                                     <input type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[0]" @input="cambioCantAvance">
                                 </div>
-                                <label class="col-md-1 col-form-label">
+                                <label class="col-md-2 col-form-label">
                                     <p class="d-flex justify-content-center">a</p>
                                 </label>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <input type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[1]" @input="cambioCantAvance">
                                 </div>
                             </div>
@@ -102,8 +102,8 @@
                     </div>
                     <div class="col-md-6">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Nota pendiente</label>
-                        <div class="col-md-9">
+                        <label class="col-md-4 col-form-label">Nota pendiente</label>
+                        <div class="col-md-8">
                             <el-select v-model="fillBsqTesisReporte.cEstadoNotap"
                             placeholder="Seleccione un estado" filterable
                             clearable>
@@ -119,8 +119,8 @@
                     </div>
                     <div class="col-md-6">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Estado</label>
-                        <div class="col-md-9">
+                        <label class="col-md-4 col-form-label">Estado</label>
+                        <div class="col-md-8">
                             <el-select v-model="fillBsqTesisReporte.cEstadoTesis"
                             placeholder="Seleccione un estado" filterable
                             clearable>
@@ -136,8 +136,8 @@
                     </div>
                     <div class="col-md-6">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Categoría</label>
-                        <div class="col-md-9">
+                        <label class="col-md-4 col-form-label">Categoría</label>
+                        <div class="col-md-8">
                             <el-select v-model="fillBsqTesisReporte.cTipoVinculación"
                             @change="getListarVinculacion(fillBsqTesisReporte.cTipoVinculación)"
                             placeholder="Seleccione un tipo de vinculación" filterable
@@ -154,8 +154,8 @@
                     </div>
                     <div class="col-md-6">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Vinculación</label>
-                        <div class="col-md-9">
+                        <label class="col-md-4 col-form-label">Vinculación</label>
+                        <div class="col-md-8">
                             <el-select v-model="fillBsqTesisReporte.nIdVinculación"
                             placeholder="Seleccione una vinculación" filterable
                             clearable>
@@ -170,10 +170,10 @@
                         </div>
                     </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-0">
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Fecha ingreso alumno</label>
-                            <div class="col-md-9">
+                            <label class="col-md-4 col-form-label">Fecha ingreso alumno</label>
+                            <div class="col-md-8">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dfecharango[0]"
                                     placeholder="Desde"
@@ -187,21 +187,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <div class="col-md-9 offset-3">
-                                <el-date-picker
-                                    v-model="fillBsqTesisReporte.dfecharango[1]"
-                                    placeholder="Hasta"
-                                    format="dd/MM/yyyy"
-                                    value-format="yyyy-MM-dd"
-                                    :picker-options="endOption">
-                                </el-date-picker>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Fecha de inscripción</label>
-                            <div class="col-md-9">
+                            <label class="col-md-4 col-form-label">Fecha de inscripción</label>
+                            <div class="col-md-8">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dFechaFID[0]"
                                     placeholder="Desde"
@@ -215,7 +202,20 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <div class="col-md-9 offset-3">
+                            <div class="col-md-8 offset-4">
+                                <el-date-picker
+                                    v-model="fillBsqTesisReporte.dfecharango[1]"
+                                    placeholder="Hasta"
+                                    format="dd/MM/yyyy"
+                                    value-format="yyyy-MM-dd"
+                                    :picker-options="endOption">
+                                </el-date-picker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <div class="col-md-8 offset-4">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dFechaFID[1]"
                                     placeholder="Hasta"
