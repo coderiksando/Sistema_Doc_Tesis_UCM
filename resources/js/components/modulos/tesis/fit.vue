@@ -461,7 +461,7 @@ export default {
       listProfesores: [],
       fullscreenLoading: false,
       pageNumber: 0,
-      perPage: 5,
+      perPage: 10,
       modalShow: false,
       modalAyuda: false,
       modalOption: 0,

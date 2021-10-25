@@ -140,7 +140,7 @@ export default {
       ],
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       pageNumber: 0,
-      perPage: 5
+      perPage: 10
     }
   },
   computed: {

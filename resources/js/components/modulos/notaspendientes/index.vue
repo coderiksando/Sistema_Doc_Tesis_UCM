@@ -189,7 +189,7 @@ export default {
       listAlumnos:[],
       fullscreenLoading: false,
       pageNumber: 0,
-      perPage: 5,
+      perPage: 10,
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       estadosNotaP: [
         {id: 0, label: 'Todas'},
