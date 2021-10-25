@@ -78,27 +78,32 @@
                     </div>
                     </div>
                     <div class="col-md-6">
-                        <el-popover
-                        title="Número de avances (Opcional)"
-                        placement="top-start"
-                        width="400"
-                        trigger="hover"
-                        content="Ingresa un rango de avances que se han realizado en un trabajo,
-                                donde [0,0] serán todos los trabajos, [0,1] si requiere un trabajo de 0 a 1 avances,
-                                [N,M] buscará los trabajos entre N y M avances.">
-                            <div slot="reference" class="form-group row">
-                                <label class="col-md-4 col-form-label">Avances</label>
-                                <div class="col-md-3">
-                                    <input type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[0]" @input="cambioCantAvance">
-                                </div>
-                                <label class="col-md-2 col-form-label">
-                                    <p class="d-flex justify-content-center">a</p>
-                                </label>
-                                <div class="col-md-3">
-                                    <input type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[1]" @input="cambioCantAvance">
-                                </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Avances
+                                <el-popover
+                                title="Número de avances (Opcional)"
+                                placement="top-start"
+                                width="400"
+                                trigger="hover"
+                                content="Ingresa un rango de avances que se han realizado en un trabajo,
+                                        donde [0,0] serán todos los trabajos, [0,1] si requiere un trabajo de 0 a 1 avances,
+                                        [N,M] buscará los trabajos entre N y M avances.">
+                                    <i slot="reference" class="fas fa-question-circle"></i>
+                                </el-popover>
+                            </label>
+                            <div class="col-md-2">
+                                <input style="width: 40px; height: 40px; margin-left: auto; margin-right: 0;" type="checkbox" v-model="countAvances" @change="activarAvances">
                             </div>
-                        </el-popover>
+                            <div class="col-md-2 offset-md-1">
+                                <input :disabled="!countAvances" type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[0]" @input="cambioCantAvance">
+                            </div>
+                            <label class="col-md-1 col-form-label">
+                                <p class="d-flex justify-content-center">a</p>
+                            </label>
+                            <div class="col-md-2">
+                                <input :disabled="!countAvances" type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[1]" @input="cambioCantAvance">
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
                     <div class="form-group row">
@@ -121,32 +126,33 @@
                         v-on:dblclick="()=>{showSeparatedStates = !showSeparatedStates;
                             fillBsqTesisReporte.cEstadoApr = '';
                             fillBsqTesisReporte.cEstadoIns= '';}">
-
-                        <el-popover
-                        :title="'Estados de '+terminoTitulo"
-                        placement="top-start"
-                        width="400"
-                        trigger="hover"
-                        content="Si requiere estados generales o estados sin registrar,
-                                efectúe doble click en la sección 'Estado' y ésta entregará más opciones.">
-                            <div slot="reference" class="form-group row">
-                                <label class="col-md-4 col-form-label">Estado</label>
-                                <div v-if="!showSeparatedStates" class="col-md-8">
-                                    <el-select v-model="fillBsqTesisReporte.cEstadoTesisId"
-                                    placeholder="Seleccione un estado" filterable>
-                                    <el-option
-                                        v-for="item in globFunct.listStates()"
-                                        :key="item.id"
-                                        :label="item.resultado"
-                                        :value="item.id">
-                                    </el-option>
-                                    </el-select>
-                                </div>
-                                <div v-if="showSeparatedStates" class="col-md-8">
-                                    <el-input placeholder="Personalizado" disabled></el-input>
-                                </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Estado
+                                <el-popover
+                                :title="'Estados de '+terminoTitulo"
+                                placement="top-start"
+                                width="400"
+                                trigger="hover"
+                                content="Si requiere estados generales o estados sin registrar,
+                                        efectúe doble click en la sección 'Estado' y ésta entregará más opciones.">
+                                    <i slot="reference" class="fas fa-question-circle"></i>
+                                </el-popover>
+                            </label>
+                            <div v-if="!showSeparatedStates" class="col-md-8">
+                                <el-select v-model="fillBsqTesisReporte.cEstadoTesisId"
+                                placeholder="Seleccione un estado" filterable>
+                                <el-option
+                                    v-for="item in globFunct.listStates()"
+                                    :key="item.id"
+                                    :label="item.resultado"
+                                    :value="item.id">
+                                </el-option>
+                                </el-select>
                             </div>
-                        </el-popover>
+                            <div v-if="showSeparatedStates" class="col-md-8">
+                                <el-input placeholder="Personalizado" disabled></el-input>
+                            </div>
+                        </div>
                     </div>
                     <template v-if="showSeparatedStates">
                         <div class="col-md-6">
@@ -565,6 +571,7 @@ import globFunct from '../../../services/globFunct';
             profesor: false,
             tipoVinculacion: false
         },
+        countAvances: false,
       }
     },
     computed: {
@@ -840,6 +847,15 @@ import globFunct from '../../../services/globFunct';
         },
         print() {
             console.log(this.fillBsqTesisReporte);
+        },
+        activarAvances(){
+            if (!this.countAvances) {
+                this.fillBsqTesisReporte.nCantAvances[0] = null;
+                this.fillBsqTesisReporte.nCantAvances[1] = null;
+            }else{
+                this.fillBsqTesisReporte.nCantAvances[0] = 0;
+                this.fillBsqTesisReporte.nCantAvances[1] = 0;
+            }
         }
 
     }//cierre de methods

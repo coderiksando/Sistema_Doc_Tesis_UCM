@@ -66,19 +66,20 @@ class ReportesController extends Controller
         if ($cTitulo)           $fits->where('fit.titulo','like',"%$cTitulo%");
         if ($dFechaFIDIni || $dFechaFIDFin)
             $fits->whereBetween('fit.created_at',[$dFechaFIDIni,$dFechaFIDFin]);
-        if ($nCantAvances0 || $nCantAvances1) {
-            $fits   ->join('avancestesis','avancestesis.id_tesis','=','fit.id')
+        if ($nCantAvances0 !== null || $nCantAvances1 !== null) {
+            $fits   ->leftjoin('avancestesis','avancestesis.id_tesis','=','fit.id')
                     ->groupBy('avancestesis.id_tesis')
                     ->havingRaw('COUNT(avancestesis.id_tesis) BETWEEN ? AND ?',[$nCantAvances0, $nCantAvances1]);
-            if (!$nCantAvances0) {
-                $exist = DB ::table('avancestesis')
-                            ->select('id_tesis')
-                            ->pluck('id_tesis');
-                $missing= DB::table('fit')
-                            ->select('id')
-                            ->whereNotIn('id', $exist);
-                $fits = $fits->union($missing)->orderBy('id');
-            }
+            
+        }
+        if (!$nCantAvances0) {
+            $exist = DB ::table('avancestesis')
+                        ->select('id_tesis')
+                        ->pluck('id_tesis');
+            $missing= DB::table('fit')
+                        ->select('id')
+                        ->whereNotIn('id', $exist);
+            $fits = $fits->union($missing)->orderBy('id');
         }
         $fits = $fits   ->groupBy('id')
                         ->get()
