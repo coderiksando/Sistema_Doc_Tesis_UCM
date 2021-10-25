@@ -230,6 +230,14 @@
                                     :picker-options="pickerOptions"
                                     @change="selectStart">
                                 </el-date-picker>
+                                <el-date-picker
+                                    class="mt-1"
+                                    v-model="fillBsqTesisReporte.dfecharango[1]"
+                                    placeholder="Hasta"
+                                    format="dd/MM/yyyy"
+                                    value-format="yyyy-MM-dd"
+                                    :picker-options="endOption">
+                                </el-date-picker>
                             </div>
                         </div>
                     </div>
@@ -245,26 +253,8 @@
                                     :picker-options="pickerOptions"
                                     @change="selectStartFID">
                                 </el-date-picker>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <div class="col-md-8 offset-4">
                                 <el-date-picker
-                                    v-model="fillBsqTesisReporte.dfecharango[1]"
-                                    placeholder="Hasta"
-                                    format="dd/MM/yyyy"
-                                    value-format="yyyy-MM-dd"
-                                    :picker-options="endOption">
-                                </el-date-picker>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <div class="col-md-8 offset-4">
-                                <el-date-picker
+                                    class="mt-1"
                                     v-model="fillBsqTesisReporte.dFechaFID[1]"
                                     placeholder="Hasta"
                                     format="dd/MM/yyyy"
