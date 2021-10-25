@@ -65,7 +65,7 @@
                         <label class="col-md-4 col-form-label">Profesor</label>
                         <div class="col-md-8">
                                 <el-select v-model="fillBsqTesisReporte.nIdProfesor"
-                                placeholder="Asignar Profesor" filterable
+                                placeholder="Seleccionar profesor" filterable
                                 clearable>
                                 <el-option
                                     v-for="item in listProfesores"
@@ -102,7 +102,7 @@
                     </div>
                     <div class="col-md-6">
                     <div class="form-group row">
-                        <label class="col-md-4 col-form-label">Nota pendiente</label>
+                        <label class="col-md-4 col-form-label">Estado de nota</label>
                         <div class="col-md-8">
                             <el-select v-model="fillBsqTesisReporte.cEstadoNotap"
                             placeholder="Seleccione un estado" filterable
@@ -117,23 +117,71 @@
                         </div>
                     </div>
                     </div>
-                    <div class="col-md-6">
-                    <div class="form-group row">
-                        <label class="col-md-4 col-form-label">Estado</label>
-                        <div class="col-md-8">
-                            <el-select v-model="fillBsqTesisReporte.cEstadoTesis"
-                            placeholder="Seleccione un estado" filterable
-                            clearable>
-                            <el-option
-                                v-for="item in listEstadosTesis"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                            </el-option>
-                            </el-select>
+                    <div class="col-md-6"
+                        v-on:dblclick="()=>{showSeparatedStates = !showSeparatedStates;
+                            fillBsqTesisReporte.cEstadoApr = '';
+                            fillBsqTesisReporte.cEstadoIns= '';}">
+
+                        <el-popover
+                        :title="'Estados de '+terminoTitulo"
+                        placement="top-start"
+                        width="400"
+                        trigger="hover"
+                        content="Si requiere estados generales o estados sin registrar,
+                                efectúe doble click en la sección 'Estado' y ésta entregará más opciones.">
+                            <div slot="reference" class="form-group row">
+                                <label class="col-md-4 col-form-label">Estado</label>
+                                <div v-if="!showSeparatedStates" class="col-md-8">
+                                    <el-select v-model="fillBsqTesisReporte.cEstadoTesisId"
+                                    placeholder="Seleccione un estado" filterable>
+                                    <el-option
+                                        v-for="item in globFunct.listStates()"
+                                        :key="item.id"
+                                        :label="item.resultado"
+                                        :value="item.id">
+                                    </el-option>
+                                    </el-select>
+                                </div>
+                                <div v-if="showSeparatedStates" class="col-md-8">
+                                    <el-input placeholder="Personalizado" disabled></el-input>
+                                </div>
+                            </div>
+                        </el-popover>
+                    </div>
+                    <template v-if="showSeparatedStates">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">Estado de inscripción</label>
+                                <div class="col-md-8">
+                                    <el-select v-model="fillBsqTesisReporte.cEstadoIns"
+                                    placeholder="Seleccione un estado de inscripción" filterable>
+                                    <el-option
+                                        v-for="item in listEstadosTesisIns"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                    </el-select>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    </div>
+                        <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Estado de aprobación</label>
+                            <div class="col-md-8">
+                                <el-select v-model="fillBsqTesisReporte.cEstadoApr"
+                                placeholder="Seleccione un estado" filterable>
+                                <el-option
+                                    v-for="item in listEstadosTesisApr"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                </el-option>
+                                </el-select>
+                            </div>
+                        </div>
+                        </div>
+                    </template>
                     <div class="col-md-6">
                     <div class="form-group row">
                         <label class="col-md-4 col-form-label">Categoría</label>
@@ -437,10 +485,11 @@ import globFunct from '../../../services/globFunct';
           cEstadoNotap: '',
           cTitulo: '',
           cNombreI1: '',
-          cEstadoPg: '',
           cEstadoD: '',
           dfecharango: [],
-          cEstadoTesis: '',
+          cEstadoTesisId: -1,
+          cEstadoIns: '',
+          cEstadoApr: '',
           cTipoVinculación: '',
           nIdVinculación: '',
           cTitulo: '',
@@ -456,10 +505,10 @@ import globFunct from '../../../services/globFunct';
           {value: '4', label: 'mas de 3 años'}
         ],
         listTipoDeNotap: [
-          {value: '',  label: 'Todos'},
+          {value: '',  label: 'Todas'},
           {value: 'S', label: 'Sin nota pendiente'},
-          {value: 'A', label: 'Activa'},
-          {value: 'V', label: 'Vencida'}
+          {value: 'A', label: 'Nota pendiente activa'},
+          {value: 'V', label: 'Nota pendiente vencida'}
         ],
         listTipoDeTrabajo: [
           {value: '', label: 'Todos'},
@@ -469,7 +518,15 @@ import globFunct from '../../../services/globFunct';
         ],
         listTipoVinculacion: [],
         listVinculacion: [],
-        listEstadosTesis: [
+        listEstadosTesisIns: [
+          {value: '',  label: 'Todos'},
+          {value: 'P', label: 'Pendiente'},
+          {value: 'R', label: 'Rechazado'},
+          {value: 'A', label: 'Aprobado'},
+          {value: 'V', label: 'Verificado'},
+          {value: 'EA',label: 'En abandono'}
+        ],
+        listEstadosTesisApr: [
           {value: '', label: 'Todos'},
           {value: 'A', label: 'Aprobada'},
           {value: 'R', label: 'Reprobada'},
@@ -486,6 +543,7 @@ import globFunct from '../../../services/globFunct';
         perPage: 10,
         modalShow: false,
         modalOption: 0,
+        showSeparatedStates: false,
         mostrarModal: {
           display: 'block',
           background: '#0000006b',
@@ -662,6 +720,10 @@ import globFunct from '../../../services/globFunct';
         getListarTesisReporte(){
             this.fullscreenLoading = true;
             var url = '/administracion/reportes/getListarTesisReporte';
+            if (!this.showSeparatedStates) {
+                this.fillBsqTesisReporte.cEstadoIns = this.globFunct.listStates().find(item => item.id == this.fillBsqTesisReporte.cEstadoTesisId).eI;
+                this.fillBsqTesisReporte.cEstadoApr = this.globFunct.listStates().find(item => item.id == this.fillBsqTesisReporte.cEstadoTesisId).eA;
+            }
             axios.get(url, {
             params: {
                 'nRut'              : this.fillBsqTesisReporte.nRut,
@@ -671,7 +733,8 @@ import globFunct from '../../../services/globFunct';
                 'nIdVinculación'    : this.fillBsqTesisReporte.nIdVinculación,
                 'cEstadoNotap'      : this.fillBsqTesisReporte.cEstadoNotap,
                 'nIdProfesor'       : this.fillBsqTesisReporte.nIdProfesor,
-                'cEstadoTesis'      : this.fillBsqTesisReporte.cEstadoTesis,
+                'cEstadoIns'        : this.fillBsqTesisReporte.cEstadoIns,
+                'cEstadoApr'        : this.fillBsqTesisReporte.cEstadoApr,
                 'dFechaInicio'      : (!this.fillBsqTesisReporte.dfecharango) ? '' : this.fillBsqTesisReporte.dfecharango[0],
                 'dFechaFin'         : (!this.fillBsqTesisReporte.dfecharango) ? '' : this.fillBsqTesisReporte.dfecharango[1],
                 'cTitulo'           : this.fillBsqTesisReporte.cTitulo,
@@ -784,6 +847,9 @@ import globFunct from '../../../services/globFunct';
                 behavior: 'smooth'
             });
             },350);
+        },
+        print() {
+            console.log(this.fillBsqTesisReporte);
         }
 
     }//cierre de methods

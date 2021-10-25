@@ -24,7 +24,8 @@ class ReportesController extends Controller
         $idEscuela          = $request->nIdEscuela;
         $estado_notap       = $request->cEstadoNotap;
         $idprofesor         = $request->nIdProfesor;
-        $estado             = $request->cEstadoTesis;
+        $estadoApr          = $request->cEstadoApr;
+        $estadoIns          = $request->cEstadoIns;
         $dFechaInicio       = $request->dFechaInicio;
         $dFechaFin          = $request->dFechaFin;
         $nIdVinculacion     = $request->nIdVinculación;
@@ -55,7 +56,8 @@ class ReportesController extends Controller
             else $fits->where('notaspendientes.estado','=',"$estado_notap");
         }
         if ($idprofesor)        $fits->where('fit.id_p_guia','=',"$idprofesor");
-        if ($estado)            $fits->where('fit.estado','=',"$estado");
+        if ($estadoApr && $estadoApr != 'X') $fits->where('fit.estado','=',"$estadoApr");
+        if ($estadoIns)         $fits->where('fit.aprobado_pg','=',"$estadoIns");
         if ($dFechaInicio || $dFechaFin)
             $fits   ->whereBetween('alumno.f_ingreso',[$dFechaInicio, $dFechaFin]);
                     // ->whereBetween('alumno.f_salida',[$dFechaInicio, $dFechaFin]);
@@ -93,7 +95,7 @@ class ReportesController extends Controller
                 $fit->Comisiones->UserP2;
             }
             $fit->User_P_Guia;
-            $fit->User_P_Guia->Escuelas;
+            if ($fit->User_P_Guia) $fit->User_P_Guia->Escuelas;
             $fit->User_P_Coguia;
             $fit->Escuela;
             $fit->ultimoDoc = $fit->ArchivoPdf()
@@ -111,7 +113,7 @@ class ReportesController extends Controller
                 ->get()->first();
             foreach($fit->getAlumnos() as $alumno) {
                 $alumno->Escuelas;
-                $alumno->Escuelas->Facultad;
+                if ($alumno->Escuelas) $alumno->Escuelas->Facultad;
             }
         }
         $fits = $fits->sortBy(function ($fit, $key) {
