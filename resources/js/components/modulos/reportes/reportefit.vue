@@ -472,6 +472,7 @@ import globFunct from '../../../services/globFunct';
         globVar: new globVar(),
         globFunct: new globFunct(),
         moment: moment,
+        authUser: JSON.parse(localStorage.getItem('authUser')),
         fillBsqTesisReporte:{
           nRut: '',
           nIdEscuela:'',
@@ -612,11 +613,16 @@ import globFunct from '../../../services/globFunct';
         init(){
             this.getListarVinculacion();
             this.getListarTipoVinculacion();
-            this.getListarEscuelas();
-            this.getListarFacultades();
-            this.getListarProfesorByEscuela();
             this.selectStart();
             this.selectStartFID();
+            if (this.listRolPermisosByUsuario.includes('reportes.general')){
+                this.getListarFacultades();
+            }else{
+                this.fillBsqTesisReporte.nIdEscuela = this.authUser.id_escuela;
+                this.booleanFunction.facultad = true;
+                this.booleanFunction.escuela = true;
+            }
+            this.getListarProfesorByEscuela();
         },
         getListarVinculacion(tipo){
             this.fullscreenLoading = true;
@@ -648,11 +654,13 @@ import globFunct from '../../../services/globFunct';
             }).then(response => {
                 this.listEscuelasOriginal = response.data;
                 this.listEscuelas = response.data;
+                this.listEscuelas.unshift({'id':'', 'nombre': 'Todas', 'facultad': {'id':0}});
                 if (this.listRolPermisosByUsuario.includes('reportes.general')) {
-                  this.listEscuelas.unshift({'id':'', 'nombre': 'Todas', 'facultad': {'id':0}});
+                    this.fillBsqTesisReporte.nIdEscuela = '';
                 }
                 this.booleanFunction.escuela = true;
                 if (this.globFunct.booleanElements(this.booleanFunction)) this.fullscreenLoading = false;
+                this.getListarEscuelaByFacultad();
             })
         },
         getListarFacultades(){
@@ -667,10 +675,12 @@ import globFunct from '../../../services/globFunct';
                     this.fillBsqTesisReporte.nIdFacultad = primerFacultad.id;
                 }
                 if (this.globFunct.booleanElements(this.booleanFunction)) this.fullscreenLoading = false;
+                this.getListarEscuelas();
             })
         },
         getListarEscuelaByFacultad(){
             this.fullscreenLoading = true;
+            this.fillBsqTesisReporte.nIdEscuela = '';
             this.listEscuelas = this.listEscuelasOriginal;
             const idFacultad = this.fillBsqTesisReporte.nIdFacultad;
             if (idFacultad != '') {
@@ -716,6 +726,7 @@ import globFunct from '../../../services/globFunct';
         },
         getListarTesisReporte(){
             this.fullscreenLoading = true;
+            console.log(this.fillBsqTesisReporte.nIdEscuela);
             var url = '/administracion/reportes/getListarTesisReporte';
             if (!this.showSeparatedStates) {
                 this.fillBsqTesisReporte.cEstadoIns = this.globFunct.listStates().find(item => item.id == this.fillBsqTesisReporte.cEstadoTesisId).eI;
