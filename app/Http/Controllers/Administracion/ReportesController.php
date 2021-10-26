@@ -85,7 +85,6 @@ class ReportesController extends Controller
             
             }
             $fits->whereIn('fit.id', $idFitsFiltro);
-            Debugbar::info($fits->get());
         }
         $fits = $fits->groupBy('id')
                     ->get()
