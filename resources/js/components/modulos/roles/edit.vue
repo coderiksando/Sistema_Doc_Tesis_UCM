@@ -32,8 +32,9 @@
                         </div>
                         <div class="card-footer">
                             <div class="row">
-                                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarRolPermisos" v-loading.fullscreen.lock="fullscreenLoading"
-                                >{{globVar.btnSave}}</button>
+                                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarRolPermisos" v-loading.fullscreen.lock="fullscreenLoading">
+                                    {{globVar.btnSave}}
+                                </button>
                                 <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">{{globVar.btnClear}}</button>
                             </div>
                         </div>
@@ -68,6 +69,10 @@
                                     </tbody>
                                   </table>
                                 </div>
+                                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarRolPermisos" v-loading.fullscreen.lock="fullscreenLoading">
+                                    {{globVar.btnSave}}
+                                </button>
+                                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">{{globVar.btnClear}}</button>
                               </template>
                               <template v-else>
                                 <div class="callout callout-info">
