@@ -24,6 +24,14 @@ export default class globFunct {
         });
         return rpta.slice(2);
     }
+    cutName(name){
+        let rpta = '';
+        name = name.split(' ');
+        name.forEach(init => {
+            rpta = rpta + init[0].toUpperCase();
+        });
+        return rpta;
+    }
     mergedStates(fid) {
         // estadoInscripcion = [P=pendiente,R=rechazado,A=aprobado,V=verificadoPorDirector]
         // estadoAprobado = [D=enDesarrollo,A=aprobado,R=reprobado]

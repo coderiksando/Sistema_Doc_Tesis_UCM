@@ -142,7 +142,7 @@ class EscuelasController extends Controller
             $archivo = DocumentosEscuela::find($id);
             $name = last(explode('/', $archivo->path));
             Storage::delete('public/users/'.$name);
-            
+
             $timestamp = Carbon::now()->format('H-i-s');
             $bandera = Str::random(5).$timestamp;
             $filename = $file->getClientOriginalName();
@@ -150,7 +150,7 @@ class EscuelasController extends Controller
             Storage::putFileAs('public/users', $file, $fileserver);
 
             DocumentosEscuela::find($id)->update(['descripcion'=>$descripcion, 'path' => asset('storage/users/'.$fileserver), 'updated_at' =>$fecha, 'id_archivo' =>$id_archivo]);
-            
+
         }
         $this->reg('Editar Documento Escuela', $id, $rol);
     }
@@ -191,14 +191,30 @@ class EscuelasController extends Controller
 
         DocumentosEscuela::find($id)->update(['descripcion'=>$descripcion, 'path' => $path]);
     }
-
-
     public function getEscuela(Request $request){
         if(!$request->ajax()) return redirect('/');
         $user = Auth::user();
         $escuela = $user->Escuelas;
 
         return $escuela;
+    }
+    public function getListarEscuelasByFITsByProfesor(Request $request) {
+        if(!$request->ajax()) return redirect('/');
+        $escuelas = DB  ::table('fit')
+                        ->join('escuelas','escuelas.id','=','fit.id_escuela')
+                        ->where(function ($fit) use ($request) {
+                            $fit->where('fit.id_p_guia','=',"$request->nIdProfesor")
+                                ->orWhere('fit.id_p_co_guia','=',"$request->nIdProfesor");
+                        })
+                        ->select('escuelas.id','escuelas.nombre')
+                        ->groupBy('escuelas.id')
+                        ->get();
+        Debugbar::info($escuelas);
+        $listEscuelas = [];
+        foreach ($escuelas as $escuela) {
+            array_push($listEscuelas, $escuela);
+        }
+        return $listEscuelas;
     }
 
 }
