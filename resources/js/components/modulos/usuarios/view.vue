@@ -362,16 +362,13 @@ export default {
             },
             addPassword: false,
             rolActivo: JSON.parse(localStorage.getItem('rolActivo')),
+            authUser: JSON.parse(localStorage.getItem('authUser')),
             hover: false
         }
     },
     mounted(){
         EventBus.$emit('navegar', 'Perfil del usuario');
-        this.inicializacion();
-        this.getUsuarioById();
-        this.getRolByUsuario();
-        this.getListarEscuela();
-        this.getListarRoles();
+        this.revisionDeSeguridad();
     },
     methods:{
         inicializacion () {
@@ -381,6 +378,23 @@ export default {
             this.fillEditarUsuarios.f_entrada = new Date(Date.now() - (yearCalculated + month));
             this.fillEditarUsuarios.f_salida = new Date(Date.now() - (month));
             this.selectStart();
+        },
+        revisionDeSeguridad() {
+            if (this.rolActivo == 'Administrador' || this.authUser.id_user == this.fillEditarUsuarios.nIdUsuario) {
+                this.inicializacion();
+                this.getUsuarioById();
+                this.getRolByUsuario();
+                this.getListarEscuela();
+                this.getListarRoles();
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Estás editando un perfil que no te pertenece.',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+                this.$router.push('/dashboard');
+            }
         },
         getFile(e){
             this.formatError = false;
