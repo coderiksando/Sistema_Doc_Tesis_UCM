@@ -427,6 +427,9 @@ class AlumnoController extends Controller
                     ->where('apellidos','like', "%$request->apellido%")
                     ->where('email','like', "%$request->email%")
                     ->where('state', 'A')
+                    ->whereNotNull('id_escuela')
+                    ->whereNotNull('direccion')
+                    ->whereNotNull('telefono')
                     ->get()->all();
         foreach($rpta as $user){
             foreach($user->Users_Roles->all() as $user_rol){
