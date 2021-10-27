@@ -23,7 +23,6 @@
             <th>Carrera</th>
             <th>Profesor Guía</th>
             <th>Tipo</th>
-            <th>Título</th>
             <th>Estado</th>
             <th>Estado de avances</th>
             <!-- <th>Detalles de documentos</th> -->
@@ -32,6 +31,7 @@
             <th>Fecha creación de FID</th>
             <th>Fecha nota pendiente</th>
             <th>Fecha prorroga nota Pend.</th>
+            <th>Título</th>
         </tr>
         </thead>
         <tbody>
@@ -83,7 +83,6 @@
                     @else
                         <td>Sin registros</td>
                     @endif
-                    <td>{{ $datatesis->titulo }}</td>
                     @if(count($datatesis->avances_tesis)>=1)
                         <td>{{ Carbon\Carbon::parse($datatesis->avances_tesis[count($datatesis->avances_tesis)-1]->updated_at)->format('d-m-Y') }}</td>
                     @else
@@ -105,6 +104,7 @@
                         <td>Sin fecha autorizada</td>
                         <td>Sin fecha de prórroga</td>
                     @endif
+                    <td>{{ $datatesis->titulo }}</td>
                 @php($i++)
             </tr>
             @endforeach
