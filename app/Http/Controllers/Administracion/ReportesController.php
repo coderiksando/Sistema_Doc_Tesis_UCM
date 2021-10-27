@@ -66,24 +66,31 @@ class ReportesController extends Controller
         if ($cTitulo)           $fits->where('fit.titulo','like',"%$cTitulo%");
         if ($dFechaFIDIni || $dFechaFIDFin)
             $fits->whereBetween('fit.created_at',[$dFechaFIDIni,$dFechaFIDFin]);
-        if ($nCantAvances0 || $nCantAvances1) {
-            $fits   ->join('avancestesis','avancestesis.id_tesis','=','fit.id')
-                    ->groupBy('avancestesis.id_tesis')
-                    ->havingRaw('COUNT(avancestesis.id_tesis) BETWEEN ? AND ?',[$nCantAvances0, $nCantAvances1]);
-            if (!$nCantAvances0) {
+        if ($nCantAvances0 !== null || $nCantAvances1 !== null) {
+            $idFitsFiltro = DB::table('fit')
+                            ->join('avancestesis','avancestesis.id_tesis','=','fit.id')
+                            ->groupBy('fit.id')
+                            ->select('fit.id')
+                            ->havingRaw('COUNT(avancestesis.id_tesis) BETWEEN ? AND ?',[$nCantAvances0, $nCantAvances1]);
+
+            if ($nCantAvances0 === '0') {
                 $exist = DB ::table('avancestesis')
                             ->select('id_tesis')
                             ->pluck('id_tesis');
                 $missing= DB::table('fit')
-                            ->select('id')
-                            ->whereNotIn('id', $exist);
-                $fits = $fits->union($missing)->orderBy('id');
+                            ->select('fit.id')
+                            ->whereNotIn('fit.id', $exist);
+                
+                $idFitsFiltro = $idFitsFiltro->union($missing)->pluck('fit.id');
+            
             }
+            $fits->whereIn('fit.id', $idFitsFiltro);
         }
-        $fits = $fits   ->groupBy('id')
-                        ->get()
-                        ->pluck('id');
+        $fits = $fits->groupBy('id')
+                    ->get()
+                    ->pluck('id');
         $fits = Fit::whereIn('id', $fits)->get();
+        
         foreach ($fits as $fit) {
             $fit->Bitacoras;
             $fit->AvancesTesis;

@@ -91,16 +91,16 @@
                                     <i slot="reference" class="fas fa-question-circle"></i>
                                 </el-popover>
                             </label>
-                            <!-- <div class="col-md-2">
+                            <div class="col-md-2">
                                 <input style="width: 40px; height: 40px; margin-left: auto; margin-right: 0;" type="checkbox" v-model="countAvances" @change="activarAvances">
-                            </div> -->
-                            <div class="col-md-3">
+                            </div>
+                            <div class="col-md-2 offset-md-1">
                                 <input :disabled="!countAvances" type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[0]" @input="cambioCantAvance">
                             </div>
-                            <label class="col-md-2 col-form-label">
+                            <label class="col-md-1 col-form-label">
                                 <p class="d-flex justify-content-center">a</p>
                             </label>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <input :disabled="!countAvances" type="number" class="form-control" placeholder="0" v-model="fillBsqTesisReporte.nCantAvances[1]" @input="cambioCantAvance">
                             </div>
                         </div>
@@ -490,7 +490,7 @@ import globFunct from '../../../services/globFunct';
           cTipoVinculación: '',
           nIdVinculación: '',
           cTitulo: '',
-          nCantAvances: [0,0],
+          nCantAvances: [null,null],
           dFechaFID: []
         },
         listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
@@ -572,7 +572,7 @@ import globFunct from '../../../services/globFunct';
             profesor: false,
             tipoVinculacion: false
         },
-        countAvances: true,
+        countAvances: false,
       }
     },
     computed: {
