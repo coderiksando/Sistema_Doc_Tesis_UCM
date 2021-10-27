@@ -28,19 +28,21 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Alumno</label>
-                    <div class="col-md-5">
-                        <input placeholder="Nombre" type="text" class="form-control" v-model="fillBsqTesis.cNombre" @keyup.enter="getListarTesis">
-                    </div>
-                    <div class="col-md-5">
-                        <input placeholder="Apellido" type="text" class="form-control" v-model="fillBsqTesis.cApellido" @keyup.enter="getListarTesis">
+                    <label class="col-md-3 col-form-label">Alumno</label>
+                    <div class="col-md-9 form-group row pr-0">
+                        <div class="col-md-6 pr-0">
+                            <input placeholder="Nombre" type="text" class="form-control" v-model="fillBsqTesis.cNombre" @keyup.enter="getListarTesis">
+                        </div>
+                        <div class="col-md-6 pr-0">
+                            <input placeholder="Apellido" type="text" class="form-control" v-model="fillBsqTesis.cApellido" @keyup.enter="getListarTesis">
+                        </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Estado</label>
-                    <div class="col-md-10">
+                    <label class="col-md-3 col-form-label">Estado</label>
+                    <div class="col-md-9">
                         <el-select v-model="fillBsqTesis.cEstado"
                         placeholder="Seleccione un estado"
                         filterable
@@ -56,10 +58,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <div class="form-group row">
-                    <label class="col-md-12 col-form-label">Rango de fechas</label>
-                    <div class="col-md-12 form-group row pr-0">
+                    <label class="col-md-3 col-form-label">Inscripción</label>
+                    <div class="col-md-9 form-group row pr-0">
                         <div class="col-md-6 pr-0">
                             <el-date-picker
                                 v-model="fillBsqTesis.dateRange.startDate"
@@ -80,6 +82,25 @@
                                 @change="getListarTesis">
                             </el-date-picker>
                         </div>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="rolActivo != ('Director'||'Secretaria')" class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Escuela</label>
+                    <div class="col-md-9">
+                        <el-select v-model="fillBsqTesis.nIdEscuela"
+                        placeholder="Seleccione una escuela"
+                        filterable
+                        autocomplete="fillBsqTesis.nIdEscuela"
+                        @change="getListarTesis">
+                          <el-option
+                            v-for="item in listarEscuelasByFidsByProfesor"
+                            :key="item.id"
+                            :label="item.nombre"
+                            :value="item.id">
+                          </el-option>
+                        </el-select>
                     </div>
                   </div>
                 </div>
@@ -118,6 +139,7 @@
                   <tr>
                     <th>Alumno(s)</th>
                     <th>Estado</th>
+                    <th v-if="rolActivo != ('Director'||'Secretaria')">Escuela</th>
                     <th v-if="rolActivo == 'Profesor'">Rol de participación</th>
                     <th>Acciones</th>
                   </tr>
@@ -130,6 +152,7 @@
                         </div>
                     </td>
                     <td>{{globFunct.mergedStates(item).resultado}}</td>
+                    <td :title="item.escuela.nombre">{{globFunct.cutName(item.escuela.nombre)}}</td>
                     <td v-if="rolActivo == 'Profesor'">
                         <template v-if="item.id_p_guia == authUser.id_user">
                             Prof. Guía
@@ -304,7 +327,7 @@
       </div>
     </template>
 
-    
+
 
     <template v-if="mostrarModalApruebo">
       <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @mousedown.prevent="mostrarModalApruebo=false">
@@ -423,6 +446,7 @@ export default {
         cApellido     : '',
         cEstadoPg     : '',
         cEstado       : ["",""],
+        nIdEscuela    : '',
         dateRange: {
             startDate: null,
             endDate: null
@@ -455,6 +479,7 @@ export default {
         {value: 'R', label: 'Reprobada'},
         {value: 'D', label: 'En Desarrollo'}
       ],
+      listarEscuelasByFidsByProfesor: [],
       listTesis: 1,
       listAllTesis:1,
       listMiTesis:[],
@@ -533,6 +558,7 @@ export default {
   },
   methods:{
     init(){
+      this.getListarEscuelasByFITsByProfesor();
       this.getListarTesis();
       this.getListarProfesores();
       this.selectStart();
@@ -562,12 +588,35 @@ export default {
           'estado'    :   this.fillBsqTesis.cEstado,
           'fechaSt'   :   (!this.fillBsqTesis.dateRange.startDate) ? '' : this.fillBsqTesis.dateRange.startDate,
           'fechaEn'   :   (!this.fillBsqTesis.dateRange.endDate) ? '' : this.fillBsqTesis.dateRange.endDate,
+          'nIdEscuela':   this.fillBsqTesis.nIdEscuela
         }
       }).then(response => {
             this.inicializarPaginacion();
             this.listTesis = response.data;
+            console.log(this.listTesis)
             this.fullscreenLoading = false;
       })
+    },
+    getListarEscuelasByFITsByProfesor () {
+        var url = '';
+        if (this.rolActivo == 'Profesor') url = '/user/getListarEscuelasByFITsByProfesor';
+        else url = '/administracion/escuelas/getListarEscuelas';
+        axios.get(url, {
+            params:{
+                'nIdProfesor' :   this.authUser.id_user
+            }
+        }).then(response => {
+            this.listarEscuelasByFidsByProfesor = response.data;
+            this.listarEscuelasByFidsByProfesor.unshift({
+                created_at: null,
+                facultad: '',
+                id: '',
+                id_facultad: '',
+                nombre: 'Todas',
+                updated_at: null
+            });
+            console.log(this.listarEscuelasByFidsByProfesor);
+        })
     },
     getListarAllTesis(){
       this.fullscreenLoading = true;

@@ -11,6 +11,7 @@ Route::get('/administracion/escuelas/getListarFacultades', 'Administracion\Escue
 Route::get('/administracion/reportes/getListarTesisHome', 'Administracion\ReportesController@getListarTesisHome');
 Route::get('/administracion/reportes/getListarLogs', 'Administracion\ReportesController@getListarLogs');
 Route::get('/reportes/getListarProfesorByEscuela', 'Administracion\ReportesController@getListarProfesorByEscuela');
+Route::get('/user/getListarEscuelasByFITsByProfesor', 'Administracion\EscuelasController@getListarEscuelasByFITsByProfesor');
 Route::post('/authenticate/registro/setRegistrarAlumno', 'AlumnoController@setRegistrarAlumno');
 Route::post('/authenticate/registro/setEditarRolAlumno', 'AlumnoController@setEditarRolAlumno');
 Route::post('/passrecovery/sendToken','Auth\LoginController@sendToken');

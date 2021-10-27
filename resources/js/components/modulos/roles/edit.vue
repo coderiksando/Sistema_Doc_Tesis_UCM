@@ -32,8 +32,9 @@
                         </div>
                         <div class="card-footer">
                             <div class="row">
-                                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarRolPermisos" v-loading.fullscreen.lock="fullscreenLoading"
-                                >{{globVar.btnSave}}</button>
+                                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarRolPermisos" v-loading.fullscreen.lock="fullscreenLoading">
+                                    {{globVar.btnSave}}
+                                </button>
                                 <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">{{globVar.btnClear}}</button>
                             </div>
                         </div>
@@ -46,6 +47,10 @@
                         </div>
                         <div class="card-body table-resposive" v-loading = loading>
                               <template v-if="listPermisosFilter.length">
+                                <div class="form-group row">
+                                    <label title='Nombre de permiso' class="col-md-3 col-form-label">Nombre</label>
+                                    <el-input class="col-md-9" placeholder="Personalizado" v-model="busqNombre"></el-input>
+                                </div>
                                 <div class="scrollTable">
                                   <table class ="table table-hover table-head-fixed text-nowrap projects">
                                     <thead>
@@ -57,17 +62,22 @@
                                     </thead>
                                     <tbody>
                                       <tr v-for="(item, index) in listPermisosFilter" :key="index" @click.prevent="marcarFila(index)">
-
-                                        <td>
-                                          <!-- cheeekboh-->
-                                          <el-checkbox v-model="item.checked">Opción</el-checkbox>
-                                        </td>
-                                        <td v-text="item.name"></td>
-                                        <td v-text="item.slug"></td>
+                                        <template v-if="(item.name.toLowerCase().match(busqNombre.toLowerCase())) || (busqNombre == '')">
+                                            <td>
+                                            <!-- cheeekboh-->
+                                            <el-checkbox v-model="item.checked">Opción</el-checkbox>
+                                            </td>
+                                            <td v-text="item.name"></td>
+                                            <td v-text="item.slug"></td>
+                                        </template>
                                       </tr>
                                     </tbody>
                                   </table>
                                 </div>
+                                <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarRolPermisos" v-loading.fullscreen.lock="fullscreenLoading">
+                                    {{globVar.btnSave}}
+                                </button>
+                                <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">{{globVar.btnClear}}</button>
                               </template>
                               <template v-else>
                                 <div class="callout callout-info">
@@ -111,6 +121,7 @@ export default {
         cNombre: '',
         cSlug: '',
       },
+      busqNombre: '',
       listPermisos: [],
       listPermisosByRol: [],
       listPermisosFilter:[],

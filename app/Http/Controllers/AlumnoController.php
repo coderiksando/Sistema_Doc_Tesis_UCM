@@ -80,6 +80,7 @@ class AlumnoController extends Controller
         $cEstado        = $request->estado;
         $dFechaInicio   = Carbon::parse($request->fechaSt)->startOfDay();
         $dFechaFin      = Carbon::parse($request->fechaEn)->endOfDay();
+        $nIdEscuela     = $request->nIdEscuela;
         $rol = $request->session()->get('rol');
 
         if ($rol == 'Alumno'){
@@ -116,6 +117,9 @@ class AlumnoController extends Controller
         if ($request->fechaSt) {
             $fits->whereBetween('created_at', [$dFechaInicio, $dFechaFin]);
         }
+        if ($nIdEscuela) {
+            $fits->where('id_escuela',"$nIdEscuela");
+        }
 
         $fits = $fits->get()->sortByDesc('updated_at')->values()->all();
         foreach ($fits as $fit) {
@@ -124,6 +128,7 @@ class AlumnoController extends Controller
             $fit->constancia = ArchivoPdf::where('id_fit', $fit->id)->firstWhere('tipo_pdf', 'constancia_t');
             $fit->listUsers = $listUsersDetails;
             $fit->Comisiones;
+            $fit->Escuela;
         }
         return $fits;
     }
