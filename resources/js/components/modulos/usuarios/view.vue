@@ -70,7 +70,7 @@
 
                       <div class="tab-pane active" id="settings">
                         <form class="form-horizontal">
-                            <template v-if="listRolPermisosByUsuario.includes('EsAlumno')">
+                            <template v-if="listRolPermisosByUsuario.includes('EsAlumno') || listRolPermisosByUsuario.includes('usuarios.editar')">
                                 <div class="form-group row">
                                     <label class="col-md-3 col-form-label">Escuela</label>
                                     <div class="col-md-9">
@@ -111,7 +111,7 @@
                                 </div>
                             </div>
                             
-                            <template v-if="listRolPermisosByUsuario.includes('EsAlumno')">
+                            <template v-if="listRolPermisosByUsuario.includes('EsAlumno') || listRolPermisosByUsuario.includes('usuarios.editar')">
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label">Correo</label>
                                 <div class="col-md-9">
@@ -386,6 +386,23 @@ export default {
             this.fillEditarUsuarios.f_entrada = new Date(Date.now() - (yearCalculated + month));
             this.fillEditarUsuarios.f_salida = new Date(Date.now() - (month));
             this.selectStart();
+        },
+        revisionDeSeguridad() {
+            if (this.listRolPermisosByUsuario.includes('usuarios.editar') || this.authUser.id_user == this.fillEditarUsuarios.nIdUsuario) {
+                this.inicializacion();
+                this.getUsuarioById();
+                this.getRolByUsuario();
+                this.getListarEscuela();
+                this.getListarRoles();
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'No tienes permiso para ver este perfil.',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+                this.$router.push('/dashboard');
+            }
         },
         getFile(e){
             this.formatError = false;
