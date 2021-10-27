@@ -70,22 +70,24 @@
 
                       <div class="tab-pane active" id="settings">
                         <form class="form-horizontal">
-                            <div class="form-group row">
-                                <label class="col-md-3 col-form-label">Escuela</label>
-                                <div class="col-md-9">
-                                    <el-select v-model="fillEditarUsuarios.cEscuela"
-                                    filterable
-                                    placeholder="Seleccione escuela"
-                                    clearable>
-                                    <el-option
-                                        v-for="item in listEscuela"
-                                        :key="item.id"
-                                        :label="item.nombre"
-                                        :value="item.id">
-                                    </el-option>
-                                    </el-select>
+                            <template v-if="listRolPermisosByUsuario.includes('EsAlumno')">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Escuela</label>
+                                    <div class="col-md-9">
+                                        <el-select v-model="fillEditarUsuarios.cEscuela"
+                                        filterable
+                                        placeholder="Seleccione escuela"
+                                        clearable>
+                                        <el-option
+                                            v-for="item in listEscuela"
+                                            :key="item.id"
+                                            :label="item.nombre"
+                                            :value="item.id">
+                                        </el-option>
+                                        </el-select>
+                                    </div>
                                 </div>
-                            </div>
+                            </template>
 
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label">Rut</label>
@@ -108,13 +110,15 @@
                                     <input type="text" class="form-control" v-model="fillEditarUsuarios.cApellido" >
                                 </div>
                             </div>
-
+                            
+                            <template v-if="listRolPermisosByUsuario.includes('EsAlumno')">
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label">Correo</label>
                                 <div class="col-md-9">
                                     <input type="text" class="form-control" v-model="fillEditarUsuarios.cCorreo" >
                                 </div>
                             </div>
+                            </template>
 
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label">Nueva contraseña</label>
@@ -362,6 +366,7 @@ export default {
             },
             addPassword: false,
             rolActivo: JSON.parse(localStorage.getItem('rolActivo')),
+            listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
             hover: false
         }
     },
