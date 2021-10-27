@@ -366,17 +366,14 @@ export default {
             },
             addPassword: false,
             rolActivo: JSON.parse(localStorage.getItem('rolActivo')),
+            authUser: JSON.parse(localStorage.getItem('authUser')),
             listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
             hover: false
         }
     },
     mounted(){
         EventBus.$emit('navegar', 'Perfil del usuario');
-        this.inicializacion();
-        this.getUsuarioById();
-        this.getRolByUsuario();
-        this.getListarEscuela();
-        this.getListarRoles();
+        this.revisionDeSeguridad();
     },
     methods:{
         inicializacion () {
