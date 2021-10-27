@@ -105,6 +105,36 @@
                         <td>Sin fecha autorizada</td>
                         <td>Sin fecha de prórroga</td>
                     @endif
+                <!-- @else
+                    <td></td>
+                    <td>{{ $datatesis->fit__user[$i]->user->nombres.' '.$datatesis->fit__user[$i]->user->apellidos }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->rut }}</td>
+                    <td>{{ date('d-m-Y', strtotime($datatesis->fit__user[$i]->user->f_ingreso)) }} </td>
+                    <td>{{ date('d-m-Y', strtotime($datatesis->fit__user[$i]->user->f_salida)) }}</td>
+                    @if($datatesis->acta)
+                        <td>{{ Carbon\Carbon::parse($datatesis->acta->updated_at)->format('d-m-Y') }}</td>
+                        @php($difference = Carbon\Carbon::parse($datatesis->fit__user[$i]->user->f_ingreso)->diff(Carbon\Carbon::parse($datatesis->acta->updated_at)))
+                        <td>{{ $difference->y.' años y '.$difference->m.' mes(es).' }}</td>
+                    @else
+                        <td>No disponible</td>
+                        <td>No disponible</td>
+                    @endif
+                    <td>{{ $datatesis->fit__user[$i]->user->telefono }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->email }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->escuelas->facultad->nombre }}</td>
+                    <td>{{ $datatesis->fit__user[$i]->user->escuelas->nombre }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                @endif -->
                 @php($i++)
             </tr>
             @endforeach
