@@ -78,11 +78,11 @@
                       <button :disabled="!item.final" title="Documento final" class="btn boton btn-info font-weight-bold" @click.prevent="redirectTo((item.final) ? item.final.path : '')">DF</button>
                       <button :disabled="!item.constancia" title="Constancia de examen" class="btn boton btn-info font-weight-bold" @click.prevent="redirectTo((item.constancia) ? item.constancia.path : '')" target="_blank">CE</button>
                       <button :disabled="!item.path" title="Acta de defensa" class="btn btn-info boton font-weight-bold" @click.prevent="redirectTo((item.path) ? item.path : '')">AD</button>
-                      <button title="Memo de revisión" class="btn btn-primary boton font-weight-bold" @click.prevent="setGenerarMemoRevision(item.id)">
-                          MR
-                      </button>
                       <button :title="terminoTituloEx" class="btn btn-primary boton font-weight-bold" @click.prevent="setGenerarDocumento(item.id)">
                          {{terminoTitulo}}
+                      </button>
+                      <button title="Memo de revisión" class="btn btn-primary boton font-weight-bold" @click.prevent="setGenerarMemoRevision(item.id)">
+                          MR
                       </button>
                     </td>
                   </tr>
@@ -140,7 +140,8 @@ export default {
       ],
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       pageNumber: 0,
-      perPage: 10
+      perPage: 10,
+      nivelAcceso: 1
     }
   },
   computed: {
@@ -224,16 +225,19 @@ export default {
     },
     getListarAlumnos(){
       this.fullscreenLoading = true;
+      if (this.listRolPermisosByUsuario.includes('fid.acceso.total')) {
+        this.nivelAcceso = 0;
+      }
       var url = '/secretaria/getListarAlumnos'
       axios.get(url, {
         params: {
-          'cNombre' : this.fillBsqAlumno.cNombre,
-          'nRut' : this.fillBsqAlumno.nRut
+          'cNombre'     : this.fillBsqAlumno.cNombre,
+          'nRut'        : this.fillBsqAlumno.nRut,
+          'nivelAcceso' : this.nivelAcceso
         }
       }).then(response => {
           this.inicializarPaginacion();
           this.listAlumnos = response.data;
-          console.log(this.listAlumnos)
           this.fullscreenLoading = false;
       })
     },

@@ -15,19 +15,21 @@ use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Debugbar;
 
 class SecretariaController extends Controller
 {
     public function getListarAlumnos(Request $request){
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $user     = Auth::user();
         $IdEscuela  = $user->id_escuela;
 
-        $rut        = $request->nRut;
-        $nombre     = $request->cNombre;
-        $estado     = $request->cEstado_tesis;
-        $EstadoAlumno  = $request->nEstadoAlumno;
+        $rut            = $request->nRut;
+        $nombre         = $request->cNombre;
+        $estado         = $request->cEstado_tesis;
+        $EstadoAlumno   = $request->nEstadoAlumno;
+        $nivelAcceso    = $request->nivelAcceso;
 
         $rut        = ($rut == NULL) ? ($rut = '') : $rut;
         $nombre     = ($nombre == NULL) ? ($nombre = '') : $nombre;
@@ -36,7 +38,10 @@ class SecretariaController extends Controller
         $EstadoAlumno  = ($EstadoAlumno == NULL) ? ($EstadoAlumno = '') : $EstadoAlumno;
 
         $filter1 = User::where('nombres', 'like', "%$nombre%")->orWhere('apellidos', 'like', "%$nombre%")->get();
-        $filter2 = User::where('id_escuela', $IdEscuela)->where('rut', 'like', "%$rut%")->get();
+        $filter2 = User::where('rut', 'like', "%$rut%");
+        if ($nivelAcceso) $filter2->where('id_escuela', $IdEscuela);
+        $filter2 = $filter2->get();
+
         $users = $filter1->intersect($filter2)->pluck('id_user');
 
         $fitsId = Fit_User::whereIn('id_user', $users)->pluck('id_fit')->unique()->values();
