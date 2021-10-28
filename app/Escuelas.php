@@ -8,7 +8,7 @@ class Escuelas extends Model
 {
     protected $table = 'escuelas';
     protected $fillable = [
-        'id', 'id_facultad', 'nombre', 'created_at', 'updated_at'
+        'id', 'id_facultad', 'nombre', 'nombre_abreviado', 'created_at', 'updated_at'
     ];
 
     public function Facultad(){

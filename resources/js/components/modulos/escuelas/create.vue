@@ -10,7 +10,7 @@
           <div class="card-body">
             <form role="form">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Nombre</label>
                     <div class="col-md-9">
@@ -18,7 +18,15 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
+                  <div class="form-group row">
+                    <label class="col-md-6 col-form-label">Abreviación</label>
+                    <div class="col-md-6">
+                      <input type="text" maxlength="250"  class="form-control" v-model="fillCrearEscuela.cNomAbr" @keyup.enter="setRegistrarEscuelas">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Facultad</label>
                     <div class="col-md-9">
@@ -77,6 +85,7 @@ export default {
       globVar: new globVar(),
       fillCrearEscuela:{
         cNombre: '',
+        cNomAbr: '',
         nIdFacultad: 1
       },
       listFacultades: [],
@@ -127,6 +136,7 @@ export default {
       var url = '/administracion/escuelas/setRegistrarEscuelas'
       axios.post(url, {
         'cNombre'            : this.fillCrearEscuela.cNombre,
+        'cNomAbr'            : this.fillCrearEscuela.cNomAbr,
         'nIdFacultad'        : this.fillCrearEscuela.nIdFacultad
       }).then(response => {
         this.fullscreenLoading = false;

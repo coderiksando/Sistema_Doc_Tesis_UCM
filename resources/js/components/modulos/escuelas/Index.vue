@@ -69,6 +69,7 @@
                 <thead>
                   <tr>
                     <th>Nombre</th>
+                    <th>Abreviación</th>
                     <th>Facultad</th>
                     <th>Acciones</th>
                   </tr>
@@ -78,6 +79,7 @@
                     <td>
                       <div class="elipsis" v-text="item.nombre"></div>
                     </td>
+                    <td v-text="item.nombre_abreviado"></td>
                     <td v-text="item.facultad.nombre"></td>
                     <td>
                         <router-link title="Editar" class="btn btn-primary boton" :to="{name:'escuelas.editar', params:{id: item.id}}">

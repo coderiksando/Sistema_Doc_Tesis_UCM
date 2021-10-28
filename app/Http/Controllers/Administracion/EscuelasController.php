@@ -55,10 +55,12 @@ class EscuelasController extends Controller
     public function setRegistrarEscuelas(Request $request){
         if(!$request->ajax()) return redirect('/');
 
-        $cNombre     =   $request->cNombre;
-        $nIdFacultad = $request->nIdFacultad;
+        $cNombre     =  $request->cNombre;
+        $cNomAbr     =  $request->cNomAbr;
+        $nIdFacultad =  $request->nIdFacultad;
 
         $cNombre     = ($cNombre == NULL)       ? ($cNombre = '')     : $cNombre;
+        $cNomAbr     = ($cNomAbr == NULL)       ? ($cNomAbr = '')     : $cNomAbr;
         $nIdFacultad = ($nIdFacultad == NULL)   ? ($nIdFacultad = '') : $nIdFacultad;
 
         $testEscuela = DB::table('escuelas')->where('nombre', $cNombre)->where('id_facultad', $nIdFacultad)->exists();
@@ -68,6 +70,7 @@ class EscuelasController extends Controller
         }else{
             Escuelas::create([
                 'nombre' => $cNombre,
+                'nombre_abreviado' => $cNomAbr,
                 'id_facultad' => $nIdFacultad
             ]);
         }
@@ -78,10 +81,12 @@ class EscuelasController extends Controller
 
         $nIdEscuela     =  $request->nIdEscuela;
         $cNombre        =  $request->cNombre;
+        $cNomAbr        =  $request->cNomAbr;
         $nIdFacultad    =  $request->nIdFacultad;
 
         $nIdEscuela     = ($nIdEscuela == NULL)  ? ($nIdEscuela = 0)    : $nIdEscuela;
         $cNombre        = ($cNombre == NULL)     ? ($cNombre = '')      : $cNombre;
+        $cNomAbr        = ($cNomAbr == NULL)     ? ($cNomAbr = '')      : $cNomAbr;
         $nIdFacultad    = ($nIdFacultad == NULL) ? ($nIdFacultad = '1')  : $nIdFacultad;
 
         $testEscuela = DB::table('escuelas')->where('nombre', $cNombre)->where('id_facultad', $nIdFacultad)->exists();
@@ -91,6 +96,7 @@ class EscuelasController extends Controller
         }else{
             $escuela = Escuelas::find($nIdEscuela);
             $escuela->nombre = $cNombre;
+            $escuela->nombre_abreviado = $cNomAbr;
             $escuela->id_facultad = $nIdFacultad;
             $escuela->save();
         }

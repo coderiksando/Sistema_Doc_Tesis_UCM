@@ -9,15 +9,23 @@
           <div class="card-body">
             <form role="form">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Nombre</label>
                     <div class="col-md-9">
-                        <input type="text" maxlength="40"  class="form-control" v-model="fillEditarEscuela.cNombre" @keyup.enter="setEditarEscuelas">
+                        <input type="text" maxlength="250"  class="form-control" v-model="fillEditarEscuela.cNombre" @keyup.enter="setEditarEscuelas">
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
+                  <div class="form-group row">
+                    <label class="col-md-6 col-form-label">Abreviación</label>
+                    <div class="col-md-6">
+                      <input type="text" maxlength="250"  class="form-control" v-model="fillEditarEscuela.cNomAbr" @keyup.enter="setRegistrarEscuelas">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Facultad</label>
                     <div class="col-md-9">
@@ -77,6 +85,7 @@ export default {
       fillEditarEscuela:{
         nIdEscuela: this.$attrs.id,
         cNombre: '',
+        cNomAbr: '',
         nIdFacultad: ''
       },
       fullscreenLoading: false,
@@ -131,6 +140,7 @@ export default {
       axios.post(url, {
         'nIdEscuela'     : this.fillEditarEscuela.nIdEscuela,
         'cNombre'        : this.fillEditarEscuela.cNombre,
+        'cNomAbr'        : this.fillEditarEscuela.cNomAbr,
         'nIdFacultad'    : this.fillEditarEscuela.nIdFacultad
 
       }).then(response => {
@@ -173,6 +183,7 @@ export default {
       }).then(response => {
           //this.inicializarPaginacion();
           this.fillEditarEscuela.cNombre = response.data[0].nombre;
+          this.fillEditarEscuela.cNomAbr = response.data[0].nombre_abreviado;
           this.fillEditarEscuela.nIdFacultad = response.data[0].id_facultad;
       })
     },
