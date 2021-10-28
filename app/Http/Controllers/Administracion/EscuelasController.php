@@ -89,7 +89,11 @@ class EscuelasController extends Controller
         $cNomAbr        = ($cNomAbr == NULL)     ? ($cNomAbr = '')      : $cNomAbr;
         $nIdFacultad    = ($nIdFacultad == NULL) ? ($nIdFacultad = '1')  : $nIdFacultad;
 
-        $testEscuela = DB::table('escuelas')->where('nombre', $cNombre)->where('id_facultad', $nIdFacultad)->exists();
+        $testEscuela =  DB  ::table('escuelas')
+                            ->where('nombre', $cNombre)
+                            ->where('id_facultad', $nIdFacultad)
+                            ->where('id','<>',$nIdEscuela)
+                            ->exists();
 
         if ($testEscuela){
             return response(['error' => 'Elemento ya existe'], 409);
