@@ -166,7 +166,7 @@
                             <i class="far fa-eye fa-lg"></i>
                         </router-link>
                         <button :title="'Editar '+terminoTitulo" class="btn boton btn-primary"
-                        :disabled="!(item.aprobado_pg == 'R') || (rolActivo == 'Profesor' && !item.aprobado_pg != 'V')"
+                        :disabled="!((rolActivo == 'Alumno' && item.aprobado_pg == 'R') || (rolActivo == 'Profesor' && item.aprobado_pg == 'P'))"
                         @click.prevent="redirectTo('tesis.editar', {id: item.id})">
                             <i class="fas fa-pencil-alt"></i>
                         </button>
