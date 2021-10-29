@@ -65,7 +65,7 @@
                         <label class="col-md-4 col-form-label">Profesor</label>
                         <div class="col-md-8">
                                 <el-select v-model="fillBsqTesisReporte.nIdProfesor"
-                                placeholder="Seleccionar profesor" filterable
+                                placeholder="Seleccione un profesor" filterable
                                 clearable>
                                 <el-option
                                     v-for="item in listProfesores"
@@ -314,13 +314,15 @@
                         <div class="card-body py-1" :id="'headingFitAlumno'+index">
                         <h3 class="mb-0">
                             <div class="btn btn-link col-md-12 noPadNoMar d-flex">
-                                <div title="Sección expandible" class="col-md-1"  data-toggle="collapse" :data-target="'#collapseFIT'+index" aria-expanded="false" :aria-controls="'collapseFIT'+index"><a class="btn" @click.prevent="focus"><i class="fas fa-plus-circle"></i></a></div>
-                                <div title="Sección expandible" class="col-md-8 noPadNoMar"  data-toggle="collapse" :data-target="'#collapseFIT'+index" aria-expanded="false" :aria-controls="'collapseFIT'+index" @click.prevent="focus">
-                                    <p class="float-left">
-                                        {{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 40))}}
-                                    </p>
-                                </div>
-                                <div class="col-md-3 noPadNoMar">
+                                <div title="Sección expandible" class="col-md-1" data-toggle="collapse" :data-target="'#collapseFIT'+index" aria-expanded="false" :aria-controls="'collapseFIT'+index"><a class="btn" @click.prevent="focus"><i class="fas fa-plus-circle"></i></a></div>
+                                <div title="Sección expandible" class="col-md-11 noPadNoMar" data-toggle="collapse" :data-target="'#collapseFIT'+index" aria-expanded="false" :aria-controls="'collapseFIT'+index" @click.prevent="focus">
+                                    <div class="float-left">
+                                        {{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 80))}}{{((item.titulo.length > 80) ? '...':'')}}
+                                    </div>
+                                    <br>
+                                    <div class="float-left">
+                                        (Prof. Guía: {{globFunct.cutFullName(item.user__p__guia.nombres,item.user__p__guia.apellidos)}}, Alumno inscriptor: {{globFunct.cutFullName(item.fit__user[0].user.nombres, item.fit__user[0].user.apellidos)}})
+                                    </div>
                                 </div>
                             </div>
                         </h3>
@@ -329,56 +331,56 @@
                         <div :id="'collapseFIT'+index" class="collapse" :aria-labelledby="'headingFitAlumno'+index" data-parent="#reportAccordion">
                         <div class="card-footer">
                             <dl class="row">
-                                <dt class="col-md-4">Alumnos integrantes:</dt>
+                                <dt class="col-md-3">Escuela:</dt>
+                                <dd class="col-md-9">{{item.escuela.nombre}}</dd>
+                                <dt class="col-md-3">Alumnos integrantes:</dt>
                                 <template v-if="item.fit__user">
-                                    <dd class="col-md-8">
+                                    <dd class="col-md-9">
                                         <dl class="row mb-0">
-                                            <dd class="col-md-4 px-1">
+                                            <dd class="col-md-4 px-2">
                                                 <p class="mb-0 font-weight-bold">Nombre</p>
                                             </dd>
-                                            <dd class="col-md-2 px-1">
+                                            <dd class="col-md-2 px-2">
                                                 <p class="mb-0 font-weight-bold">Rut</p>
                                             </dd>
-                                            <dd class="col-md-2 px-1">
+                                            <dd class="col-md-2 px-2">
                                                 <p class="mb-0 font-weight-bold">Teléfono</p>
                                             </dd>
-                                            <dd class="col-md-4 px-1">
+                                            <dd class="col-md-4 px-2">
                                                 <p class="mb-0 font-weight-bold">Email</p>
                                             </dd>
                                         </dl>
                                         <dl class="row mb-0" v-for="(fitUser, index2) in item.fit__user" :key="index2">
-                                            <dd class="col-md-4 px-1">
+                                            <dd class="col-md-4 px-2">
                                                 <p style="font-size: 0.9rem;" class="mb-0">{{globFunct.cutFullName(fitUser.user.nombres, fitUser.user.apellidos)}}</p>
                                             </dd>
-                                            <dd class="col-md-2 px-1">
+                                            <dd class="col-md-2 px-2">
                                                 <p style="font-size: 0.9rem;" class="mb-0">{{fitUser.user.rut}}</p>
                                             </dd>
-                                            <dd class="col-md-2 px-1">
+                                            <dd class="col-md-2 px-2">
                                                 <p v-if="fitUser.user.telefono" style="font-size: 0.9rem;" class="mb-0">{{fitUser.user.telefono}}</p>
                                                 <p v-else style="font-size: 0.9rem;" class="mb-0">No registrado</p>
                                             </dd>
-                                            <dd class="col-md-4 px-1">
+                                            <dd class="col-md-4 px-2">
                                                 <p style="font-size: 0.9rem;" class="mb-0">{{fitUser.user.email}}</p>
                                             </dd>
                                         </dl>
                                     </dd>
                                 </template>
-                                <dt class="col-md-4">Escuela:</dt>
-                                <dd class="col-md-8">{{item.escuela.nombre}}</dd>
-                                <dt class="col-md-4">Título extendido:</dt>
-                                <dd class="col-md-8">{{globFunct.capitalizeFirstLetter(item.titulo)}}</dd>
-                                <dt class="col-md-4">Descripción:</dt>
-                                <dd class="col-md-8">{{item.descripcion}}</dd>
                                 <template v-if="item.user__p__guia">
-                                    <dt class="col-md-4">Prof. Guía:</dt>
-                                    <dd class="col-md-8">{{globFunct.cutFullName(item.user__p__guia.nombres,item.user__p__guia.apellidos)}}</dd>
+                                    <dt class="col-md-3">Prof. Guía:</dt>
+                                    <dd class="col-md-9">{{globFunct.cutFullName(item.user__p__guia.nombres,item.user__p__guia.apellidos)}}</dd>
                                 </template>
                                 <template v-if="item.user__p__coguia">
-                                    <dt class="col-md-4">Prof. Co-guía:</dt>
-                                    <dd class="col-md-8">{{globFunct.cutFullName(item.user__p__coguia.nombres,item.user__p__coguia.apellidos)}}</dd>
+                                    <dt class="col-md-3">Prof. Co-guía:</dt>
+                                    <dd class="col-md-9">{{globFunct.cutFullName(item.user__p__coguia.nombres,item.user__p__coguia.apellidos)}}</dd>
                                 </template>
-                                <dt class="col-md-4">Comisión evaluadora:</dt>
-                                <dd class="col-md-8">
+                                <dt class="col-md-3">Título extendido:</dt>
+                                <dd class="col-md-9">{{globFunct.capitalizeFirstLetter(item.titulo)}}</dd>
+                                <dt class="col-md-3">Descripción:</dt>
+                                <dd class="col-md-9">{{item.descripcion}}</dd>
+                                <dt class="col-md-3">Comisión evaluadora:</dt>
+                                <dd class="col-md-9">
                                     <template v-if="item.comisiones">
                                         <dl class="row">
                                             <template v-if="item.comisiones.user_p1">
@@ -400,13 +402,13 @@
                                         <dt>No conformada</dt>
                                     </template>
                                 </dd>
-                                <dt class="col-md-4">Tipo de documento:</dt>
-                                <dd class="col-md-8">{{item.tipo}}</dd>
+                                <dt class="col-md-3">Tipo de documento:</dt>
+                                <dd class="col-md-9">{{item.tipo}}</dd>
 
-                                <dt class="col-md-4">Estado:</dt>
-                                <dd class="col-md-8">{{globFunct.mergedStates(item).resultado}}</dd>
-                                <dt class="col-md-4">Detalles de documento:</dt>
-                                <dd class="col-md-8">
+                                <dt class="col-md-3">Estado:</dt>
+                                <dd class="col-md-9">{{globFunct.mergedStates(item).resultado}}</dd>
+                                <dt class="col-md-3">Detalles de documento:</dt>
+                                <dd class="col-md-9">
                                     <button :title="'Vista completa de '+ terminoTitulo" class="btn boton btn-primary" @click.prevent="redirectTo('tesis.ver',{id: item.id})">
                                         <b>{{terminoTitulo}}</b>
                                     </button>
@@ -417,8 +419,8 @@
                                         <b>AR</b>
                                     </button>
                                 </dd>
-                                <dt class="col-md-4">Descarga de documento:</dt>
-                                <dd class="col-md-8">
+                                <dt class="col-md-3">Descarga de documento:</dt>
+                                <dd class="col-md-9">
                                     <button :disabled="!item.ultimoDoc" :key="'arch'+index" title="Descargar documento" class="btn boton btn-info" @click.prevent="redirectTo((item.ultimoDoc) ? item.ultimoDoc.path: '')">
                                         <b>Doc</b>
                                     </button>
@@ -760,6 +762,7 @@ import globFunct from '../../../services/globFunct';
                 this.listTesis = response.data;
                 const newListTesis = this.listTesis;
                 this.listTesisOriginal = this.listTesisOriginal;
+                console.log(this.listTesisOriginal)
                 this.listTesis = newListTesis;
                 this.fullscreenLoading = false;
             })
