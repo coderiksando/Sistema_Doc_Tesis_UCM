@@ -152,7 +152,9 @@
                         </div>
                     </td>
                     <td>{{globFunct.mergedStates(item).resultado}}</td>
-                    <td :title="item.escuela.nombre">{{globFunct.cutName(item.escuela.nombre)}}</td>
+                    <td :title="item.escuela.nombre" v-if="rolActivo != ('Director'||'Secretaria')">
+                        {{item.escuela.nombre_abreviado}}
+                    </td>
                     <td v-if="rolActivo == 'Profesor'">
                         <template v-if="item.id_p_guia == authUser.id_user">
                             Prof. Guía
