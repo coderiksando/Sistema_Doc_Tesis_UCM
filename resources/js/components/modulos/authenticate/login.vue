@@ -395,8 +395,9 @@ export default {
                 Swal.fire({
                     icon: 'success',
                     title: 'Usuario registrado con exito',
-                    showConfirmButton: false,
-                    timer: 2500
+                    text: 'Para activar su cuenta es necesario que inicie sesión y complete sus datos.',
+                    showConfirmButton: true,
+                    
                 })
             }).catch(error => {
                 this.error = 0;
