@@ -116,13 +116,13 @@
         <div class="card-header flex p-1" >
             <h3 class="card-title ml-3" v-text="'Información general'"></h3>
         </div>
-        <div class="card-body table table-responsive"  v-loading="tableLoading">
+        <div class="card-body table table-responsive">
               <table class ="table table-hover table-head-fixed text-nowrap projects">
                 <thead>
                   <th class="col-md-10">Descripción</th>
                   <th class="col-md-10">Acciones</th>
                 </thead>
-                <tbody>
+                <tbody v-loading="tableLoading">
                   <tr v-for="(item, index) in listarDocumentosGeneralesPaginated" :key="index">
                     <td>
                       <p v-text="item.descripcion"></p>
@@ -157,7 +157,7 @@
           <div class="card-header flex p-1">
             <div class="col-md-11">
               <div class="form-group row m-0">
-                <h3 class="card-title" 
+                <h3 class="card-title"
                   :class="(listRolPermisosByUsuario.includes('escuelas.documentos.general')) ? 'col-md-3' : 'col-md-6'"
                   v-text="(listRolPermisosByUsuario.includes('escuelas.documentos.general')) ? 'Información de escuela:' : 'Información de escuela: '+miEscuela.nombre">
                 </h3>
@@ -179,14 +179,14 @@
               </div>
             </div>
           </div>
-          <div class="card-body table table-responsive"  v-loading="tableLoading">
+          <div class="card-body table table-responsive">
             <template v-if="listarDocumentosPaginated.length">
               <table class ="table table-hover table-head-fixed text-nowrap projects">
                 <thead>
                   <th class="col-md-10">Descripción</th>
                   <th class="col-md-10">Acciones</th>
                 </thead>
-                <tbody>
+                <tbody v-loading="tableLoading">
                   <tr v-for="(item, index) in listarDocumentosPaginated" :key="index">
                     <td>
                       <p v-text="item.descripcion"></p>

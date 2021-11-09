@@ -280,13 +280,16 @@ export default {
             }
         })
     },
-    redirectTo(route, objectId) {
-        console.log(route.search("http"))
+    redirectTo(route, objectId, newTab) {
         if (route.search("http") !== 0) {
-            if (objectId) this.$router.push({name: route, params: objectId});
-            else this.$router.push({name: route});
+            if (!newTab) {
+                if (objectId) this.$router.push({name: route, params: objectId});
+                else this.$router.push({name: route});
+            } else {
+                const ruteData = this.$router.resolve({name: route, params: objectId});
+                window.open(ruteData.href, '_blank');
+            }
         } else window.open(route, '_blank');
-
     }
 
   }//cierre de methods

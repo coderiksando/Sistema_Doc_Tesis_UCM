@@ -297,6 +297,7 @@ props: ['usuario'],
         init(){
           this.inicializacion();
           this.datosPendientes();
+          this.focusItem();
         },
         logout(){
             this.fullscreenLoading = true;
@@ -389,6 +390,13 @@ props: ['usuario'],
                     return false;
             }
             return true;
+        },
+        focusItem() {
+            if (this.$attrs.id) {
+                console.log('Parametro id: ', this.$attrs.id);
+            } else {
+                console.log('Sin parametro');
+            }
         }
     },
 }

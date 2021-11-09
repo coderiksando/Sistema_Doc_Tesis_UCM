@@ -11,13 +11,15 @@
                     </h3>
                   </div>
                   <div class="col-md-2" style="text-align: right">
-                    <button
-                      class="btn btn-secondary"
-                      @click.prevent="mostrarModalAyuda"
-                    >
-                      Ayuda
-                      <i class="fas fa-question-circle"></i>
-                    </button>
+                    <el-popover
+                    title="Ayuda"
+                    placement="left"
+                    width="20"
+                    trigger="hover">
+                        <button slot="reference" class="btn btn-secondary" @click.prevent="redirectTo('dashboard.index', {id: 1}, true)">
+                            <i class="fas fa-question-circle" ></i>
+                        </button>
+                    </el-popover>
                   </div>
                 </div>
               </div>
@@ -1508,6 +1510,17 @@ export default {
             this.listProfesoresBuscado = response.data;
             this.fullscreenLoading = false;
         })
+    },
+    redirectTo(route, objectId, newTab) {
+        if (route.search("http") !== 0) {
+            if (!newTab) {
+                if (objectId) this.$router.push({name: route, params: objectId});
+                else this.$router.push({name: route});
+            } else {
+                const ruteData = this.$router.resolve({name: route, params: objectId});
+                window.open(ruteData.href, '_blank');
+            }
+        } else window.open(route, '_blank');
     }
   }, // cierre methods
 };
