@@ -94,7 +94,7 @@
           <div class="card-header">
             <h3 class="card-title">Bandeja de resultados</h3>
           </div>
-          <div class="card-body table-responsive" v-loading="fullscreenLoading">
+          <div class="card-body table-responsive">
             <template v-if="listarNotasPendientesPaginated.length">
 
               <table class ="table table-hover table-head-fixed text-nowrap projects">
@@ -107,7 +107,7 @@
                     <th v-if="listRolPermisosByUsuario.includes('notaspendientes.editar')">Acciones</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody v-loading="fullscreenLoading">
                   <tr v-for="(item, index) in listarNotasPendientesPaginated" :key="index">
                     <td> <!-- itera mostrando la cantidad total de estudiantes -->
                         <div v-for="(itemUser, index) in item.alumnos" :key="index">

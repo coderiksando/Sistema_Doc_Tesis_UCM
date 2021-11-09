@@ -126,13 +126,19 @@
                     <h3 class="card-title">Bandeja de resultados</h3>
                 </div>
                 <div class="col-md-6" style="text-align: right;">
-                    <button class="btn btn-secondary" @click.prevent="mostrarModalAyuda">Ayuda
-                        <i class="fas fa-question-circle" ></i>
-                    </button>
+                    <el-popover
+                    title="Ayuda"
+                    placement="left"
+                    width="20"
+                    trigger="hover">
+                        <button slot="reference" class="btn btn-secondary" @click.prevent="redirectTo('dashboard.index', {id: 1}, true)">
+                            <i class="fas fa-question-circle" ></i>
+                        </button>
+                    </el-popover>
                 </div>
             </div>
           </div>
-          <div class="card-body table table-responsive" v-loading="fullscreenLoading">
+          <div class="card-body table table-responsive">
             <template v-if="listTesis.length">
               <table class ="table table-hover table-head-fixed text-nowrap projects">
                 <thead>
@@ -144,7 +150,7 @@
                     <th>Acciones</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody v-loading="fullscreenLoading">
                   <tr v-for="(item, index) in listarTesisPaginated" :key="index">
                     <td> <!-- itera mostrando la cantidad total de estudiantes -->
                         <div v-for="(itemUser, index) in item.listUsers" :key="index">
@@ -595,7 +601,6 @@ export default {
       }).then(response => {
             this.inicializarPaginacion();
             this.listTesis = response.data;
-            console.log(this.listTesis)
             this.fullscreenLoading = false;
       })
     },
@@ -617,7 +622,6 @@ export default {
                 nombre: 'Todas',
                 updated_at: null
             });
-            console.log(this.listarEscuelasByFidsByProfesor);
         })
     },
     getListarAllTesis(){
@@ -856,11 +860,15 @@ export default {
         this.fillCrearComision.InstitucionPEx = '';
       }
     },
-    redirectTo(route, objectId) {
-        console.log(route.search("http"))
+    redirectTo(route, objectId, newTab) {
         if (route.search("http") !== 0) {
-            if (objectId) this.$router.push({name: route, params: objectId});
-            else this.$router.push({name: route});
+            if (!newTab) {
+                if (objectId) this.$router.push({name: route, params: objectId});
+                else this.$router.push({name: route});
+            } else {
+                const ruteData = this.$router.resolve({name: route, params: objectId});
+                window.open(ruteData.href, '_blank');
+            }
         } else window.open(route, '_blank');
     }
   }//cierre de methods

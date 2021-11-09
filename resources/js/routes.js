@@ -73,12 +73,13 @@ export const rutas = [
         component: require('./components/modulos/authenticate/passrecovery').default
     },
     {
-        path: '/dashboard',
+        path: '/dashboard/:id?',
         name: 'dashboard.index',
         component: require('./components/modulos/dashboard/Index').default,
         beforeEnter: (to, from, next) => {
             verificarAcceso(to, from, next);
-        }
+        },
+        props: true
     },
 /*********      RUTAS MODULO ADMINISTRACION DE USUARIOS           *********/
     {
