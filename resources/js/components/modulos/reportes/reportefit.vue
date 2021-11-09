@@ -319,6 +319,9 @@
                                     <div class="float-left">
                                         {{moment(item.updated_at).format("DD-MM-YYYY") + ', ' + globFunct.capitalizeFirstLetter(item.titulo.slice(0, 80))}}{{((item.titulo.length > 80) ? '...':'')}}
                                     </div>
+                                    <div class="float-right">
+                                        {{item.escuela.nombre}}
+                                    </div>
                                     <br>
                                     <div class="float-left">
                                         (Prof. Guía: {{globFunct.cutFullName(item.user__p__guia.nombres,item.user__p__guia.apellidos)}}, Alumno inscriptor: {{globFunct.cutFullName(item.fit__user[0].user.nombres, item.fit__user[0].user.apellidos)}})

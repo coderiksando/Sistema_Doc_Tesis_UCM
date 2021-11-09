@@ -8,6 +8,6 @@
 </head>
 <body>
     <h1>Haz solicitado recuperar la contraseña</h1>
-    <p>Tu codigo de recuperacion es <strong>{{$token}}</strong> usalo para recuperar tu contraseña</p>
+    <p>Tu codigo de recuperación es <strong>{{$token}}</strong> úsalo para recuperar tu contraseña</p>
 </body>
 </html>

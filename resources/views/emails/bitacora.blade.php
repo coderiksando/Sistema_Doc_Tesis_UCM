@@ -8,10 +8,10 @@
 </head>
 <body>
 
-<p>Hola, con fecha y hora {{$DatosEmail->fecha}} el profesor {{$DatosEmail->full_name}} ha registrado una nueva bitacora de la tesis {{$DatosEmail->titulo}}</p>
+<p>Hola, con fecha y hora {{$DatosEmail->fecha}} el profesor {{$DatosEmail->full_name}} ha registrado una nueva Acta de Reunión de la "tesis" {{$DatosEmail->titulo}}</p>
 
     <ul>
-        <p>Sistema de administracion de tesistas</p>
+        <p>Sistema de Gestión y Administración de Documentos</p>
         <p>Universidad Catolica Del Maule</p>
     </ul>
     

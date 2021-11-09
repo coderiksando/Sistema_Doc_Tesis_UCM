@@ -9,7 +9,7 @@ use Debugbar;
 class ParametrosController extends Controller
 {
     public function getParametros(Request $request){
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $arrayParametros = $request->params;
         $arrayResultado = [];
@@ -22,16 +22,24 @@ class ParametrosController extends Controller
     }
 
     public function setParametros(Request $request){
-        $maxStudentNumber    = $request->MaxStudentNumber;
-        $avancesTesisSize    = $request->AvancesTesisSize;
-        $actaSize            = $request->ActaSize;
-        $constanciaSize      = $request->ConstanciaSize;
-        $avancesTesisFormato = $request->AvancesTesisFormato;
-        $actaFormato         = $request->ActaFormato;
-        $constanciaFormato   = $request->ConstanciaFormato;
-        $habilitarRegistro   = $request->HabilitarRegistro;
-        $terminoAbreviado    = $request->TerminoAbreviado;
-        $terminoExtendido    = $request->TerminoExtendido;
+        $maxStudentNumber           = $request->MaxStudentNumber;
+        $avancesTesisSize           = $request->AvancesTesisSize;
+        $actaSize                   = $request->ActaSize;
+        $constanciaSize             = $request->ConstanciaSize;
+        $avancesTesisFormato        = $request->AvancesTesisFormato;
+        $actaFormato                = $request->ActaFormato;
+        $constanciaFormato          = $request->ConstanciaFormato;
+        $habilitarRegistro          = $request->HabilitarRegistro;
+        $terminoAbreviado           = $request->TerminoAbreviado;
+        $terminoExtendido           = $request->TerminoExtendido;
+        $habilitarEmails            = $request->HabilitarEmails;
+        $emailAceptarFormulario     = $request->emailAceptarFormulario;
+        $emailSubirAvance           = $request->emailSubirAvance;
+        $emailCrearActaReunion      = $request->emailCrearActaReunion;
+        $emailNotaFinal             = $request->emailNotaFinal;
+        $emailNotaPendiente         = $request->emailNotaPendiente;
+        $emailCrearFID              = $request->emailCrearFID;
+        
 
         Parametro::where('parametro', 'MaxStudentNumber')->delete();
         Parametro::create(['parametro'=>'MaxStudentNumber', 'valor' => $maxStudentNumber]);
@@ -50,6 +58,20 @@ class ParametrosController extends Controller
         Parametro::where('parametro', 'AvancesTesisFormato')->delete();
         Parametro::where('parametro', 'ActaFormato')->delete();
         Parametro::where('parametro', 'ConstanciaFormato')->delete();
+        Parametro::where('parametro', 'HabilitarEmails')->delete();
+        Parametro::create(['parametro'=>'HabilitarEmails', 'valor' => $habilitarEmails]);
+        Parametro::where('parametro', 'emailAceptarFormulario')->delete();
+        Parametro::create(['parametro'=>'emailAceptarFormulario', 'valor' => $emailAceptarFormulario]);
+        Parametro::where('parametro', 'emailSubirAvance')->delete();
+        Parametro::create(['parametro'=>'emailSubirAvance', 'valor' => $emailSubirAvance]);
+        Parametro::where('parametro', 'emailCrearActaReunion')->delete();
+        Parametro::create(['parametro'=>'emailCrearActaReunion', 'valor' => $emailCrearActaReunion]);
+        Parametro::where('parametro', 'emailNotaFinal')->delete();
+        Parametro::create(['parametro'=>'emailNotaFinal', 'valor' => $emailNotaFinal]);
+        Parametro::where('parametro', 'emailNotaPendiente')->delete();
+        Parametro::create(['parametro'=>'emailNotaPendiente', 'valor' => $emailNotaPendiente]);
+        Parametro::where('parametro', 'emailCrearFID')->delete();
+        Parametro::create(['parametro'=>'emailCrearFID', 'valor' => $emailCrearFID]);
 
         foreach ($avancesTesisFormato as $formato) {
             Parametro::create([

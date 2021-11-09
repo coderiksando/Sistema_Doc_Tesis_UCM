@@ -8,6 +8,7 @@ use App\Fit_User;
 use App\Users_Roles;
 use App\ArchivoPdf;
 use App\Comisiones;
+use App\Parametro;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -251,6 +252,8 @@ class AlumnoController extends Controller
         $firstUser = (object) $firstUser;
         $firstUserEscuela = $firstUser->id_escuela;
         $firstUserEscuela = (int) $firstUserEscuela;
+        $habilitarEmails  =  Parametro::where('parametro', 'HabilitarEmails')->first()->valor;
+        $habilitarEmailCrearFID  =  Parametro::where('parametro', 'emailCrearFID')->first()->valor;
 
         DB::transaction(function () use ($fit, $firstUserEscuela) {
             $registroFit = new Fit;
@@ -287,7 +290,10 @@ class AlumnoController extends Controller
         $DatosEmail[0]->titulo = $fit->cTitulo;
         $fecha = Carbon::now();
         $DatosEmail[0]->fecha = $fecha;
-        // Mail::to($DatosEmail[0]->emailpg)->queue(new MailRegistroFit($DatosEmail[0]));
+
+        if ($habilitarEmails && $habilitarEmailCrearFID) {
+            Mail::to($DatosEmail[0]->emailpg)->queue(new MailRegistroFit($DatosEmail[0]));
+        }
     }
     public function setCambiarEstadoFIT(Request $request){
         if(!$request->ajax()) return redirect('/');
@@ -295,6 +301,9 @@ class AlumnoController extends Controller
         $nIdTesis   = $request->nIdTesis;
         $cEstadoPg  = $request->cEstadoPg;
         $rol = $request->session()->get('rol');
+
+        $habilitarEmails  =  Parametro::where('parametro', 'HabilitarEmails')->first()->valor;
+        $habilitarEmailAceptarFormulario  =  Parametro::where('parametro', 'emailAceptarFormulario')->first()->valor;
 
         $nIdTesis   = ($nIdTesis == NULL) ? ($nIdTesis = 0) : $nIdTesis;
         $cEstadoPg  = ($cEstadoPg == NULL) ? ($cEstadoPg = 0) : $cEstadoPg;
@@ -324,7 +333,10 @@ class AlumnoController extends Controller
             $datoInsertado->estado = $estadoFit;
             $datoInsertado->motivo = $request->motivo;
             array_push($datosEmail, $datoInsertado);
-            // Mail::to($datosEmail[$i]->emailpg)->queue(new MailAceptacionFit($datosEmail[$i]));
+            if ($habilitarEmails && $habilitarEmailAceptarFormulario) {
+                Mail::to($datosEmail[$i]->emailpg)->queue(new MailAceptacionFit($datosEmail[$i]));
+            }
+            
             $i++;
         }
     }

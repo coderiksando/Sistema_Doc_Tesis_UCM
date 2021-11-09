@@ -11,7 +11,7 @@ class MailNotafinal extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject = 'Resolucion nota final tesis';
+    public $subject = 'Resolución nota final TCC';
     public $DatosEmail;
     /**
      * Create a new message instance.

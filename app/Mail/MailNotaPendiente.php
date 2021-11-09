@@ -11,7 +11,7 @@ class MailNotaPendiente extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject = 'Aviso de inscripcion de nota pendiente';
+    public $subject = 'Aviso de inscripción de nota pendiente';
     public $DatosEmail;
     /**
      * Create a new message instance.
