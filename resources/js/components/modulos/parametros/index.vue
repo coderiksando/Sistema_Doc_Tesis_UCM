@@ -176,6 +176,101 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="form-group row">
+                                <label class="col-md-8 col-form-label">Permitir envio de correos</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="switch">
+                                <input v-model="enableEmails" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <template v-if="enableEmails">
+                        <div class="row">
+                            <div class="col-md-9 offset-1">
+                                <div class="form-group row">
+                                    <label class="col-md-8 col-form-label">Activar correo al aceptar un formulario</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="switch">
+                                    <input v-model="emailAceptarFormulario" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9 offset-1">
+                                <div class="form-group row">
+                                    <label class="col-md-8 col-form-label">Activar correo al subir un avance</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="switch">
+                                    <input v-model="emailSubirAvance" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9 offset-1">
+                                <div class="form-group row">
+                                    <label class="col-md-8 col-form-label">Activar correo al crear un acta de reunión</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="switch">
+                                    <input v-model="emailCrearActaReunion" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9 offset-1">
+                                <div class="form-group row">
+                                    <label class="col-md-8 col-form-label">Activar correo al ingresar nota final</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="switch">
+                                    <input v-model="emailNotaFinal" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9 offset-1">
+                                <div class="form-group row">
+                                    <label class="col-md-8 col-form-label">Activar correo al ingresar nota pendiente</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="switch">
+                                    <input v-model="emailNotaPendiente" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9 offset-1">
+                                <div class="form-group row">
+                                    <label class="col-md-8 col-form-label">Activar correo al registrar un FID</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="switch">
+                                    <input v-model="emailCrearFID" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </template>
                 </div>
                 <div class="card-footer">
                     <div class="row">
@@ -225,6 +320,13 @@
         terminoExtendido: '',
         defTerminoAbreviado: '',
         defTerminoExtendido: '',
+        enableEmails: 0,
+        emailAceptarFormulario: 0,
+        emailSubirAvance: 0,
+        emailCrearActaReunion: 0,
+        emailNotaFinal: 0,
+        emailNotaPendiente: 0,
+        emailCrearFID: 0
       }
     },
     mounted(){
@@ -254,7 +356,7 @@
         },
         getParametros(){
             var url = '/admin/parametros';
-            axios.post(url,{'params': ['MaxStudentNumber', 'AvancesTesisSize', 'ActaSize', 'ConstanciaSize', 'AvancesTesisFormato', 'ActaFormato', 'ConstanciaFormato', 'HabilitarRegistro', 'TerminoDeTitulo', 'TerminoDeTituloExtendido']}).then(response => {
+            axios.post(url,{'params': ['MaxStudentNumber', 'AvancesTesisSize', 'ActaSize', 'ConstanciaSize', 'AvancesTesisFormato', 'ActaFormato', 'ConstanciaFormato', 'HabilitarRegistro', 'TerminoDeTitulo', 'TerminoDeTituloExtendido', 'HabilitarEmails', 'emailAceptarFormulario', 'emailSubirAvance', 'emailCrearActaReunion', 'emailNotaFinal', 'emailNotaPendiente', 'emailCrearFID']}).then(response => {
                 this.maxStudentNumber = this.defMaxStudentNumber = parseInt(response.data[0][0]);
                 this.avancesTesisSize = this.defAvancesTesisSize = parseInt(response.data[1][0]);
                 this.actaSize = this.defActaSize = parseInt(response.data[2][0]);
@@ -265,6 +367,13 @@
                 this.enableReg = parseInt(response.data[7][0]);
                 this.terminoAbreviado = this.defTerminoAbreviado = response.data[8][0];
                 this.terminoExtendido = this.defTerminoExtendido = response.data[9][0];
+                this.enableEmails = parseInt(response.data[10][0]);
+                this.emailAceptarFormulario = parseInt(response.data[11][0]);
+                this.emailSubirAvance = parseInt(response.data[12][0]);
+                this.emailCrearActaReunion = parseInt(response.data[13][0]);
+                this.emailNotaFinal = parseInt(response.data[14][0]);
+                this.emailNotaPendiente = parseInt(response.data[15][0]);
+                this.emailCrearFID = parseInt(response.data[16][0]);
             })
         },
         guardarParametros(){
@@ -281,6 +390,13 @@
                 'HabilitarRegistro'     : this.enableReg,
                 'TerminoAbreviado'      : this.terminoAbreviado,
                 'TerminoExtendido'      : this.terminoExtendido,
+                'HabilitarEmails'       : this.enableEmails,
+                'emailAceptarFormulario': this.emailAceptarFormulario,
+                'emailSubirAvance'      : this.emailSubirAvance,
+                'emailCrearActaReunion' : this.emailCrearActaReunion,
+                'emailNotaFinal'        : this.emailNotaFinal,
+                'emailNotaPendiente'    : this.emailNotaPendiente,
+                'emailCrearFID'         : this.emailCrearFID
                 }).then(response => {
                     this.fullscreenLoading = false;
                     Swal.fire({

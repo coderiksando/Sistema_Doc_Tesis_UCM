@@ -103,7 +103,7 @@ class SecretariaController extends Controller
 
 
     public function setRegistrarNota(Request $request){
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $id         = $request->id_tesis;
         $nota       = $request->nota;
@@ -113,6 +113,9 @@ class SecretariaController extends Controller
         $fitUser    = Fit_User::where('id_fit', $fit->id)->get()->pluck('id_user');
         $alumnos    = User::whereIn('id_user', $fitUser)->get();
         $fit->User_P_Guia;
+
+        $habilitarEmails  =  Parametro::where('parametro', 'HabilitarEmails')->first()->valor;
+        $habilitarEmailNotaFinal  =  Parametro::where('parametro', 'emailNotaFinal')->first()->valor;
 
         $DatosEmail->emailpg = $fit->User_P_Guia->email;
         $DatosEmail->titulo = $fit->titulo;
@@ -128,7 +131,9 @@ class SecretariaController extends Controller
         foreach($alumnos as $alumno){
             $DatosEmail->email = $alumno->email;
             $DatosEmail->full_name = $alumno->nombres . ' ' . $alumno->apellidos;
-            // Mail::to([$DatosEmail->email, $DatosEmail->emailpg])->queue(new MailNotafinal($DatosEmail));
+            if ($habilitarEmails && $habilitarEmailNotaFinal) {
+                Mail::to([$DatosEmail->email, $DatosEmail->emailpg])->queue(new MailNotafinal($DatosEmail));
+            }
         }
 
         Fit::find($id)->update(['nota'=>$nota,'estado'=>$estado]);

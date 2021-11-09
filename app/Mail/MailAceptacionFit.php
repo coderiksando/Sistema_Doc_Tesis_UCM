@@ -11,7 +11,7 @@ class MailAceptacionFit extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject = 'Actualizacion formulario de inscripcion de tesis';
+    public $subject = 'Actualizacion Formulario de Inscripcion de Documentos';
     public $DatosEmail;
     /**
      * Create a new message instance.

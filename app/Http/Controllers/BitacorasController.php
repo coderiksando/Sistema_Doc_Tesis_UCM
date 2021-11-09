@@ -70,13 +70,19 @@ class BitacorasController extends Controller
         $fit_users  = $fit->Fit_User;
         $DatosEmail = new stdClass();  
         $fit->User_P_Guia;
+        $habilitarEmails  =  Parametro::where('parametro', 'HabilitarEmails')->first()->valor;
+        $habilitarEmailCrearActaReunion  =  Parametro::where('parametro', 'emailCrearActaReunion')->first()->valor;
 
         foreach($fit_users as $fit_user){
             $DatosEmail->email_a = $fit_user->User->email;
             $DatosEmail->titulo = $fit->titulo;
             $DatosEmail->full_name = $fit->User_P_Guia->nombres . ' ' . $fit->User_P_Guia->apellidos;
             $DatosEmail->fecha = Carbon::now();
-            // Mail::to($DatosEmail->email_a)->queue(new MailBitacoras($DatosEmail));
+
+            if ($habilitarEmails && $habilitarEmailCrearActaReunion) {
+                Mail::to($DatosEmail->email_a)->queue(new MailBitacoras($DatosEmail));
+            }
+            
         }
 
         $Bitacora               = new Bitacoras();

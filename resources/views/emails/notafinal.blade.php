@@ -12,7 +12,7 @@
      con nota final de tesis {{$DatosEmail->nota}}. </p>
 
     <ul>
-        <p>Sistema de administracion de tesistas</p>
+        <p>Sistema de Gestión y Administración de Documentos</p>
         <p>Universidad Catolica Del Maule</p>
     </ul>
     

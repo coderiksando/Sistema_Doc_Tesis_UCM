@@ -12,7 +12,7 @@
      fecha propuesta {{$DatosEmail->fechapropuesta}}. </p>
 
     <ul>
-        <p>Sistema de administracion de tesistas</p>
+        <p>Sistema de Gestión y Administración de Documentos</p>
         <p>Universidad Catolica Del Maule</p>
     </ul>
     

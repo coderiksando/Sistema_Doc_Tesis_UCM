@@ -11,7 +11,7 @@ class MailBitacoras extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject = 'Nueva Bitacora';
+    public $subject = 'Nueva Acta de reunión';
     public $DatosEmail;
     /**
      * Create a new message instance.

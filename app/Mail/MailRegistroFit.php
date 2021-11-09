@@ -11,7 +11,7 @@ class MailRegistroFit extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject = 'Formulario de inscripcion de tesis';
+    public $subject = 'Formulario de Inscripcion de Documentos';
     public $DatosEmail;
     /**
      * Create a new message instance.

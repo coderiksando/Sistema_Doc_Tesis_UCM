@@ -11,7 +11,7 @@ class MailPasswordReset extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject = 'Recuperacion de contraseña sistema de tesistas';
+    public $subject = 'Recuperación de contraseña SGYAD UCM';
     public $token;
     /**
     

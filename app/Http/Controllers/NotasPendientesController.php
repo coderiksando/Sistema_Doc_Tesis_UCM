@@ -24,6 +24,9 @@ class NotasPendientesController extends Controller
         $fit    = $this->getFit();
         $fecha = $request->fecha_propuesta;
 
+        $habilitarEmails  =  Parametro::where('parametro', 'HabilitarEmails')->first()->valor;
+        $habilitarEmailNotaPendiente  =  Parametro::where('parametro', 'emailNotaPendiente')->first()->valor;
+
         $NotaP                      = new NotasPendientes();
         $NotaP->id_tesis            = $fit->id;
         $NotaP->fecha_propuesta     = $fecha;
@@ -48,7 +51,10 @@ class NotasPendientesController extends Controller
         $fechaSistema = Carbon::now();
         $DatosEmail->fecha = $fechaSistema;
 
-        // Mail::to([$DatosEmail->emailpg,$Coordinador->email])->queue(new MailNotaPendiente($DatosEmail));
+        if ($habilitarEmails && $habilitarEmailNotaPendiente) {
+           Mail::to([$DatosEmail->emailpg,$Coordinador->email])->queue(new MailNotaPendiente($DatosEmail));
+        }
+        
         return $NotaP;
     }
     public function setAsignarNotaP(Request $request){

@@ -129,14 +129,19 @@ class AvancesController extends Controller
         $user = User::find($idUser);
         $fit  = Fit_User::Firstwhere('id_user', $idUser)->Fit;
         $fit->User_P_Guia;
+        $habilitarEmails  =  Parametro::where('parametro', 'HabilitarEmails')->first()->valor;
+        $habilitarEmailSubirAvance  =  Parametro::where('parametro', 'emailSubirAvance')->first()->valor;
+
         $DatosEmail = new stdClass();
         $DatosEmail->email_pg = $fit->User_P_Guia->email;
         $DatosEmail->titulo = $fit->titulo;
         $DatosEmail->full_name = $user->nombres . ' ' . $user->apellidos;
         $DatosEmail->fecha = Carbon::now();
 
-        // Mail::to($DatosEmail->email_pg)->queue(new MailAvances($DatosEmail));
-
+        if ($habilitarEmails && $habilitarEmailSubirAvance) {
+            Mail::to($DatosEmail->email_pg)->queue(new MailAvances($DatosEmail));
+        }
+    
         $rpta               = new AvancesTesis();
         $rpta->descripcion  = $request->descripcion;
         $rpta->id_archivo   = $request->id_archivo;
