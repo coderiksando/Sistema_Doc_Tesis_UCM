@@ -8,13 +8,13 @@
 </head>
 <body>
 
-<p>Hola, con fecha y hora {{$DatosEmail->fecha}} se ha resgistrado la nota final del alumno {{$DatosEmail->full_name}} el cual {{$DatosEmail->estadonota}}
-     con nota final de tesis {{$DatosEmail->nota}}. </p>
+<p>Hola, con fecha y hora {{$DatosEmail->fecha}} se ha registrado la nota final del alumno {{$DatosEmail->full_name}} el cual
+    @if($DatosEmail->nota) {{$DatosEmail->estadonota}} con nota final de {{$DatosEmail->tipo}} {{$DatosEmail->nota}}. @else {{$DatosEmail->estadonota}}. @endif </p>
 
-    <ul>
-        <p>Sistema de Gestión y Administración de Documentos</p>
-        <p>Universidad Catolica Del Maule</p>
-    </ul>
+<br>
+<p>Sistema de Gestión y Administración de Documentos</p>
+<p>Universidad Catolica Del Maule</p>
+
     
 </body>
 </html>

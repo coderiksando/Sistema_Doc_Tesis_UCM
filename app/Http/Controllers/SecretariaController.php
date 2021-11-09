@@ -9,6 +9,7 @@ use App\User;
 use App\Fit;
 use App\ArchivoPdf;
 use App\Fit_User;
+use App\Parametro;
 use \stdClass;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -119,14 +120,15 @@ class SecretariaController extends Controller
 
         $DatosEmail->emailpg = $fit->User_P_Guia->email;
         $DatosEmail->titulo = $fit->titulo;
-        $DatosEmail->fecha = Carbon::now();
+        $DatosEmail->tipo = $fit->tipo;
+        $DatosEmail->fecha = Carbon::now()->format('d-M-Y H:i');
         $DatosEmail->nota = $nota;
         if($nota >= 4 || $nota == 0){
             $estado = 'A';
-            $DatosEmail->estadonota = 'Aprobo';
+            $DatosEmail->estadonota = 'Aprobó';
         }else{
             $estado = 'R';
-            $DatosEmail->estadonota = 'Reprobo';
+            $DatosEmail->estadonota = 'Reprobó';
         }
         foreach($alumnos as $alumno){
             $DatosEmail->email = $alumno->email;

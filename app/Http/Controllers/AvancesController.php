@@ -7,6 +7,7 @@ use App\Fit;
 use App\Fit_User;
 use App\User;
 use App\ArchivoPdf;
+use App\Parametro;
 use \stdClass;
 use App\Mail\MailAvances;
 use Illuminate\Http\Request;
@@ -135,8 +136,9 @@ class AvancesController extends Controller
         $DatosEmail = new stdClass();
         $DatosEmail->email_pg = $fit->User_P_Guia->email;
         $DatosEmail->titulo = $fit->titulo;
+        $DatosEmail->tipo = $fit->tipo;
         $DatosEmail->full_name = $user->nombres . ' ' . $user->apellidos;
-        $DatosEmail->fecha = Carbon::now();
+        $DatosEmail->fecha = Carbon::now()->format('d-M-Y H:i');
 
         if ($habilitarEmails && $habilitarEmailSubirAvance) {
             Mail::to($DatosEmail->email_pg)->queue(new MailAvances($DatosEmail));

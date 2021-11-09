@@ -8,17 +8,16 @@
 </head>
 <body>
 
-<p>Hola, con fecha y hora {{$DatosEmail->fecha}} el profesor {{$DatosEmail->full_name}} ha {{$DatosEmail->estado}} el Formulario de
-    Inscripcion de "Documentos" {{$DatosEmail->titulo}}@if ($DatosEmail->motivo), el motivo por el cual fue rechazado es "{{$DatosEmail->motivo}}".
+<p>Hola, con fecha y hora {{$DatosEmail->fecha}}, el {{$DatosEmail->rol}} {{$DatosEmail->full_name}} ha {{$DatosEmail->estado}} el Formulario de
+    Inscripción de {{$DatosEmail->tipo}} con titulo {{$DatosEmail->titulo}}@if ($DatosEmail->motivo), el motivo por el cual fue rechazado es "{{$DatosEmail->motivo}}".
     @else
     .
     @endif
     </p>
 
-    <ul>
-        <p>Sistema de Gestión y Administración de Documentos</p>
-        <p>Universidad Catolica Del Maule</p>
-    </ul>
+<br>
+<p>Sistema de Gestión y Administración de Documentos</p>
+<p>Universidad Catolica Del Maule</p>
 
 </body>
 </html>
