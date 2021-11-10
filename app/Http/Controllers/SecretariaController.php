@@ -21,7 +21,7 @@ use Debugbar;
 class SecretariaController extends Controller
 {
     public function getListarAlumnos(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
 
         $user     = Auth::user();
         $IdEscuela  = $user->id_escuela;
@@ -31,12 +31,14 @@ class SecretariaController extends Controller
         $estado         = $request->cEstado_tesis;
         $EstadoAlumno   = $request->nEstadoAlumno;
         $nivelAcceso    = $request->nivelAcceso;
+        $EstadoActa     = $request->nEstadoActa;
 
         $rut        = ($rut == NULL) ? ($rut = '') : $rut;
         $nombre     = ($nombre == NULL) ? ($nombre = '') : $nombre;
         $estado     = ($estado == NULL) ? ($estado = '') : $estado;
         $IdEscuela  = ($IdEscuela == NULL) ? ($IdEscuela = '') : $IdEscuela;
         $EstadoAlumno  = ($EstadoAlumno == NULL) ? ($EstadoAlumno = '') : $EstadoAlumno;
+        $EstadoActa  = ($EstadoActa == NULL) ? ($EstadoActa = 2) : $EstadoActa;
 
         $filter1 = User::where('nombres', 'like', "%$nombre%")->orWhere('apellidos', 'like', "%$nombre%")->get();
         $filter2 = User::where('rut', 'like', "%$rut%");
@@ -57,6 +59,14 @@ class SecretariaController extends Controller
             $item->final = $final;
             return collect($item)->merge($acta);
         });
+
+        if ($EstadoActa == 0) {
+            $docs = $docs->whereNull('path')->values();
+        }
+
+        if ($EstadoActa == 1) {
+            $docs = $docs->whereNotNull('path')->values();
+        }
 
         return $docs;
     }
