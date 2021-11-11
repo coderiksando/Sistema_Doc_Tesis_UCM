@@ -25,6 +25,8 @@ class AlterTableEscuelaAbreviacion extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('escuelas', function (Blueprint $table) {
+            $table->dropColumn('nombre_abreviado');
+        });
     }
 }

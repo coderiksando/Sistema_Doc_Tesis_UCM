@@ -78,6 +78,7 @@ class FilesController extends Controller
             $rpta->filename = $filename;
             $rpta->id_fit = $fit->id;
             $rpta->tipo_pdf = $tipo;
+            $rpta->id_propietario = $idUser;
             $rpta->save();
         }
 
@@ -136,17 +137,6 @@ class FilesController extends Controller
         $archivo->delete();
     }
 
-    public function getArchivo(Request $request){
-        $tipo = $request->tipo;
-        $fit = $request->fit;
-        if (!$fit) {
-            $idUser = Auth::user()->id_user;
-            $fit = Fit_User::Firstwhere('id_user', $idUser)->Fit->id;
-        }
-        $archivoPDF = ArchivoPdf::where('id_fit', $fit)->orderByDesc('created_at')->firstWhere('tipo_pdf', $tipo);
-        // Debugbar::info(last(explode('/', $archivoPDF->path)));
-        return $archivoPDF;
-    }
     public function setRegistrarTesisfinalizada(Request $request){
         if(!$request->ajax()) return redirect('/');
         if ($request->file) {

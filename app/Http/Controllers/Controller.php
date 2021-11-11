@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Log;
 use App\Fit_User;
+use App\ArchivoPdf;
 use Illuminate\Http\Request;
 use Debugbar;
 
@@ -48,6 +49,23 @@ class Controller extends BaseController
         
         return $Fit;
         //return response()->json($Fit);
+    }
+
+    public function getArchivo(Request $request){
+        $tipo = $request->tipo;
+        $fit = $request->fit;
+        $idUser = Auth::user()->id_user;
+        if (!$fit) {
+            $fit = Fit_User::Firstwhere('id_user', $idUser)->Fit->id;
+        }
+        $archivoPDF = ArchivoPdf::where('id_fit', $fit);
+        if ($tipo == 'constancia_t') {
+            $archivoPDF->where('id_propietario', $idUser);
+        }
+
+        $archivoPDF = $archivoPDF->orderByDesc('created_at')->firstWhere('tipo_pdf', $tipo);
+
+        return $archivoPDF;
     }
 
 }

@@ -10,7 +10,7 @@ class ArchivoPdf extends Model
     protected $fillable = [
         'id', 'id_fit', 'path',
         'filename', 'tipo_pdf', 'created_at',
-        'updated_at'
+        'updated_at', 'id_propietario'
     ];
 
     public function Fit(){
@@ -21,5 +21,8 @@ class ArchivoPdf extends Model
     }
     public function Revision_Comision(){
         return $this->hasOne(Revision_Comision::class, 'id_archivo', 'id');
+    }
+    public function Propietario(){
+        return $this->belongsTo(User::class, 'id_propietario', 'id_user');
     }
 }

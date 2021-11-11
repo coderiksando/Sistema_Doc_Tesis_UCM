@@ -92,13 +92,20 @@ class SecretariaController extends Controller
     public function setSubirActa(Request $request){
         if(!$request->ajax()) return redirect('/');
 
-        $id = $request->id_tesis;
+        $id = $request->fit;
         $file = $request->file;
         $bandera = Str::random(10);
         $filename = $file->getClientOriginalName();
         $fileserver = $bandera .'_'. $filename;
 
         Storage::putFileAs('public/users', $file, $fileserver);
+
+        $lastVersion = $this->getArchivo($request);
+        if($lastVersion){
+            $name = last(explode('/', $lastVersion->path));
+            Storage::delete('public/users/'.$name);
+            $lastVersion->delete();
+        }
 
         $rpta = new ArchivoPdf;
         $rpta->path = asset('storage/users/'.$fileserver);
