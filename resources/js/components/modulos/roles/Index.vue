@@ -51,6 +51,18 @@
         <div class="card card-info">
           <div class="card-header">
             <h3 class="card-title">Bandeja de resultados</h3>
+            <div style="text-align: right;">
+                <el-popover
+                title="Ayuda"
+                placement="left"
+                width="300"
+                trigger="hover"
+                content="Se redirigirá a la sección 'Roles'">
+                    <button slot="reference" class="btn btn-secondary" @click.prevent="redirectTo('dashboard.index', {open: 'roles', focus: 'roles'}, true)">
+                        <i class="fas fa-question-circle" ></i>
+                    </button>
+                </el-popover>
+            </div>
           </div>
           <div class="card-body table-resposive">
             <template v-if="listarRolesPaginated.length">
@@ -324,6 +336,17 @@ export default {
       this.fillVerRol.cSlug = data.slug;
       //obtener los permisos por el rol seleccionado
       this.getListarPermisosByRol(data.id);
+    },
+    redirectTo(route, objectId, newTab) {
+        if (route.search("http") !== 0) {
+            if (!newTab) {
+                if (objectId) this.$router.push({name: route, params: objectId});
+                else this.$router.push({name: route});
+            } else {
+                const ruteData = this.$router.resolve({name: route, params: objectId});
+                window.open(ruteData.href, '_blank');
+            }
+        } else window.open(route, '_blank');
     }
   }//cierre de methods
 }

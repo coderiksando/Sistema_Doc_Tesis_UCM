@@ -129,9 +129,10 @@
                     <el-popover
                     title="Ayuda"
                     placement="left"
-                    width="20"
-                    trigger="hover">
-                        <button slot="reference" class="btn btn-secondary" @click.prevent="redirectTo('dashboard.index', {id: 1}, true)">
+                    width="300"
+                    trigger="hover"
+                    :content="'Se redirigirá a la sección Revisar '+terminoTitulo+'s'">
+                        <button slot="reference" class="btn btn-secondary" @click.prevent="redirectTo('dashboard.index', {open: 'tesis', focus: 'tesis'}, true)">
                             <i class="fas fa-question-circle" ></i>
                         </button>
                     </el-popover>

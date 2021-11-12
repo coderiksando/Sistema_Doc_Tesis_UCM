@@ -6,6 +6,18 @@
           <div id="accordion">
             <div class="card-header btn d-block" data-toggle="collapse" data-target="#collapseBody" aria-expanded="false" aria-controls="collapseBody" style="color: white;" id="headingtable">
               <h3 class="card-title">Ingresar información</h3>
+                <div style="text-align: right;">
+                    <el-popover
+                    title="Ayuda"
+                    placement="left"
+                    width="300"
+                    trigger="hover"
+                    content="Se redirigirá a la sección 'Información de escuela'">
+                        <button slot="reference" class="btn btn-secondary" @click.prevent="redirectTo('dashboard.index', {open: 'escuelasdocumentos', focus: 'escuelasdocumentos'}, true)">
+                            <i class="fas fa-question-circle" ></i>
+                        </button>
+                    </el-popover>
+                </div>
             </div>
             <div class="collapse show" id="collapseBody" aria-labelledby="headingtable" data-parent="#accordion">
               <div class="card-body">
@@ -599,6 +611,17 @@ export default {
           timer: 1500
         })
       })
+    },
+    redirectTo(route, objectId, newTab) {
+        if (route.search("http") !== 0) {
+            if (!newTab) {
+                if (objectId) this.$router.push({name: route, params: objectId});
+                else this.$router.push({name: route});
+            } else {
+                const ruteData = this.$router.resolve({name: route, params: objectId});
+                window.open(ruteData.href, '_blank');
+            }
+        } else window.open(route, '_blank');
     }
   }//cierre de methods
 }

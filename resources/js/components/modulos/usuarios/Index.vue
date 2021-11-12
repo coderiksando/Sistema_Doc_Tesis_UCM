@@ -118,6 +118,17 @@
         <div class="card card-info">
           <div class="card-header">
             <h3 class="card-title">Bandeja de resultados</h3>
+            <div style="text-align: right;">
+                <el-popover
+                title="Ayuda"
+                placement="left"
+                width="20"
+                trigger="hover">
+                    <button slot="reference" class="btn btn-secondary" @click.prevent="redirectTo('dashboard.index', {open: 'usuarios', focus: 'usuarios'}, true)">
+                        <i class="fas fa-question-circle" ></i>
+                    </button>
+                </el-popover>
+            </div>
           </div>
           <div class="card-body table table-responsive">
             <template v-if="listarUsuariosPaginated.length">
@@ -299,7 +310,6 @@ export default {
         })
         .then((response) => {
             this.listRol = response.data;
-            console.log(this.listRol);
         });
     },
     limpiarCriteriosBsq(){
@@ -326,7 +336,6 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listUsuarios = response.data;
-          console.log(this.listUsuarios)
           this.fullscreenLoading = false;
       })
     },
@@ -413,8 +422,18 @@ export default {
             });
           }
         });
+    },
+    redirectTo(route, objectId, newTab) {
+        if (route.search("http") !== 0) {
+            if (!newTab) {
+                if (objectId) this.$router.push({name: route, params: objectId});
+                else this.$router.push({name: route});
+            } else {
+                const ruteData = this.$router.resolve({name: route, params: objectId});
+                window.open(ruteData.href, '_blank');
+            }
+        } else window.open(route, '_blank');
     }
-
   }//cierre de methods
 }
 </script>

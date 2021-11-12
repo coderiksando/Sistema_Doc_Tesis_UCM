@@ -73,7 +73,7 @@ export const rutas = [
         component: require('./components/modulos/authenticate/passrecovery').default
     },
     {
-        path: '/dashboard/:id?',
+        path: '/dashboard/:open?/:focus?',
         name: 'dashboard.index',
         component: require('./components/modulos/dashboard/Index').default,
         beforeEnter: (to, from, next) => {

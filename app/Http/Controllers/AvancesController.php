@@ -7,6 +7,7 @@ use App\Fit;
 use App\Fit_User;
 use App\User;
 use App\ArchivoPdf;
+use App\Parametro;
 use \stdClass;
 use App\Mail\MailAvances;
 use Illuminate\Http\Request;
@@ -141,7 +142,7 @@ class AvancesController extends Controller
         if ($habilitarEmails && $habilitarEmailSubirAvance) {
             Mail::to($DatosEmail->email_pg)->queue(new MailAvances($DatosEmail));
         }
-    
+
         $rpta               = new AvancesTesis();
         $rpta->descripcion  = $request->descripcion;
         $rpta->id_archivo   = $request->id_archivo;
