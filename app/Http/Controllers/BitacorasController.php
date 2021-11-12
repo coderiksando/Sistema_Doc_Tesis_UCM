@@ -5,6 +5,7 @@ use App\Fit;
 use App\Fit_User;
 use App\Bitacoras;
 use App\User;
+use App\Parametro;
 use \stdClass;
 use Carbon\Carbon;
 use App\Mail\MailBitacoras;
@@ -76,8 +77,9 @@ class BitacorasController extends Controller
         foreach($fit_users as $fit_user){
             $DatosEmail->email_a = $fit_user->User->email;
             $DatosEmail->titulo = $fit->titulo;
+            $DatosEmail->tipo = $fit->tipo;
             $DatosEmail->full_name = $fit->User_P_Guia->nombres . ' ' . $fit->User_P_Guia->apellidos;
-            $DatosEmail->fecha = Carbon::now();
+            $DatosEmail->fecha = Carbon::now()->format('d-M-Y H:i');
 
             if ($habilitarEmails && $habilitarEmailCrearActaReunion) {
                 Mail::to($DatosEmail->email_a)->queue(new MailBitacoras($DatosEmail));

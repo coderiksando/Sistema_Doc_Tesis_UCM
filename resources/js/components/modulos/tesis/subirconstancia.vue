@@ -167,12 +167,8 @@ export default {
           this.modalShow = true;
           return;
       }
-      if(!this.Archivo || this.Archivo == undefined){
-        this.fullscreenLoading = true;
-        this.setGuardarConstancia();
-      } else {
-        this.setRegistrarArchivoPDF();
-      }
+      this.setRegistrarArchivoPDF();
+      
     },
     setRegistrarArchivoPDF(){
       this.fullscreenLoading = true;

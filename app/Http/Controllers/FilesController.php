@@ -78,6 +78,7 @@ class FilesController extends Controller
             $rpta->filename = $filename;
             $rpta->id_fit = $fit->id;
             $rpta->tipo_pdf = $tipo;
+            $rpta->id_propietario = $idUser;
             $rpta->save();
         }
 
@@ -136,17 +137,6 @@ class FilesController extends Controller
         $archivo->delete();
     }
 
-    public function getArchivo(Request $request){
-        $tipo = $request->tipo;
-        $fit = $request->fit;
-        if (!$fit) {
-            $idUser = Auth::user()->id_user;
-            $fit = Fit_User::Firstwhere('id_user', $idUser)->Fit->id;
-        }
-        $archivoPDF = ArchivoPdf::where('id_fit', $fit)->orderByDesc('created_at')->firstWhere('tipo_pdf', $tipo);
-        // Debugbar::info(last(explode('/', $archivoPDF->path)));
-        return $archivoPDF;
-    }
     public function setRegistrarTesisfinalizada(Request $request){
         if(!$request->ajax()) return redirect('/');
         if ($request->file) {
@@ -358,6 +348,31 @@ class FilesController extends Controller
                 $relativeName = basename($value);
                 if (in_array($relativeName, $listArchivo->toArray())){
                     $zip->addFile($value, $relativeName);
+                }
+            }
+            $zip->close();
+        }
+        return response()->download(public_path('storage/compressed/'.$flag.$tipoArchivo));
+    }
+
+    public function descargaZipByFid(Request $request) {
+        if(!$request->ajax()) return redirect('/');
+        $nIdFid = $request->nIdFid;
+        $tipoArchivo = $request->cTipo;
+        $listArchivo = ArchivoPdf::where('id_fit', $nIdFid)->where('tipo_pdf', $tipoArchivo)->get()->pluck('path');
+
+        foreach ($listArchivo as $key=>$archivo) {
+            $listArchivo[$key] = last(explode('/', $archivo));
+        }
+        
+        $zip = new ZipArchive();
+        $flag = Str::random(10);
+        if ($zip->open(public_path('storage/compressed/'.$flag.$tipoArchivo), ZipArchive::CREATE) == TRUE) {
+            $files = Files::files(public_path('storage/users'));
+            foreach ($files as $key=>$value) {
+                $relativeName = basename($value);
+                if (in_array($relativeName, $listArchivo->toArray())){
+                    $zip->addFile($value, 'Constancia '.$key.'.'.last(explode('.', $relativeName)));
                 }
             }
             $zip->close();

@@ -286,9 +286,9 @@ class AlumnoController extends Controller
                         ->where('id_user','=', $fit->nIdPg)
                         ->get();
         $alumnoPrincipal = (object)$fit->cUsers[0];
-        $DatosEmail[0]->alumno = $alumnoPrincipal->nombres;
+        $DatosEmail[0]->alumno = $alumnoPrincipal->nombres.' '.$alumnoPrincipal->apellidos;
         $DatosEmail[0]->titulo = $fit->cTitulo;
-        $fecha = Carbon::now();
+        $fecha = Carbon::now()->format('d-M-Y H:i');
         $DatosEmail[0]->fecha = $fecha;
 
         if ($habilitarEmails && $habilitarEmailCrearFID) {
@@ -319,10 +319,10 @@ class AlumnoController extends Controller
         $registroFit->update();
         // Envío de email a estudiantes con el informe de su estado FIT
         $fit = Fit::find($nIdTesis);
-        $fecha = Carbon::now();
+        $fecha = Carbon::now()->format('d-M-Y H:i');
         $datosEmail = [];
         $i = 0;
-        $estadoFit = ($fit->aprobado_pg == 'A') ? ('aprobado') : ('rechazado');
+        $estadoFit = ($fit->aprobado_pg == 'A' || $fit->aprobado_pg == 'V') ? ('aprobado') : ('rechazado');
         foreach($fit->Fit_User as $item) {
             $user = $item->User;
             $datoInsertado = new stdClass();
@@ -332,6 +332,8 @@ class AlumnoController extends Controller
             $datoInsertado->fecha = $fecha;
             $datoInsertado->estado = $estadoFit;
             $datoInsertado->motivo = $request->motivo;
+            $datoInsertado->rol = $rol;
+            $datoInsertado->tipo = $fit->tipo;
             array_push($datosEmail, $datoInsertado);
             if ($habilitarEmails && $habilitarEmailAceptarFormulario) {
                 Mail::to($datosEmail[$i]->emailpg)->queue(new MailAceptacionFit($datosEmail[$i]));

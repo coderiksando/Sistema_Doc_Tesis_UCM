@@ -8,12 +8,12 @@
 </head>
 <body>
 
-<p>Hola, con fecha y hora {{$DatosEmail->fecha}} el alumno {{$DatosEmail->full_name}} ha subido un nuevo avance de la "tesis" {{$DatosEmail->titulo}}</p>
+<p>Hola, con fecha y hora {{$DatosEmail->fecha}} el alumno {{$DatosEmail->full_name}} ha subido un nuevo avance de @if ($DatosEmail->tipo == 'Proyecto de titulo') el @else la @endif {{$DatosEmail->tipo}} con titulo {{$DatosEmail->titulo}}</p>
 
-    <ul>
-        <p>Sistema de Gestión y Administración de Documentos</p>
-        <p>Universidad Catolica Del Maule</p>
-    </ul>
+<br>
+<p>Sistema de Gestión y Administración de Documentos</p>
+<p>Universidad Catolica Del Maule</p>
+
     
 </body>
 </html>

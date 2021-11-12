@@ -194,7 +194,7 @@
                       <template v-if="rolActivo != 'Alumno'">
                         <button :disabled="!(item.constancia)"
                         title="Descargar constancia de examen" class="btn boton btn-info"
-                        @click.prevent="redirectTo(item.constancia.path)">
+                        @click.prevent="descargarConstancia(item)">
                           <b>CE</b>
                         </button>
                       </template>
@@ -871,6 +871,30 @@ export default {
                 window.open(ruteData.href, '_blank');
             }
         } else window.open(route, '_blank');
+    },
+    descargarConstancia(fid){
+      if (fid.listUsers.length == 1) {
+        this.redirectTo(fid.constancia.path);
+      }else{
+        var url = '/archivo/descargaZipByFid';
+        let postConfig = {
+              headers: {'X-Requested-With': 'XMLHttpRequest'},
+              responseType: 'blob',
+          }
+        axios.post(url,
+        {
+          nIdFid: fid.id,
+          cTipo: 'constancia_t'
+        },
+        postConfig
+        ).then(response => {
+          var oMyBlob = new Blob([response.data], {type : 'application/zip'});
+          var url = document.createElement('a')
+          url.href = URL.createObjectURL(oMyBlob);
+          url.download = 'Constancias.zip';
+          url.click();
+        });
+      }
     }
   }//cierre de methods
 }

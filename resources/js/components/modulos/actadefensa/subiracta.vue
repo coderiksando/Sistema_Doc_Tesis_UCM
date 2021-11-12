@@ -162,8 +162,9 @@ export default {
       }
     },
     setRegistrarArchivoPDF(){
-      this.form.append('file', this.fillSubirActa.oArchivo)
-      this.form.append('id_tesis', this.fillSubirActa.IdTesis)
+      this.form.append('file', this.fillSubirActa.oArchivo);
+      this.form.append('fit', this.fillSubirActa.IdTesis);
+      this.form.append('tipo', 'acta');
       const config = { headers: {'Content-Type': 'multipart/form-data'}}
       var url = '/secretaria/setSubirActa'
       axios.post(url, this.form, config).then(response => {

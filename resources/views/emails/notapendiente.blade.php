@@ -11,10 +11,10 @@
 <p>Hola, con fecha y hora {{$DatosEmail->fecha}} el alumno {{$DatosEmail->full_name}} con rut {{$DatosEmail->rut_int1}} ha registrado una solicitud de nota pendiente con
      fecha propuesta {{$DatosEmail->fechapropuesta}}. </p>
 
-    <ul>
-        <p>Sistema de Gestión y Administración de Documentos</p>
-        <p>Universidad Catolica Del Maule</p>
-    </ul>
+<br>
+<p>Sistema de Gestión y Administración de Documentos</p>
+<p>Universidad Catolica Del Maule</p>
+
     
 </body>
 </html>

@@ -43,6 +43,23 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Estado Acta</label>
+                    <div class="col-md-9">
+                        <el-select v-model="estadoActa"
+                        @change="getListarAlumnos"
+                        >
+                        <el-option
+                            v-for="item in listEstadosActa"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                        </el-select>
+                    </div>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
@@ -154,10 +171,16 @@ export default {
         {value: 'R', label: 'Reprobada'},
         {value: 'D', label: 'En desarrollo'}
       ],
+      listEstadosActa: [
+        {value: 2, label: 'Todas'},
+        {value: 1, label: 'Con Acta'},
+        {value: 0, label: 'Sin Acta'}
+      ],
       terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       pageNumber: 0,
-      perPage: 10
+      perPage: 10,
+      estadoActa: 2,
     }
   },
   computed: {
@@ -213,6 +236,7 @@ export default {
       this.fillBsqAlumno.nRut = '';
       this.fillBsqAlumno.nIdEscuela = '';
       this.fillBsqAlumno.nEstadoAlumno='';
+      this.estadoActa = 2;
     },
     limpiarBandejaUsuarios(){
       this.listAlumnos = [];
@@ -224,7 +248,8 @@ export default {
         params: {
           'cNombre'       : this.fillBsqAlumno.cNombre,
           'nRut'          : this.fillBsqAlumno.nRut,
-          'nEstadoAlumno' : this.fillBsqAlumno.nEstadoAlumno
+          'nEstadoAlumno' : this.fillBsqAlumno.nEstadoAlumno,
+          'nEstadoActa'   : this.estadoActa
         }
       }).then(response => {
           this.inicializarPaginacion();

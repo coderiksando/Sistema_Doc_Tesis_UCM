@@ -9,6 +9,7 @@ use App\User;
 use App\Fit;
 use App\ArchivoPdf;
 use App\Fit_User;
+use App\Parametro;
 use \stdClass;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -20,7 +21,7 @@ use Debugbar;
 class SecretariaController extends Controller
 {
     public function getListarAlumnos(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
 
         $user     = Auth::user();
         $IdEscuela  = $user->id_escuela;
@@ -30,12 +31,14 @@ class SecretariaController extends Controller
         $estado         = $request->cEstado_tesis;
         $EstadoAlumno   = $request->nEstadoAlumno;
         $nivelAcceso    = $request->nivelAcceso;
+        $EstadoActa     = $request->nEstadoActa;
 
         $rut        = ($rut == NULL) ? ($rut = '') : $rut;
         $nombre     = ($nombre == NULL) ? ($nombre = '') : $nombre;
         $estado     = ($estado == NULL) ? ($estado = '') : $estado;
         $IdEscuela  = ($IdEscuela == NULL) ? ($IdEscuela = '') : $IdEscuela;
         $EstadoAlumno  = ($EstadoAlumno == NULL) ? ($EstadoAlumno = '') : $EstadoAlumno;
+        $EstadoActa  = ($EstadoActa == NULL) ? ($EstadoActa = 2) : $EstadoActa;
 
         $filter1 = User::where('nombres', 'like', "%$nombre%")->orWhere('apellidos', 'like', "%$nombre%")->get();
         $filter2 = User::where('rut', 'like', "%$rut%");
@@ -56,6 +59,14 @@ class SecretariaController extends Controller
             $item->final = $final;
             return collect($item)->merge($acta);
         });
+
+        if ($EstadoActa == 0) {
+            $docs = $docs->whereNull('path')->values();
+        }
+
+        if ($EstadoActa == 1) {
+            $docs = $docs->whereNotNull('path')->values();
+        }
 
         return $docs;
     }
@@ -81,13 +92,20 @@ class SecretariaController extends Controller
     public function setSubirActa(Request $request){
         if(!$request->ajax()) return redirect('/');
 
-        $id = $request->id_tesis;
+        $id = $request->fit;
         $file = $request->file;
         $bandera = Str::random(10);
         $filename = $file->getClientOriginalName();
         $fileserver = $bandera .'_'. $filename;
 
         Storage::putFileAs('public/users', $file, $fileserver);
+
+        $lastVersion = $this->getArchivo($request);
+        if($lastVersion){
+            $name = last(explode('/', $lastVersion->path));
+            Storage::delete('public/users/'.$name);
+            $lastVersion->delete();
+        }
 
         $rpta = new ArchivoPdf;
         $rpta->path = asset('storage/users/'.$fileserver);
@@ -119,14 +137,15 @@ class SecretariaController extends Controller
 
         $DatosEmail->emailpg = $fit->User_P_Guia->email;
         $DatosEmail->titulo = $fit->titulo;
-        $DatosEmail->fecha = Carbon::now();
+        $DatosEmail->tipo = $fit->tipo;
+        $DatosEmail->fecha = Carbon::now()->format('d-M-Y H:i');
         $DatosEmail->nota = $nota;
         if($nota >= 4 || $nota == 0){
             $estado = 'A';
-            $DatosEmail->estadonota = 'Aprobo';
+            $DatosEmail->estadonota = 'Aprobó';
         }else{
             $estado = 'R';
-            $DatosEmail->estadonota = 'Reprobo';
+            $DatosEmail->estadonota = 'Reprobó';
         }
         foreach($alumnos as $alumno){
             $DatosEmail->email = $alumno->email;

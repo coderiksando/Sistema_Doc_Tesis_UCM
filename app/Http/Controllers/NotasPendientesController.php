@@ -6,6 +6,7 @@ use App\Fit;
 use App\Fit_User;
 use App\User;
 use App\Users_Roles;
+use App\Parametro;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,8 +48,8 @@ class NotasPendientesController extends Controller
         $DatosEmail->titulo = $fit->titulo;
         $DatosEmail->rut_int1 = Auth::user()->rut;
         $DatosEmail->full_name = Auth::user()->nombres.' '.Auth::user()->apellidos;
-        $DatosEmail->fechapropuesta = $fecha;
-        $fechaSistema = Carbon::now();
+        $DatosEmail->fechapropuesta = Carbon::parse($fecha)->format('d-M-Y');
+        $fechaSistema = Carbon::now()->format('d-M-Y H:i');
         $DatosEmail->fecha = $fechaSistema;
 
         if ($habilitarEmails && $habilitarEmailNotaPendiente) {
