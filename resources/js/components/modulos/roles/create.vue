@@ -130,7 +130,7 @@ export default {
   },
   mounted(){
       EventBus.$emit('navegar', 'Crear rol');
-      this.getListarPermisosByRol();
+      this.getListarPermisos();
   },
   methods:{
     limpiarCriterios(){
@@ -140,9 +140,10 @@ export default {
     abrirModal(){
       this.modalShow = !this.modalShow;
     },
-    getListarPermisosByRol(){
-        var ruta = '/administracion/roles/getListarPermisosByRol'
-        axios.get(ruta).then( response => {
+    getListarPermisos(){
+        this.loading = true;
+        var ruta = '/administracion/roles/getListarPermisos'
+        axios.get(ruta, {}).then( response => {
             this.listPermisos = response.data;
             this.filterPermisosByRol();
         })

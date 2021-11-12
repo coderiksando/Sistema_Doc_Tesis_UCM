@@ -48,7 +48,7 @@
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label">Título</label>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" :placeholder="'Título de '+terminoTitulo" v-model="fillBsqTesisReporte.cTitulo">
+                                <input type="text" class="form-control" placeholder='Ingrese una o más palabras' v-model="fillBsqTesisReporte.cTitulo">
                             </div>
                         </div>
                     </div>
@@ -230,7 +230,7 @@
                             <div class="col-md-8">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dfecharango[0]"
-                                    placeholder="Desde"
+                                    placeholder="Ingrese fecha inicial"
                                     format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="pickerOptions"
@@ -239,7 +239,7 @@
                                 <el-date-picker
                                     class="mt-1"
                                     v-model="fillBsqTesisReporte.dfecharango[1]"
-                                    placeholder="Hasta"
+                                    placeholder="Ingrese fecha final"
                                     format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="endOption">
@@ -253,7 +253,7 @@
                             <div class="col-md-8">
                                 <el-date-picker
                                     v-model="fillBsqTesisReporte.dFechaFID[0]"
-                                    placeholder="Desde"
+                                    placeholder="Ingrese fecha inicial"
                                     format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="pickerOptions"
@@ -262,7 +262,7 @@
                                 <el-date-picker
                                     class="mt-1"
                                     v-model="fillBsqTesisReporte.dFechaFID[1]"
-                                    placeholder="Hasta"
+                                    placeholder="Ingrese fecha final"
                                     format="dd/MM/yyyy"
                                     value-format="yyyy-MM-dd"
                                     :picker-options="endOptionFID">
