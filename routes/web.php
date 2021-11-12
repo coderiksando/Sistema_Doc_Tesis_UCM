@@ -147,7 +147,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/archivo/getArchivo', 'FilesController@getArchivo');
   Route::post('/archivo/setRegistrarTesisfinalizada', 'FilesController@setRegistrarTesisfinalizada');
   Route::post('/archivo/setEditarTesisfinalizada', 'FilesController@setEditarTesisfinalizada');
-
+  Route::post('/archivo/descargaZipByFid', 'FilesController@descargaZipByFid');
   /*********    RUTAS MODULO DE ADMINISTRACION DE DOCUMENTOS ALUMNOS     **********/
   Route::get('/secretaria/getListarAlumnos', 'SecretariaController@getListarAlumnos');
   Route::Post('/secretaria/setGenerarMemoRevision', 'SecretariaController@setGenerarMemoRevision');

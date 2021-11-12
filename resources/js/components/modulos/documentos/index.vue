@@ -76,7 +76,7 @@
                     </td>
                     <td >
                       <button :disabled="!item.final" title="Documento final" class="btn boton btn-info font-weight-bold" @click.prevent="redirectTo((item.final) ? item.final.path : '')">DF</button>
-                      <button :disabled="!item.constancia" title="Constancia de examen" class="btn boton btn-info font-weight-bold" @click.prevent="redirectTo((item.constancia) ? item.constancia.path : '')" target="_blank">CE</button>
+                      <button :disabled="!item.constancia" title="Constancia de examen" class="btn boton btn-info font-weight-bold" @click.prevent="descargarConstancia(item)">CE</button>
                       <button :disabled="!item.path" title="Acta de defensa" class="btn btn-info boton font-weight-bold" @click.prevent="redirectTo((item.path) ? item.path : '')">AD</button>
                       <button :title="terminoTituloEx" class="btn btn-primary boton font-weight-bold" @click.prevent="setGenerarDocumento(item.id)">
                          {{terminoTitulo}}
@@ -290,6 +290,31 @@ export default {
                 window.open(ruteData.href, '_blank');
             }
         } else window.open(route, '_blank');
+    },
+
+    descargarConstancia(fid){
+      if (fid.alumnos.length == 1) {
+        this.redirectTo(fid.constancia.path);
+      }else{
+        var url = '/archivo/descargaZipByFid';
+        let postConfig = {
+              headers: {'X-Requested-With': 'XMLHttpRequest'},
+              responseType: 'blob',
+          }
+        axios.post(url,
+        {
+          nIdFid: fid.id,
+          cTipo: 'constancia_t'
+        },
+        postConfig
+        ).then(response => {
+          var oMyBlob = new Blob([response.data], {type : 'application/zip'});
+          var url = document.createElement('a')
+          url.href = URL.createObjectURL(oMyBlob);
+          url.download = 'Constancias.zip';
+          url.click();
+        });
+      }
     }
 
   }//cierre de methods

@@ -430,8 +430,8 @@
                                     <button :disabled="!item.acta" :key="'acta'+index" title="Descargar acta de defensa" class="btn boton btn-info" @click.prevent="redirectTo((item.acta) ? item.acta.path : '')">
                                         <b>Ac</b>
                                     </button>
-                                    <button :disabled="!item.constancia" :key="'constancia'+index" title="Descargar constancia" class="btn boton btn-info" @click.prevent="redirectTo((item.constancia) ? item.constancia.path : '')">
-                                        <b>C</b>
+                                    <button :disabled="!item.constancia" :key="'constancia'+index" title="Descargar constancia" class="btn boton btn-info" @click.prevent="descargarConstancia(item)">
+                                        <b>CE</b>
                                     </button>
                                 </dd>
                             </dl>
@@ -878,7 +878,31 @@ import globFunct from '../../../services/globFunct';
                 this.fillBsqTesisReporte.nCantAvances[0] = 0;
                 this.fillBsqTesisReporte.nCantAvances[1] = 0;
             }
-        }
+        },
+        descargarConstancia(fid){
+      if (fid.fit__user.length == 1) {
+        this.redirectTo(fid.constancia.path);
+      }else{
+        var url = '/archivo/descargaZipByFid';
+        let postConfig = {
+              headers: {'X-Requested-With': 'XMLHttpRequest'},
+              responseType: 'blob',
+          }
+        axios.post(url,
+        {
+          nIdFid: fid.id,
+          cTipo: 'constancia_t'
+        },
+        postConfig
+        ).then(response => {
+          var oMyBlob = new Blob([response.data], {type : 'application/zip'});
+          var url = document.createElement('a')
+          url.href = URL.createObjectURL(oMyBlob);
+          url.download = 'Constancias.zip';
+          url.click();
+        });
+      }
+    }
 
     }//cierre de methods
   }

@@ -354,4 +354,29 @@ class FilesController extends Controller
         }
         return response()->download(public_path('storage/compressed/'.$flag.$tipoArchivo));
     }
+
+    public function descargaZipByFid(Request $request) {
+        if(!$request->ajax()) return redirect('/');
+        $nIdFid = $request->nIdFid;
+        $tipoArchivo = $request->cTipo;
+        $listArchivo = ArchivoPdf::where('id_fit', $nIdFid)->where('tipo_pdf', $tipoArchivo)->get()->pluck('path');
+
+        foreach ($listArchivo as $key=>$archivo) {
+            $listArchivo[$key] = last(explode('/', $archivo));
+        }
+        
+        $zip = new ZipArchive();
+        $flag = Str::random(10);
+        if ($zip->open(public_path('storage/compressed/'.$flag.$tipoArchivo), ZipArchive::CREATE) == TRUE) {
+            $files = Files::files(public_path('storage/users'));
+            foreach ($files as $key=>$value) {
+                $relativeName = basename($value);
+                if (in_array($relativeName, $listArchivo->toArray())){
+                    $zip->addFile($value, 'Constancia '.$key.'.'.last(explode('.', $relativeName)));
+                }
+            }
+            $zip->close();
+        }
+        return response()->download(public_path('storage/compressed/'.$flag.$tipoArchivo));
+    }
 }
