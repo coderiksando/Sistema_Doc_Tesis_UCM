@@ -80,7 +80,7 @@
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label">Avances
-                                <el-popover
+                                <!-- <el-popover
                                 title="Número de avances (Opcional)"
                                 placement="top-start"
                                 width="400"
@@ -89,7 +89,7 @@
                                         donde [0,0] serán todos los trabajos, [0,1] si requiere un trabajo de 0 a 1 avances,
                                         [N,M] buscará los trabajos entre N y M avances.">
                                     <i slot="reference" class="fas fa-question-circle"></i>
-                                </el-popover>
+                                </el-popover> -->
                             </label>
                             <div class="col-md-2">
                                 <input style="width: 40px; height: 40px; margin-left: auto; margin-right: 0;" type="checkbox" v-model="countAvances" @change="activarAvances">
@@ -128,7 +128,7 @@
                             fillBsqTesisReporte.cEstadoIns= '';}">
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label">Estado
-                                <el-popover
+                                <!-- <el-popover
                                 :title="'Estados de '+terminoTitulo"
                                 placement="top-start"
                                 width="400"
@@ -136,7 +136,7 @@
                                 content="Si requiere estados generales o estados sin registrar,
                                         efectúe doble click en la sección 'Estado' y ésta entregará más opciones.">
                                     <i slot="reference" class="fas fa-question-circle"></i>
-                                </el-popover>
+                                </el-popover> -->
                             </label>
                             <div v-if="!showSeparatedStates" class="col-md-8">
                                 <el-select v-model="fillBsqTesisReporte.cEstadoTesisId"
