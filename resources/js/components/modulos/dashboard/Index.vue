@@ -387,7 +387,7 @@
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('reportes.reportefit')">
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('reportes.reportefit')" ref="reportes">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#reportes' aria-expanded="false" aria-controls='reportes'>
@@ -399,15 +399,77 @@
                           </h5>
                         </div>
                         <div id='reportes' class="collapse" aria-labelledby='heading1' data-parent="#accordion">
-                            reportes.reportefit
-                            reportes.detallesavances
-                            reportes.detallesbitacoras
-                            reportes.logs
-                            reportes.general
+                            <dl class="pl-4">
+                                <dt ref="reportesreportefit">Criterios de búsqueda</dt>
+                                <dd class="pl-4 mr-2 text-justify">
+                                    Para realizar búsqueda de {{terminoTitulo}}, se usarán distintos filtros que estarán situados en la sección
+                                    "Criterios de búsqueda", estos servirán para realizar acotaciones de las búsquedas de {{terminoTitulo}}.
+                                    <br>
+                                    <template v-if="listRolPermisosByUsuario.includes('reportes.general')">
+                                       <b>Facultad: </b>Entregará todas las facultades inscritas en la plataforma, al seleccionar alguna de estas la
+                                       sección "Escuela" también será acotada, para entregar solo escuelas inscritas en la facultad seleccionada
+                                       (estará preseleccionada la Facultad de Ciencias de la Ingeniería), para la búsqueda de todas las facultades haremos click en
+                                       la sección derecha del input, donde se mostrará un ícono representativo <i class="el-icon-circle-close"></i>,
+                                       para quitar la opción preseleccionada y dejar en blanco este input.
+                                       <br>
+                                       <b>Escuelas: </b>Entregará todas las escuelas inscritas en el sistema, al seleccionar una escuela se
+                                       reducirá la lista de profesores dada en la sección "Profesor", en función de la escuela de pertenencia del profesor.
+                                       <br>
+                                    </template>
+                                    <b>Título: </b>Para realizar una búsqueda a través del título puede escribir el fragmento del título que desea
+                                    buscar (esta opción entrega preferentemente un resultado dependiendo del nivel de ambigüedad).
+                                    <br>
+                                    <b>Rut alumno:</b>Para realizar una búsqueda a través del rut de un alumno inscrito en la plataforma puede escribir
+                                    el fragmento o el rut completo del alumno (ejemplo: 11111111-1), buscar (esta opción entrega preferentemente un resultado dependiendo del nivel de ambigüedad).
+                                    <br>
+                                    <b>Profesor: </b>Entrega una lista de profesores, de los cuales puede seleccionar uno, con esto mostrará todos
+                                    los {{terminoTitulo}} que estén asociados a él como profesor guía.
+                                    <br>
+                                    <b>Avances: </b>Para realizar una búsqueda a través de la cantidad de avances que posee un {{terminoTitulo}}, accederemos a la sección
+                                    "Avances" donde activaremos el cuadro en el lado izquierdo de los inputs pertenecientes a la sección "Avances".
+                                    Usaremos cada input de la sección como el rango de número de avances que posee el {{terminoTitulo}}.
+                                    <br>
+                                    <b>Estado de notas: </b>Esta sección entregará los {{terminoTitulo}}, con notas pendientes activas, vencidas, sin notas pendientes y todas, de esta manera
+                                    podrá encontrar {{terminoTitulo}} que estén con registros de notas pendientes.
+                                    <br>
+                                    <b>Estado: </b>Esta sección entregará todos los posibles estados {{terminoTitulo}}, entre ellos estarán los usuales estados,
+                                    pero además se entrega una segunda opción dando <b>doble click en la sección "Estado"</b> y se activarán nuevos estados generales para los {{terminoTitulo}}.
+                                    Los nuevos estados que se agregarán al filtro de búsqueda son "Estado de inscripción" y "Estado de aprobación". El estado de inscripción
+                                    muestra el proceso de aceptación del {{terminoTitulo}} según profesores y directivos. El estado de aprobación hace referencia al estado
+                                    en que se encuentra su evaluación luego de ser registrada una nota por su defensa y trabajo.
+                                    <br>
+                                    <b>Categoría: </b>Entrega una lista de las generalidades de las vinculaciones.
+                                    <br>
+                                    <b>Vinculación: </b>Esta sección entrega una lista de todas las vinculaciones creadas en la plataforma, según nombre específico.
+                                    <br>
+                                    <b>Fecha ingreso alumno: </b>Entrega dos campos de información suministrables, donde representan un rango de fechas para
+                                    buscar el ingreso del alumno a la carrera cursada.
+                                    <br>
+                                    <b>Fecha de inscripción: </b>Entrega dos campos de información suministrables, donde representan un rango de fechas para
+                                    buscar el ingreso del {{terminoTitulo}} a la plataforma.
+                                </dd>
+                            </dl>
+                            <dl class="pl-4">
+                                <dt ref="reportesexportar">Exportar datos</dt>
+                                <dd class="pl-4 mr-2 text-justify">
+                                  Para extraer datos de los {{terminoTitulo}} registrados en la plataforma, nos dirigiremos a la sección "Bandeja de resultados",
+                                  donde en la sección derecha estará a disposición un botón titulado "Exportar" con ícono representativo <i class="fas fa-file-excel"></i>, éste generará
+                                  un documento en excel de todos los registros encontrados mediante el filtro hecho en la sección "Criterios de búsqueda".
+                                </dd>
+                            </dl>
+                            <dl class="pl-4">
+                                <dt ref="reportesinformacion">Información de {{terminoTitulo}}</dt>
+                                <dd class="pl-4 mr-2 text-justify">
+                                  En la sección de "Bandeja de resultados", se presentarán todos los {{terminoTitulo}}s, donde podrá hacer click en el
+                                  título del registro y aparecerá información complementaria y extendida, además de portar botones de acción para la búsqueda
+                                  (visión de: avances, actas de reunión y todos los datos del {{terminoTitulo}}), además otros botones de descarga de documentos
+                                  (Documento final, acta de defensa y constancia de examen).
+                                </dd>
+                            </dl>
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('avances.index')">
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('avances.index')" ref="avances">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#avances' aria-expanded="false" aria-controls='avances'>
@@ -419,6 +481,20 @@
                           </h5>
                         </div>
                         <div id='avances' class="collapse" aria-labelledby='heading1' data-parent="#accordion">
+                          <dl class="pl-4" v-if="listRolPermisosByUsuario.includes('EsAlumno')">
+                            <dt ref="archivoscomisiones">Subir Avance</dt>
+                            <dd class="pl-4 mr-2 text-justify">
+                                Para ingresar un nuevo avance de documento diríjase al botón "Subir avance" con el icono representativo <i class="fas fa-plus-square"></i>. Luego de hacer click en el botón, se abrirá un formulario de registro de avances, en el cual deberá cargar un archivo y darle una breve descripción, el avance se subirá una vez que haga click en el botón guardar.
+                            </dd>
+                            <dt ref="archivoscomisiones">Editar Avance</dt>
+                            <dd class="pl-4 mr-2 text-justify">
+                                Para editar un avance de documento diríjase al botón "Editar" con el icono representativo <i class="fas fa-pen"></i> junto al avance que desea editar. Luego de hacer click en el botón, se abrirá un formulario de edición de avances, en el cual puede cargar un nuevo archivo para reemplazar al anterior o darle una nueva descripción al archivo subido anteriormente, el avance se editará una vez que haga click en el botón guardar.
+                            </dd>
+                            <dt ref="archivoscomisiones">Subir Documento final</dt>
+                            <dd class="pl-4 mr-2 text-justify">
+                                Una vez que su trabajo de conclusión de curso sea evaluado y aprobado se habilitará un botón en la esquina superior derecha de la sección de avances de color verde, con el icono representativo <i class="fas fa-plus-square"></i> y el texto "Subir PDF final". Luego de hacer click en el botón, se abrirá un formulario de ingreso de documento final, en el cual puede cargar la versión final del documento que se encontrará disponible en el repositorio de la universidad. En la sección inferior de la interfaz se encuentra el Formulario de Autorización de Publicación en el cual se le consultará si desea que el documento subido se encuentre disponible de forma pública. El documento final será ingresado una vez que haga click en el botón guardar.
+                            </dd>
+                          </dl>
                             avances.index
                             avances.crear
                             avances.editar
@@ -427,7 +503,7 @@
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('notaspendientes.index')">
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('notaspendientes.index')" ref="notaspendientes">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#notaspendientes' aria-expanded="false" aria-controls='notaspendientes'>
@@ -439,14 +515,55 @@
                           </h5>
                         </div>
                         <div id='notaspendientes' class="collapse" aria-labelledby='heading1' data-parent="#accordion">
-                            notaspendientes.index
-                            notaspendientes.crear
-                            notaspendientes.editar
-                            notaspendientes.prorroga
+                            <dl class="pl-4" v-if="!listRolPermisosByUsuario.includes('EsAlumno')">
+                                <dt ref="notaspendientesindex">Criterios de búsqueda</dt>
+                                <dd class="pl-4 mr-2 text-justify">
+                                    <b>Alumno: </b>Buscará a cualquier alumno que coincida entre el grupo de {{terminoTitulo}} registrado, esto se refiere
+                                    a búsquedas de texto parciales, ya sea en el nombre o apellido del estudiante.
+                                    <br>
+                                    <b>Estado: </b>Se filtrará por el estado actual de la nota pendiente, buscando solo {{terminoTitulo}}s con notas pendientes
+                                    con o sin prórroga.
+                                    <br>
+                                    <b>Rango de fechas: </b>Entrega dos campos de información que serán usados para la búsqueda del registro de una nota pendiente.
+                                </dd>
+                                <dt ref="notaspendientesindex">Bandeja de resultados</dt>
+                                <dd class="pl-4 mr-2 text-justify">
+                                    Entregará la información relacionada al {{terminoTitulo}} buscado por los criterios de búsqueda y presentará
+                                    los campos propuestos por el o los alumnos del {{terminoTitulo}}.
+                                </dd>
+                            </dl>
+                            <dl class="pl-4" v-if="listRolPermisosByUsuario.includes('notaspendientes.crear')">
+                                <dt ref="notaspendientescrear">Solicitar nota pendiente</dt>
+                                <dd class="pl-4 mr-2 text-justify">
+                                  Para solicitar una nota pendiente debemos hacer click en el botón "Solicitar nota pendiente" con ícono representativo
+                                  <i class="fas fa-plus-square"></i>. Una vez en la interfaz "Ingresar nota pendiente", mostrará una ventana emergente que especifica
+                                  que el formulario pedido solo dejará constancia a nivel de facultad, por lo que aun es necesario realizar la solicitud a traves del portal del alumno.
+                                  Se pedirá una fecha propuesta para establecer un tiempo máximo para terminar su trabajo de conclusión de curso, al terminar haga click en el
+                                  botón "Guardar".
+                                </dd>
+                            </dl>
+                            <dl class="pl-4" v-if="listRolPermisosByUsuario.includes('notaspendientes.editar')">
+                                <dt ref="notaspendienteseditar">Editar solicitud de nota pendiente</dt>
+                                <dd class="pl-4 mr-2 text-justify">
+                                    En la sección "Bandeja de resultados", se dispone el registro de la nota pendiente anteriormente pedida, a su derecha
+                                    estará la columna de "acciones", la cual dispone del botón "Editar" con ícono representativo <i class="fas fa-pencil-alt"></i>.
+                                    Luego de hacer click, se mostrará la interfaz "Editar nota pendiente", donde se puede editar la fecha de nota pendiente en la
+                                    sección "Fecha propuesta", luego de realizar los cambios usaremos el botón "Guardar".
+                                </dd>
+                            </dl>
+                            <dl class="pl-4" v-if="listRolPermisosByUsuario.includes('notaspendientes.prorroga')">
+                                <dt ref="notaspendientesprorroga">Solicitar prórroga de nota pendiente</dt>
+                                <dd class="pl-4 mr-2 text-justify">
+                                    En la sección "Bandeja de resultados", se dispone el registro de la nota pendiente anteriormente pedida, a su derecha
+                                    estará la columna de "acciones", la cual dispone del botón "Solicitar prórroga" con ícono representativo <i class="fas fa-calendar-check"></i>.
+                                    Luego de hacer click, se mostrará la interfaz "Ingresar prórroga de nota pendiente", donde se puede ingresar la fecha de
+                                    prórroga nota pendiente en la sección "Fecha de prórroga", para finalizar usaremos el botón "Guardar".
+                                </dd>
+                            </dl>
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('bitacoras.index')">
+                      <div class="card-white" v-if="false && listRolPermisosByUsuario.includes('bitacoras.index')">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#bitacoras' aria-expanded="false" aria-controls='bitacoras'>
@@ -464,7 +581,7 @@
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('comisiones.index')">
+                      <div class="card-white" v-if="false && listRolPermisosByUsuario.includes('comisiones.index')">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#comisiones' aria-expanded="false" aria-controls='comisiones'>
@@ -483,7 +600,7 @@
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('actadefensa.index')">
+                      <div class="card-white" v-if="false && listRolPermisosByUsuario.includes('actadefensa.index')">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#actadefensa' aria-expanded="false" aria-controls='actadefensa'>
@@ -501,7 +618,7 @@
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('documentos.index')">
+                      <div class="card-white" v-if="false && listRolPermisosByUsuario.includes('documentos.index')">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#documentos' aria-expanded="false" aria-controls='documentos'>
@@ -517,7 +634,7 @@
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('index.tesisfinal')">
+                      <div class="card-white" v-if="false && listRolPermisosByUsuario.includes('index.tesisfinal')">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#tesisfinal' aria-expanded="false" aria-controls='tesisfinal'>
@@ -535,7 +652,7 @@
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('abandono.index')">
+                      <div class="card-white" v-if="false && listRolPermisosByUsuario.includes('abandono.index')">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#abandono' aria-expanded="false" aria-controls='abandono'>
@@ -551,10 +668,12 @@
                         </div>
                       </div>
 
+                        <template v-if="false">
                             EsAlumno
                             EsProfesor
                             fid.acceso.total
                             fid.acceso.parcial
+                        </template>
 
                     </div>
                   </div>
