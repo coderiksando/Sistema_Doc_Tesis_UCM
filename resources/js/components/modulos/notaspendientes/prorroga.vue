@@ -90,7 +90,7 @@ export default {
   },
   methods:{
     limpiarCriterios(){
-      this.fillEditarNotaP.fecha_propuesta = '';
+      this.fillEditarNotaP.fecha_prorroga = '';
     },
     abrirModal(){
       this.modalShow = !this.modalShow;
@@ -98,7 +98,7 @@ export default {
     validarEditarNotaP(){
       this.error = 0;
       this.mensajeError = [];
-        if(!this.fillEditarNotaP.fecha_propuesta){
+        if(!this.fillEditarNotaP.fecha_prorroga){
           this.mensajeError.push("La fecha es un campo obligatorio")
         }
         if(this.mensajeError.length){
@@ -164,14 +164,14 @@ export default {
     },
     getListarNotasPendientes(){
       this.fullscreenLoading = true;
-      var url = '/notaspendientes/getListarNotasPendientes'
+      var url = '/notaspendientes/getNotaPendienteById'
       axios.get(url, {
         params: {
           'nIdNotaP' : this.fillEditarNotaP.nIdNotaP,
         }
       }).then(response => {
           //this.inicializarPaginacion();
-          this.fillEditarNotaP.fecha_propuesta = response.data[0].fecha_propuesta;
+          this.fillEditarNotaP.fecha_prorroga = response.data.fecha_prorroga;
           this.fullscreenLoading = false;
       })
     },

@@ -138,6 +138,14 @@ class NotasPendientesController extends Controller
         return $notasP;
 
     }
+
+    public function getNotaPendienteById(Request $request){
+        $nIdNotaP = $request->nIdNotaP;
+
+        $notaP = NotasPendientes::find($nIdNotaP);
+
+        return $notaP;
+    }
     public function getListarNotasPendientesbyEscuela(Request $request){
         //if(!$request->ajax()) return redirect('/');
         $user           = Auth::user();

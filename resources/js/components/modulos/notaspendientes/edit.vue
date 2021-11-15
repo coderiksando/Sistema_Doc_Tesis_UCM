@@ -140,14 +140,14 @@ export default {
     },
     getListarNotasPendientes(){
       this.fullscreenLoading = true;
-      var url = '/notaspendientes/getListarNotasPendientes'
+      var url = '/notaspendientes/getNotaPendienteById'
       axios.get(url, {
         params: {
           'nIdNotaP' : this.fillEditarNotaP.nIdNotaP,
         }
       }).then(response => {
           //this.inicializarPaginacion();
-          this.fillEditarNotaP.fecha_propuesta = response.data[0].fecha_propuesta;
+          this.fillEditarNotaP.fecha_propuesta = response.data.fecha_propuesta;
           this.fullscreenLoading = false;
       })
     },

@@ -122,6 +122,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/notaspendientes/setRegistrarNotaP', 'NotasPendientesController@setRegistrarNotaP');;
   Route::post('/notaspendientes/setAsignarNotaP', 'NotasPendientesController@setAsignarNotaP');
   Route::get('/notaspendientes/getMiNotaP', 'NotasPendientesController@getMiNotaP');
+  Route::get('/notaspendientes/getNotaPendienteById', 'NotasPendientesController@getNotaPendienteById');
   Route::post('/notaspendientes/setEditarNotaP', 'NotasPendientesController@setEditarNotaP');
   Route::post('/notaspendientes/setIngresarProrroga', 'NotasPendientesController@setIngresarProrroga');
 
