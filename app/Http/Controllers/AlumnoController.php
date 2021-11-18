@@ -79,6 +79,7 @@ class AlumnoController extends Controller
         $cNombre        = $request->nombre;
         $cApellido      = $request->apellido;
         $cEstado        = $request->estado;
+        $nRut           = $request->rut;
         $dFechaInicio   = Carbon::parse($request->fechaSt)->startOfDay();
         $dFechaFin      = Carbon::parse($request->fechaEn)->endOfDay();
         $nIdEscuela     = $request->nIdEscuela;
@@ -101,9 +102,10 @@ class AlumnoController extends Controller
         }
 
 //      Filtros de busqueda
-        if ($cNombre || $cApellido) {
+        if ($cNombre || $cApellido || $nRut) {
             $users = User::where('nombres', 'LIKE', "%$cNombre%")
-                           ->where('apellidos', 'LIKE', "%$cApellido%")->get()->pluck('id_user');
+                           ->where('apellidos', 'LIKE', "%$cApellido%")
+                           ->where('rut', 'LIKE', "%$nRut%")->get()->pluck('id_user');
             $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
             $fits->whereIn('id', $fitUser);
         }
