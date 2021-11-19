@@ -104,6 +104,14 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Rut alumno</label>
+                    <div class="col-md-9">
+                        <input type="text" placeholder="11111111-1" class="form-control" v-model="fillBsqTesis.nRut" @keyup.enter="getListarTesis">
+                    </div>
+                  </div>
+                </div>
               </div>
             </form>
 
@@ -455,6 +463,7 @@ export default {
         cApellido     : '',
         cEstadoPg     : '',
         cEstado       : ["",""],
+        nRut          : '',
         nIdEscuela    : '',
         dateRange: {
             startDate: null,
@@ -595,6 +604,7 @@ export default {
           'apellido'  :   this.fillBsqTesis.cApellido,
           'estadoI'   :   this.fillBsqTesis.cEstadoPg,
           'estado'    :   this.fillBsqTesis.cEstado,
+          'rut'       :   this.fillBsqTesis.nRut,
           'fechaSt'   :   (!this.fillBsqTesis.dateRange.startDate) ? '' : this.fillBsqTesis.dateRange.startDate,
           'fechaEn'   :   (!this.fillBsqTesis.dateRange.endDate) ? '' : this.fillBsqTesis.dateRange.endDate,
           'nIdEscuela':   this.fillBsqTesis.nIdEscuela
@@ -640,6 +650,7 @@ export default {
       this.fillBsqTesis.cEstado = '';
       this.fillBsqTesis.cEstadoPg = '';
       this.fillBsqTesis.dfecha = '';
+      this.fillBsqTesis.nRut = '';
 
     },
     limpiarBandejaUsuarios(){
