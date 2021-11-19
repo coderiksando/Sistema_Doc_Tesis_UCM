@@ -517,6 +517,15 @@ export const rutas = [
     },
     props : true
  },
+ {
+    path: '/actadefensa/registroDocumento/:id',
+    name: 'actadefensa.registroDocumento',
+    component: require('./components/modulos/actadefensa/registroDocumento').default,
+    beforeEnter: (to, from, next) => {
+        verificarAcceso(to, from, next);
+    },
+    props : true
+ },
  /******** RUTAS MODULO DE ADMINISTRACION DE DOCUMENTOS *********/
  {
     path: '/documentos',

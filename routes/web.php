@@ -83,6 +83,7 @@ Route::group(['middleware' => ['auth']], function () {
   /*********    RUTAS MODULO DE ADMINISTRACION DE TESIS (FIT)    **********/
   Route::get('/alumno/getListarTesis', 'AlumnoController@getListarTesis');
   Route::get('/alumno/getTesisById', 'AlumnoController@getTesisById');
+  Route::get('/alumno/getTesisByIdExtendida', 'AlumnoController@getTesisByIdExtendida');
   Route::get('/alumno/getListarAllTesis', 'AlumnoController@getListarAllTesis'); //agrego
   Route::get('/alumno/getListarTesisView', 'AlumnoController@getListarTesisView');
   Route::get('/alumno/getListarTesisTerminadas', 'AlumnoController@getListarTesisTerminadas');
@@ -154,6 +155,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::Post('/secretaria/setGenerarMemoRevision', 'SecretariaController@setGenerarMemoRevision');
   Route::post('/secretaria/setSubirActa', 'SecretariaController@setSubirActa');
   Route::post('/secretaria/setRegistrarNota', 'SecretariaController@setRegistrarNota');
+  Route::post('/secretaria/setRegistroAlumnoDara', 'SecretariaController@setregistroAlumnoDara');
 
   /*********    RUTAS MODULO DE SELECCION DE ROL   **********/
   Route::post('/perfil/setRol', 'Auth\LoginController@changeRol');

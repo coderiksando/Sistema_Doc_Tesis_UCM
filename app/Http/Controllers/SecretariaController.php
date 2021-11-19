@@ -118,8 +118,6 @@ class SecretariaController extends Controller
         return $rpta;
     }
 
-
-
     public function setRegistrarNota(Request $request){
         if(!$request->ajax()) return redirect('/');
 
@@ -158,4 +156,19 @@ class SecretariaController extends Controller
         Fit::find($id)->update(['nota'=>$nota,'estado'=>$estado]);
         $this->reg('Subir nota', $fit->id,  $request->session()->get('rol'));
     }
+
+    public function setRegistroAlumnoDara(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $data = $request->fit_user;
+        foreach ($data as $fit_user) {
+            $id_fit     = $fit_user['id_fit'];
+            $id_user    = $fit_user['id_user'];
+            $reg_doc    = $fit_user['reg_doc'];
+            $register   = Fit_User  ::where('id_fit', $id_fit)
+                                    ->where('id_user', $id_user)
+                                    ->update(['reg_doc'=>$reg_doc]);
+        }
+        return response()->json(['message' => 'ok'], 200);
+    }
+
 }

@@ -160,6 +160,24 @@ class AlumnoController extends Controller
         $fit = Fit::find($id);
         return $fit;
     }
+    public function getTesisByIdExtendida(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $id = $request->id;
+        $fit = Fit::find($id);
+        $fit->Vinculaciones;
+        if ($fit->Comisiones) {
+            $fit->Comisiones->UserP1;
+            $fit->Comisiones->UserP2;
+        }
+        if ($fit->User_P_Guia) $fit->User_P_Guia->Escuela;
+        if ($fit->User_P_Coguia) $fit->User_P_Coguia->Escuela;
+        $fit->Escuela;
+        $fit->getAlumnos();
+        foreach ($fit->Fit_User as $fit_user) {
+            $fit_user->User->Escuelas->Facultad;
+        }
+        return $fit;
+    }
     public function getListarMiTesis(Request $request){
         if(!$request->ajax()) return redirect('/');
         $nIdUsuario  = Auth::id();
@@ -338,7 +356,7 @@ class AlumnoController extends Controller
             if ($habilitarEmails && $habilitarEmailAceptarFormulario) {
                 Mail::to($datosEmail[$i]->emailpg)->queue(new MailAceptacionFit($datosEmail[$i]));
             }
-            
+
             $i++;
         }
     }

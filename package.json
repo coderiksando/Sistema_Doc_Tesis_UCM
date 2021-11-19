@@ -29,6 +29,7 @@
         "moment": "^2.29.1",
         "startbootstrap-business-frontpage": "^4.3.0",
         "sweetalert2": "^9.17.2",
+        "vue-clipboard2": "^0.3.3",
         "vue-directive-tooltip": "^1.6.3",
         "vue-js-popover": "^1.2.1",
         "vue-lazytube": "^1.0.2",

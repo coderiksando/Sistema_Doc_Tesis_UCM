@@ -113,6 +113,10 @@
                       <router-link :title="'Subir acta de defensa de '+terminoTitulo" class="btn boton" :class="{ 'btn-success' : item.path, 'btn-warning' : !item.path}" :to="{name:'actadefensa.subiracta', params:{id: item.id}}">
                         <i class="fas fa-file-upload"></i>
                       </router-link>
+                      <button class="btn boton" title="Registro DARA" :class="(verificarRegistroDara(item)) ? 'btn-primary': 'btn-warning'"
+                      @click.prevent="redirectTo('actadefensa.registroDocumento', {id: item.id}, false)">
+                          <i class="fas fa-list"></i>
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -268,6 +272,25 @@ export default {
     },
     inicializarPaginacion(){
       this.pageNumber = 0;
+    },
+    redirectTo(route, objectId, newTab) {
+        if (route.search("http") !== 0) {
+            if (!newTab) {
+                if (objectId) this.$router.push({name: route, params: objectId});
+                else this.$router.push({name: route});
+            } else {
+                const ruteData = this.$router.resolve({name: route, params: objectId});
+                window.open(ruteData.href, '_blank');
+            }
+        } else window.open(route, '_blank');
+    },
+    verificarRegistroDara(data) {
+        console.log(data);
+        var response = true;
+        data.fit__user.forEach(fitUser => {
+            if (fitUser.reg_doc == 0) response = false;
+        });
+        return response;
     }
   }//cierre de methods
 }

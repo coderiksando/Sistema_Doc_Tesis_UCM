@@ -8,7 +8,7 @@ class Fit_User extends Model
 {
     protected $table = 'fit_user';
     protected $fillable = [
-        'id_user', 'id_fit', 'created_at', 'updated_at'
+        'id_user', 'id_fit', 'reg_doc', 'created_at', 'updated_at'
     ];
     // protected $primaryKey = ['id_user','id_fit'];
 

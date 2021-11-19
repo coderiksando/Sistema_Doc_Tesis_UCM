@@ -38,6 +38,9 @@ Vue.use(CKEditor);
 import LazyTube from "vue-lazytube";
 Vue.use(LazyTube);
 
+import VueClipboard from 'vue-clipboard2';
+Vue.use(VueClipboard);
+
 import router from './routes';
 
 const app = new Vue({
