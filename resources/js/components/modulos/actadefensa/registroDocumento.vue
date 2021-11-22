@@ -214,7 +214,7 @@
             <template v-if="documentoTitulo.comisiones">
                 <dt>Comisión</dt>
                 <br>
-                <dl class="row" v-if="true">
+                <dl class="row" v-if="documentoTitulo.comisiones.user_p1">
                     <dt class="col-md-2">Profesor N1
                     <br>
                     <p style="font-size: 0.8em;">
