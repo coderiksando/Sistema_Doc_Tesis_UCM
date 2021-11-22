@@ -12,8 +12,12 @@ export default class globFunct {
         return aux;
     }
     cutFullName(nombres, apellidos) {
-        if (nombres) const shortenedFirstName  = this.capitalizeFirstLetter(nombres.split(' ')[0]);
-        if (apellidos) const shortenedLastName   = this.capitalizeFirstLetter(apellidos.split(' ')[0]);
+        if (nombres) {
+            const shortenedFirstName  = this.capitalizeFirstLetter(nombres.split(' ')[0]);
+        }
+        if (apellidos) {
+            const shortenedLastName   = this.capitalizeFirstLetter(apellidos.split(' ')[0]);
+        }
         const shortenedFullName = shortenedFirstName + ' ' + shortenedLastName;
         return shortenedFullName;
     }
