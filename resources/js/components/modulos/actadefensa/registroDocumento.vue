@@ -59,7 +59,7 @@
                             <i class="fas fa-copy"></i>
                         </button>
                     </dl>
-                    <dl class="row">
+                    <!-- <dl class="row">
                         <dt class="col-md-4">Carrera</dt>
                         <dd class="col-md-7">{{documentoTitulo.escuela.nombre}}</dd>
                         <button class="col-md-1 boton btn btn-secondary" title="Copiar al portapapeles"
@@ -68,33 +68,36 @@
                             v-clipboard:error="onError">
                             <i class="fas fa-copy"></i>
                         </button>
-                    </dl>
+                    </dl> -->
                 </dd>
             </dl>
             <dl class="row">
-                <dt class="col-md-2">Alumno</dt>
+                <dt class="col-md-2">Alumno
+                    <br>
+                    <p style="font-size: 0.8em;">({{globFunct.cutFullName(selectUser.user.nombres, selectUser.user.apellidos)}})</p>
+                </dt>
                 <dd class="col-md-10">
                     <dl class="row">
                         <dt class="col-md-4">Rut</dt>
                         <dd class="col-md-7">{{selectUser.user.rut}}</dd>
                         <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
-                            v-clipboard:copy="selectUser.user.rut"
+                            v-clipboard:copy="selectUser.user.rut.split('-')[0]"
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError">
                             <i class="fas fa-copy"></i>
                         </button>
                     </dl>
-                    <dl class="row">
-                        <dt class="col-md-4">Nombre</dt>
-                        <dd class="col-md-7">{{selectUser.user.nombres}}</dd>
+                    <!-- <dl class="row">
+                        <dt class="col-md-4">Nombre Completo</dt>
+                        <dd class="col-md-7">{{selectUser.user.nombres}} {{selectUser.user.apellidos}}</dd>
                         <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
                             v-clipboard:copy="selectUser.user.nombres"
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError">
                             <i class="fas fa-copy"></i>
                         </button>
-                    </dl>
-                    <dl class="row">
+                    </dl> -->
+                    <!-- <dl class="row">
                         <dt class="col-md-4">Apellido</dt>
                         <dd class="col-md-7">{{selectUser.user.apellidos}}</dd>
                         <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
@@ -103,8 +106,8 @@
                             v-clipboard:error="onError">
                             <i class="fas fa-copy"></i>
                         </button>
-                    </dl>
-                    <dl class="row">
+                    </dl> -->
+                    <!-- <dl class="row">
                         <dt class="col-md-4">Fecha de nacimiento</dt>
                         <dd class="col-md-7">{{(selectUser.user.birthday) ? selectUser.user.birthday :'No registrado'}}</dd>
                         <button v-if="selectUser.user.birthday" class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
@@ -113,8 +116,8 @@
                             v-clipboard:error="onError">
                             <i class="fas fa-copy"></i>
                         </button>
-                    </dl>
-                    <dl class="row">
+                    </dl> -->
+                    <!-- <dl class="row">
                         <dt class="col-md-4">E-mail</dt>
                         <dd class="col-md-7">{{selectUser.user.email}}</dd>
                         <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
@@ -143,23 +146,29 @@
                             v-clipboard:error="onError">
                             <i class="fas fa-copy"></i>
                         </button>
-                    </dl>
+                    </dl> -->
                 </dd>
             </dl>
             <dl class="row">
-                <dt class="col-md-2">Profesor Guía</dt>
+                <dt class="col-md-2">
+                    Profesor Guía
+                    <br>
+                    <p style="font-size: 0.8em;">
+                        ({{globFunct.cutFullName(documentoTitulo.user__p__guia.nombres, documentoTitulo.user__p__guia.apellidos)}})
+                    </p>
+                </dt>
                 <dd class="col-md-10">
                     <dl class="row">
                         <dt class="col-md-4">Rut</dt>
                         <dd class="col-md-7">{{documentoTitulo.user__p__guia.rut}}</dd>
                         <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
-                            v-clipboard:copy="documentoTitulo.user__p__guia.rut"
+                            v-clipboard:copy="documentoTitulo.user__p__guia.rut.split('-')[0]"
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError">
                             <i class="fas fa-copy"></i>
                         </button>
                     </dl>
-                    <dl class="row">
+                    <!-- <dl class="row">
                         <dt class="col-md-4">Nombre completo</dt>
                         <dd class="col-md-7">{{documentoTitulo.user__p__guia.nombres+' '+documentoTitulo.user__p__guia.apellidos}}</dd>
                         <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
@@ -168,23 +177,29 @@
                             v-clipboard:error="onError">
                             <i class="fas fa-copy"></i>
                         </button>
-                    </dl>
+                    </dl> -->
                 </dd>
             </dl>
             <dl class="row" v-if="documentoTitulo.user__p__coguia">
-                <dt class="col-md-2">Profesor Co-Guía</dt>
+                <dt class="col-md-2">
+                    Profesor Co-Guía
+                    <br>
+                    <p style="font-size: 0.8em;">
+                        ({{globFunct.cutFullName(documentoTitulo.user__p__coguia.nombres, documentoTitulo.user__p__coguia.apellidos)}})
+                    </p>
+                </dt>
                 <dd class="col-md-10">
                     <dl class="row">
                         <dt class="col-md-4">Rut</dt>
                         <dd class="col-md-7">{{documentoTitulo.user__p__coguia.rut}}</dd>
                         <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
-                            v-clipboard:copy="documentoTitulo.user__p__coguia.rut"
+                            v-clipboard:copy="documentoTitulo.user__p__coguia.rut.split('-')[0]"
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError">
                             <i class="fas fa-copy"></i>
                         </button>
                     </dl>
-                    <dl class="row">
+                    <!-- <dl class="row">
                         <dt class="col-md-4">Nombre completo</dt>
                         <dd class="col-md-7">{{documentoTitulo.user__p__coguia.nombres+' '+documentoTitulo.user__p__coguia.apellidos}}</dd>
                         <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
@@ -193,26 +208,31 @@
                             v-clipboard:error="onError">
                             <i class="fas fa-copy"></i>
                         </button>
-                    </dl>
+                    </dl> -->
                 </dd>
             </dl>
             <template v-if="documentoTitulo.comisiones">
                 <dt>Comisión</dt>
                 <br>
                 <dl class="row" v-if="true">
-                    <dt class="col-md-2">Profesor N1</dt>
+                    <dt class="col-md-2">Profesor N1
+                    <br>
+                    <p style="font-size: 0.8em;">
+                        ({{globFunct.cutFullName(documentoTitulo.comisiones.user_p1.nombres, documentoTitulo.comisiones.user_p1.apellidos)}})
+                    </p>
+                    </dt>
                     <dd class="col-md-10">
                         <dl class="row">
                             <dt class="col-md-4">Rut</dt>
                             <dd class="col-md-7">{{documentoTitulo.comisiones.user_p1.rut}}</dd>
                             <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
-                                v-clipboard:copy="documentoTitulo.comisiones.user_p1.rut"
+                                v-clipboard:copy="documentoTitulo.comisiones.user_p1.rut.split('-')[0]"
                                 v-clipboard:success="onCopy"
                                 v-clipboard:error="onError">
                                 <i class="fas fa-copy"></i>
                             </button>
                         </dl>
-                        <dl class="row">
+                        <!-- <dl class="row">
                             <dt class="col-md-4">Nombre completo</dt>
                             <dd class="col-md-7">{{documentoTitulo.comisiones.user_p1.nombres+' '+documentoTitulo.comisiones.user_p1.apellidos}}</dd>
                             <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
@@ -221,23 +241,29 @@
                                 v-clipboard:error="onError">
                                 <i class="fas fa-copy"></i>
                             </button>
-                        </dl>
+                        </dl> -->
                     </dd>
                 </dl>
                 <dl class="row" v-if="documentoTitulo.comisiones.user_p2">
-                    <dt class="col-md-2">Profesor N2</dt>
+                    <dt class="col-md-2">
+                        Profesor N2
+                    <br>
+                    <p style="font-size: 0.8em;">
+                        ({{globFunct.cutFullName(documentoTitulo.comisiones.user_p2.nombres, documentoTitulo.comisiones.user_p2.apellidos)}})
+                    </p>
+                    </dt>
                     <dd class="col-md-10">
                         <dl class="row">
                             <dt class="col-md-4">Rut</dt>
                             <dd class="col-md-7">{{documentoTitulo.comisiones.user_p2.rut}}</dd>
                             <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
-                                v-clipboard:copy="documentoTitulo.comisiones.user_p2.rut"
+                                v-clipboard:copy="documentoTitulo.comisiones.user_p2.rut.split('-')[0]"
                                 v-clipboard:success="onCopy"
                                 v-clipboard:error="onError">
                                 <i class="fas fa-copy"></i>
                             </button>
                         </dl>
-                        <dl class="row">
+                        <!-- <dl class="row">
                             <dt class="col-md-4">Nombre completo</dt>
                             <dd class="col-md-7">{{documentoTitulo.comisiones.user_p2.nombres+' '+documentoTitulo.comisiones.user_p2.apellidos}}</dd>
                             <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
@@ -246,10 +272,10 @@
                                 v-clipboard:error="onError">
                                 <i class="fas fa-copy"></i>
                             </button>
-                        </dl>
+                        </dl> -->
                     </dd>
                 </dl>
-                <dl class="row" v-if="documentoTitulo.comisiones.p_externo">
+                <!-- <dl class="row" v-if="documentoTitulo.comisiones.p_externo">
                     <dt class="col-md-2">Profesor externo</dt>
                     <dd class="col-md-10">
                         <dl class="row">
@@ -263,7 +289,7 @@
                             </button>
                         </dl>
                     </dd>
-                </dl>
+                </dl> -->
             </template>
           </div>
           <div class="swal2-actions">
