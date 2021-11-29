@@ -89,16 +89,11 @@ class AlumnoController extends Controller
             $fitUser = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
             $fits = Fit::whereIn('id', $fitUser);
         }elseif($rol == 'Profesor'){
-            if (!$request->allStates) $states = ['P', 'A', 'V', 'EA'];
-            else $states = ['P', 'R', 'A', 'V', 'EA'];
-            $fits = Fit::where(function ($fit) use ($nIdUsuario) {
-                $fit->where('id_p_guia', '=', "$nIdUsuario")->orWhere('id_p_co_guia', '=', "$nIdUsuario");
-            })->whereIn('aprobado_pg', $states);
+            $fits = Fit::where('id_p_guia', '=', "$nIdUsuario")->orWhere('id_p_co_guia', '=', "$nIdUsuario");
         }elseif($rol == 'Director'){
-            $fits = Fit::whereIn('aprobado_pg', ['P','A', 'V', 'EA'])
-            ->where('id_escuela', Auth::user()->id_escuela);
+            $fits = Fit::where('id_escuela', Auth::user()->id_escuela);
         }else{
-            $fits = Fit::whereIn('aprobado_pg', ['P', 'A', 'V', 'EA']);
+            $fits = Fit::all();
         }
 
 //      Filtros de busqueda
