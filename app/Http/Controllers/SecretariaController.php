@@ -70,6 +70,50 @@ class SecretariaController extends Controller
 
         return $docs;
     }
+
+    public function getListarActas(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
+        $user     = Auth::user();
+        $IdEscuela  = $user->id_escuela;
+
+        $rut            = $request->nRut;
+        $nombre         = $request->cNombre;
+        $estado         = $request->cEstado_tesis;
+        $nivelAcceso    = $request->nivelAcceso;
+        $EstadoActa     = $request->nEstadoActa;
+
+        $rut        = ($rut == NULL) ? ($rut = '') : $rut;
+        $nombre     = ($nombre == NULL) ? ($nombre = '') : $nombre;
+        $estado     = ($estado == NULL) ? ($estado = '') : $estado;
+        $IdEscuela  = ($IdEscuela == NULL) ? ($IdEscuela = '') : $IdEscuela;
+        $EstadoActa  = ($EstadoActa == NULL) ? ($EstadoActa = 2) : $EstadoActa;
+
+        $users = User::where('nombres', 'like', "%$nombre%")->where('rut', 'like', "%$rut%")->get()->pluck('id_user');
+
+
+        $fitsId = Fit_User::whereIn('id_user', $users)->pluck('id_fit')->unique()->values();
+        $fits = Fit::whereIn('id', $fitsId)->where('aprobado_pg', 'V')->select('id', 'estado', 'aprobado_pg', 'nota', 'tipo', 'id_escuela')->get();
+
+        $docs = $fits->map(function ($item, $key) {
+            $acta = ArchivoPdf::select('path')->where('id_fit', $item->id)->firstWhere('tipo_pdf', 'acta');
+            $item->alumnos = $item->getAlumnos();
+            return collect($item)->merge($acta);
+        });
+
+        if ($EstadoActa == 0) {
+            $docs = $docs->whereNull('path')->values();
+        }
+
+        if ($EstadoActa == 1) {
+            $docs = $docs->whereNotNull('path')->values();
+        }
+
+        if ($nivelAcceso) $docs = $docs->where('id_escuela', $IdEscuela)->values();;
+
+        return $docs;
+    }
+
     public function setGenerarMemoRevision(Request $request){
 
         $id        = $request->nIdTesis;

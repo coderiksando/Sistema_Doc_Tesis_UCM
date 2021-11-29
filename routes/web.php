@@ -152,6 +152,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/archivo/descargaZipByFid', 'FilesController@descargaZipByFid');
   /*********    RUTAS MODULO DE ADMINISTRACION DE DOCUMENTOS ALUMNOS     **********/
   Route::get('/secretaria/getListarAlumnos', 'SecretariaController@getListarAlumnos');
+  Route::get('/secretaria/getListarActas', 'SecretariaController@getListarActas');
   Route::Post('/secretaria/setGenerarMemoRevision', 'SecretariaController@setGenerarMemoRevision');
   Route::post('/secretaria/setSubirActa', 'SecretariaController@setSubirActa');
   Route::post('/secretaria/setRegistrarNota', 'SecretariaController@setRegistrarNota');

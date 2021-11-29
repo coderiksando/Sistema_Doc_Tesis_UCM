@@ -185,6 +185,7 @@ export default {
       pageNumber: 0,
       perPage: 10,
       estadoActa: 2,
+      nivelAcceso: 1
     }
   },
   computed: {
@@ -247,17 +248,22 @@ export default {
     },
     getListarAlumnos(){
       this.fullscreenLoading = true;
-      var url = '/secretaria/getListarAlumnos'
+      var url = '/secretaria/getListarActas';
+      if (this.listRolPermisosByUsuario.includes('fid.acceso.total')) {
+        this.nivelAcceso = 0;
+      }
       axios.get(url, {
         params: {
           'cNombre'       : this.fillBsqAlumno.cNombre,
           'nRut'          : this.fillBsqAlumno.nRut,
           'nEstadoAlumno' : this.fillBsqAlumno.nEstadoAlumno,
-          'nEstadoActa'   : this.estadoActa
+          'nEstadoActa'   : this.estadoActa,
+          'nivelAcceso'   : this.nivelAcceso
         }
       }).then(response => {
           this.inicializarPaginacion();
           this.listAlumnos = response.data;
+          console.log(response.data);
           this.fullscreenLoading = false;
       })
     },
