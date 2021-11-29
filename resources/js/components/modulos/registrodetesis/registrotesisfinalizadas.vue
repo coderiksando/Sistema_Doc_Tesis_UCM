@@ -244,7 +244,7 @@
                                 style="width: 75%;"
                                 v-model="fillCrearFIT.Nota"
                                 size="large"
-                                :min="1"
+                                :min="0"
                                 :precision="1"
                                 :step="0.1"
                                 :max="7"
@@ -1168,9 +1168,6 @@ export default {
       }
       if (!this.fillCrearFIT.cTipo) {
         this.mensajeError.push("El tipo es un campo obligatorio");
-      }
-      if (!this.fillCrearFIT.Nota) {
-        this.mensajeError.push("La Nota es un campo obligatorio");
       }
       if (!this.fillCrearFIT.cObjetivoGeneral) {
         this.mensajeError.push("El objetivo general es un campo obligatorio");

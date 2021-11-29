@@ -169,10 +169,15 @@ class FilesController extends Controller
             $registroFit->privado = $request->privado;
             if ($request->fidFinalizada) {
                 $registroFit->nota = $request->Nota;
-                if ($registroFit->nota >= 4) {
-                    $registroFit->estado = 'A';
+                if ($registroFit->nota != 0) {
+                    if ($registroFit->nota >= 4) {
+                        $registroFit->estado = 'A';
+                    } else {
+                        $registroFit->estado = 'R';
+                    }
                 } else {
-                    $registroFit->estado = 'R';
+                    $registroFit->estado = 'A';
+                    $registroFit->nota = NULL;
                 }
             } else {
                 $registroFit->estado = 'D';
@@ -265,10 +270,15 @@ class FilesController extends Controller
             $registroFit->privado = $request->privado;
             if ($request->fidFinalizada) {
                 $registroFit->nota = $request->Nota;
-                if ($registroFit->nota >= 4) {
-                    $registroFit->estado = 'A';
+                if ($registroFit->nota != 0) {
+                    if ($registroFit->nota >= 4) {
+                        $registroFit->estado = 'A';
+                    } else {
+                        $registroFit->estado = 'R';
+                    }
                 } else {
-                    $registroFit->estado = 'R';
+                    $registroFit->estado = 'A';
+                    $registroFit->nota = NULL;
                 }
             } else {
                 $registroFit->estado = 'D';
@@ -364,7 +374,7 @@ class FilesController extends Controller
         foreach ($listArchivo as $key=>$archivo) {
             $listArchivo[$key] = last(explode('/', $archivo));
         }
-        
+
         $zip = new ZipArchive();
         $flag = Str::random(10);
         if ($zip->open(public_path('storage/compressed/'.$flag.$tipoArchivo), ZipArchive::CREATE) == TRUE) {
