@@ -212,21 +212,20 @@
                           <i class="fa fa-list-alt"></i>
                         </router-link>
                       </template>
-
-                        <button v-if="item.aprobado_pg == 'R'" title="Ver razon de rechazo"
-                        class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
-                            <i class="fas fa-exclamation-circle"></i>
-                        </button>
                         <template  v-if="listRolPermisosByUsuario.includes('tesis.aprobar')">
                             <button :disabled="(rolActivo == 'Profesor' && item.aprobado_pg != 'P') || (rolActivo != 'Profesor' && item.aprobado_pg == 'V') || (item.aprobado_pg == 'EA') || (rolActivo == 'Profesor' && item.id_p_co_guia == authUser.id_user) || (rolActivo != 'Profesor' && item.aprobado_pg == 'R')"
                             :title="'Aprobar '+terminoTitulo" class="btn boton btn-success" @click.prevent="acceptHandler(item)">
                             <i class="far fa-thumbs-up"></i>
                             </button>
-                            <button :disabled="((rolActivo == 'Profesor' && item.aprobado_pg == 'V') || (item.aprobado_pg == 'EA')) || (rolActivo == 'Profesor' && item.id_p_co_guia == authUser.id_user) || (item.aprobado_pg == 'R')"
+                            <button v-if="(item.aprobado_pg != 'R')" :disabled="((rolActivo == 'Profesor' && item.aprobado_pg == 'V') || (item.aprobado_pg == 'EA')) || (rolActivo == 'Profesor' && item.id_p_co_guia == authUser.id_user) || (item.aprobado_pg == 'R')"
                             :title="'Rechazar '+terminoTitulo" class="btn boton btn-danger" @click.prevent="modalRechazo(item)">
                             <i class="far fa-thumbs-down"></i>
                             </button>
                         </template>
+                        <button v-if="item.aprobado_pg == 'R'" title="Ver razón de rechazo"
+                            class="btn boton btn-danger" @click.prevent="verRazonRechazo(item.motivo_pg)">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </button>
                     </td>
                   </tr>
                 </tbody>
