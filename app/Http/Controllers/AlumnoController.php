@@ -104,8 +104,8 @@ class AlumnoController extends Controller
             $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
             $fits->whereIn('id', $fitUser);
         }
-        if ($cEstado) {
-            if ($cEstado[0] != '' && $cEstado[0] != 'EA') {
+        if ($cEstado[0] || $cEstado[1]) {
+            if ($cEstado[0] != 'EA') {
                 $fits->where('aprobado_pg', $cEstado[0])->where('estado', $cEstado[1]);
             }
             if ($cEstado[0] == 'EA') {

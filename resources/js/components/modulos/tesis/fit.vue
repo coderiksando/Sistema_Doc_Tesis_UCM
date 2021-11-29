@@ -49,7 +49,7 @@
                         autocomplete="estadoFusionadoDeSGYAD"
                         @change="getListarTesis">
                           <el-option
-                            v-for="item in globFunct.listStates([1])"
+                            v-for="item in globFunct.listStates([6])"
                             :key="item.id"
                             :label="item.resultado"
                             :value="[item.eI,item.eA]">

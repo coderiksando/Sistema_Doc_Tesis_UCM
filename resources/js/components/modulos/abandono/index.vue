@@ -14,7 +14,7 @@
           <div class="card-body">
             <form role="form">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-7">
                   <div class="form-group row">
                     <label class="col-md-2 col-form-label">Alumno</label>
                     <div class="col-md-5">
@@ -25,7 +25,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-5">
                   <div class="form-group row">
                     <label class="col-md-2 col-form-label">Estado</label>
                     <div class="col-md-10">
@@ -44,10 +44,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-7">
                   <div class="form-group row">
-                    <label class="col-md-12 col-form-label">Rango de fechas</label>
-                    <div class="col-md-12 form-group row pr-0">
+                    <label class="col-md-2 col-form-label">Fecha de inscripción</label>
+                    <div class="col-md-10 form-group row pr-0">
                         <div class="col-md-6 pr-0">
                             <el-date-picker
                                 v-model="fillBsqTesis.dateRange.startDate"
