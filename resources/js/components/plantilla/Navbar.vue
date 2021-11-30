@@ -157,10 +157,11 @@ export default {
       this.modalCalendario = false;
     },
     caldendarData(){
-      this.fullscreenLoading = true;
+        this.fullscreenLoading = true;
       var url='/administracion/usuario/calendarData'
       axios.post(url, {permisos: this.permisos})
       .then(response => {
+        console.log(response.data);
         this.fullscreenLoading = false;
       })
     }

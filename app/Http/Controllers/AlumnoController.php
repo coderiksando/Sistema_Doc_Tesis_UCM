@@ -104,7 +104,13 @@ class AlumnoController extends Controller
             $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
             $fits->whereIn('id', $fitUser);
         }
-        if ($cEstado[0] || $cEstado[1]) {
+        $estado1 = NULL;
+        $estado2 = NULL;
+        if (is_array($cEstado)){
+            $estado1 = array_key_exists('0', $cEstado);
+            $estado2 = array_key_exists('1', $cEstado);
+        }
+        if ($estado1 || $estado2) {
             if ($cEstado[0] != 'EA') {
                 $fits->where('aprobado_pg', $cEstado[0])->where('estado', $cEstado[1]);
             }
@@ -118,8 +124,7 @@ class AlumnoController extends Controller
         if ($nIdEscuela) {
             $fits->where('id_escuela',"$nIdEscuela");
         }
-
-        $fits = $fits->get()->sortByDesc('updated_at')->values()->all();
+        $fits = $fits->sortByDesc('updated_at')->values()->all();
         foreach ($fits as $fit) {
             $listUsers = $fit->Fit_User->pluck('id_user');
             $listUsersDetails = User::whereIn('id_user', $listUsers)->get()->all();
