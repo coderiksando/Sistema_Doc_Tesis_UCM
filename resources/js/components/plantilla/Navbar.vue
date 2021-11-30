@@ -117,6 +117,7 @@ export default {
       fullscreenLoading: false,
       permisos : JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       url : localStorage.getItem('url'),
+      eventos: [],
       calendarOptions: {
         plugins: [ dayGridPlugin, interactionPlugin],
         locales: allLocales,
@@ -131,20 +132,19 @@ export default {
         customButtons: {
           botonCerrar: {
             text: 'Cerrar',
-            click: function() {
-              
-            }
+            click: () => this.hideCalendar()
           }
         },
         dayHeaderContent: function(arg) {
           var DAY_NAMES = ['Lun','Mar','Mie','Jue','Vie','Sab','Dom'];
           return DAY_NAMES[arg.date.getDay()];
-        }
-
+        },
+        
       },
 
       modalCalendario: false,
-      renderCalendar: false
+      renderCalendar: false,
+      
     }
   },
   mounted(){
@@ -187,6 +187,11 @@ export default {
       var url='/administracion/usuario/calendarData'
       axios.post(url, {permisos: this.permisos})
       .then(response => {
+        this.eventos = [{
+          id: 'a',
+          title: 'my event',
+          start: '2021-12-01'
+        }];
         this.fullscreenLoading = false;
       })
     }
