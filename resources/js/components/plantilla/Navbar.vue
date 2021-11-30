@@ -83,7 +83,11 @@
         <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show modalCalendario" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true"  v-on:mousedown.stop>
           <div class="swal2-content" v-loading="!renderCalendar">
             <div class="flex" v-if="renderCalendar">
-              <FullCalendar :options="calendarOptions"/> 
+              <FullCalendar
+                :options="calendarOptions" 
+                :buttonText="{
+                  today: 'Hoy'
+                }"/> 
             </div>
             
           </div>
@@ -97,14 +101,16 @@
 </template>
 
 <script>
-import '@fullcalendar/core/vdom' // solves problem with Vite
+import '@fullcalendar/core/vdom'
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import allLocales from '@fullcalendar/core/locales-all';
+
 export default {
   props: ['ruta', 'usuario'],
   components: {
-    FullCalendar // make the <FullCalendar> tag available
+    FullCalendar
   },
   data(){
     return{
@@ -112,11 +118,31 @@ export default {
       permisos : JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
       url : localStorage.getItem('url'),
       calendarOptions: {
-        plugins: [ dayGridPlugin, interactionPlugin ],
+        plugins: [ dayGridPlugin, interactionPlugin],
+        locales: allLocales,
+        locale: 'es-mx',
         initialView: 'dayGridMonth',
         weekends: true,
+        headerToolbar: {
+          start: 'botonCerrar',
+          center: 'title',
+          end: 'prev today next'
+        },
+        customButtons: {
+          botonCerrar: {
+            text: 'Cerrar',
+            click: function() {
+              
+            }
+          }
+        },
+        dayHeaderContent: function(arg) {
+          var DAY_NAMES = ['Lun','Mar','Mie','Jue','Vie','Sab','Dom'];
+          return DAY_NAMES[arg.date.getDay()];
+        }
 
       },
+
       modalCalendario: false,
       renderCalendar: false
     }
