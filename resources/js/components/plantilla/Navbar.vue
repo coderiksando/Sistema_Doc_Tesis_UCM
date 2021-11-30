@@ -83,9 +83,9 @@
         <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show modalCalendario" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true"  v-on:mousedown.stop>
           <div class="swal2-content" v-loading="!renderCalendar">
             <div class="flex" v-if="renderCalendar">
-              <FullCalendar :options="calendarOptions"/> 
+              <FullCalendar :options="calendarOptions"/>
             </div>
-            
+
           </div>
         </div>
       </div>
@@ -145,6 +145,7 @@ export default {
       console.log('hola');
     },
     showCalendar(){
+      this.caldendarData();
       var self = this;
       this.modalCalendario = true;
       setTimeout( x => {
@@ -154,6 +155,14 @@ export default {
     hideCalendar(){
       this.renderCalendar = false;
       this.modalCalendario = false;
+    },
+    caldendarData(){
+      this.fullscreenLoading = true;
+      var url='/administracion/usuario/calendarData'
+      axios.post(url, {permisos: this.permisos})
+      .then(response => {
+        this.fullscreenLoading = false;
+      })
     }
   }
 
@@ -163,11 +172,11 @@ export default {
 <style>
 
 .modalCalendario{
-  display: flex; 
-  z-index: 2; 
-  width: 55% !important; 
-  min-width: 360px !important; 
-  height: 90% !important; 
+  display: flex;
+  z-index: 2;
+  width: 55% !important;
+  min-width: 360px !important;
+  height: 90% !important;
   min-height: 360px !important
 }
 
@@ -179,11 +188,11 @@ export default {
 
 @media only screen and (max-width: 993px){
   .modalCalendario{
-    display: flex; 
-    z-index: 2; 
-    width: 55% !important; 
-    min-width: 360px !important; 
-    height: 55% !important; 
+    display: flex;
+    z-index: 2;
+    width: 55% !important;
+    min-width: 360px !important;
+    height: 55% !important;
     min-height: 360px !important
   }
 }
