@@ -10,6 +10,7 @@ use App\Fit;
 use App\ArchivoPdf;
 use App\Fit_User;
 use App\Parametro;
+use App\Fecha_defensa;
 use \stdClass;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -94,6 +95,9 @@ class SecretariaController extends Controller
 
         $fitsId = Fit_User::whereIn('id_user', $users)->pluck('id_fit')->unique()->values();
         $fits = Fit::whereIn('id', $fitsId)->where('aprobado_pg', 'V')->select('id', 'estado', 'aprobado_pg', 'nota', 'tipo', 'id_escuela')->get();
+        foreach ($fits as $fit) {
+            $fit->Fecha_defensa;
+        }
 
         $docs = $fits->map(function ($item, $key) {
             $acta = ArchivoPdf::select('path')->where('id_fit', $item->id)->firstWhere('tipo_pdf', 'acta');
@@ -204,10 +208,17 @@ class SecretariaController extends Controller
         if(!$request->ajax()) return redirect('/');
 
         $idFit = $request->nIdFit;
+        // $idFit = Carbon::parse($idFit)->toW3cString();
+        Debugbar::info($idFit);
         $fechaYHora = $request->fechaDefensa;
         $salaDefensa = $request->salaDefensa;
 
-        $registro = '';
+        $registroDefensaActa = Fecha_defensa::where('id_fit', $idFit)->delete();
+        $registro = new Fecha_defensa;
+        $registro->id_fit   = $idFit;
+        $registro->fecha    = $fechaYHora;
+        $registro->sala     = $salaDefensa;
+        $registro->save();
 
         return $request;
     }

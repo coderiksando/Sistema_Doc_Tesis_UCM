@@ -106,7 +106,8 @@
                         {{globFunct.mergedStates(item).resultado}}
                     </td>
                     <td>
-                      <button class="btn boton btn-primary" title="Registro de fecha de defensas"
+                      <button class="btn boton" title="Registro de fecha de defensas" :disabled="!item.path"
+                      :class="(item.fecha_defensa && item.path) ? 'btn-primary': 'btn-warning'"
                       @click.prevent="mostrarModal(item)">
                           <i class="fas fa-calendar-day"></i>
                       </button>
@@ -346,19 +347,46 @@ export default {
         return response;
     },
     mostrarModal(item) {
+        this.fechaDefensa   = '';
+        this.salaDefensa    = '';
+        if (item.fecha_defensa) {
+            this.fechaDefensa   = item.fecha_defensa.fecha;
+            this.salaDefensa    = item.fecha_defensa.sala;
+        }
         this.tesisSelected = item.id;
         this.showModal = !this.showModal;
     },
     setRegistrarDefensa() {
-      this.fullscreenLoading = true;
-      var url = '/secretaria/setRegistrarDefensaActa';
-      axios.post(url, {
-          'nIdFit'        : this.tesisSelected,
-          'fechaDefensa'  : this.fechaDefensa,
-          'salaDefensa'   : this.salaDefensa
-      }).then(response => {
-          this.fullscreenLoading = false;
-      })
+        this.showModal = false;
+        if (this.fechaDefensa && this.salaDefensa) {
+            this.fullscreenLoading = true;
+            var url = '/secretaria/setRegistrarDefensaActa';
+            var userTimezoneOffset = this.fechaDefensa.getTimezoneOffset() * 60000;
+            this.fechaDefensa = new Date(this.fechaDefensa.getTime() - userTimezoneOffset);
+            axios.post(url, {
+                'nIdFit'        : this.tesisSelected,
+                'fechaDefensa'  : this.fechaDefensa,
+                'salaDefensa'   : this.salaDefensa
+            }).then(response => {
+                this.getListarAlumnos();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'La fecha y sala ha sido guardada.',
+                    showConfirmButton: true,
+                    timer: 1500
+                });
+                this.fullscreenLoading = false;
+            })
+        } else {
+          setTimeout(function(){
+            Swal.fire({
+              icon: 'warning',
+              title: 'Todos los datos son obligatorios.',
+              showConfirmButton: true,
+              timer: 1500
+            });
+          }, 50);
+        }
     }
 
   }//cierre de methods
