@@ -71,6 +71,33 @@
                     </dl> -->
                 </dd>
             </dl>
+            <dl v-if="documentoTitulo.fecha_defensa" class="row">
+                <dt class="col-md-2">
+                    Lugar y fecha
+                </dt>
+                <dd class="col-md-10">
+                    <dl class="row">
+                        <dt class="col-md-4">Sala</dt>
+                        <dd class="col-md-7">{{documentoTitulo.fecha_defensa.sala}}</dd>
+                        <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
+                            v-clipboard:copy="documentoTitulo.fecha_defensa.sala"
+                            v-clipboard:success="onCopy"
+                            v-clipboard:error="onError">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </dl>
+                    <dl class="row">
+                        <dt class="col-md-4">Fecha</dt>
+                        <dd class="col-md-7">{{documentoTitulo.fecha_defensa.fecha}}</dd>
+                        <button class="col-md-1 btn btn-secondary" title="Copiar al portapapeles"
+                            v-clipboard:copy="documentoTitulo.fecha_defensa.fecha"
+                            v-clipboard:success="onCopy"
+                            v-clipboard:error="onError">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </dl>
+                </dd>
+            </dl>
             <dl class="row">
                 <dt class="col-md-2">Alumno
                     <br>
