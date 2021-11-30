@@ -162,6 +162,7 @@ class AlumnoController extends Controller
         $id = $request->id;
         $fit = Fit::find($id);
         $fit->Vinculaciones;
+        $fit->Fecha_defensa;
         if ($fit->Comisiones) {
             $fit->Comisiones->UserP1;
             $fit->Comisiones->UserP2;

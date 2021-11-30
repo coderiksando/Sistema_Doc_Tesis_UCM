@@ -106,6 +106,11 @@
                         {{globFunct.mergedStates(item).resultado}}
                     </td>
                     <td>
+                      <button class="btn boton" title="Registro de fecha de defensas" :disabled="!item.path"
+                      :class="(item.fecha_defensa && item.path) ? 'btn-primary': 'btn-warning'"
+                      @click.prevent="mostrarModal(item)">
+                          <i class="fas fa-calendar-day"></i>
+                      </button>
                       <router-link title="Subir nota de documento final"  class="btn btn-success boton" :to="{name:'actadefensa.subirnota', params:{id: item.id}}">
                         <i class="fas fa-graduation-cap"></i>
                       </router-link>
@@ -146,8 +151,51 @@
         </div>
       </div>
     </div>
-  </div>
 
+    <template v-if="showModal">
+      <div class="swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto;" @mousedown.prevent="showModal=false">
+        <div aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-icon-warning swal2-show" tabindex="-1" role="dialog" aria-live="assertive" aria-modal="true" style="display: flex; z-index: 2; width: 70% !important; min-width: 360px !important; bottom: 15%;" v-on:mousedown.stop>
+          <div class="swal2-header">
+            <h2 class="swal2-title" id="swal2-title" style="display: flex;">Registrar fecha de defensa de actas</h2>
+            <button type="button" class="swal2-close" aria-label="Close this dialog" style="display: none;">×</button>
+          </div>
+          <div class="card-body">
+            <form role="form">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Fecha de defensa</label>
+                    <el-date-picker
+                        class="col-md-9"
+                        v-model="fechaDefensa"
+                        type="datetime"
+                        size="large"
+                        default-time="08:00:00"
+                        placeholder="Selecionar fecha y hora de defensa de tesis">
+                    </el-date-picker>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Sala de defensa</label>
+                    <el-input class="col-md-9" placeholder="Escriba la sala donde se realizará la defensa" v-model="salaDefensa">
+                    </el-input>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="swal2-content text-left">
+          </div>
+          <div class="swal2-actions">
+            <button class="swal2-confirm swal2-styled" @click.prevent="setRegistrarDefensa" v-loading.fullscreen.lock="fullscreenLoading">{{globVar.btnSave}}</button>
+            <button type="button" class="swal2-cancel swal2-styled" style="display: inline-block; background-color: #6c757d; --darkreader-inline-bgcolor:#a61c1c;" @click.prevent="showModal=false">{{globVar.btnClose}}</button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+  </div>
 </template>
 
 <script>
@@ -182,10 +230,14 @@ export default {
       ],
       terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       listRolPermisosByUsuario: JSON.parse(localStorage.getItem('listRolPermisosByUsuario')),
+      showModal: false,
       pageNumber: 0,
       perPage: 10,
       estadoActa: 2,
-      nivelAcceso: 1
+      nivelAcceso: 1,
+      fechaDefensa: '',
+      salaDefensa: '',
+      tesisSelected: ''
     }
   },
   computed: {
@@ -234,8 +286,6 @@ export default {
         window.open(link);
       }).catch(console.error);
     },
-
-
     limpiarCriteriosBsq(){
       this.fillBsqAlumno.cNombre = '';
       this.fillBsqAlumno.nRut = '';
@@ -263,7 +313,6 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listAlumnos = response.data;
-          console.log(response.data);
           this.fullscreenLoading = false;
       })
     },
@@ -291,13 +340,55 @@ export default {
         } else window.open(route, '_blank');
     },
     verificarRegistroDara(data) {
-        console.log(data);
         var response = true;
         data.fit__user.forEach(fitUser => {
             if (fitUser.reg_doc == 0) response = false;
         });
         return response;
+    },
+    mostrarModal(item) {
+        this.fechaDefensa   = '';
+        this.salaDefensa    = '';
+        if (item.fecha_defensa) {
+            this.fechaDefensa   = item.fecha_defensa.fecha;
+            this.salaDefensa    = item.fecha_defensa.sala;
+        }
+        this.tesisSelected = item.id;
+        this.showModal = !this.showModal;
+    },
+    setRegistrarDefensa() {
+        this.showModal = false;
+        if (this.fechaDefensa && this.salaDefensa) {
+            this.fullscreenLoading = true;
+            var url = '/secretaria/setRegistrarDefensaActa';
+            var userTimezoneOffset = this.fechaDefensa.getTimezoneOffset() * 60000;
+            this.fechaDefensa = new Date(this.fechaDefensa.getTime() - userTimezoneOffset);
+            axios.post(url, {
+                'nIdFit'        : this.tesisSelected,
+                'fechaDefensa'  : this.fechaDefensa,
+                'salaDefensa'   : this.salaDefensa
+            }).then(response => {
+                this.getListarAlumnos();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'La fecha y sala ha sido guardada.',
+                    showConfirmButton: true,
+                    timer: 1500
+                });
+                this.fullscreenLoading = false;
+            })
+        } else {
+          setTimeout(function(){
+            Swal.fire({
+              icon: 'warning',
+              title: 'Todos los datos son obligatorios.',
+              showConfirmButton: true,
+              timer: 1500
+            });
+          }, 50);
+        }
     }
+
   }//cierre de methods
 }
 </script>

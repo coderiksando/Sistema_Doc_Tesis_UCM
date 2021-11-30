@@ -56,4 +56,7 @@ class Fit extends Model
     public function Revision_Comision(){
         return $this->hasMany(Revision_Comision::class, 'id_fit', 'id');
     }
+    public function Fecha_defensa(){
+        return $this->hasOne(Fecha_defensa::class, 'id_fit', 'id');
+    }
 }
