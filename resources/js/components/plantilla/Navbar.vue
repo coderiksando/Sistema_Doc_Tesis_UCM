@@ -183,15 +183,11 @@ export default {
       this.modalCalendario = false;
     },
     caldendarData(){
-      this.fullscreenLoading = true;
+        this.fullscreenLoading = true;
       var url='/administracion/usuario/calendarData'
       axios.post(url, {permisos: this.permisos})
       .then(response => {
-        this.eventos = [{
-          id: 'a',
-          title: 'my event',
-          start: '2021-12-01'
-        }];
+        console.log(response.data);
         this.fullscreenLoading = false;
       })
     }
