@@ -112,17 +112,18 @@ class AlumnoController extends Controller
         }
         if ($estado1 || $estado2) {
             if ($cEstado[0] != 'EA') {
-                $fits->where('aprobado_pg', $cEstado[0])->where('estado', $cEstado[1]);
+                if ($cEstado[0] != '' && $cEstado[1] != '')
+                $fits = $fits->where('aprobado_pg', $cEstado[0])->where('estado', $cEstado[1]);
             }
             if ($cEstado[0] == 'EA') {
-                $fits->where('aprobado_pg', $cEstado[0]);
+                $fits = $fits->where('aprobado_pg', $cEstado[0]);
             }
         }
         if ($request->fechaSt) {
-            $fits->whereBetween('created_at', [$dFechaInicio, $dFechaFin]);
+            $fits = $fits->whereBetween('created_at', [$dFechaInicio, $dFechaFin]);
         }
         if ($nIdEscuela) {
-            $fits->where('id_escuela',"$nIdEscuela");
+            $fits = $fits->where('id_escuela',"$nIdEscuela");
         }
         $fits = $fits->sortByDesc('updated_at')->values()->all();
         foreach ($fits as $fit) {
