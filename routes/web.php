@@ -157,6 +157,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::post('/secretaria/setSubirActa', 'SecretariaController@setSubirActa');
   Route::post('/secretaria/setRegistrarNota', 'SecretariaController@setRegistrarNota');
   Route::post('/secretaria/setRegistroAlumnoDara', 'SecretariaController@setregistroAlumnoDara');
+  Route::post('/secretaria/setRegistrarDefensaActa', 'SecretariaController@setRegistrarDefensaActa');
 
   /*********    RUTAS MODULO DE SELECCION DE ROL   **********/
   Route::post('/perfil/setRol', 'Auth\LoginController@changeRol');

@@ -200,7 +200,17 @@ class SecretariaController extends Controller
         Fit::find($id)->update(['nota'=>$nota,'estado'=>$estado]);
         $this->reg('Subir nota', $fit->id,  $request->session()->get('rol'));
     }
+    public function setRegistrarDefensaActa(Request $request){
+        if(!$request->ajax()) return redirect('/');
 
+        $idFit = $request->nIdFit;
+        $fechaYHora = $request->fechaDefensa;
+        $salaDefensa = $request->salaDefensa;
+
+        $registro = '';
+
+        return $request;
+    }
     public function setRegistroAlumnoDara(Request $request){
         if(!$request->ajax()) return redirect('/');
         $data = $request->fit_user;
