@@ -371,12 +371,16 @@ class UsersController extends Controller
         $fits = DB  ::table('fit')
                     ->join('escuelas', 'escuelas.id', '=', 'fit.id_escuela')
                     ->leftJoin('fit_user', 'fit_user.id_fit', '=', 'fit.id')
-                    ->select('fit.*', 'fit_user.id_user as fit_user_id_user');
+                    ->leftJoin('comisiones', 'comisiones.id_tesis', '=', 'fit.id')
+                    ->select('fit.*', 'fit_user.id_user', 'comisiones.id_profesor1', 'comisiones.id_profesor2');
         if (array_search('EsAlumno', $permisos)) {
-            $fits = $fits->where('fit_user_id_user', $user->id_user);
+            $fits = $fits->where('id_user', $user->id_user);
         }
         if (array_search('EsProfesor', $permisos)) {
-            $fits = $fits->where('id_p_guia', $user->id_user)->orWhere('id_p_co_guia', $user->id_user);
+            $fits = $fits   ->where('id_p_guia', $user->id_user)
+                            ->orWhere('id_p_co_guia', $user->id_user)
+                            ->orWhere('id_profesor1', $user->id_user)
+                            ->orWhere('id_profesor2', $user->id_user);
         }
         if (array_search('fid.acceso.parcial', $permisos)) {
             $fits = $fits->where('id_escuela', $user->id_escuela);
