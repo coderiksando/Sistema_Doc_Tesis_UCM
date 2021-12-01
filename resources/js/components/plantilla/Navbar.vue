@@ -104,6 +104,7 @@ import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import allLocales from '@fullcalendar/core/locales-all';
+import timeGridPlugin from '@fullcalendar/timegrid';
 
 export default {
   props: ['ruta', 'usuario'],
@@ -117,7 +118,7 @@ export default {
       url : localStorage.getItem('url'),
       eventos: [],
       calendarOptions: {
-        plugins: [ dayGridPlugin, interactionPlugin],
+        plugins: [ dayGridPlugin, interactionPlugin, timeGridPlugin],
         locales: allLocales,
         locale: 'es-mx',
         initialView: 'dayGridMonth',
@@ -125,11 +126,11 @@ export default {
         headerToolbar: {
           start: 'botonCerrar',
           center: 'title',
-          end: 'prev today next'
+          end: 'dayGridMonth timeGridWeek prev today next'
         },
         customButtons: {
           botonCerrar: {
-            text: 'Cerrar',
+            text: ' X ',
             click: () => this.hideCalendar()
           }
         },
@@ -219,6 +220,12 @@ export default {
     min-width: 360px !important;
     height: 55% !important;
     min-height: 360px !important
+  }
+  .fc-timeGridWeek-button{
+    display: none !important;
+  }
+  .fc-dayGridMonth-button{
+    display: none !important;
   }
 }
 
