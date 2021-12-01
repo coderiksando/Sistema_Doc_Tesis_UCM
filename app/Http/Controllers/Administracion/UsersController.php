@@ -390,12 +390,13 @@ class UsersController extends Controller
         $fits = $fits->pluck('id');
         $data = Fit::whereIn('id', $fits)->get();
         $rpta = [];
-        $newData = new stdClass();
         foreach ($data as $fit) {
-            $fit->Fecha_defensa;
-            if ($fit->titulo) $newData->title = $fit->titulo;
-            if ($fit->Fecha_defensa) $newData->start = $fit->Fecha_defensa->fecha;
-            array_push($rpta, $newData);
+            if($fit->Fecha_defensa){
+                $newData = new stdClass();
+                if ($fit->titulo) $newData->title = $fit->titulo;
+                if ($fit->Fecha_defensa) $newData->start = $fit->Fecha_defensa->fecha;
+                array_push($rpta, $newData);
+            }  
         }
         return $rpta;
     }

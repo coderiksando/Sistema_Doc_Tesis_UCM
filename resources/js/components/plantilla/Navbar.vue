@@ -85,9 +85,7 @@
             <div class="flex" v-if="renderCalendar">
               <FullCalendar
                 :options="calendarOptions" 
-                :buttonText="{
-                  today: 'Hoy'
-                }"/> 
+                /> 
             </div>
 
           </div>
@@ -139,7 +137,7 @@ export default {
           var DAY_NAMES = ['Lun','Mar','Mie','Jue','Vie','Sab','Dom'];
           return DAY_NAMES[arg.date.getDay()];
         },
-        
+        events: []
       },
 
       modalCalendario: false,
@@ -183,11 +181,11 @@ export default {
       this.modalCalendario = false;
     },
     caldendarData(){
-        this.fullscreenLoading = true;
+      this.fullscreenLoading = true;
       var url='/administracion/usuario/calendarData'
       axios.post(url, {permisos: this.permisos})
       .then(response => {
-        console.log(response.data);
+        this.calendarOptions.events = response.data;
         this.fullscreenLoading = false;
       })
     }
