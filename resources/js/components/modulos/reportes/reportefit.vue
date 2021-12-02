@@ -309,7 +309,7 @@
           </div>
           <div id="reportAccordion">
             <template v-if="listTesis.length">
-                <template v-for="(item, index) in listTesis">
+                <template v-for="(item, index) in listarTesisPaginated">
                     <div class="card mb-1" :key="'fitAlumno'+index">
                         <div class="card-body py-1" :id="'headingFitAlumno'+index">
                         <h3 class="mb-0">
@@ -442,12 +442,12 @@
                 <div class="card-footer clearfix">
                     <ul class="pagination pagination-sm m-0 float-right">
                         <li class="page-item" v-if="pageNumber > 0">
-                        <a href="#" class="page-link" @click.prevent="prevPage2">Ant</a>
+                        <a href="#" class="page-link" @click.prevent="prevPage">Ant</a>
                         </li>
                         <li class="page-item" v-for="(page, index) in pagesList" :key="index"
                         :class="[page == pageNumber ? 'active' : '']"
                         :style="(page < pageNumber - 2 || page > pageNumber + 2) ? 'display: none' : ''">
-                        <a href="#" class=page-link @click.prevent="selectPage2(page)"> {{page+1}}</a>
+                        <a href="#" class=page-link @click.prevent="selectPage(page)"> {{page+1}}</a>
                         </li>
                         <li class="page-item" v-if="pageNumber < pageCount -1">
                         <a href="#" class="page-link" @click.prevent="nextPage">Post</a>
