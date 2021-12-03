@@ -402,8 +402,11 @@ class UsersController extends Controller
                 $members = substr_replace($members , '', -2, 2);
                 $members = $members.') ';
                 $newData = new stdClass();
-                if ($fit->titulo) $newData->title = $members.$fit->titulo;
-                if ($fit->Fecha_defensa) $newData->start = $fit->Fecha_defensa->fecha;
+                if ($fit->Fecha_defensa) {
+                    $newData->start = $fit->Fecha_defensa->fecha;
+                    $newData->sala = $fit->Fecha_defensa->sala;
+                }
+                if ($fit->titulo) $newData->title = $members." Sala: ".$newData->sala.PHP_EOL.$fit->titulo;
                 array_push($rpta, $newData);
             }
         }
