@@ -106,8 +106,8 @@
                         {{globFunct.mergedStates(item).resultado}}
                     </td>
                     <td>
-                      <button class="btn boton" title="Registro de fecha de defensas" :disabled="!item.path"
-                      :class="(item.fecha_defensa && item.path) ? 'btn-primary': 'btn-warning'"
+                      <button class="btn boton" title="Registro de fecha de defensas" :disabled="!item.constPath"
+                      :class="((item.fecha_defensa && item.constPath) || (!item.fecha_defensa && !item.constPath)) ? 'btn-primary': 'btn-warning'"
                       @click.prevent="mostrarModal(item)">
                           <i class="fas fa-calendar-day"></i>
                       </button>
@@ -358,6 +358,9 @@ export default {
     },
     setRegistrarDefensa() {
         this.showModal = false;
+        if (typeof(this.fechaDefensa) == 'string') {
+            this.fechaDefensa = new Date(this.fechaDefensa);
+        }
         if (this.fechaDefensa && this.salaDefensa) {
             this.fullscreenLoading = true;
             var url = '/secretaria/setRegistrarDefensaActa';

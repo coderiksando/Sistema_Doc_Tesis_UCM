@@ -101,6 +101,7 @@ class SecretariaController extends Controller
 
         $docs = $fits->map(function ($item, $key) {
             $acta = ArchivoPdf::select('path')->where('id_fit', $item->id)->firstWhere('tipo_pdf', 'acta');
+            $item->constPath = ArchivoPdf::select('path')->where('id_fit', $item->id)->firstWhere('tipo_pdf', 'constancia_t');
             $item->alumnos = $item->getAlumnos();
             return collect($item)->merge($acta);
         });

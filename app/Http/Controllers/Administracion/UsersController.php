@@ -406,7 +406,7 @@ class UsersController extends Controller
                     $newData->start = $fit->Fecha_defensa->fecha;
                     $newData->sala = $fit->Fecha_defensa->sala;
                 }
-                if ($fit->titulo) $newData->title = $members." Sala: ".$newData->sala.PHP_EOL.$fit->titulo;
+                if ($fit->titulo) $newData->title = "S: ".$newData->sala.' '.$members.PHP_EOL.$fit->titulo;
                 array_push($rpta, $newData);
             }
         }

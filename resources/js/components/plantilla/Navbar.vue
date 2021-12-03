@@ -126,7 +126,7 @@ export default {
         headerToolbar: {
           start: 'botonCerrar',
           center: 'title',
-          end: 'dayGridMonth timeGridWeek prev today next'
+          end: 'dayGridMonth prev today next'
         },
         customButtons: {
           botonCerrar: {
@@ -139,7 +139,7 @@ export default {
           return DAY_NAMES[arg.date.getDay()];
         },
         events: [],
-        titleFormat: {year: 'numeric', month: 'short'},
+        titleFormat: {year: 'numeric', month: 'long'},
         dateClick: function(info) {
           if(info.view.type=="dayGridMonth"){
               this.changeView("dayGridDay",info.dateStr);
@@ -209,7 +209,7 @@ export default {
 .modalCalendario{
   display: flex;
   z-index: 2;
-  width: 55% !important;
+  width: 85% !important;
   min-width: 360px !important;
   height: 100% !important;
   min-height: 360px !important
@@ -220,10 +220,21 @@ export default {
 .fc-toolbar-title{
     font-size: 1.3em !important;
 }
+.fc .fc-view-harness-active > .fc-view {
+    height: 60%!important;
+}
+.fc {
+    margin-top: 25%;
+}
 .fc-dayGridDay-view .fc-event-title{
     white-space: break-spaces;
-    text-overflow: ellipsis;
     text-align: justify;
+    cursor: text;
+    font-size: 1.1em;
+}
+.fc-daygrid-event-harness{
+    cursor: pointer;
+    font-size: 0.9em;
 }
 
 @media only screen and (min-width: 993px) {
@@ -233,20 +244,27 @@ export default {
 }
 
 @media only screen and (max-width: 993px){
-  .modalCalendario{
-    display: flex;
-    z-index: 2;
-    width: 55% !important;
-    min-width: 360px !important;
-    height: 75% !important;
-    min-height: 360px !important
-  }
-  .fc-timeGridWeek-button{
-    display: none !important;
-  }
-  .fc-dayGridMonth-button{
-    display: none !important;
-  }
+    .fc{
+        margin-top: 10vh;
+        height: 70vh;
+    }
+    .modalCalendario{
+        display: flex;
+        z-index: 2;
+        width: 55% !important;
+        min-width: 360px !important;
+        height: 75% !important;
+        min-height: 360px !important
+    }
+    .fc-timeGridWeek-button{
+        display: none !important;
+    }
+    .fc-dayGridMonth-button{
+        display: none !important;
+    }
+    .fc .fc-view-harness-active > .fc-view {
+        height: 80%!important;
+    }
 }
 
 .headtext{

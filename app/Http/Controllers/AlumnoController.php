@@ -93,7 +93,7 @@ class AlumnoController extends Controller
         }elseif($rol == 'Director'){
             $fits = Fit::where('id_escuela', Auth::user()->id_escuela);
         }else{
-            $fits = Fit::all();
+            $fits = Fit::where('id', '>' , 0);
         }
 
 //      Filtros de busqueda
@@ -125,7 +125,7 @@ class AlumnoController extends Controller
         if ($nIdEscuela) {
             $fits = $fits->where('id_escuela',"$nIdEscuela");
         }
-        $fits = $fits->sortByDesc('updated_at')->values()->all();
+        $fits = $fits->get()->sortByDesc('updated_at')->values()->all();
         foreach ($fits as $fit) {
             $listUsers = $fit->Fit_User->pluck('id_user');
             $listUsersDetails = User::whereIn('id_user', $listUsers)->get()->all();
@@ -133,6 +133,7 @@ class AlumnoController extends Controller
             $fit->listUsers = $listUsersDetails;
             $fit->Comisiones;
             $fit->Escuela;
+            $fit->Fecha_defensa;
         }
         return $fits;
     }
