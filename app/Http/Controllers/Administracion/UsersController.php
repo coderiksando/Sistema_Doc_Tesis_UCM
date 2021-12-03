@@ -392,11 +392,20 @@ class UsersController extends Controller
         $rpta = [];
         foreach ($data as $fit) {
             if($fit->Fecha_defensa){
+                $members = '(';
+                foreach ($fit->Fit_User as $fit_user) {
+                    if ($fit_user) {
+                        $fit_user->User;
+                        $members = $members.$fit_user->User->nombres.' '.$fit_user->User->apellidos.', ';
+                    }
+                }
+                $members = substr_replace($members , '', -2, 2);
+                $members = $members.') ';
                 $newData = new stdClass();
-                if ($fit->titulo) $newData->title = $fit->titulo;
+                if ($fit->titulo) $newData->title = $members.$fit->titulo;
                 if ($fit->Fecha_defensa) $newData->start = $fit->Fecha_defensa->fecha;
                 array_push($rpta, $newData);
-            }  
+            }
         }
         return $rpta;
     }

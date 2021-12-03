@@ -84,8 +84,8 @@
           <div class="swal2-content" v-loading="!renderCalendar">
             <div class="flex" v-if="renderCalendar">
               <FullCalendar
-                :options="calendarOptions" 
-                /> 
+                :options="calendarOptions"
+                />
             </div>
 
           </div>
@@ -130,7 +130,7 @@ export default {
         },
         customButtons: {
           botonCerrar: {
-            text: ' X ',
+            text: '  X  ',
             click: () => this.hideCalendar()
           }
         },
@@ -138,12 +138,21 @@ export default {
           var DAY_NAMES = ['Lun','Mar','Mie','Jue','Vie','Sab','Dom'];
           return DAY_NAMES[arg.date.getDay()];
         },
-        events: []
+        events: [],
+        titleFormat: {year: 'numeric', month: 'short'},
+        dateClick: function(info) {
+          if(info.view.type=="dayGridMonth"){
+              this.changeView("dayGridDay",info.dateStr);
+          }
+        },
+        eventClick: function(info) {
+          this.changeView("dayGridDay",info.event.start);
+        }
       },
 
       modalCalendario: false,
       renderCalendar: false,
-      
+
     }
   },
   mounted(){
@@ -202,8 +211,19 @@ export default {
   z-index: 2;
   width: 55% !important;
   min-width: 360px !important;
-  height: 90% !important;
+  height: 100% !important;
   min-height: 360px !important
+}
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 0em;
+}
+.fc-toolbar-title{
+    font-size: 1.3em !important;
+}
+.fc-dayGridDay-view .fc-event-title{
+    white-space: break-spaces;
+    text-overflow: ellipsis;
+    text-align: justify;
 }
 
 @media only screen and (min-width: 993px) {
@@ -218,7 +238,7 @@ export default {
     z-index: 2;
     width: 55% !important;
     min-width: 360px !important;
-    height: 55% !important;
+    height: 75% !important;
     min-height: 360px !important
   }
   .fc-timeGridWeek-button{
