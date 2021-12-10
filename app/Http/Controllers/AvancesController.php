@@ -28,10 +28,9 @@ class AvancesController extends Controller
 
         $idUser    = ($idUser == NULL) ? ($idUser = 0) : $idUser;
         $nIdAvance = ($nIdAvance == NULL) ? ($nIdAvance = 0) : $nIdAvance;
-        $FitUser     = Fit_User::Firstwhere('id_user', $idUser);
+        $Fit = $this->getFit();
         $AvancesTesis = [];
-        if($FitUser){
-            $Fit = $FitUser->Fit;
+        if($Fit){
             $AvancesTesis = $Fit->AvancesTesis->sortByDesc('updated_at')->values()->all();
             foreach($AvancesTesis as $avance){
                 $avance->ArchivoPdf;

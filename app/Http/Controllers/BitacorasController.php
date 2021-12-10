@@ -21,13 +21,11 @@ class BitacorasController extends Controller
 
         $IdAlumno = Auth::id();
         $MisBitacoras = [];
-        $FitUser = Fit_User::Firstwhere('id_user', $IdAlumno);
-        if ($FitUser){
-            $Fit = $FitUser->Fit;
-            if ($Fit) {
-                $MisBitacoras = $Fit->Bitacoras->sortByDesc('updated_at')->values()->all();
-            }
+        $Fit = $this->getFit();
+        if ($Fit) {
+            $MisBitacoras = $Fit->Bitacoras->sortByDesc('updated_at')->values()->all();
         }
+
         return $MisBitacoras;
     }
     public function getListarBitacorasByAlumno(Request $request){

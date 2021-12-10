@@ -496,4 +496,13 @@ class AlumnoController extends Controller
         }
         return $revisiones;
     }
+
+
+    public function getFidEnDesarrollo(Request $request){
+        $nIdUsuario  = Auth::id();
+        $fidsId = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
+        $fids = Fit::whereIn('id', $fidsId)->where('estado', 'D')->where('aprobado_pg', '!=', 'EA')->get();
+
+        return $fids;
+    }
 }
