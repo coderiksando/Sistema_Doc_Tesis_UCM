@@ -572,6 +572,7 @@ export default {
       listAlumnosBuscados: [],
       terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       terminoTituloExtendido: JSON.parse(localStorage.getItem('TerminoDeTituloExtendido')),
+      rolActivo : JSON.parse(localStorage.getItem('rolActivo')),
       myOwnUser: {},
       fullscreenLoading: false,
       modalShow: false,
@@ -706,9 +707,10 @@ export default {
                 icon: 'success',
                 title: 'Se ha editado el '+ this.terminoTitulo +' exitosamente.',
                 showConfirmButton: false,
-                timer: 1500
+                timer: 2000
+            }).then(x => {
+                this.$router.push('/tesis');
             });
-          this.$router.push("/tesis");
         });
     },
     nextPage() {
@@ -733,9 +735,10 @@ export default {
           },
         })
         .then((response) => {
-          this.getUsuarioVer(response.data);
-        this.booleanFunctionOnMounted.getTesisById = true;
-        if (this.globFunct.booleanElements(this.booleanFunctionOnMounted)) this.fullscreenLoading = false;
+            this.getUsuarioVer(response.data);
+            this.validacionEdicionInicial(response.data);
+            this.booleanFunctionOnMounted.getTesisById = true;
+            if (this.globFunct.booleanElements(this.booleanFunctionOnMounted)) this.fullscreenLoading = false;
         });
     },
     getUsuarioVer(data) {
@@ -868,12 +871,13 @@ export default {
             }
           }else{
             Swal.fire({
-              icon: 'warning',
-              title: 'No tienes permiso para ver este formulario.',
-              showConfirmButton: true,
-              timer: 2500
-            })
-            this.$router.push('/tesis');
+                icon: 'warning',
+                title: 'No tienes permiso para editar este formulario.',
+                showConfirmButton: true,
+                timer: 2000
+            }).then(x => {
+                this.$router.push('/tesis');
+            });
           }
       })
     },
@@ -887,13 +891,35 @@ export default {
                 window.open(ruteData.href, '_blank');
             }
         } else window.open(route, '_blank');
+    },
+    validacionEdicionInicial(fit) {
+        var validado = false;
+        if (this.rolActivo == 'Alumno' && fit.aprobado_pg == 'R') {
+            validado = true;
+        }
+        if (this.rolActivo == 'Profesor' && fit.aprobado_pg == 'P') {
+            validado = true;
+        }
+        if (validado == false) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'En este estado no se puede editar el formulario.',
+                showConfirmButton: true,
+                timer: 2000
+            }).then(x => {
+                this.$router.push('/tesis');
+            });
+        }
     }
   }, // cierre methods
 };
 </script>
 
 <style>
-.el-textarea__inner {
-    text-align: justify;
-}
+    .el-textarea__inner {
+        text-align: justify;
+    }
+    .swal2-container {
+        z-index: 10000;
+    }
 </style>
