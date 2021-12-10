@@ -259,7 +259,13 @@
                         <div class="col-md-9">
                           <el-date-picker
                             v-model="fillEditarFIT.dFecha"
-                            placeholder="Seleccionar fecha"
+                            placeholder="Seleccionar fecha de egreso"
+                            format="dd/MM/yyyy"
+                            value-format="yyyy-MM-dd">
+                          </el-date-picker>
+                          <el-date-picker
+                            v-model="fillEditarFIT.dFechaInscripcion"
+                            placeholder="Seleccionar fecha de inscripcion"
                             format="dd/MM/yyyy"
                             value-format="yyyy-MM-dd">
                           </el-date-picker>
@@ -965,7 +971,8 @@ export default {
         },
         fidFinalizada: false,
         privado: false,
-        dFecha: ""
+        dFecha: "",
+        dFechaInscripcion: ""
       },
       tesisForm: new FormData(),
       actaForm: new FormData(),
@@ -1506,6 +1513,7 @@ export default {
       this.fillEditarFIT.nIdCoPg = data.id_p_co_guia;
       this.fillEditarFIT.cTitulo = data.titulo;
       this.fillEditarFIT.dFecha = data.fecha;
+      this.fillEditarFIT.dFechaInscripcion = data.created_at;
       this.fillEditarFIT.privado = data.privado;
       if (data.id_vinculacion) {
         this.fillEditarFIT.nIdVinculacion = data.id_vinculacion;

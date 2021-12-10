@@ -260,7 +260,13 @@
                         <div class="col-md-9">
                           <el-date-picker
                             v-model="fillCrearFIT.dFecha"
-                            placeholder="Seleccionar fecha"
+                            placeholder="Seleccionar fecha de egreso"
+                            format="dd/MM/yyyy"
+                            value-format="yyyy-MM-dd">
+                          </el-date-picker>
+                          <el-date-picker
+                            v-model="fillCrearFIT.dFechaInscripcion"
+                            placeholder="Seleccionar fecha de inscripción"
                             format="dd/MM/yyyy"
                             value-format="yyyy-MM-dd">
                           </el-date-picker>
@@ -957,7 +963,8 @@ export default {
         },
         fidFinalizada: true,
         privado: false,
-        dFecha: ""
+        dFecha: "",
+        dFechaInscripcion: ""
       },
       tesisForm: new FormData(),
       actaForm: new FormData(),

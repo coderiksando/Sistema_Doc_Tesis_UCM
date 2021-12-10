@@ -166,6 +166,8 @@ class FilesController extends Controller
             $registroFit->descripcion = $request->cDescripcion;
             $registroFit->contribucion = $request->cContribucion;
             $registroFit->fecha = ($request->dFecha) ? $request->dFecha : Carbon::now();
+            $registroFit->updated_at = ($request->dFecha) ? $request->dFecha : Carbon::now();
+            $registroFit->created_at = ($request->dFechaInscripcion) ? $request->dFechaInscripcion : Carbon::now();
             $registroFit->privado = $request->privado;
             if ($request->fidFinalizada) {
                 $registroFit->nota = $request->Nota;
@@ -266,7 +268,9 @@ class FilesController extends Controller
             $registroFit->contribucion = $request->cContribucion;
             if ($request->dFecha) {
                 $registroFit->fecha = $request->dFecha;
+                $registroFit->updated_at = $request->dFecha;
             }
+            $registroFit->created_at = ($request->dFechaInscripcion) ? $request->dFechaInscripcion : Carbon::now();
             $registroFit->privado = $request->privado;
             if ($request->fidFinalizada) {
                 $registroFit->nota = $request->Nota;
