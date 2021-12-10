@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Log;
 use App\Fit_User;
+use App\Fit;
 use App\ArchivoPdf;
 use Illuminate\Http\Request;
 use Debugbar;
@@ -37,18 +38,12 @@ class Controller extends BaseController
     }
 
     function getFit(){
-        $idUser    = Auth::id();  
-        Debugbar::info($idUser);                           
-        $FitUser   = Fit_User::Firstwhere('id_user', $idUser);
-        Debugbar::info($FitUser);  
-        $Fit = [];
+        $idUser    = Auth::id();                          
+        $FitUser   = Fit_User::where('id_user', $idUser)->get()->pluck('id_fit');
 
-        if ($FitUser) {
-            $Fit = $FitUser->Fit;
-        }
-        
+        $Fit = Fit::whereIn('id', $FitUser)->where('estado', 'D')->where('aprobado_pg', '!=', 'EA')->first();
+   
         return $Fit;
-        //return response()->json($Fit);
     }
 
     public function getArchivo(Request $request){

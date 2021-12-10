@@ -88,6 +88,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/alumno/getListarAllTesis', 'AlumnoController@getListarAllTesis'); //agrego
   Route::get('/alumno/getListarTesisView', 'AlumnoController@getListarTesisView');
   Route::get('/alumno/getListarTesisTerminadas', 'AlumnoController@getListarTesisTerminadas');
+  Route::get('/alumno/getFidEnDesarrollo', 'AlumnoController@getFidEnDesarrollo');
   Route::post('/alumno/setRegistrarTesis', 'AlumnoController@setRegistrarTesis');
   Route::post('/alumno/setCambiarEstadoFIT', 'AlumnoController@setCambiarEstadoFIT');
   Route::post('/alumno/setEditarTesis', 'AlumnoController@setEditarTesis');

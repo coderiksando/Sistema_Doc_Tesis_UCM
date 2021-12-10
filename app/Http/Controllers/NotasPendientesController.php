@@ -76,12 +76,6 @@ class NotasPendientesController extends Controller
         $fit = $this->getFit();
         $idAlumno = Auth::id();
         $NotaP = NULL;
-        // $NotaP    = DB::table('fit')
-        //                 ->join('notaspendientes', 'notaspendientes.id_tesis', '=', 'fit.id')
-        //                 ->join('users', 'users.id_user', '=', 'fit.id_alumno')
-        //                 ->select('notaspendientes.id','fecha_presentacion', 'fecha_propuesta', 'fecha_prorroga', 'notaspendientes.estado',DB::raw("CONCAT(users.nombres,' ',users.apellidos) as full_name"))
-        //                 ->where('fit.id_alumno', '=', $idAlumno)
-        //                 ->get();
         if ($fit) {
             $NotaP = $fit->NotasPendientes;
             $alumnos = $fit->getAlumnos();

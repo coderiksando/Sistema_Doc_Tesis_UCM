@@ -241,7 +241,7 @@
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-md-4 offset-4">
-                                        <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarTesis" v-loading.fullscreen.lock="fullscreenLoading">
+                                        <button class="btn btn-flat btn-info btnWidth" @click.prevent="checkFID(true)" v-loading.fullscreen.lock="fullscreenLoading">
                                             {{globVar.btnSave}}
                                         </button>
                                         <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">
@@ -507,7 +507,8 @@ export default {
         thisyear: new Date(),
         error: 0,
         mensajeError:[],
-        maxStudentNumber: 2
+        maxStudentNumber: 2,
+        myFID: []
     }
   },
   computed: {
@@ -518,6 +519,7 @@ export default {
     this.getListarVinculacion();
     this.getMyOwnUser();
     this.getParametros();
+    this.checkFID(false);
   },
   methods:{
     getListarVinculacion(){
@@ -711,6 +713,26 @@ export default {
                 window.open(ruteData.href, '_blank');
             }
         } else window.open(route, '_blank');
+    },
+    checkFID(enviar){
+        var url = '/alumno/getFidEnDesarrollo';
+        axios.get(url, {
+        }).then(response => {
+          if(response.data.length){
+            Swal.fire({
+              icon: 'warning',
+              title: 'Actualmente cuentas con un ' + this.terminoTitulo + ' en desarrollo',
+              showConfirmButton: false,
+              timer: 2000
+            }).then(x => {
+              this.$router.push('/tesis');
+            });
+          }else{
+            if(enviar){
+              this.setRegistrarTesis();
+            }
+          }
+        })
     }
   }// cierre methods
 }
