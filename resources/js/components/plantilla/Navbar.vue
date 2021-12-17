@@ -22,11 +22,6 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
         <!-- Messages Dropdown Menu -->
-        <li class="nav-item">
-          <a class="btn-lg btn btn-outline-light" style="color: white" @click.prevent="showCalendar">
-              <i class="far fa-calendar-alt"></i>
-          </a>
-        </li>
         <li class="nav-item mr-3 mt-1">
           <div class="container">
             <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
@@ -34,6 +29,11 @@
               <span class="btn-back"> Regresar</span>
           </a>
           </div>
+        </li>
+        <li class="nav-item mr-2">
+          <a class="btn-lg btn btn-outline-light" style="color: white" @click.prevent="showCalendar">
+              <i class="far fa-calendar-alt"></i>
+          </a>
         </li>
         <li class="nav-item dropdown">
           <a class="btn-lg btn btn-outline-light" data-toggle="dropdown" href="#">

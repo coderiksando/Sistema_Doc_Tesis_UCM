@@ -245,8 +245,64 @@ class PermissionsTableSeeder extends Seeder
             'slug' => 'tesis.subirconstancia'
         ]);
         DB::table('permissions')->insert([                  //55
-            'name' => 'Logs',
+            'name' => 'Ver tabla de registros',
             'slug' => 'reportes.logs'
+        ]);
+        DB::table('permissions')->insert([                  //56
+            'name' => 'Crear Facultad',
+            'slug' => 'escuelas.crearfacultad'
+        ]);
+        DB::table('permissions')->insert([                  //57
+            'name' => 'Index de tesis finalizadas',
+            'slug' => 'index.tesisfinal'
+        ]);
+        DB::table('permissions')->insert([                  //58
+            'name' => 'Edicion de tesis finalizadas',
+            'slug' => 'editar.tesisfinal'
+        ]);
+        DB::table('permissions')->insert([                  //59
+            'name' => 'Importar Usuario',
+            'slug' => 'usuarios.importar'
+        ]);
+        DB::table('permissions')->insert([                  //60
+            'name' => 'Ver revisiones de comision',
+            'slug' => 'comision.verRevision'
+        ]);
+        DB::table('permissions')->insert([                  //61
+            'name' => 'Ver documentos de escuela',
+            'slug' => 'escuelas.documentos.navegar'
+        ]);
+        DB::table('permissions')->insert([                  //62
+            'name' => 'Crear documento de escuela',
+            'slug' => 'escuelas.documentos.crear'
+        ]);
+        DB::table('permissions')->insert([                  //63
+            'name' => 'Crear documentos generales',
+            'slug' => 'escuelas.documentos.general'
+        ]);
+        DB::table('permissions')->insert([                  //64
+            'name' => 'Ver reportes de todas las escuelas',
+            'slug' => 'reportes.general'
+        ]);
+        DB::table('permissions')->insert([                  //65
+            'name' => 'Ver FIDs de todas las escuelas',
+            'slug' => 'fid.acceso.total'
+        ]);
+        DB::table('permissions')->insert([                  //66
+            'name' => 'Ver FIDs de su escuela',
+            'slug' => 'fid.acceso.parcial'
+        ]);
+        DB::table('permissions')->insert([                  //67
+            'name' => 'Marcar trabajos en abandono',
+            'slug' => 'abandono.index'
+        ]);
+        DB::table('permissions')->insert([                  //68
+            'name' => 'Editar información de escuela',
+            'slug' => 'escuelas.documentos.editar'
+        ]);
+        DB::table('permissions')->insert([                  //69
+            'name' => 'Registro de documento externo',
+            'slug' => 'actadefensa.registroDocumento'
         ]);
     }
 }

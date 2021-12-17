@@ -84,5 +84,13 @@ class RolePermissionAlumnoSeeder extends Seeder
             'id_role' => 2,
             'id_permission' => 54
         ]);
+        DB::table('roles_permissions')->insert([
+            'id_role' => 2,
+            'id_permission' => 60
+        ]);
+        DB::table('roles_permissions')->insert([
+            'id_role' => 2,
+            'id_permission' => 61
+        ]);
     }
 }
