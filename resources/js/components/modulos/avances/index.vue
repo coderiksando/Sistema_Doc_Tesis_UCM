@@ -126,7 +126,7 @@
                                 <i class="fas fa-file-import"></i>
                             </button>
                         </template>
-                        <a title="Ver avance" class="btn btn-info boton float-right mx-1 btn-w" :href="item.archivo_pdf.path" target="_blank">
+                        <a title="Ver avance" class="btn btn-info boton float-right mx-1 btn-w" :download="item.archivo_pdf.filename" :href="item.archivo_pdf.path" target="_blank">
                             <i class="fas fa-file-download"> </i>
                         </a>
                         <template  v-if="listRolPermisosByUsuario.includes('avances.editar')">

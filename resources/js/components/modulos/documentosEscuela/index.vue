@@ -140,7 +140,7 @@
                       <p v-text="item.descripcion"></p>
                     </td>
                     <td >
-                      <a v-if="!item.link" title="Descargar archivo" class="btn boton btn-warning" target="_blank" :href="item.path"><i class="fas fa-file-download"> </i></a>
+                      <a v-if="!item.link" title="Descargar archivo" class="btn boton btn-warning" target="_blank" :download="item.filename" :href="item.path"><i class="fas fa-file-download"> </i></a>
                       <a v-if="item.link" title="Abrir link" class="btn boton btn-primary" target="_blank" :href="item.path"><i class="fa fa-link"> </i></a>
                     </td>
                   </tr>
@@ -204,7 +204,7 @@
                       <p v-text="item.descripcion"></p>
                     </td>
                     <td >
-                      <a v-if="!item.link" title="Descargar archivo" class="btn boton btn-warning" target="_blank" :href="item.path"><i class="fas fa-file-download"> </i></a>
+                      <a v-if="!item.link" title="Descargar archivo" class="btn boton btn-warning" target="_blank" :download="item.filename" :href="item.path"><i class="fas fa-file-download"> </i></a>
                       <a v-if="item.link" title="Abrir link" class="btn boton btn-primary" target="_blank" :href="item.path"><i class="fa fa-link"> </i></a>
                       <template v-if="(listRolPermisosByUsuario.includes('escuelas.documentos.general')) || (listRolPermisosByUsuario.includes('escuelas.documentos.crear') && item.id_escuela != 0)">
                         <router-link title="Editar documento" class="btn btn-info boton" :to="{name:'escuelas.documentos.editar', params:{id: item.id}}">
