@@ -324,7 +324,8 @@
                                     </div>
                                     <br>
                                     <div class="float-left">
-                                        (Prof. Guía: {{globFunct.cutFullName(item.user__p__guia.nombres,item.user__p__guia.apellidos)}}, Alumno inscriptor: {{globFunct.cutFullName(item.fit__user[0].user.nombres, item.fit__user[0].user.apellidos)}})
+                                        (Prof. Guía: {{globFunct.cutFullName(item.user__p__guia.nombres,item.user__p__guia.apellidos)}},
+                                        <template v-if="item.fit__user.length != 0"> inscriptor: {{globFunct.cutFullName(item.fit__user[0].user.nombres, item.fit__user[0].user.apellidos)}})</template>
                                     </div>
                                 </div>
                             </div>
