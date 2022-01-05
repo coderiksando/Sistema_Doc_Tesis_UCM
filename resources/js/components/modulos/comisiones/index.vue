@@ -257,7 +257,7 @@
                                         <b>AD</b>
                                     </button>
                                     <button :disabled="!item.archivoPendienteRevision" title="Descargar documento de revisión" class="btn boton btn-info mr-1"
-                                    @click.prevent="(item.archivoPendienteRevision) ? item.archivoPendienteRevision.path : ''">
+                                    @click.prevent="redirectTo((item.archivoPendienteRevision) ? item.archivoPendienteRevision.path : '')">
                                         <b>DR</b>
                                     </button>
                                     <button title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item.fit)">
@@ -377,7 +377,7 @@
                                         <b>AD</b>
                                     </button>
                                     <button :disabled="!item.archivoPendienteRevision" title="Descargar documento de revisión" class="btn boton btn-primary mr-1"
-                                    @click.prevent="(item.archivoPendienteRevision) ? item.archivoPendienteRevision.path : ''">
+                                    @click.prevent="redirectTo((item.archivoPendienteRevision) ? item.archivoPendienteRevision.path : '')">
                                         <b>DR</b>
                                     </button>
                                 </div>

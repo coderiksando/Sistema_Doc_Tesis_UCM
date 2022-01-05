@@ -351,7 +351,7 @@ class AlumnoController extends Controller
             $datoInsertado = new stdClass();
             $datoInsertado->emailpg = $item->User->email;
             $datoInsertado->titulo = $fit->titulo;
-            $datoInsertado->full_name = ($fit->User_P_Guia->nombres) . ' ' . ($fit->User_P_Guia->apellidos);
+            $datoInsertado->full_name = ($fit->User_P_Guia->nombres) . ' ' . ($fit->User_P_Guia->apellidos); // Auth::user()->nombres
             $datoInsertado->fecha = $fecha;
             $datoInsertado->estado = $estadoFit;
             $datoInsertado->motivo = $request->motivo;
