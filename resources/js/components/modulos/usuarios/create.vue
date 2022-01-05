@@ -39,6 +39,7 @@
                       <div class="col-md-8">
                           <el-select v-model="fillCrearUsuarios.cEscuela"
                             placeholder="Asignar Escuela"
+                            filterable
                             clearable>
                             <el-option
                                 v-for="item in listEscuelas"
