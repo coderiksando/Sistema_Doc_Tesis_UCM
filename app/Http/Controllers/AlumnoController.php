@@ -342,7 +342,7 @@ class AlumnoController extends Controller
         $registroFit->update();
         // Envío de email a estudiantes con el informe de su estado FIT
         $fit = Fit::find($nIdTesis);
-        $fecha = Carbon::now()->format('d-M-Y H:i');
+        $fecha = Carbon::now()->format('d-m-Y H:i');
         $datosEmail = [];
         $i = 0;
         $estadoFit = ($fit->aprobado_pg == 'A' || $fit->aprobado_pg == 'V') ? ('aprobado') : ('rechazado');
@@ -351,7 +351,7 @@ class AlumnoController extends Controller
             $datoInsertado = new stdClass();
             $datoInsertado->emailpg = $item->User->email;
             $datoInsertado->titulo = $fit->titulo;
-            $datoInsertado->full_name = ($fit->User_P_Guia->nombres) . ' ' . ($fit->User_P_Guia->apellidos); // Auth::user()->nombres
+            $datoInsertado->full_name = (Auth::user()->nombres) . ' ' . (Auth::user()->apellidos);
             $datoInsertado->fecha = $fecha;
             $datoInsertado->estado = $estadoFit;
             $datoInsertado->motivo = $request->motivo;
