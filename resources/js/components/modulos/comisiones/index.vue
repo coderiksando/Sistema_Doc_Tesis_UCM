@@ -130,7 +130,7 @@
                                         <b>AD</b>
                                     </button>
                                     <button :disabled="!item.archivoPendienteRevision" title="Descargar documento de revisión" class="btn boton btn-info mr-1"
-                                    @click.prevent="redirectTo((item.archivoPendienteRevision) ? item.archivoPendienteRevision.path : '')">
+                                    @click.prevent="download(item.archivoPendienteRevision)">
                                         <b>DR</b>
                                     </button>
                                     <button :disabled="!(item.comisiones && item.archivoPendienteRevision)" title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item)">
@@ -257,7 +257,7 @@
                                         <b>AD</b>
                                     </button>
                                     <button :disabled="!item.archivoPendienteRevision" title="Descargar documento de revisión" class="btn boton btn-info mr-1"
-                                    @click.prevent="(item.archivoPendienteRevision) ? item.archivoPendienteRevision.path : ''">
+                                    @click.prevent="download(item.archivoPendienteRevision)">
                                         <b>DR</b>
                                     </button>
                                     <button title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item.fit)">
@@ -376,8 +376,8 @@
                                     <button :disabled="item.archivoActa.length == 0" :title="'Descargar acta de defensa'" class="btn boton btn-info mr-1" @click.prevent="getDocumento(item.id)">
                                         <b>AD</b>
                                     </button>
-                                    <button :disabled="!item.archivoPendienteRevision" title="Descargar documento de revisión" class="btn boton btn-primary mr-1"
-                                    @click.prevent="(item.archivoPendienteRevision) ? item.archivoPendienteRevision.path : ''">
+                                    <button :disabled="!item.archivoPendienteRevision" title="Descargar documento de revisión" class="btn boton btn-info mr-1"
+                                    @click.prevent="download(item.archivoPendienteRevision)">
                                         <b>DR</b>
                                     </button>
                                 </div>
@@ -684,7 +684,7 @@
                                     <button :disabled="item.archivoActa.length == 0" :title="'Descargar acta de defensa'" class="btn boton btn-info mr-1" @click.prevent="getDocumento(item.id)">
                                         <b>AD</b>
                                     </button>
-                                    <button :disabled="!item.archivoPendienteRevision" title="Descargar documento de revisión" class="btn boton btn-info mr-1" @click.prevent="redirectTo((item.archivoPendienteRevision) ? item.archivoPendienteRevision.path : '')">
+                                    <button :disabled="!item.archivoPendienteRevision" title="Descargar documento de revisión" class="btn boton btn-info mr-1" @click.prevent="download(item.archivoPendienteRevision)">
                                         <b>DR</b>
                                     </button>
                                     <button v-if="item.comisiones" title="Ingresar revisión" class="btn boton btn-success mr-1" @click.prevent="modalInsercionDocumento(item)">
@@ -1344,7 +1344,7 @@ export default {
             }
         }).then(response => {
             this.fullscreenLoading = false;
-            location.href = response.data.path;
+            this.download(response.data);
         });
     },
     descargaActaZip (fit, tipo){
@@ -1417,17 +1417,6 @@ export default {
             }
         });
     },
-    redirectTo(route, objectId, newTab) {
-        if (route.search("http") !== 0) {
-            if (!newTab) {
-                if (objectId) this.$router.push({name: route, params: objectId});
-                else this.$router.push({name: route});
-            } else {
-                const ruteData = this.$router.resolve({name: route, params: objectId});
-                window.open(ruteData.href, '_blank');
-            }
-        } else window.open(route, '_blank');
-    },
     focus(e){
         setTimeout(x => {
         window.scrollBy({
@@ -1435,6 +1424,21 @@ export default {
             behavior: 'smooth'
         });
         },350);
+    },
+    download(item) {
+      axios({
+        url: item.path,
+        method: 'GET',
+        responseType: 'blob'
+      }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', item.filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+      })
     }
   }//cierre de methods
 }
