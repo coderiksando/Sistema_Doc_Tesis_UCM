@@ -938,7 +938,7 @@ export default {
     },
     descargarConstancia(fid){
       if (fid.listUsers.length == 1) {
-        this.redirectTo(fid.constancia.path);
+        this.download(fid.constancia);
       }else{
         var url = '/archivo/descargaZipByFid';
         let postConfig = {
@@ -1004,6 +1004,21 @@ export default {
             });
           }, 50);
         }
+    },
+    download(item) {
+      axios({
+        url: item.path,
+        method: 'GET',
+        responseType: 'blob'
+      }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', item.filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+      })
     }
   }//cierre de methods
 }

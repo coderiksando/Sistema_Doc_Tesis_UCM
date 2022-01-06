@@ -32,7 +32,7 @@
                       </div>
                     </div>
                     <div class="col-md-1">
-                      <a v-if="lastFile" class="btn btn-primary boton" title="Descargar versión anterior" target="_blank" :href="lastFile.path">
+                      <a v-if="lastFile" class="btn btn-primary boton" :download="lastFile.filename" title="Descargar versión anterior" target="_blank" :href="lastFile.path">
                         <i class="fas fa-file-download"> </i>
                       </a>
                     </div>
