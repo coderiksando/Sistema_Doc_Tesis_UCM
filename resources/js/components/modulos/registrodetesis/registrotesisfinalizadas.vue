@@ -503,6 +503,7 @@
                                 <button
                                   class="btn btn-danger"
                                   @click.prevent="eliminarEstudiante(item)"
+                                  :disabled="fillCrearFIT.cUsers.length <= 1"
                                 >
                                   <i class="fas fa-trash"></i>
                                 </button>

@@ -919,7 +919,7 @@ export default {
     .el-textarea__inner {
         text-align: justify;
     }
-    .swal2-container {
-        z-index: 10000;
+    .el-loading-mask {
+        z-index: 1000 !important;
     }
 </style>
