@@ -52,14 +52,15 @@ class SecretariaController extends Controller
         $fits = Fit::whereIn('id', $fitsId)->where('estado', 'like', "%$EstadoAlumno%")->where('aprobado_pg', 'V')->select('id', 'estado', 'aprobado_pg', 'nota', 'tipo')->get();
 
         $docs = $fits->map(function ($item, $key) {
-            $acta = ArchivoPdf::select('path')->where('id_fit', $item->id)->firstWhere('tipo_pdf', 'acta');
+            $acta = ArchivoPdf::where('id_fit', $item->id)->firstWhere('tipo_pdf', 'acta');
             $filename = ArchivoPdf::select('filename')->where('id_fit', $item->id)->firstWhere('tipo_pdf', 'acta');
             $constancia = ArchivoPdf::where('id_fit', $item->id)->firstWhere('tipo_pdf', 'constancia_t');
             $final = ArchivoPdf::where('id_fit', $item->id)->firstWhere('tipo_pdf', 'final_t');
             $item->alumnos = $item->getAlumnos();
             $item->constancia = $constancia;
             $item->final = $final;
-            return collect($item)->merge($acta);
+            $item->acta = $acta;
+            return $item;
         });
 
         if ($EstadoActa == 0) {

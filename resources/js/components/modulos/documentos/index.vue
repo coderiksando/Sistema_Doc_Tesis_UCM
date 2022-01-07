@@ -75,9 +75,9 @@
                       <span v-text="!item.nota || item.nota == 0.0 ? 'n/a': item.nota"></span>
                     </td>
                     <td >
-                      <button :disabled="!item.final" title="Documento final" class="btn boton btn-info font-weight-bold" @click.prevent="redirectTo((item.final) ? item.final.path : '')">DF</button>
+                      <button :disabled="!item.final" title="Documento final" class="btn boton btn-info font-weight-bold" @click.prevent="download((item.final) ? item.final.path : '')">DF</button>
                       <button :disabled="!item.constancia" title="Constancia de examen" class="btn boton btn-info font-weight-bold" @click.prevent="descargarConstancia(item)">CE</button>
-                      <button :disabled="!item.path" title="Acta de defensa" class="btn btn-info boton font-weight-bold" @click.prevent="redirectTo((item.path) ? item.path : '')">AD</button>
+                      <button :disabled="!item.acta" title="Acta de defensa" class="btn btn-info boton font-weight-bold" @click.prevent="download(item.acta)">AD</button>
                       <button :title="terminoTituloEx" class="btn btn-primary boton font-weight-bold" @click.prevent="setGenerarDocumento(item.id)">
                          {{terminoTitulo}}
                       </button>
@@ -294,7 +294,7 @@ export default {
 
     descargarConstancia(fid){
       if (fid.alumnos.length == 1) {
-        this.redirectTo(fid.constancia.path);
+        this.download(fid.constancia);
       }else{
         var url = '/archivo/descargaZipByFid';
         let postConfig = {
@@ -315,6 +315,21 @@ export default {
           url.click();
         });
       }
+    },
+    download(item) {
+      axios({
+        url: item.path,
+        method: 'GET',
+        responseType: 'blob'
+      }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', item.filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+      })
     }
 
   }//cierre de methods
