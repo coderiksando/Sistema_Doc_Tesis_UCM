@@ -30,6 +30,7 @@ class NotasPendientesController extends Controller
 
         $NotaP                      = new NotasPendientes();
         $NotaP->id_tesis            = $fit->id;
+        $NotaP->id_alumno           = $idAlumno;
         $NotaP->fecha_propuesta     = $fecha;
         $NotaP->fecha_presentacion  = Carbon::now();
         $NotaP->save();
@@ -73,18 +74,14 @@ class NotasPendientesController extends Controller
     public function getMiNotaP(Request $request){
         if(!$request->ajax()) return redirect('/');
 
-        $fit = $this->getFit();
-        $idAlumno = Auth::id();
-        $NotaP = NULL;
-        if ($fit) {
-            $NotaP = $fit->NotasPendientes;
-            $alumnos = $fit->getAlumnos();
-            if ($NotaP) {
-                $NotaP->alumnos = $alumnos;
-            }
-        }
+        $alumno = Auth::user();
+        $NotasP = NotasPendientes::where('id_alumno', $alumno->id_user)->get();
 
-        return ($NotaP) ? [$NotaP] : [];
+        $NotasP = $NotasP->map(function ($notaP) {
+            $notaP->alumno;
+            return $notaP;
+        });
+        return $NotasP;
     }
     public function getListarNotasPendientes(Request $request){
         if(!$request->ajax()) return redirect('/');
@@ -102,16 +99,7 @@ class NotasPendientesController extends Controller
 
         $idFits = Fit::where('id_escuela', $idEscuela)->where('estado', 'D')->where('id_p_guia', $user->id_user);
 
-        if ($nombre || $apellido) {
-            $users = User::where('nombres', 'LIKE', "%$nombre%")
-                           ->where('apellidos', 'LIKE', "%$apellido%")->get()->pluck('id_user');
-            $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
-            $idFits->whereIn('id', $fitUser);
-        }
-        
         $idFits = $idFits->pluck('id');
-
-        $users  = User::where('nombres', 'like', "%$nombre%")->where('apellidos', 'like', "%$apellido%")->get()->pluck('id');
         $notasP = NotasPendientes::whereIn('id_tesis', $idFits)
                                 ->whereBetween('fecha_propuesta', [$fechaInicio, $fechaFin]);
 
@@ -121,10 +109,17 @@ class NotasPendientesController extends Controller
         if ($estado == 2) {
             $notasP = $notasP->whereNotNull('fecha_prorroga');
         }
+
+        if ($nombre || $apellido) {
+            $users = User::where('nombres', 'LIKE', "%$nombre%")
+                           ->where('apellidos', 'LIKE', "%$apellido%")->get()->pluck('id_user');
+            $notasP->whereIn('id_alumno', $users);
+        }
+
         $notasP = $notasP->get();
 
         foreach ($notasP as $nota) {
-            $nota->alumnos = Fit::find($nota->id_tesis)->getAlumnos();
+            $nota->Alumno;
         }
 
         
@@ -161,13 +156,7 @@ class NotasPendientesController extends Controller
            $idFits = $idFits->where('id_escuela', $idEscuela);
         }
 
-        if ($nombre || $apellido) {
-            $users = User::where('nombres', 'LIKE', "%$nombre%")
-                           ->where('apellidos', 'LIKE', "%$apellido%")->get()->pluck('id_user');
-            $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
-            $idFits->whereIn('id', $fitUser);
-        }
-        
+          
         $idFits = $idFits->pluck('id');
 
         $users  = User::where('nombres', 'like', "%$nombre%")->where('apellidos', 'like', "%$apellido%")->get()->pluck('id');
@@ -181,10 +170,18 @@ class NotasPendientesController extends Controller
         if ($estado == 2) {
             $notasP = $notasP->whereNotNull('fecha_prorroga');
         }
+
+        if ($nombre || $apellido) {
+            $users = User::where('nombres', 'LIKE', "%$nombre%")
+                           ->where('apellidos', 'LIKE', "%$apellido%")->get()->pluck('id_user');
+            $notasP->whereIn('id_alumno', $users);
+        }
+
+
         $notasP = $notasP->get();
 
         foreach ($notasP as $nota) {
-            $nota->alumnos = Fit::find($nota->id_tesis)->getAlumnos();
+            $nota->Alumno;
         }
 
         return $notasP;

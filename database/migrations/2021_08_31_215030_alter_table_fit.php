@@ -32,7 +32,7 @@ class AlterTableFit extends Migration
             $table->dropColumn('fecha');
             $table->dropColumn('privado');
             $table->dropColumn('fecha_publicacion');
-            $table->dropColum('motivo_privado');
+            $table->dropColumn('motivo_privado');
             
         });
     }
