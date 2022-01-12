@@ -366,6 +366,14 @@ export const rutas = [
     },
     props: true
 },
+{
+    path: '/notaspendientes/asignar',
+    name: 'notaspendientes.asignar',
+    component: require('./components/modulos/notaspendientes/asignar').default,
+    beforeEnter: (to, from, next) => {
+        verificarAcceso(to, from, next);
+    }
+},
 /******** RUTAS MODULO DE ADMINISTRACION DE TESIS EN ABANDONO ********/
 {
     path: '/abandono',

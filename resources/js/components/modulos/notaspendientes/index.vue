@@ -1,15 +1,20 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <div class="card-tools" v-if="listNotasPendientes">
-        <template v-if="listRolPermisosByUsuario.includes('notaspendientes.crear')">
-          <template v-if="listNotasPendientes.length == 0 && fillEstadoTesis.cEstado  == 'D'">
-            <router-link class="btn btn-info bnt-sm" :to="'/notaspendientes/crear'">
-              <i class="fas fa-plus-square"></i> Solicitar nota pendiente
-            </router-link>
-          </template>
-        </template>
-      </div>
+        <div class="card-tools" v-if="listNotasPendientes">
+            <template v-if="listRolPermisosByUsuario.includes('notaspendientes.crear')">
+            <template v-if="listNotasPendientes.length == 0 && fillEstadoTesis.cEstado  == 'D'">
+                <router-link class="btn btn-info bnt-sm" :to="'/notaspendientes/crear'">
+                <i class="fas fa-plus-square"></i> Solicitar nota pendiente
+                </router-link>
+            </template>
+            </template>
+            <template v-if="listRolPermisosByUsuario.includes('notaspendientes.asignar')">
+                <router-link class="btn btn-info bnt-sm" :to="{name: 'notaspendientes.asignar'}">
+                    <i class="fas fa-plus-square"></i> Asignar notas pendientes
+                </router-link>
+            </template>
+        </div>
     </div>
 
     <div class="card-body">
