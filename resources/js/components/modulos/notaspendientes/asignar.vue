@@ -13,10 +13,10 @@
                   <div class="form-group row">
                     <label class="col-md-4 col-form-label">Alumno</label>
                     <div class="col-md-4">
-                        <input placeholder="Nombre" type="text" class="form-control" v-model="fillBsqFID.nombre" @keyup.enter="getListarNotasPendientes">
+                        <input placeholder="Nombre" type="text" class="form-control" v-model="fillBsqFID.nombre" @keyup.enter="getListarTesis">
                     </div>
                     <div class="col-md-4">
-                        <input placeholder="Apellido" type="text" class="form-control" v-model="fillBsqFID.apellido" @keyup.enter="getListarNotasPendientes">
+                        <input placeholder="Apellido" type="text" class="form-control" v-model="fillBsqFID.apellido" @keyup.enter="getListarTesis">
                     </div>
                   </div>
                 </div>
@@ -24,7 +24,7 @@
                   <div class="form-group row">
                     <label class="col-md-4 col-form-label">Rut</label>
                     <div class="col-md-8">
-                        <input placeholder="11111111-1" type="text" class="form-control" v-model="fillBsqFID.rut" @keyup.enter="getListarNotasPendientes">
+                        <input placeholder="11111111-1" type="text" class="form-control" v-model="fillBsqFID.rut" @keyup.enter="getListarTesis">
                     </div>
                   </div>
                 </div>
@@ -59,7 +59,7 @@
                         placeholder="Seleccione una idCarrera"
                         filterable
                         autocomplete="fillBsqFID.nIdEscuela"
-                        @change="getListarNotasPendientes">
+                        @change="getListarTesis">
                         <el-option
                             v-for="item in listaDeCarrera"
                             :key="item.id"
@@ -77,12 +77,83 @@
           <div class="card-footer">
             <div class="row">
               <div class="col-md-4 offset-4">
-                <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarNotasPendientes"
+                <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListarTesis"
                   >{{globVar.btnSearch}}</button>
                 <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">{{globVar.btnClear}}</button>
               </div>
             </div>
           </div>
+
+          <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Bandeja de resultados</h3>
+            </div>
+            <div class="card-body table-responsive">
+                <template v-if="listaFIDs.length > 0">
+                    <div class="input-group">
+                        <table class ="col-md-9 table table-hover table-head-fixed text-nowrap projects smallSize">
+                            <thead>
+                            <tr>
+                                <th class="col-md-4">Alumno</th>
+                                <th>Título {{terminoTitulo}}</th>
+                                <th>Fecha inscripción {{terminoTitulo}}</th>
+                            </tr>
+                            </thead>
+                            <tbody v-loading="fullscreenLoading">
+                            <tr v-for="(item, index) in listaFIDs" :key="index">
+                                <td class="col-md-4"> <!-- itera mostrando la cantidad total de estudiantes -->
+                                    <div class="input-group" style="display: flex; align-items: center;"
+                                    v-for="(itemUser, index) in item.listUsers" :key="index">
+                                        <input type="checkbox" id="cbox1" value="first_checkbox" @change="check(itemUser)">
+                                        <div v-text="itemUser.nombres + ' ' + itemUser.apellidos"></div>
+                                    </div>
+                                </td>
+                                <td>{{(item.titulo.length >= 40) ? item.titulo.slice(0, 40)+'...': item.titulo.slice(0, 40)}}</td>
+                                <td>{{item.created_at | moment}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <!-- position-fixed -->
+                                <div class="card card-info mb-0">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Inserción de fecha</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <form role="form">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <label class="col-md-12 col-form-label">Fecha de nota P.</label>
+                                                    <div class="col-md-12">
+                                                        <el-date-picker
+                                                            v-model="fillForm.date"
+                                                            placeholder="Fecha inicio"
+                                                            format="dd/MM/yyyy"
+                                                            value-format="yyyy-MM-dd">
+                                                        </el-date-picker>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-info btnWidth" @click.prevent="asignarNotaP">
+                                                    <i class="fas fa-save"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template v-else>
+                <div class="callout callout-info">
+                    <h5> No se han encontrado resultados...</h5>
+                </div>
+                </template>
+            </div>
+        </div>
         </div>
       </div>
     </div>
@@ -90,18 +161,23 @@
 </template>
 
 <script>
+import moment from 'moment';
 import globVar from '../../../services/globVar';
 export default {
   data(){
     return{
       globVar: new globVar(),
       fillBsqFID:{
-          nombre: '',
-          apellido: '',
-          rut: '',
-          idCarrera: '',
-          fechaInsIni: '',
-          fechaInsFin: ''
+        nombre: '',
+        apellido: '',
+        rut: '',
+        idCarrera: '',
+        fechaInsIni: '',
+        fechaInsFin: ''
+      },
+      fillForm:{
+        date: '',
+        listUser: []
       },
       fullscreenLoading: false,
       modalShow: false,
@@ -115,7 +191,10 @@ export default {
       error: 0,
       thisyear: new Date(),
       mensajeError:[],
-      listaDeCarrera: []
+      terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
+      terminoTituloExtendido: JSON.parse(localStorage.getItem('TerminoDeTituloExtendido')),
+      listaDeCarrera: [],
+      listaFIDs: []
     }
   },
   computed: {
@@ -124,8 +203,15 @@ export default {
     EventBus.$emit('navegar', 'Asignar notas pendientes');
     this.init();
   },
+  filters:{
+    moment: function (date) {
+      moment.locale('es');
+      return moment(date).format('DD/MM/YYYY');
+    }
+  },
   methods:{
     init(){
+      this.getEscuelas();
     },
     limpiarCriterios(){
       this.fillCrearNotaP.cNombre = '';
@@ -134,8 +220,33 @@ export default {
     abrirModal(){
       this.modalShow = !this.modalShow;
     },
-    getListarNotasPendientes(){
-
+    getListarTesis(){
+        this.fullscreenLoading = true;
+        var url = '/alumno/getListarTesis';
+        axios.get(url, {
+            params:{
+            'nombre'    :   this.fillBsqFID.nombre,
+            'apellido'  :   this.fillBsqFID.apellido,
+            'estado'    :   ['', 'D'],
+            'rut'       :   this.fillBsqFID.rut,
+            'fechaSt'   :   (!this.fillBsqFID.fechaInsIni) ? '' : this.fillBsqFID.fechaInsIni,
+            'fechaEn'   :   (!this.fillBsqFID.fechaInsFin) ? '' : this.fillBsqFID.fechaInsFin,
+            'nIdEscuela':   this.fillBsqFID.idCarrera
+            }
+        }).then(response => {
+            this.listaFIDs = response.data;
+            this.fullscreenLoading = false;
+        })
+    },
+    getEscuelas(){
+        this.fullscreenLoading = true;
+        var url = '/administracion/escuelas/getListarEscuelas';
+        axios.get(url, {
+        }).then(response => {
+            this.listaDeCarrera = response.data;
+            this.listaDeCarrera.unshift({'id':'', 'nombre': 'Todas', 'facultad': {'id':0}});
+            this.fullscreenLoading = false;
+        })
     },
     limpiarCriteriosBsq(){
       this.fillBsqFID.rut = '';
@@ -145,10 +256,42 @@ export default {
       this.fillBsqFID.fechaInsIni = '';
       this.fillBsqFID.fechaInsFin = '';
     },
+    check(user){
+        let index = this.fillForm.listUser.findIndex(idUser => idUser == user.id_user);
+        if (index != -1) {
+            this.fillForm.listUser.splice(index, 1);
+        } else {
+            this.fillForm.listUser.push(user.id_user);
+        }
+    },
+    asignarNotaP(){
+        const url = '/notaspendientes/asignarNotasP';
+        axios.post(url, this.fillForm
+        ).then(response => {
+            console.log(response.data);
+            // this.$router.push('/notaspendientes');
+            Swal.fire({
+                icon: 'success',
+                title: 'Notas pendientes registradas correctamente',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }).catch(response=>{
+            this.fullscreenLoading = false;
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al registrar notas pendientes',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        })
+    }
   }// cierre methods
 }
 </script>
 
 <style>
-
+.smallSize {
+    font-size: 0.9rem;
+}
 </style>

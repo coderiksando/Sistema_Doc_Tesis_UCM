@@ -55,7 +55,7 @@ class NotasPendientesController extends Controller
         if ($habilitarEmails && $habilitarEmailNotaPendiente) {
            Mail::to([$DatosEmail->emailpg,$Coordinador->email])->queue(new MailNotaPendiente($DatosEmail));
         }
-        
+
         return $NotaP;
     }
     public function setAsignarNotaP(Request $request){
@@ -108,7 +108,7 @@ class NotasPendientesController extends Controller
             $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
             $idFits->whereIn('id', $fitUser);
         }
-        
+
         $idFits = $idFits->pluck('id');
 
         $users  = User::where('nombres', 'like', "%$nombre%")->where('apellidos', 'like', "%$apellido%")->get()->pluck('id');
@@ -127,7 +127,7 @@ class NotasPendientesController extends Controller
             $nota->alumnos = Fit::find($nota->id_tesis)->getAlumnos();
         }
 
-        
+
 
         return $notasP;
 
@@ -167,7 +167,7 @@ class NotasPendientesController extends Controller
             $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
             $idFits->whereIn('id', $fitUser);
         }
-        
+
         $idFits = $idFits->pluck('id');
 
         $users  = User::where('nombres', 'like', "%$nombre%")->where('apellidos', 'like', "%$apellido%")->get()->pluck('id');
@@ -226,5 +226,19 @@ class NotasPendientesController extends Controller
         $fecha_prorroga = $request->fecha_prorroga;
 
         NotasPendientes::find($id)->update(['fecha_prorroga'=>$fecha_prorroga]);
+    }
+    public function asignarNotasP(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
+        $users = $request->listUser;
+        $fecha = $request->date;
+        $fechaActual = Carbon::now();
+        foreach ($users as $user) {
+            NotasPendientes::updateOrCreate([
+                'fecha_propuesta' => $fecha, 'fecha_autorizada' => $fecha,
+                'fecha_presentacion' => $fechaActual, 'id_alumno' => $users
+            ]);
+        }
+        return 'wena wena';
     }
 }

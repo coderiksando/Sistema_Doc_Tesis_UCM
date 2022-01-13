@@ -114,6 +114,8 @@ class AlumnoController extends Controller
             if ($cEstado[0] != 'EA') {
                 if ($cEstado[0] != '' && $cEstado[1] != '')
                 $fits = $fits->where('aprobado_pg', $cEstado[0])->where('estado', $cEstado[1]);
+                if ($cEstado[1] != '')
+                $fits = $fits->where('estado', $cEstado[1]);
             }
             if ($cEstado[0] == 'EA') {
                 $fits = $fits->where('aprobado_pg', $cEstado[0]);
