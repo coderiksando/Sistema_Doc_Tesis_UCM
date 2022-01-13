@@ -56,7 +56,7 @@ class NotasPendientesController extends Controller
         if ($habilitarEmails && $habilitarEmailNotaPendiente) {
            Mail::to([$DatosEmail->emailpg,$Coordinador->email])->queue(new MailNotaPendiente($DatosEmail));
         }
-        
+
         return $NotaP;
     }
     public function setAsignarNotaP(Request $request){
@@ -101,6 +101,13 @@ class NotasPendientesController extends Controller
 
         $idFits = Fit::where('estado', 'D')->where('id_p_guia', $user->id_user);
 
+        if ($nombre || $apellido) {
+            $users = User::where('nombres', 'LIKE', "%$nombre%")
+                           ->where('apellidos', 'LIKE', "%$apellido%")->get()->pluck('id_user');
+            $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
+            $idFits->whereIn('id', $fitUser);
+        }
+
         $idFits = $idFits->pluck('id');
         $notasP = NotasPendientes::whereIn('id_tesis', $idFits)
                                 ->whereBetween('fecha_propuesta', [$fechaInicio, $fechaFin]);
@@ -126,7 +133,7 @@ class NotasPendientesController extends Controller
             $nota->Alumno;
         }
 
-        
+
 
         return $notasP;
 
@@ -229,5 +236,24 @@ class NotasPendientesController extends Controller
         $fecha_prorroga = $request->fecha_prorroga;
 
         NotasPendientes::find($id)->update(['fecha_prorroga'=>$fecha_prorroga]);
+    }
+    public function asignarNotasP(Request $request){
+        if(!$request->ajax()) return redirect('/');
+
+        $users = $request->listUser;
+        $fecha = $request->date;
+        $fechaActual = Carbon::now();
+        foreach ($users as $user) {
+            NotasPendientes::updateOrCreate(
+                ['id_alumno' => $user['idUser']],
+                [
+                    'fecha_propuesta' => $fecha,
+                    'fecha_autorizada' => $fecha,
+                    'id_tesis' => $user['idFid'],
+                    'fecha_presentacion' => $fechaActual
+                ]
+            );
+        }
+        return 'registro exitoso';
     }
 }

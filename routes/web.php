@@ -128,6 +128,7 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/notaspendientes/getNotaPendienteById', 'NotasPendientesController@getNotaPendienteById');
   Route::post('/notaspendientes/setEditarNotaP', 'NotasPendientesController@setEditarNotaP');
   Route::post('/notaspendientes/setIngresarProrroga', 'NotasPendientesController@setIngresarProrroga');
+  Route::post('/notaspendientes/asignarNotasP', 'NotasPendientesController@asignarNotasP');
 
   /*********    RUTAS MODULO DE ADMINISTRACION DE COMISIONES    **********/
   Route::post('/comisiones/setRegistrarComision', 'ComisionesController@setRegistrarComision');
