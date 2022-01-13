@@ -99,16 +99,7 @@ class NotasPendientesController extends Controller
         $apellido   = ($apellido == NULL)   ? '' : $apellido;
         $rut        = ($rut == NULL)        ? '' : $rut;
 
-        $idFits = Fit::where('estado', 'D')->where('id_p_guia', $user->id_user);
-
-        if ($nombre || $apellido) {
-            $users = User::where('nombres', 'LIKE', "%$nombre%")
-                           ->where('apellidos', 'LIKE', "%$apellido%")->get()->pluck('id_user');
-            $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
-            $idFits->whereIn('id', $fitUser);
-        }
-
-        $idFits = $idFits->pluck('id');
+        $idFits = Fit::where('estado', 'D')->where('id_p_guia', $user->id_user)->pluck('id');
         $notasP = NotasPendientes::whereIn('id_tesis', $idFits)
                                 ->whereBetween('fecha_propuesta', [$fechaInicio, $fechaFin]);
 
