@@ -90,14 +90,16 @@ class NotasPendientesController extends Controller
         $idEscuela = $user->id_escuela;
         $nombre = $request->nombre;
         $apellido = $request->apellido;
+        $rut = $request->rut;
         $fechaInicio = ($request->dFechaInicio == NULL) ? '0001/01/01' : Carbon::parse($request->dFechaInicio)->startOfDay();
         $fechaFin    = ($request->dFechaFin == NULL) ? '9999/12/31' : Carbon::parse($request->dFechaFin)->endOfDay();
         $estado      = $request->estado;
 
-        $nombre     = ($nombre == NULL) ? '' : $nombre;
-        $apellido   = ($apellido == NULL) ? '' : $apellido;
+        $nombre     = ($nombre == NULL)     ? '' : $nombre;
+        $apellido   = ($apellido == NULL)   ? '' : $apellido;
+        $rut        = ($rut == NULL)        ? '' : $rut;
 
-        $idFits = Fit::where('id_escuela', $idEscuela)->where('estado', 'D')->where('id_p_guia', $user->id_user);
+        $idFits = Fit::where('estado', 'D')->where('id_p_guia', $user->id_user);
 
         $idFits = $idFits->pluck('id');
         $notasP = NotasPendientes::whereIn('id_tesis', $idFits)
@@ -110,11 +112,13 @@ class NotasPendientesController extends Controller
             $notasP = $notasP->whereNotNull('fecha_prorroga');
         }
 
-        if ($nombre || $apellido) {
-            $users = User::where('nombres', 'LIKE', "%$nombre%")
-                           ->where('apellidos', 'LIKE', "%$apellido%")->get()->pluck('id_user');
-            $notasP->whereIn('id_alumno', $users);
-        }
+        $users = User::where('nombres', 'LIKE', "%$nombre%")
+                        ->where('apellidos', 'LIKE', "%$apellido%")
+                        ->where('rut', 'LIKE', "%$rut%")
+                        ->get()->pluck('id_user');
+
+        $notasP->whereIn('id_alumno', $users);
+        
 
         $notasP = $notasP->get();
 
@@ -136,30 +140,24 @@ class NotasPendientesController extends Controller
         return $notaP;
     }
     public function getListarNotasPendientesbyEscuela(Request $request){
-        //if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
         $user           = Auth::user();
         $estado         = $request->estado;
         $idEscuela      = $user->id_escuela;
+        $selectedEscuela= $request->escuela;
         $nombre         = $request->nombre;
         $apellido       = $request->apellido;
+        $rut            = $request->rut;
         $fechaInicio    = ($request->dFechaInicio == NULL) ? '0001/01/01' : Carbon::parse($request->dFechaInicio)->startOfDay();
         $fechaFin       = ($request->dFechaFin == NULL) ? '9999/12/31' : Carbon::parse($request->dFechaFin)->endOfDay();
-        $nivelAcceso        =  $request->nivelAcceso;
+        $nivelAcceso    =  $request->nivelAcceso;
 
 
-        $nombre     = ($nombre == NULL) ? '' : $nombre;
-        $apellido   = ($apellido == NULL) ? '' : $apellido;
+        $nombre     = ($nombre   == NULL)    ? '' : $nombre;
+        $apellido   = ($apellido == NULL)    ? '' : $apellido;
+        $rut        = ($rut      == NULL)    ? '' : $rut;
 
-        $idFits = Fit::where('estado', 'D');
-
-        if ($nivelAcceso) {
-           $idFits = $idFits->where('id_escuela', $idEscuela);
-        }
-
-          
-        $idFits = $idFits->pluck('id');
-
-        $users  = User::where('nombres', 'like', "%$nombre%")->where('apellidos', 'like', "%$apellido%")->get()->pluck('id');
+        $idFits = Fit::where('estado', 'D')->pluck('id');
         $notasP = NotasPendientes::whereIn('id_tesis', $idFits)
                                 ->whereBetween('fecha_propuesta', [$fechaInicio, $fechaFin]);
 
@@ -171,11 +169,19 @@ class NotasPendientesController extends Controller
             $notasP = $notasP->whereNotNull('fecha_prorroga');
         }
 
-        if ($nombre || $apellido) {
-            $users = User::where('nombres', 'LIKE', "%$nombre%")
-                           ->where('apellidos', 'LIKE', "%$apellido%")->get()->pluck('id_user');
-            $notasP->whereIn('id_alumno', $users);
+        $users = User::where('nombres', 'LIKE', "%$nombre%")
+                        ->where('apellidos', 'LIKE', "%$apellido%")
+                        ->where('rut', 'LIKE', "%$rut%");
+
+        if ($nivelAcceso) {
+            $users = $users->where('id_escuela', $idEscuela);
+        }elseif($selectedEscuela){
+            $users = $users->where('id_escuela', $selectedEscuela);
         }
+
+        $users = $users->get()->pluck('id_user');
+        $notasP->whereIn('id_alumno', $users);
+
 
 
         $notasP = $notasP->get();

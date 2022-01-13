@@ -29,38 +29,50 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Alumno</label>
-                    <div class="col-md-5">
-                        <input placeholder="Nombre" type="text" class="form-control" v-model="fillBsqNotasPendientes.cNombre" @keyup.enter="getListarNotasPendientes">
-                    </div>
-                    <div class="col-md-5">
-                        <input placeholder="Apellido" type="text" class="form-control" v-model="fillBsqNotasPendientes.cApellido" @keyup.enter="getListarNotasPendientes">
+                    <label class="col-md-3 col-form-label">Alumno</label>
+                    <div class="col-md-8 form-group row pr-0 mb-0">
+                      <div class="col-md-6 pr-0">
+                          <input placeholder="Nombre" type="text" class="form-control" v-model="fillBsqNotasPendientes.cNombre" @keyup.enter="init">
+                      </div>
+                      <div class="col-md-6 pr-0">
+                          <input placeholder="Apellido" type="text" class="form-control" v-model="fillBsqNotasPendientes.cApellido" @keyup.enter="init">
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Estado</label>
-                    <div class="col-md-10">
-                        <el-select v-model="fillBsqNotasPendientes.cEstado"
-                        placeholder="Seleccione un estado"
-                        filterable
-                        autocomplete="estadoFusionadoDeSGYAD"
-                        @change="init">
-                          <el-option
-                            v-for="item in estadosNotaP"
-                            :key="item.id"
-                            :label="item.label"
-                            :value="item.id">
-                          </el-option>
-                        </el-select>
+                    <label class="col-md-3 col-form-label">Rut alumno</label>
+                    <div class="col-md-8">
+                        <input type="text" placeholder="11111111-1" class="form-control" v-model="fillBsqNotasPendientes.cRut" @keyup.enter="init">
                     </div>
                   </div>
                 </div>
-                <div class="col-md-12">
+                <template v-if="listRolPermisosByUsuario.includes('fid.acceso.total')">
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="col-md-3 col-form-label">Escuela</label>
+                      <div class="col-md-8">
+                          <el-select v-model="fillBsqNotasPendientes.nEscuela"
+                          placeholder="Seleccione una escuela"
+                          filterable
+                          clearable
+                          @change="init">
+                            <el-option
+                              v-for="item in listEscuelas"
+                              :key="item.id"
+                              :label="item.nombre"
+                              :value="item.id">
+                            </el-option>
+                          </el-select>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <div class="col-md-6">
                   <div class="form-group row">
-                    <label class="col-md-12 col-form-label">Rango de fechas</label>
-                    <div class="col-md-12 form-group row pr-0">
+                    <label class="col-md-3 col-form-label">Rango de fechas</label>
+                    <div class="col-md-8 form-group row pr-0 mb-0">
                         <div class="col-md-6 pr-0">
                             <el-date-picker
                                 v-model="fillBsqNotasPendientes.dFechaInicio"
@@ -77,6 +89,25 @@
                                 value-format="yyyy-MM-dd">
                             </el-date-picker>
                         </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Estado</label>
+                    <div class="col-md-8">
+                        <el-select v-model="fillBsqNotasPendientes.cEstado"
+                        placeholder="Seleccione un estado"
+                        filterable
+                        autocomplete="estadoFusionadoDeSGYAD"
+                        @change="init">
+                          <el-option
+                            v-for="item in estadosNotaP"
+                            :key="item.id"
+                            :label="item.label"
+                            :value="item.id">
+                          </el-option>
+                        </el-select>
                     </div>
                   </div>
                 </div>
@@ -178,7 +209,9 @@ export default {
         cApellido: '',
         cEstado: 0,
         dFechaInicio: '',
-        dFechaFin: ''
+        dFechaFin: '',
+        nEscuela: '',
+        cRut: '',
       },
       fillEstadoTesis:{
         cEstado: '',
@@ -190,6 +223,7 @@ export default {
       ],
       listNotasPendientes: [],
       listAlumnos:[],
+      listEscuelas: [],
       fullscreenLoading: false,
       pageNumber: 0,
       perPage: 10,
@@ -254,6 +288,7 @@ export default {
       }
       else if (this.listRolPermisosByUsuario.includes('fid.acceso.total')){
           this.getListarNotasPendientesByEscuela(0);
+          this.getListarEscuelas();
       }
     },
     getListarAlumnosByprofesor(){
@@ -281,6 +316,7 @@ export default {
       this.fillBsqNotasPendientes.dFechaInicio = '';
       this.fillBsqNotasPendientes.cNombre = '';
       this.fillBsqNotasPendientes.cApellido = '';
+      this.fillBsqNotasPendientes.cRut = '';
     },
     limpiarBandejaNotasPendientes(){
       this.listNotasPendientes = [];
@@ -294,7 +330,8 @@ export default {
           'nombre'        : this.fillBsqNotasPendientes.cNombre,
           'apellido'      : this.fillBsqNotasPendientes.cApellido,
           'dFechaInicio'  : this.fillBsqNotasPendientes.dFechaInicio,
-          'dFechaFin'     : this.fillBsqNotasPendientes.dFechaFin
+          'dFechaFin'     : this.fillBsqNotasPendientes.dFechaFin,
+          'rut'           : this.fillBsqNotasPendientes.cRut
         }
       }).then(response => {
           this.inicializarPaginacion();
@@ -305,6 +342,7 @@ export default {
     },
     getListarNotasPendientesByEscuela(nivelAcceso){
       this.fullscreenLoading = true;
+      console.log(this.fillBsqNotasPendientes.nEscuela);
       var url = '/notaspendientes/getListarNotasPendientesByEscuela'
       axios.get(url, {
         params: {
@@ -313,7 +351,9 @@ export default {
           'apellido'      : this.fillBsqNotasPendientes.cApellido,
           'dFechaInicio'  : this.fillBsqNotasPendientes.dFechaInicio,
           'dFechaFin'     : this.fillBsqNotasPendientes.dFechaFin,
-          'nivelAcceso'   : nivelAcceso
+          'nivelAcceso'   : nivelAcceso,
+          'rut'           : this.fillBsqNotasPendientes.cRut,
+          'escuela'       : this.fillBsqNotasPendientes.nEscuela
         }
       }).then(response => {
           this.inicializarPaginacion();
@@ -328,7 +368,16 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listNotasPendientes = response.data;
-          console.log(response.data);
+          this.fullscreenLoading = false;
+      })
+    },
+    getListarEscuelas(){
+      this.fullscreenLoading = true;
+      var url = '/administracion/escuelas/getListarEscuelas'
+      axios.get(url, {
+
+      }).then(response => {
+          this.listEscuelas = response.data;
           this.fullscreenLoading = false;
       })
     },
