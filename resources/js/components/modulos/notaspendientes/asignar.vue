@@ -104,11 +104,11 @@
                                 <td class="col-md-4"> <!-- itera mostrando la cantidad total de estudiantes -->
                                     <div class="input-group" style="display: flex; align-items: center;"
                                     v-for="(itemUser, index) in item.listUsers" :key="index">
-                                        <input type="checkbox" id="cbox1" value="first_checkbox" @change="check(itemUser)">
+                                        <input type="checkbox" id="cbox1" value="first_checkbox" @change="check(itemUser, item.id)">
                                         <div v-text="itemUser.nombres + ' ' + itemUser.apellidos"></div>
                                     </div>
                                 </td>
-                                <td>{{(item.titulo.length >= 40) ? item.titulo.slice(0, 40)+'...': item.titulo.slice(0, 40)}}</td>
+                                <td>{{'('+item.escuela.nombre_abreviado+')'}}{{(item.titulo.length >= 40) ? item.titulo.slice(0, 40)+'...': item.titulo.slice(0, 40)}}</td>
                                 <td>{{item.created_at | moment}}</td>
                             </tr>
                             </tbody>
@@ -256,35 +256,48 @@ export default {
       this.fillBsqFID.fechaInsIni = '';
       this.fillBsqFID.fechaInsFin = '';
     },
-    check(user){
-        let index = this.fillForm.listUser.findIndex(idUser => idUser == user.id_user);
+    check(user, idFid){
+        let index = this.fillForm.listUser.findIndex(object => object.idUser == user.id_user);
         if (index != -1) {
             this.fillForm.listUser.splice(index, 1);
         } else {
-            this.fillForm.listUser.push(user.id_user);
+            this.fillForm.listUser.push({idUser: user.id_user, idFid: idFid});
         }
     },
     asignarNotaP(){
         const url = '/notaspendientes/asignarNotasP';
-        axios.post(url, this.fillForm
-        ).then(response => {
-            console.log(response.data);
-            // this.$router.push('/notaspendientes');
-            Swal.fire({
-                icon: 'success',
-                title: 'Notas pendientes registradas correctamente',
-                showConfirmButton: false,
-                timer: 1500
+        if (this.revisionDatos()) {
+            axios.post(url, this.fillForm
+            ).then(response => {
+                this.$router.push('/notaspendientes');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Notas pendientes registradas correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }).catch(response=>{
+                this.fullscreenLoading = false;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al registrar notas pendientes',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
             })
-        }).catch(response=>{
-            this.fullscreenLoading = false;
+        } else {
             Swal.fire({
                 icon: 'error',
-                title: 'Error al registrar notas pendientes',
+                title: 'Faltan datos ingresados',
                 showConfirmButton: false,
                 timer: 1500
             })
-        })
+        }
+    },
+    revisionDatos(){
+        if (!this.fillForm.date) return false;
+        if (this.fillForm.listUser.length == 0) return false;
+        return true;
     }
   }// cierre methods
 }
