@@ -114,10 +114,8 @@
                 </thead>
                 <tbody v-loading="fullscreenLoading">
                   <tr v-for="(item, index) in listarNotasPendientesPaginated" :key="index">
-                    <td> <!-- itera mostrando la cantidad total de estudiantes -->
-                        <div v-for="(itemUser, index) in item.alumnos" :key="index">
-                            <div v-text="itemUser.nombres + ' ' + itemUser.apellidos"></div>
-                        </div>
+                    <td>
+                        {{item.alumno.nombres + ' ' + item.alumno.apellidos}}
                     </td>
                     <td> {{ item.fecha_presentacion | moment }}</td>
                     <td> {{ item.fecha_propuesta | moment }}</td>
@@ -301,6 +299,7 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listNotasPendientes = response.data;
+          console.log(response.data);
           this.fullscreenLoading = false;
       })
     },
@@ -329,6 +328,7 @@ export default {
       }).then(response => {
           this.inicializarPaginacion();
           this.listNotasPendientes = response.data;
+          console.log(response.data);
           this.fullscreenLoading = false;
       })
     },
