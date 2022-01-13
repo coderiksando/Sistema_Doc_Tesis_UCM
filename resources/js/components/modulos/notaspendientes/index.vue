@@ -140,7 +140,7 @@
                     <th>Fecha de ingreso</th>
                     <th>Fecha propuesta</th>
                     <th>Fecha prórroga</th>
-                    <th v-if="listRolPermisosByUsuario.includes('notaspendientes.editar')">Acciones</th>
+                    <th v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') || listRolPermisosByUsuario.includes('notaspendientes.asignar')">Acciones</th>
                   </tr>
                 </thead>
                 <tbody v-loading="fullscreenLoading">
@@ -155,13 +155,19 @@
                           {{ item.fecha_prorroga | moment }}
                         </template>
                       </td>
-                    <td v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
-                      <router-link title="Editar" class="btn btn-info boton" :to="{name:'notaspendientes.editar', params:{id: item.id}}">
-                        <i class="fas fa-pencil-alt"></i>
-                      </router-link>
-                      <router-link title="Solicitar prórroga" class="btn btn-success boton" :to="{name:'notaspendientes.prorroga', params:{id: item.id}}">
-                        <i class="fas fa-calendar-check"></i>
-                      </router-link>
+                    <td>
+                        <template v-if="listRolPermisosByUsuario.includes('notaspendientes.editar') && fillEstadoTesis.cEstado  == 'D'">
+                            <router-link title="Editar" class="btn btn-info boton" :to="{name:'notaspendientes.editar', params:{id: item.id}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </router-link>
+                            <router-link title="Solicitar prórroga" class="btn btn-success boton" :to="{name:'notaspendientes.prorroga', params:{id: item.id}}">
+                                <i class="fas fa-calendar-check"></i>
+                            </router-link>
+                        </template>
+                        <button v-if="listRolPermisosByUsuario.includes('notaspendientes.asignar')" title="Eliminar nota pendiente"
+                            class="btn btn-danger boton" @click.prevent="eliminarNotaP(item.alumno.id_user)">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </td>
                   </tr>
                 </tbody>
@@ -393,6 +399,19 @@ export default {
     inicializarPaginacion(){
       this.pageNumber = 0;
     },
+    eliminarNotaP(idUser){
+        var url = '/notaspendientes/eliminarNotaP'
+        axios.post(url, { idUser: idUser }
+        ).then(response => {
+            this.init();
+            Swal.fire({
+                icon: 'success',
+                title: 'Nota pendiente eliminada exitosamente.',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        })
+    }
   }//cierre de methods
 }
 </script>

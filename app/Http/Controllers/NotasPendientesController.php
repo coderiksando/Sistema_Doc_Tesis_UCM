@@ -116,7 +116,7 @@ class NotasPendientesController extends Controller
                         ->get()->pluck('id_user');
 
         $notasP->whereIn('id_alumno', $users);
-        
+
 
         $notasP = $notasP->get();
 
@@ -246,5 +246,11 @@ class NotasPendientesController extends Controller
             );
         }
         return 'registro exitoso';
+    }
+    public function eliminarNotaP(Request $request){
+        if(!$request->ajax()) return redirect('/');
+        $idUser = $request->idUser;
+        NotasPendientes::where('id_alumno', $idUser)->delete();
+        return 'Eliminación exitosa';
     }
 }
