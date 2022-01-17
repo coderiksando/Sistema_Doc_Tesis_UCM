@@ -23,6 +23,16 @@ export default class globFunct {
         const shortenedFullName = shortenedFirstName + ' ' + shortenedLastName;
         return shortenedFullName;
     }
+    apaName(arrayUsers){
+        console.log(arrayUsers);
+        var nameString = '';
+        arrayUsers.forEach(user => {
+            nameString += user.nombres.charAt(0) + '. ';
+            nameString += this.capitalizeFirstLetter(user.apellidos.split(' ')[0]) + '; ';
+        });
+
+        return nameString.substring(0, nameString.length-2);
+    }
     concatAll(arrayData) {
         let rpta = '';
         arrayData.forEach(data => {
