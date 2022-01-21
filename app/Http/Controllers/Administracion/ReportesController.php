@@ -17,7 +17,7 @@ use Debugbar;
 class ReportesController extends Controller
 {
     public function getListarTesisReporte(Request $request){
-        if(!$request->ajax()) return redirect('/');
+        //if(!$request->ajax()) return redirect('/');
 
         $rut                = $request->nRut;
         $idFacultad         = $request->nIdFacultad;
@@ -97,6 +97,7 @@ class ReportesController extends Controller
             $fit->NotasPendientes;
             $fit->Vinculaciones;
             $fit->Comisiones;
+            $fit->alumnos = $fit->getAlumnos();
             if ($fit->Comisiones) {
                 $fit->Comisiones->UserP1;
                 $fit->Comisiones->UserP2;
