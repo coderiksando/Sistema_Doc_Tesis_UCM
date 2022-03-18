@@ -89,7 +89,10 @@ class AlumnoController extends Controller
             $fitUser = Fit_User::where('id_user', $nIdUsuario)->get()->pluck('id_fit');
             $fits = Fit::whereIn('id', $fitUser);
         }elseif($rol == 'Profesor'){
-            $fits = Fit::where('id_p_guia', '=', "$nIdUsuario")->orWhere('id_p_co_guia', '=', "$nIdUsuario");
+            $fits = Fit::where(function ($fit) use ($nIdUsuario) {
+                $fit->where('id_p_guia', '=', "$nIdUsuario")
+                    ->orWhere('id_p_co_guia', '=', "$nIdUsuario");
+            });
         }elseif($rol == 'Director'){
             $fits = Fit::where('id_escuela', Auth::user()->id_escuela);
         }else{
@@ -101,8 +104,10 @@ class AlumnoController extends Controller
             $users = User::where('nombres', 'LIKE', "%$cNombre%")
                            ->where('apellidos', 'LIKE', "%$cApellido%")
                            ->where('rut', 'LIKE', "%$nRut%")->get()->pluck('id_user');
-            $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
+
+            $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');     
             $fits->whereIn('id', $fitUser);
+            Debugbar::info($fits->get()); 
         }
         $estado1 = NULL;
         $estado2 = NULL;
