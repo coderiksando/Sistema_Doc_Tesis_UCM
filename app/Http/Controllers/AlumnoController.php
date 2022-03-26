@@ -105,9 +105,9 @@ class AlumnoController extends Controller
                            ->where('apellidos', 'LIKE', "%$cApellido%")
                            ->where('rut', 'LIKE', "%$nRut%")->get()->pluck('id_user');
 
-            $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');     
+            $fitUser = Fit_User::whereIn('id_user', $users)->get()->pluck('id_fit');
             $fits->whereIn('id', $fitUser);
-            Debugbar::info($fits->get()); 
+            Debugbar::info($fits->get());
         }
         $estado1 = NULL;
         $estado2 = NULL;
@@ -481,6 +481,7 @@ class AlumnoController extends Controller
                     ->whereNotNull('telefono')
                     ->get()->all();
         foreach($rpta as $user){
+            $user->Fit_User;
             foreach($user->Users_Roles->all() as $user_rol){
                 if ($user_rol->Roles->slug == 'rol.alumno') {
                     array_push($alumnoBuscado, $user);

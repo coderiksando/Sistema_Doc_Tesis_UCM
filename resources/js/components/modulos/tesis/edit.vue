@@ -799,8 +799,12 @@ export default {
           apellido: this.busquedaUsuario.apellido,
         })
         .then((response) => {
-          this.listAlumnosBuscados = response.data;
-          this.fullscreenLoading = false;
+            response.data.forEach( alumno => {
+                if ( alumno.fit__user.length == 0 && alumno.email != this.myOwnUser.email) {
+                    this.listAlumnosBuscados.push(alumno);
+                }
+            });
+            this.fullscreenLoading = false;
         });
     },
     setIngresarAlumno(alumno) {
