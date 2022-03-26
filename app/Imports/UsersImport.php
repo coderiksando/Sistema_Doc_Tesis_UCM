@@ -34,7 +34,7 @@ class UsersImport implements ToModel, WithHeadingRow, SkipsOnError
             'rut'           => $this->formatRut($row['rut']),
             'nombres'       => $row['nombre'],
             'apellidos'     => $row['apellido'],
-            'email'         => $row['direccion_de_correo_electronico'],
+            'email'         => $row['email'],
             'telefono'      => $row['fono'],
             'password'      => Hash::make('12345'),
             'state'         => 'A',

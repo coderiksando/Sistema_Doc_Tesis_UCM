@@ -74,11 +74,11 @@
                           <tbody>
                             <tr>
                               <td class="celda-gris">1</td>
-                              <td>Email</td>
-                              <td>Fono</td>
-                              <td>Rut</td>
-                              <td>Nombre</td>
-                              <td>Apellido</td>
+                              <td>email</td>
+                              <td>fono</td>
+                              <td>rut</td>
+                              <td>nombre</td>
+                              <td>apellido</td>
                             </tr>
                             <tr>
                               <td class="celda-gris">2</td>
