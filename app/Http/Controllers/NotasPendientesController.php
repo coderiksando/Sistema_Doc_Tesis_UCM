@@ -236,11 +236,13 @@ class NotasPendientesController extends Controller
         $fechaActual = Carbon::now();
         foreach ($users as $user) {
             NotasPendientes::updateOrCreate(
-                ['id_alumno' => $user['idUser']],
+                [
+                    'id_alumno' => $user['idUser'],
+                    'id_tesis' => $user['idFid']
+                ],
                 [
                     'fecha_propuesta' => $fecha,
                     'fecha_autorizada' => $fecha,
-                    'id_tesis' => $user['idFid'],
                     'fecha_presentacion' => $fechaActual
                 ]
             );

@@ -91,6 +91,10 @@
             <div class="card-body table-responsive">
                 <template v-if="listaFIDs.length > 0">
                     <div class="input-group">
+                        <div class="col-md-12 input-group" style="display: flex; align-items: center;">
+                            <input type="checkbox" v-bind:id="'cboxTodos'" v-model="checkboxTodos" @change="checkAll()">
+                            <b>Marcar todos</b>
+                        </div>
                         <table class ="col-md-9 table table-hover table-head-fixed text-nowrap projects smallSize">
                             <thead>
                             <tr>
@@ -104,7 +108,9 @@
                                 <td class="col-md-4"> <!-- itera mostrando la cantidad total de estudiantes -->
                                     <div class="input-group" style="display: flex; align-items: center;"
                                     v-for="(itemUser, index) in item.listUsers" :key="index">
-                                        <input type="checkbox" id="cbox1" value="first_checkbox" @change="check(itemUser, item.id)">
+                                        <input type="checkbox" @change="check(itemUser, item.id)"
+                                        v-model="itemUser.boolean" v-bind:id="'cbox_'+itemUser.id_user+'_'+item.id_user"
+                                        :value="{idUser: itemUser.id_user, idFid: item.id_user}">
                                         <div v-text="itemUser.nombres + ' ' + itemUser.apellidos"></div>
                                     </div>
                                 </td>
@@ -194,7 +200,9 @@ export default {
       terminoTitulo: JSON.parse(localStorage.getItem('TerminoDeTitulo')),
       terminoTituloExtendido: JSON.parse(localStorage.getItem('TerminoDeTituloExtendido')),
       listaDeCarrera: [],
-      listaFIDs: []
+      listaFIDs: [],
+      checkboxTodos: false,
+
     }
   },
   computed: {
@@ -235,6 +243,11 @@ export default {
             }
         }).then(response => {
             this.listaFIDs = response.data;
+            this.listaFIDs.forEach(fid => {
+                fid.listUsers.forEach(user => {
+                    user.boolean = false;
+                });
+            });
             this.fullscreenLoading = false;
         })
     },
@@ -257,12 +270,35 @@ export default {
       this.fillBsqFID.fechaInsFin = '';
     },
     check(user, idFid){
-        let index = this.fillForm.listUser.findIndex(object => object.idUser == user.id_user);
+        let data = {idUser: user.id_user, idFid: idFid};
+        let index = this.fillForm.listUser.findIndex(obj => JSON.stringify(obj) == JSON.stringify(data));
         if (index != -1) {
             this.fillForm.listUser.splice(index, 1);
         } else {
             this.fillForm.listUser.push({idUser: user.id_user, idFid: idFid});
         }
+        console.log(this.fillForm.listUser);
+    },
+    checkAll(){
+        if (this.checkboxTodos) {
+            this.listaFIDs.forEach(fid => {
+                fid.listUsers.forEach(user => {
+                    let objUserFid = {idUser: user.id_user, idFid: fid.id};
+                    if (this.fillForm.listUser.findIndex(obj => JSON.stringify(obj) == JSON.stringify(objUserFid)) == -1) {
+                        user.boolean = true;
+                        this.fillForm.listUser.push(objUserFid);
+                    }
+                });
+            });
+        } else {
+            this.listaFIDs.forEach(fid => {
+                fid.listUsers.forEach(user => {
+                    user.boolean = false;
+                });
+            });
+            this.fillForm.listUser = [];
+        }
+        console.log(this.fillForm.listUser);
     },
     asignarNotaP(){
         const url = '/notaspendientes/asignarNotasP';
