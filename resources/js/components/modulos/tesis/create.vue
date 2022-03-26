@@ -628,7 +628,7 @@ export default {
             'apellido'  :   this.busquedaUsuario.apellido
         }).then(response => {
             response.data.forEach( alumno => {
-                if ( alumno.fit__user.length == 0 && alumno.email != this.myOwnUser.email) {
+                if ( alumno.fit__user.length == 0 || alumno.email != this.myOwnUser.email) {
                     this.listAlumnosBuscados.push(alumno);
                 }
             });
