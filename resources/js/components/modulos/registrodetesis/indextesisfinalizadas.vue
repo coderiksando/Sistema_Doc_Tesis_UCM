@@ -180,6 +180,17 @@
                                 <b>CE</b>
                             </button>
                           </template>
+                          <template v-else>
+                            <button :disabled="true" title="Descargar documento final" class="btn boton btn-info">
+                                <b>DF</b>
+                            </button>
+                            <button :disabled="true" title="Descargar acta de defensa" class="btn boton btn-info">
+                                <b>AD</b>
+                            </button>
+                            <button :disabled="true" title="Descargar constancia de examen" class="btn boton btn-info">
+                                <b>CE</b>
+                            </button>
+                          </template>
                         </td>
                         <td>
                             <p>{{moment(item.fecha).format("DD-MM-YYYY")}}</p>
