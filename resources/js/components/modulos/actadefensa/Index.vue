@@ -118,7 +118,8 @@
                       <router-link :title="'Subir acta de defensa de '+terminoTitulo" class="btn boton" :class="{ 'btn-success' : item.path, 'btn-warning' : !item.path}" :to="{name:'actadefensa.subiracta', params:{id: item.id}}">
                         <i class="fas fa-file-upload"></i>
                       </router-link>
-                      <button class="btn boton" title="Registro DARA" :class="(verificarRegistroDara(item)) ? 'btn-primary': 'btn-warning'"
+                      <button v-if="listRolPermisosByUsuario.includes('actadefensa.registroDocumento')"
+                      class="btn boton" title="Registro DARA" :class="(verificarRegistroDara(item)) ? 'btn-primary': 'btn-warning'"
                       @click.prevent="redirectTo('actadefensa.registroDocumento', {id: item.id}, false)">
                           <i class="fas fa-list"></i>
                       </button>
