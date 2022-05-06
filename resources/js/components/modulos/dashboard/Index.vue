@@ -484,22 +484,57 @@
                           <dl class="pl-4" v-if="listRolPermisosByUsuario.includes('EsAlumno')">
                             <dt ref="archivoscomisiones">Subir Avance</dt>
                             <dd class="pl-4 mr-2 text-justify">
-                                Para ingresar un nuevo avance de documento diríjase al botón "Subir avance" con el icono representativo <i class="fas fa-plus-square"></i>. Luego de hacer click en el botón, se abrirá un formulario de registro de avances, en el cual deberá cargar un archivo y darle una breve descripción, el avance se subirá una vez que haga click en el botón guardar.
+                                Para ingresar un nuevo avance de documento diríjase al botón "Subir avance" con el icono representativo
+                                <i class="fas fa-plus-square"></i>. Luego de hacer click en el botón, se abrirá un formulario de registro de avances, en el cual
+                                deberá cargar un archivo y darle una breve descripción, el avance se subirá una vez que haga click en el botón guardar.
                             </dd>
                             <dt ref="archivoscomisiones">Editar Avance</dt>
                             <dd class="pl-4 mr-2 text-justify">
-                                Para editar un avance de documento diríjase al botón "Editar" con el icono representativo <i class="fas fa-pen"></i> junto al avance que desea editar. Luego de hacer click en el botón, se abrirá un formulario de edición de avances, en el cual puede cargar un nuevo archivo para reemplazar al anterior o darle una nueva descripción al archivo subido anteriormente, el avance se editará una vez que haga click en el botón guardar.
+                                Para editar un avance de documento diríjase al botón "Editar" con el icono representativo <i class="fas fa-pen"></i> junto al
+                                avance que desea editar. Luego de hacer click en el botón, se abrirá un formulario de edición de avances, en el cual puede
+                                cargar un nuevo archivo para reemplazar al anterior o darle una nueva descripción al archivo subido anteriormente, el avance se
+                                editará una vez que haga click en el botón guardar.
                             </dd>
                             <dt ref="archivoscomisiones">Subir Documento final</dt>
                             <dd class="pl-4 mr-2 text-justify">
-                                Una vez que su trabajo de conclusión de curso sea evaluado y aprobado se habilitará un botón en la esquina superior derecha de la sección de avances de color verde, con el icono representativo <i class="fas fa-plus-square"></i> y el texto "Subir PDF final". Luego de hacer click en el botón, se abrirá un formulario de ingreso de documento final, en el cual puede cargar la versión final del documento que se encontrará disponible en el repositorio de la universidad. En la sección inferior de la interfaz se encuentra el Formulario de Autorización de Publicación en el cual se le consultará si desea que el documento subido se encuentre disponible de forma pública. El documento final será ingresado una vez que haga click en el botón guardar.
+                                Una vez que su trabajo de conclusión de curso sea evaluado y aprobado se habilitará un botón en la esquina superior derecha
+                                de la sección de avances de color verde, con el icono representativo <i class="fas fa-plus-square"></i> y el texto
+                                "Subir PDF final". Luego de hacer click en el botón, se abrirá un formulario de ingreso de documento final, en el cual puede
+                                cargar la versión final del documento que se encontrará disponible en el repositorio de la universidad. En la sección inferior
+                                de la interfaz se encuentra el Formulario de Autorización de Publicación en el cual se le consultará si desea que el documento
+                                subido se encuentre disponible de forma pública. El documento final será ingresado una vez que haga click en el botón guardar.
                             </dd>
                           </dl>
-                            avances.index
-                            avances.crear
-                            avances.editar
-                            avances.listaralumnos
-                            avances.subirfinalpdf
+                          <dl class="pl-4" v-else>
+                            <dt ref="archivoscomisiones">Selección de alumno</dt>
+                            <dd class="pl-4 mr-2 text-justify">
+                                Para realizar la búsqueda del conjunto de tesistas, dirijase a la sección de "Criterios de búsqueda", donde señalará el estado
+                                actual del grupo (para acotar la búsqueda) y seleccionará al conjunto de alumnos búscado.
+                            </dd>
+                            <dt ref="archivoscomisiones">Ver avance</dt>
+                            <dd class="pl-4 mr-2 text-justify">
+                                Si requiere ver el documento vinculado al avance del conjunto de usuarios, diríjase a la sección de "Bandeja de resultados" y
+                                seleccione el botón con ícono representativo <i class="fas fa-file-download"> </i> para descargar el documento.
+                            </dd>
+                            <template v-if="listRolPermisosByUsuario.includes('EsProfesor')">
+                                <dt ref="archivoscomisiones">Enviar/Retirar revisión de documento</dt>
+                                <dd class="pl-4 mr-2 text-justify">
+                                    Para <b>enviar</b> el documento de avance a revisión en el sistema, debe dirijirse a la sección de "Bandeja de resultados" y
+                                    seleccione el botón con ícono representativo <i class="fas fa-file-export"></i> para descargar el documento.
+                                    El sistema realizará una comprobación del estado de la comisión, si esta comisión es de caracter provisorio o definitivo,
+                                    en caso de ser una comisión provisoria, abrirá un recuadro para la inserción de una comisión definitiva.
+                                    <br>
+                                    En caso de <b>retirar</b> el documento de avance de revisión, seleccione el botón con ícono representativo <i class="fas fa-file-import"></i>.
+                                </dd>
+                            </template>
+                          </dl>
+                            <!--
+                                avances.index
+                                avances.crear
+                                avances.editar
+                                avances.listaralumnos
+                                avances.subirfinalpdf
+                            -->
                         </div>
                       </div>
 
@@ -563,7 +598,7 @@
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="false && listRolPermisosByUsuario.includes('bitacoras.index')">
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('bitacoras.index')">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#bitacoras' aria-expanded="false" aria-controls='bitacoras'>
@@ -575,13 +610,47 @@
                           </h5>
                         </div>
                         <div id='bitacoras' class="collapse" aria-labelledby='heading1' data-parent="#accordion">
-                            bitacoras.index
-                            bitacoras.crear
-                            bitacoras.editar
+                            <dl class="pl-4">
+                                <template v-if="!listRolPermisosByUsuario.includes('EsAlumno')">
+                                    <dt ref="vinculacioncrear">Selección de alumno</dt>
+                                    <dd class="pl-4 mr-2 text-justify">
+                                        Para realizar la búsqueda del conjunto de tesistas dirijase a la sección de "Criterios de búsqueda", donde seleccionará al
+                                        conjunto de alumnos búscado.
+                                    </dd>
+                                </template>
+                                <template v-if="listRolPermisosByUsuario.includes('bitacoras.crear')">
+                                    <dt ref="archivoscomisiones">Ingresar acta de reunión</dt>
+                                    <dd class="pl-4 mr-2 text-justify">
+                                        Para el ingreso de una nueva acta de reunión diríjase a la sección superior de la página en Actas de reunión y seleccione el
+                                        botón con ícono representativo <i class="fas fa-plus-square"></i> titulado como "Ingresar acta de reunión".
+                                        <br>
+                                        Seleccione el conjunto de alumnos al que quiera desee ingresar la nueva acta de reunión, para luego escribir el acuerdo deseado.
+                                    </dd>
+                                </template>
+                                <template v-if="true">
+                                    <dt ref="archivoscomisiones">Ver acta de reunión</dt>
+                                    <dd class="pl-4 mr-2 text-justify">
+                                        Para acceder a la información del acta seleccione el título o el botón con ícono representativo
+                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>.
+                                    </dd>
+                                </template>
+                                <template v-if="listRolPermisosByUsuario.includes('bitacoras.editar')">
+                                    <dt ref="archivoscomisiones">Editar acta de reunión</dt>
+                                    <dd class="pl-4 mr-2 text-justify">
+                                        Para realizar una edición del acta de reunión diríjase a la sección bandeja de resultados y seleccione el botón con ícono
+                                        representativo <i class="fas fa-pencil-alt"></i> del acta que desee editar.
+                                    </dd>
+                                </template>
+                            </dl>
+                            <!--
+                                bitacoras.index
+                                bitacoras.crear
+                                bitacoras.editar
+                            -->
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="false && listRolPermisosByUsuario.includes('comisiones.index')">
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('comisiones.index')">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#comisiones' aria-expanded="false" aria-controls='comisiones'>
@@ -593,14 +662,69 @@
                           </h5>
                         </div>
                         <div id='comisiones' class="collapse" aria-labelledby='heading1' data-parent="#accordion">
+                            <dl class="pl-4">
+                                <template v-if="true">
+                                  <dt ref="vinculacioncrear">Búsqueda de trabajos</dt>
+                                  <dd class="pl-4 mr-2 text-justify">
+                                    Para realizar una acotación de los trabajos realizados dentro de una comisión, dirijase a la sección "Sistema de búsqueda"
+                                    y haga click en esta para desplegar los distintos filtros de búsqueda.
+                                  </dd>
+                                </template>
+                                <template v-if="listRolPermisosByUsuario.includes('comisiones.crear')">
+                                  <dt ref="vinculacioncrear">Crear una comisión evaluadora</dt>
+                                  <dd class="pl-4 mr-2 text-justify">
+                                    Para crear una nueva comisión evaluadora dirijase a la sección de comisiones de "Profesor guía" (tan solo ese rol puede crear
+                                    una comisión), busque el trabajo el cual quiera asignarle una comisión evaluadora y use el botón con ícono representativo
+                                    <i class="fas fa-plus-circle"></i>.
+                                    <br>
+                                    La comisión evaluadora también es creada cuando se confirma el trabajo siendo Profesor guía, en el módulo Revisar {{terminoTitulo}}.
+                                  </dd>
+                                </template>
+                                <template v-if="listRolPermisosByUsuario.includes('comisiones.editar')">
+                                  <dt ref="vinculacioncrear">Editar una comisión evaluadora</dt>
+                                  <dd class="pl-4 mr-2 text-justify">
+                                    Para editar una comisión ya creada dirijase a la sección de comisiones de "Profesor guía" (tan solo ese rol puede editar una
+                                    comisión), busque el trabajo el cual quiera realizar la edición de la comisión evaluadora y use el botón con ícono representativo
+                                    <i class="fas fa-pencil-alt"></i>. En esta sección puede transformar una comisión provisoria a definitiva, además de cambiar los
+                                    profesores que pertenecen a la misma comisión.
+                                  </dd>
+                                </template>
+                                <template v-if="listRolPermisosByUsuario.includes('comisiones.crear')">
+                                  <dt ref="vinculacioncrear">Eliminar una comisión evaluadora</dt>
+                                  <dd class="pl-4 mr-2 text-justify">
+                                    Para eliminar una comisión evaluadora dirijase a la sección de comisiones de "Profesor guía" (tan solo ese rol puede eliminar
+                                    una comisión), busque el trabajo el cual quiera eliminar la comisión evaluadora y use el botón con ícono representativo
+                                    <i class="fas fa-trash-alt"></i>.
+                                  </dd>
+                                </template>
+                                <template v-if="listRolPermisosByUsuario.includes('comisiones.index')">
+                                  <dt ref="vinculacioncrear">Descargar documento a revisar</dt>
+                                  <dd class="pl-4 mr-2 text-justify">
+                                    Para realizar una evaluación de un documento de un trabajo diríjase a la sección de comisiones de "Profesor guía" o "Partícipe",
+                                    busque el trabajo el cual quiera evaluar y use el botón con ícono representativo <b>DR</b> (Documento de Revisión).
+                                    Descargará el documento y este puede ser evaluado para ser posteriormente ingresado.
+                                  </dd>
+                                </template>
+                                <template v-if="listRolPermisosByUsuario.includes('comisiones.index')">
+                                  <dt ref="vinculacioncrear">Ingresar un documento revisado</dt>
+                                  <dd class="pl-4 mr-2 text-justify">
+                                    Para ingresar un documento revisado para el alumno diríjase a la sección de comisiones de "Profesor guía" o "Partícipe",
+                                    busque el trabajo el cual quiera evaluar y use el botón con ícono representativo <i class="fas fa-file-upload"></i>.
+                                    En la nueva ventana emergente ingrese el archivo que desee ser revisado y escriba un comentario
+                                    que pueda servir de ayuda para la edición.
+                                  </dd>
+                                </template>
+                            </dl>
+                            <!--
                             comisiones.index
                             comisiones.crear
                             comisiones.editar
                             comision.verRevision
+                            -->
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="false && listRolPermisosByUsuario.includes('actadefensa.index')">
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('actadefensa.index')">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#actadefensa' aria-expanded="false" aria-controls='actadefensa'>
@@ -612,13 +736,54 @@
                           </h5>
                         </div>
                         <div id='actadefensa' class="collapse" aria-labelledby='heading1' data-parent="#accordion">
-                            actadefensa.index
-                            actadefensa.subiracta
-                            actadefensa.subirnota
+                            <dl class="pl-4">
+                                <template v-if="listRolPermisosByUsuario.includes('actadefensa.index')">
+                                  <dt ref="vinculacioncrear">Agendar defensa de título</dt>
+                                  <dd class="pl-4 mr-2 text-justify">
+                                      Para <b>agendar</b> una defensa de título diríjase a la sección de "Bandeja de resultados" y use el botón con ícono representativo
+                                      <i class="fas fa-calendar-day"></i>. En la nueva ventana emergente, puede insertar fecha, hora y sala donde se realizará la defensa.
+                                      <br>
+                                      Para <b>editar</b> esta defensa, puede volver a utilizar el mismo botón y precargará los datos para cambiarlos.
+                                  </dd>
+                                </template>
+                                <template v-if="listRolPermisosByUsuario.includes('actadefensa.subirnota')">
+                                  <dt ref="vinculacioncrear">Subir nota de defensa</dt>
+                                  <dd class="pl-4 mr-2 text-justify">
+                                      Para ingresar una nota de defensa diríjase a la sección de "Bandeja de resultados" y use el botón con ícono representativo
+                                      <i class="fas fa-graduation-cap"></i>. En esta interfaz podrá ingresar la nota del trabajo, donde podrá establecer una aprobación sin nota, o bien,
+                                      una aprobación/desaprobación con nota.
+                                  </dd>
+                                </template>
+                                <template v-if="listRolPermisosByUsuario.includes('actadefensa.subiracta')">
+                                  <dt ref="vinculacioncrear">Subir acta de defensa</dt>
+                                  <dd class="pl-4 mr-2 text-justify">
+                                      Para subir un documento de acta de defensa diríjase a la sección de "Bandeja de resultados" y use el botón con ícono representativo
+                                      <i class="fas fa-file-upload"></i>. Se iniciará un nuevo módulo para ingresar el documento, donde se solicitará el documento por la interfaz.
+                                  </dd>
+                                </template>
+                                <template v-if="listRolPermisosByUsuario.includes('actadefensa.registroDocumento')">
+                                  <dt ref="vinculacioncrear">Ingresar registros DARA</dt>
+                                  <dd class="pl-4 mr-2 text-justify">
+                                      Para mantener los datos de los ingresos del registro a DARA, se implementa una sección que facilita la copia de datos de todos los alumnos.
+                                      Para acceder a esta interfaz diríjase a la sección de "Bandeja de resultados" y use el botón con ícono representativo
+                                      <i class="fas fa-list"></i>.
+                                      <br>
+                                      Se abrirá un módulo con los nombres de los alumnos, donde tendrá un botón con ícono representativo <i class="fas fa-address-card"></i>, este abrirá
+                                      una ventana emergente donde podrá copiar a los datos a través de los botones con ícono representativo <i class="fas fa-copy"></i>.
+                                      <br>
+                                      Para finalizar, seleccione el switch del alumno el cual ya ha sido registrado, para mantener los datos del usuario como registrado.
+                                  </dd>
+                                </template>
+                            </dl>
+                            <!--
+                                actadefensa.index
+                                actadefensa.subiracta
+                                actadefensa.subirnota
+                            -->
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="false && listRolPermisosByUsuario.includes('documentos.index')">
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('documentos.index')">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#documentos' aria-expanded="false" aria-controls='documentos'>
@@ -630,7 +795,20 @@
                           </h5>
                         </div>
                         <div id='documentos' class="collapse" aria-labelledby='heading1' data-parent="#accordion">
-                            documentos.index
+                            <dl class="pl-4">
+                                <template>
+                                  <dt ref="vinculacioncrear">Resumen</dt>
+                                  <dd class="pl-4 mr-2 text-justify">
+                                      Este módulo está creado para la descarga de archivos de los trabajos de los alumnos, en esta sección puede hacer búsqueda de
+                                      trabajos mediante la sección "Criterios de búsqueda".
+                                      <br>
+                                      Cada trabajo tiene acceso a distintos documentos del propio trabajo, estos documentos pueden ser accedidos mediante los botones
+                                      con ícono representativo <b>DF</b>, <b>CE</b>, <b>AD</b>, <b>{{terminoTitulo}}</b> y <b>MR</b>, los cuales son Documento final,
+                                      Constancia de examen, Acta de defensa, {{terminoTituloExtendido}}, Memo de revisión (autogenerado).
+                                  </dd>
+                                </template>
+                            </dl>
+                            <!-- documentos.index -->
                         </div>
                       </div>
 
@@ -646,13 +824,23 @@
                           </h5>
                         </div>
                         <div id='tesisfinal' class="collapse" aria-labelledby='heading1' data-parent="#accordion">
-                            index.tesisfinal
-                            registrar.tesis
-                            editar.tesisfinal
+                            <dl class="pl-4">
+                                <template v-if="listRolPermisosByUsuario.includes('index.tesisfinal')">
+                                  <dt ref="vinculacioncrear">Resumen</dt>
+                                  <dd class="pl-4 mr-2 text-justify">
+
+                                  </dd>
+                                </template>
+                            </dl>
+                            <!--
+                                index.tesisfinal
+                                registrar.tesis
+                                editar.tesisfinal
+                            -->
                         </div>
                       </div>
 
-                      <div class="card-white" v-if="false && listRolPermisosByUsuario.includes('abandono.index')">
+                      <div class="card-white" v-if="listRolPermisosByUsuario.includes('abandono.index')">
                         <div class="card-header" id='heading1'>
                           <h5 class="mb-0">
                             <a class="btn btn-outline-primary" data-toggle="collapse" data-target='#abandono' aria-expanded="false" aria-controls='abandono'>
@@ -664,16 +852,21 @@
                           </h5>
                         </div>
                         <div id='abandono' class="collapse" aria-labelledby='heading1' data-parent="#accordion">
-                            abandono.index
+                            <dl class="pl-4">
+                                <template v-if="listRolPermisosByUsuario.includes('abandono.index')">
+                                  <dt ref="vinculacioncrear">Resumen</dt>
+                                  <dd class="pl-4 mr-2 text-justify">
+                                    Este módulo ha sido creado para descartar trabajos que no han progresado en un tiempo e impidir la inserción de nuevos documentos,
+                                    estos trabajos son declarados en estado de abandono y cesará toda actividad, para cambiar un trabajo que actualmente está en estado
+                                    de desarrollo a un trabajo en abandono, nos dirigimos a lasección de "Bandeja de resultados" y buscaremos el trabajo que debe ser
+                                    cambiado de estado, seleccione el botón con ícono representativo <i class="fas fa-box"></i>, en caso de transformar nuevamente este trabajo
+                                    como pendiente puede utilizar el botón con ícono representativo <i class="fas fa-box-open"></i>.
+                                  </dd>
+                                </template>
+                            </dl>
+                            <!-- abandono.index -->
                         </div>
                       </div>
-
-                        <template v-if="false">
-                            EsAlumno
-                            EsProfesor
-                            fid.acceso.total
-                            fid.acceso.parcial
-                        </template>
 
                     </div>
                   </div>

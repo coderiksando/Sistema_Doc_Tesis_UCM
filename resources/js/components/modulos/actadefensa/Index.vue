@@ -343,7 +343,7 @@ export default {
     verificarRegistroDara(data) {
         var response = true;
         data.fit__user.forEach(fitUser => {
-            if (fitUser.reg_doc == 0) response = false;
+            if (fitUser.reg_doc != 1) response = false;
         });
         return response;
     },

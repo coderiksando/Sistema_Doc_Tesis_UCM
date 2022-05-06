@@ -368,7 +368,10 @@ export default {
             }
         }).then (response => {
             this.documentoTitulo = response.data;
-            console.log(this.documentoTitulo);
+            this.documentoTitulo.fit__user.map( function (x) {
+                if (x.reg_doc == 1) x.reg_doc = true;
+                else x.reg_doc = false;
+            });
             this.fullscreenLoading = false;
         })
     },
