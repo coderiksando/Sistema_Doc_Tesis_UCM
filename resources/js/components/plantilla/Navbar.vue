@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-dark">
+    <nav class="main-header navbar navbar-expand">
       <!-- Left navbar links -->
       <ul class="navbar-nav ml-left">
 
@@ -24,7 +24,7 @@
         <!-- Messages Dropdown Menu -->
         <li class="nav-item mr-3 mt-1">
           <div class="container">
-            <a class="btn btn-info bnt-sm" href="javascript:history.go(-1)">
+            <a class="btn btn-outline-light bnt-sm" href="javascript:history.go(-1)">
               <i class="fas fa-arrow-left"></i>
               <span class="btn-back"> Regresar</span>
           </a>
@@ -205,6 +205,9 @@ export default {
 </script>
 
 <style>
+.navbar {
+    background-color: #001740 !important;
+}
 
 .modalCalendario{
   display: flex;

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\ArchivoPdf;
 use App\File;
+use App\DocumentosEscuela;
 
 class DocumentMigration extends Command
 {
@@ -46,7 +47,7 @@ class DocumentMigration extends Command
             $newRoute = explode('/', $document->path);
             $newRoute[2] = $newIP;
             $document->path = implode('/', $newRoute);
-            $document->save(); 
+            $document->save();
         }
 
         $files = File::all();
@@ -55,10 +56,18 @@ class DocumentMigration extends Command
             $newRoute = explode('/', $file->path);
             $newRoute[2] = $newIP;
             $file->path = implode('/', $newRoute);
-            $file->save(); 
+            $file->save();
         }
 
-  
+        $docEscuela = DocumentosEscuela::all();
+
+        foreach ($docEscuela as $docEsc) {
+            $newRoute = explode('/', $docEsc->path);
+            $newRoute[2] = $newIP;
+            $docEsc->path = implode('/', $newRoute);
+            $docEsc->save();
+        }
+
 
     }
 }

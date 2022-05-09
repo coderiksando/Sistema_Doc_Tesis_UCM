@@ -4,7 +4,7 @@
     <!-- <img style="max-width: -webkit-fill-available;position: absolute; height: 91.7%;" src="https://lms.ucm.cl/pluginfile.php/1/theme_moove/sliderimage2/1628434472/EdificioUCM2020.jpg"> -->
     <div class="row noPadNoMar">
 
-    <header style="opacity: 80%;" class="col-md-6 bg-black py-5" id="title_message">
+    <header style="opacity: 90%; background-color: #001740 !important;" class="col-md-6 py-5" id="title_message">
         <div class="container h-150">
         <div class="row h-150 d-flex justify-content-center">
             <div class="col-md-12 mt-4">
@@ -397,7 +397,7 @@ export default {
                     title: 'Usuario registrado con exito',
                     text: 'Para activar su cuenta es necesario que inicie sesión y complete sus datos.',
                     showConfirmButton: true,
-                    
+
                 })
             }).catch(error => {
                 this.error = 0;

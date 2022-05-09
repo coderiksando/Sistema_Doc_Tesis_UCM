@@ -1,6 +1,6 @@
 <template>
 
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-navy elevation-4">
     <!-- Brand Logo -->
       <a href="#" class="brand-link">
         <img :src="ruta + '/img/ucm3.png'"
@@ -383,5 +383,7 @@ export default {
 </script>
 
 <style>
-
+    .main-sidebar {
+        background-color: #001740 !important;
+    }
 </style>

@@ -2,7 +2,7 @@
 
   <div>
     <!-- Sidebar -->
-    <div class="sidebar-wrapper">
+    <div class="">
       <Sidebar id="sidebar" :ruta="ruta" :usuario="authUser" :listPermisos="listRolPermisosByUsuario"> </Sidebar>
     </div>
     <!-- navbar -->
