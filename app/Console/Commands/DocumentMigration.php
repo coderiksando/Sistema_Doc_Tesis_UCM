@@ -62,10 +62,12 @@ class DocumentMigration extends Command
         $docEscuela = DocumentosEscuela::all();
 
         foreach ($docEscuela as $docEsc) {
-            $newRoute = explode('/', $docEsc->path);
-            $newRoute[2] = $newIP;
-            $docEsc->path = implode('/', $newRoute);
-            $docEsc->save();
+            if ( $docEsc->link == 0 ) {
+                $newRoute = explode('/', $docEsc->path);
+                $newRoute[2] = $newIP;
+                $docEsc->path = implode('/', $newRoute);
+                $docEsc->save();
+            }
         }
 
 
