@@ -7,7 +7,7 @@
             alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3"
             style="opacity: .8">
-        <span class="brand-text font-weight-light">SGYAD UCM</span>
+        <span class="brand-text font-weight-light">SIGAD UCM</span>
       </a>
     <!-- Sidebar -->
     <div class="sidebar text-sm p-0">
