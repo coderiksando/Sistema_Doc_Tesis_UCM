@@ -20,7 +20,7 @@ try {
  */
 
 window.axios = require('axios');
-
+window.axios.defaults.baseURL = 'http://eici.ucm.cl/sigad';     // cambiar la url base con su subdominio ej 'http://www.ejemplo.com/subdominio'
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
