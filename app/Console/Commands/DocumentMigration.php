@@ -44,18 +44,18 @@ class DocumentMigration extends Command
         $documents = ArchivoPDF::all();
 
         foreach ($documents as $document) {
-            $newRoute = explode('/', $document->path);
-            $newRoute[2] = $newIP;
-            $document->path = implode('/', $newRoute);
+            $newRoute = explode('/storage/users/', $document->path);
+            $newRoute[0] = 'http://' . $newIP;
+            $document->path = implode('/storage/users/', $newRoute);
             $document->save();
         }
 
         $files = File::all();
 
         foreach ($files as $file) {
-            $newRoute = explode('/', $file->path);
-            $newRoute[2] = $newIP;
-            $file->path = implode('/', $newRoute);
+            $newRoute = explode('/storage/users/', $file->path);
+            $newRoute[0] = 'http://' . $newIP;
+            $file->path = implode('/storage/users/', $newRoute);
             $file->save();
         }
 
@@ -63,9 +63,9 @@ class DocumentMigration extends Command
 
         foreach ($docEscuela as $docEsc) {
             if ( $docEsc->link == 0 ) {
-                $newRoute = explode('/', $docEsc->path);
-                $newRoute[2] = $newIP;
-                $docEsc->path = implode('/', $newRoute);
+                $newRoute = explode('/storage/users/', $docEsc->path);
+                $newRoute[0] = 'http://' . $newIP;
+                $docEsc->path = implode('/storage/users/', $newRoute);
                 $docEsc->save();
             }
         }
