@@ -3,7 +3,7 @@
   <aside class="main-sidebar sidebar-dark-navy elevation-4">
     <!-- Brand Logo -->
       <a href="#" class="brand-link">
-        <img :src="ruta + '/img/ucm3.png'"
+        <img :src="ruta + '/sigad/img/ucm3.png'"
             alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3"
             style="opacity: .8">
@@ -330,6 +330,7 @@ export default {
   },
   mounted(){
         this.cambiarRol(false);
+        console.log(this.ruta);
     },
   methods:{
     logout(){

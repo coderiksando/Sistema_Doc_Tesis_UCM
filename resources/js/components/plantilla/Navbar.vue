@@ -46,7 +46,7 @@
                 <div class="flex p-2">
                   <div class="d-flex justify-content-center">
                     <template v-if="!usuario.id_files">
-                      <img :src="ruta + '/img/user.jpg'" class="img-circle mx-auto" :alt="usuario.fullname">
+                      <img :src="ruta + '/sigad/img/user.jpg'" class="img-circle mx-auto" :alt="usuario.fullname">
                     </template>
 
                     <template v-else>
