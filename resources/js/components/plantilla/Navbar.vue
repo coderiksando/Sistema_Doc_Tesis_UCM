@@ -166,7 +166,7 @@ export default {
       var url='/authenticate/logout'
       axios.post(url).then(response => {
         if(response.data.code == 204){
-          window.location.href = '/';
+          window.location.href = '/sigad/';
           //location.reload();
           localStorage.clear();
           this.fullscreenLoading = false;

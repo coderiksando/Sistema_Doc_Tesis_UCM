@@ -304,7 +304,7 @@ export default {
             return this.error;
         },
         loginSuccess(){
-            window.location.href = '/dashboard';
+            window.location.href = '/sigad/dashboard';
             this.fullscreenLoading = false;
             // location.reload();
             // this.$router.push({name: 'dashboard.index'})
