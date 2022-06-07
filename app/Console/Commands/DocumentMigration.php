@@ -45,7 +45,7 @@ class DocumentMigration extends Command
 
         foreach ($documents as $document) {
             $newRoute = explode('/storage/users/', $document->path);
-            $newRoute[0] = 'http://' . $newIP;
+            $newRoute[0] = 'https://' . $newIP;
             $document->path = implode('/storage/users/', $newRoute);
             $document->save();
         }
@@ -54,7 +54,7 @@ class DocumentMigration extends Command
 
         foreach ($files as $file) {
             $newRoute = explode('/storage/users/', $file->path);
-            $newRoute[0] = 'http://' . $newIP;
+            $newRoute[0] = 'https://' . $newIP;
             $file->path = implode('/storage/users/', $newRoute);
             $file->save();
         }
@@ -64,7 +64,7 @@ class DocumentMigration extends Command
         foreach ($docEscuela as $docEsc) {
             if ( $docEsc->link == 0 ) {
                 $newRoute = explode('/storage/users/', $docEsc->path);
-                $newRoute[0] = 'http://' . $newIP;
+                $newRoute[0] = 'https://' . $newIP;
                 $docEsc->path = implode('/storage/users/', $newRoute);
                 $docEsc->save();
             }
