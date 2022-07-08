@@ -1,2 +1,3 @@
-$--font-path: '/sigad/fonts/vendor/element-ui/lib/theme-chalk';
+// ingreso de subdominio '/sigad' (cambiar si cambia el subdominio)
+$--font-path: '/sigad/fonts/vendor/element-ui/lib/theme-chalk'; 
 @import "~element-ui/packages/theme-chalk/src/index";
