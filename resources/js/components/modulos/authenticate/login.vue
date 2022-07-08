@@ -9,7 +9,7 @@
         <div class="row h-150 d-flex justify-content-center">
             <div class="col-md-12 mt-4">
               <tr class="col-md-12 d-flex justify-content-center">
-                <img class="mt-3 float-center" src="/img/logoucm.png" >
+                <img class="mt-3 float-center" src="/sigad/img/logoucm.png" >
               </tr>
               <br>
               <tr class="col-md-12 d-flex justify-content-center">
@@ -304,7 +304,7 @@ export default {
             return this.error;
         },
         loginSuccess(){
-            window.location.href = '/dashboard';
+            window.location.href = '/sigad/dashboard';
             this.fullscreenLoading = false;
             // location.reload();
             // this.$router.push({name: 'dashboard.index'})

@@ -19,7 +19,7 @@
                 <div class="text-center">
 
                   <template v-if="!fillVerUsuarios.cRutaArchivo">
-                        <img class="profile-user-img img-fluid img-circle img-max-heigth" src="/img/user.jpg" alt="User profile picture">
+                        <img class="profile-user-img img-fluid img-circle img-max-heigth" src="/sigad/img/user.jpg" alt="User profile picture">
                   </template>
                   <template v-else>
                               <img :src="fillVerUsuarios.cRutaArchivo" :alt="fillVerUsuarios.cNombre" class="img-circle elevation-2" style="height:125px; width:125px !important;">

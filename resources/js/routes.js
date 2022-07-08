@@ -600,7 +600,6 @@ export const rutas = [
 ];//cierre concentracion de rutas
 
 export default new Router({
-    base: '/sigad',
     routes: rutas,
     mode: 'history',
     linkActiveClass: 'active'
