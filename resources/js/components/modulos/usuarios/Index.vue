@@ -151,7 +151,7 @@
                     <td>
                       <template v-if="!item.profile_image">
                         <li class="user-block">
-                          <img src="/sigad/img/avatar.png" :alt="item.username" class="profile-avatar-img img-fluid img-circle">
+                          <img src="/img/avatar.png" :alt="item.username" class="profile-avatar-img img-fluid img-circle">
                         </li>
                       </template>
                       <template v-else>

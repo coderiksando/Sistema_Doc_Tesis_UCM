@@ -3,7 +3,7 @@
   <aside class="main-sidebar sidebar-dark-navy elevation-4">
     <!-- Brand Logo -->
       <a href="#" class="brand-link">
-        <img :src="ruta + '/sigad/img/ucm3.png'"
+        <img :src="ruta + '/img/ucm3.png'"
             alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3"
             style="opacity: .8">
@@ -337,7 +337,7 @@ export default {
       var url='/authenticate/logout'
       axios.post(url).then(response => {
         if(response.data.code == 204){
-          window.location.href = '/sigad/';
+          window.location.href = '/';
           //location.reload();
           localStorage.clear();
           this.fullscreenLoading = false;

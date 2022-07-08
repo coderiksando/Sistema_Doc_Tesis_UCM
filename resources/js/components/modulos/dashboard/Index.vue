@@ -1029,7 +1029,7 @@ props: ['usuario'],
             var url='/authenticate/logout'
             axios.post(url).then(response => {
                 if(response.data.code == 204){
-                    window.location.href = '/sigad/';
+                    window.location.href = '/';
                     //location.reload();
                     localStorage.clear();
                     this.fullscreenLoading = false;
