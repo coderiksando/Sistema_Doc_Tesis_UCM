@@ -7,4 +7,6 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-@import '~element-ui/lib/theme-chalk/index.css';
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+@import "~element-ui/packages/theme-chalk/src/index";
