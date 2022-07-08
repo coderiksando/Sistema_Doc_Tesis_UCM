@@ -1,5 +1,6 @@
 import vue from 'vue';
 import Router from 'vue-router';
+import { publicPath } from '../../vue.config';
 
 vue.use(Router);
 
@@ -600,7 +601,7 @@ export const rutas = [
 ];//cierre concentracion de rutas
 
 export default new Router({
-    base: '/sigad',
+    base: publicPath,
     routes: rutas,
     mode: 'history',
     linkActiveClass: 'active'
