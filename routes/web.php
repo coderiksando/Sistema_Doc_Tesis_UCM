@@ -3,20 +3,18 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 // rutas de debugbar corrección de datos
-Route::get('/_debugbar/assets/stylesheets', [
-  'as' => 'debugbar-css',
-  'uses' => '\Barryvdh\Debugbar\Controllers\AssetController@css'
-]);
-
-Route::get('/_debugbar/assets/javascript', [
-  'as' => 'debugbar-js',
-  'uses' => '\Barryvdh\Debugbar\Controllers\AssetController@js'
-]);
-
-Route::get('/_debugbar/open', [
-  'as' => 'debugbar-open',
-  'uses' => '\Barryvdh\Debugbar\Controllers\OpenController@handler'
-]);
+// Route::get('/_debugbar/assets/stylesheets', [
+//   'as' => 'debugbar-css',
+//   'uses' => '\Barryvdh\Debugbar\Controllers\AssetController@css'
+// ]);
+// Route::get('/_debugbar/assets/javascript', [
+//   'as' => 'debugbar-js',
+//   'uses' => '\Barryvdh\Debugbar\Controllers\AssetController@js'
+// ]);
+// Route::get('/_debugbar/open', [
+//   'as' => 'debugbar-open',
+//   'uses' => '\Barryvdh\Debugbar\Controllers\OpenController@handler'
+// ]);
 
 
 /*********      RUTAS MODULO DE AUTENTICACION , REGISTRO  Y RECUPERACION DE CONTRASENA     *********/

@@ -52,9 +52,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://www.eici.ucm.cl/sigad'),
 
-    'asset_url' => env('ASSET_URL', null),
+    'asset_url' => env('ASSET_URL', 'https://www.eici.ucm.cl/sigad'),
 
     /*
     |--------------------------------------------------------------------------
