@@ -6,6 +6,9 @@
 
 require('./bootstrap');
 
+// require JQuery
+global.$ = global.jQuery = require('jquery');
+
 window.Vue = require('vue');
 
 import ElementUI from 'element-ui';
